@@ -7,8 +7,21 @@ package-lock.json
 # Testing
 /coverage
 
+# MAC
+.DS_Store
+
 # Production
 /build
+
+# Keys
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MDB
+mdbreact-*
 
 # All editor configs but vscode
 .editorconfig
