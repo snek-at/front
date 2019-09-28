@@ -8,9 +8,11 @@ import { Route, Switch } from 'react-router-dom';
 /**
  * HomePage: A basic template page
  */
-//import {
-//  HomePage
-//} from './components/pages';
+/*
+import {
+  HomePage
+} from './components/pages';
+*/
 
 class Routes extends React.Component {
   render() {
