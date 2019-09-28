@@ -6,51 +6,51 @@
 }
 
 // Custom colors
-.agency-dark{
-	background-color: $agencyDark !important;
+.snek-dark{
+	background-color: $snekDark !important;
 	&.darken-1{
-		background-color: darken($agencyDark, 5%) !important;
+		background-color: darken($snekDark, 5%) !important;
 	}
 	&.darken-2{
-		background-color: darken($agencyDark, 10%) !important;
+		background-color: darken($snekDark, 10%) !important;
 	}
 	&.darken-3{
-		background-color: darken($agencyDark, 15%) !important;
+		background-color: darken($snekDark, 15%) !important;
 	}
 	&.lighten-1{
-		background-color: lighten($agencyDark, 10%) !important;
+		background-color: lighten($snekDark, 10%) !important;
 	}
 	&.lighten-2{
-		background-color: lighten($agencyDark, 20%) !important;
+		background-color: lighten($snekDark, 20%) !important;
 	}
 	&.lighten-3{
-		background-color: lighten($agencyDark, 30%) !important;
+		background-color: lighten($snekDark, 30%) !important;
 	}
 }
-.agency-red{
-	background-color: $agencyRed !important;
+.snek-blue{
+	background-color: $snekBlue !important;
 	&.darken-1{
-		background-color: darken($agencyRed, 10%) !important;
+		background-color: darken($snekBlue, 10%) !important;
 	}
 	&.darken-2{
-		background-color: darken($agencyRed, 20%) !important;
+		background-color: darken($snekBlue, 20%) !important;
 	}
 	&.darken-3{
-		background-color: darken($agencyRed, 30%) !important;
+		background-color: darken($snekBlue, 30%) !important;
 	}
 	&.lighten-1{
-		background-color: lighten($agencyRed, 10%) !important;
+		background-color: lighten($snekBlue, 10%) !important;
 	}
 	&.lighten-2{
-		background-color: lighten($agencyRed, 20%) !important;
+		background-color: lighten($snekBlue, 20%) !important;
 	}
 	&.lighten-3{
-		background-color: lighten($agencyRed, 30%) !important;
+		background-color: lighten($snekBlue, 30%) !important;
 	}
 }
 
-.red-text{
-	color: $agencyRed !important;
+.blue-text{
+	color: $snekBlue !important;
 }
 
 /** 
