@@ -1,8 +1,8 @@
 //> React
 // Contains all the functionality necessary to define React components
-import React from 'react';
+import React from "react";
 // DOM bindings for React Router
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch } from "react-router-dom";
 
 //> Components
 /**
@@ -21,9 +21,9 @@ class Routes extends React.Component {
         {
           //<Route exact path='/' component={HomePage} />
         }
-          
+
         <Route
-          render={function () {
+          render={function() {
             return <h1>Not Found</h1>;
           }}
         />
@@ -34,7 +34,7 @@ class Routes extends React.Component {
 
 export default Routes;
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019 Werbeagentur Christian Aichner
  */

@@ -7,7 +7,8 @@
 <h3 align="center">Official code of conflict</h3>
 
 ## Table of contents
-- [Conflicts](#conflicts)
+- [Table of contents](#table-of-contents)
+- [[](#conflicts)Conflicts](#conflictsconflicts)
 
 ## [](#conflicts)Conflicts
 

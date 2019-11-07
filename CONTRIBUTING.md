@@ -12,8 +12,9 @@
 </p>
 
 ## Table of contents
-- [Commits](#commits)
-- [Pull Requests](#pull-requests)
+- [Table of contents](#table-of-contents)
+- [[](#commits)Commits](#commitscommits)
+- [[](#pull-requests)Pull Requests](#pull-requestspull-requests)
 
 
 ## [](#commits)Commits
