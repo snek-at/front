@@ -1,11 +1,12 @@
 //#region > Imports
 //> Atoms
 // Import all components to export them for easy access from parent components
-//import Atom from "./Atom";
+//>> User profile
+import Calendar2D from "./charts/Calendar2D";
 //#endregion
 
 //#region > Exports
-//export { Atom };
+export { Calendar2D };
 //#endregion
 
 /**
