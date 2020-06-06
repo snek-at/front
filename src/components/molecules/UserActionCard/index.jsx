@@ -2,33 +2,12 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// DOM bindings for React Router
-import { Link, withRouter } from "react-router-dom";
 // React PropTypes
 import PropTypes from "prop-types";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBAlert,
-  MDBBtn,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBIcon,
-  MDBModal,
-  MDBModalBody,
-  MDBModalHeader,
-  MDBModalFooter,
-  MDBSelect,
-  MDBSelectInput,
-  MDBSelectOptions,
-  MDBSelectOption,
-  MDBListGroup,
-  MDBListGroupItem,
-} from "mdbreact";
+import { MDBRow, MDBCol, MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
 
 //> Components
 import { RegisterForm, LoginForm } from "../forms";

@@ -2,8 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// DOM bindings for React Router
-import { Link } from "react-router-dom";
 // React PropTypes
 import PropTypes from "prop-types";
 //> Intel
@@ -16,7 +14,6 @@ import TextLoop from "react-text-loop";
 import {
   MDBRow,
   MDBCol,
-  MDBAlert,
   MDBBtn,
   MDBPopover,
   MDBPopoverBody,
