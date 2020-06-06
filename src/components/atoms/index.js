@@ -3,10 +3,12 @@
 // Import all components to export them for easy access from parent components
 //> Generic
 import ScrollToTop from "./ScrollToTop";
+//> User profile
+import Project from "./Project";
 //#endregion
 
 //#region > Exports
-export { ScrollToTop };
+export { ScrollToTop, Project };
 //#endregion
 
 /**
