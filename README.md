@@ -16,8 +16,8 @@ The SNEK project is an attempt to create a transparent, open-source non-profit p
   <a href="https://www.overleaf.com/read/bcxwhwbhrmps">Documentation</a>
   <br>
   <br>
-  <a href="https://www.codacy.com/app/kleberbaum/front">
-    <img src="https://api.codacy.com/project/badge/Grade/20d80a1790c44c90a3376e77d34a99ff" />
+  <a href="https://www.codacy.com/gh/snek-at/front?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=snek-at/front&amp;utm_campaign=Badge_Grade">
+	  <img src="https://app.codacy.com/project/badge/Grade/823be62f8ae048129bf2d1012eeb3c69"/>
   </a>
 </p>
 
@@ -86,8 +86,6 @@ All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blo
 
 Get updates on our development and chat/talk with the project maintainers and community members.
 
-[![Discord][discord-badge]][discord]
-
 ## [](#versioning)Versioning
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/snek-at/front)
@@ -115,7 +113,7 @@ those rules whenever possible.
 				<img src="https://avatars.githubusercontent.com/kleberbaum?s=100" alt="Avatar kleberbaum">
 			</a>
 		</td>
-    <td>
+    		<td>
 			<a href="https://github.com/aichnerc">
 				<img src="https://avatars.githubusercontent.com/aichnerc?s=100" alt="Avatar aichnerc">
 			</a>
@@ -125,7 +123,7 @@ those rules whenever possible.
 		<td><a href="https://github.com/schettn">Nico Schett</a></td>
 		<td><a href="https://github.com/pinterid">David Pinterics</a></td>
 		<td><a href="https://github.com/kleberbaum">Florian Kleber</a></td>
-    <td><a href="https://github.com/aichnerc">Christian Aichner</a></td>
+    		<td><a href="https://github.com/aichnerc">Christian Aichner</a></td>
 	</tr>
 </table>
 
