@@ -29,6 +29,7 @@ class App extends React.Component {
     loggedUser: undefined,
     fetchedUser: undefined,
     loading: true,
+    caching: false,
   };
 
   componentDidMount = () => {
@@ -135,6 +136,167 @@ class App extends React.Component {
     );
   };
 
+  //> Data Handling
+  /**
+   * Get intel data
+   * @description Retrieves data from current applied source list
+   */
+  getData = async () => {
+    const data = await this.intel.get();
+
+    console.log("GET DATA", data);
+
+    return data;
+  };
+
+  /**
+   * Get all talks
+   * @description Retrieves a list of all currently available talks
+   */
+  getAllTalks = async () => {
+    return this.intel.getTalks();
+  };
+
+  /**
+   * Fetch Cache Data
+   * @description Retrieves current cache data and updates it
+   */
+  fetchCacheData = async (username) => {
+    this.session.tasks.user
+      .profile("/registration/" + username)
+      .then(async ({ data }) => {
+        console.log("CACHE DATA", data);
+        // Check if cache is empty
+        if (!data.profile) {
+          this.setState(
+            {
+              fetchedUser: false,
+              loading: false,
+            },
+            () => console.error("CACHE NOT LOADED")
+          );
+        } else {
+          // Split profile to chunks
+          const profile = data.profile;
+          let platformData = profile.platformData
+            ? JSON.parse(profile.platformData)
+            : {};
+          let user = platformData.user ? platformData.user : {};
+          const sources = profile.sources ? JSON.parse(profile.sources) : null;
+
+          // Check if data is valid
+          if (!sources) {
+            console.error("SOURCES ARE EMPTY", sources);
+          } else {
+            // Set settings for first time fetching
+            if (Object.keys(user).length === 0) {
+              user.firstName = profile.firstName;
+              user.lastName = profile.lastName;
+              user.email = profile.email;
+            }
+            if (!user.settings) {
+              user.settings = {
+                show3DDiagram: true,
+                show2DDiagram: true,
+                showCompanyPublic: true,
+                showEmailPublic: true,
+                showLocalRanking: true,
+                activeTheme: null,
+              };
+            }
+
+            // Build fetchedUser object
+            let fetchedUser = {
+              platformData: {
+                ...platformData,
+                user,
+              },
+              sources,
+              verified: data.profile.verified,
+              accessories: {
+                badges: data.profile.bids
+                  ? JSON.parse(data.profile.bids)
+                  : null,
+                themes: data.profile.tids
+                  ? JSON.parse(data.profile.tids)
+                  : null,
+              },
+            };
+
+            console.log(fetchedUser);
+
+            // Update visible data
+            this.setState({
+              fetchedUser,
+              loading: false,
+            });
+          }
+        }
+      });
+  };
+
+  updateCache = async (fetchedUser) => {
+    let platformData = fetchedUser.platformData;
+
+    if (
+      !this.state.caching &&
+      this.state.loggedUser?.username === platformData.user?.username
+    ) {
+      this.appendSourceObjects(fetchedUser.sources)
+        .then(async () => {
+          await this.intel.generateTalks(fetchedUser.sources);
+
+          let talks = await this.getAllTalks();
+
+          // Fix duplicates
+          for (const i in talks) {
+            let state = true;
+
+            for (const i2 in platformData.talks) {
+              if (talks[i].url === platformData.talks[i2].url) {
+                state = false;
+              }
+            }
+            if (state) {
+              platformData.talks.push(talks[i]);
+            }
+          }
+
+          talks = platformData.talks;
+
+          //await this.getData().then((res) => console.log(res));
+          platformData = {
+            ...(await this.getData()),
+            user: platformData.user,
+            talks,
+          };
+
+          console.log("PLATTFORM DATA AFTER FETCH", platformData);
+
+          // Override cache
+          this.session.tasks.user
+            .cache(JSON.stringify(platformData))
+            .then(() => {
+              fetchedUser.platformData = platformData;
+
+              this.setState({
+                fetchedUser,
+                caching: true,
+              });
+            });
+        })
+        .then(() => {
+          console.log("RESET REDUCER");
+          this.intel.resetReducer();
+        });
+    } else {
+      console.log(
+        "CACHING NOT ACTIVATED",
+        "Caching done: " + this.state.caching
+      );
+    }
+  };
+
   render() {
     return (
       <Router>
@@ -155,6 +317,8 @@ class App extends React.Component {
             <Routes
               globalState={this.state}
               globalFunctions={{
+                fetchCacheData: this.fetchCacheData,
+                updateCache: this.updateCache,
                 login: this.login,
               }}
             />
