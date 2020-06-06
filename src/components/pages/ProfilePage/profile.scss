@@ -1,0 +1,128 @@
+@import "../../../utilities/variables";
+
+#profile {
+  // Left col
+  .social {
+    .follow {
+      background: white;
+    }
+    .bg-elegant {
+      background: #fafafa;
+    }
+    .bg-light {
+      background: #fafafa !important;
+    }
+    .badges {
+      .badge {
+        box-shadow: none;
+        margin-right: 0.4rem;
+      }
+    }
+    .connected {
+      i {
+        margin-right: 0.4rem;
+        position: relative;
+        color: lighten(grey, 20%);
+        &.active {
+          color: darken(lightblue, 5%);
+          &::after {
+            transition: all 0.1s ease;
+            position: absolute;
+            font-family: "Font Awesome 5 Free";
+            content: "\f058";
+            font-weight: 900;
+            font-size: 12px;
+            color: $snekGreen;
+            bottom: -8px;
+            right: -2px;
+          }
+        }
+      }
+    }
+    .orgs {
+      .btn-link {
+        display: inline;
+        padding: 0;
+        overflow: visible;
+        margin: 0;
+      }
+      .member-list {
+        img {
+          width: 15px;
+          height: auto;
+          border-radius: 50%;
+          margin-left: 0.1rem;
+          transition: all 0.2s ease;
+          &:hover {
+            transform: translateY(-4px);
+          }
+        }
+      }
+      .org {
+        display: inline-block !important;
+        position: relative;
+        .tooltip {
+          margin-bottom: 1rem;
+        }
+        img {
+          width: 35px;
+          height: 35px;
+          margin: 0.4em;
+          transition: all 0.2s ease;
+          &:hover {
+            transform: translateY(-5px);
+            /* Themes to be added for purchase */
+            /* Themes include: 360 no-scope, scale, translate */
+          }
+          &:hover + .tag {
+            opacity: 1;
+          }
+        }
+        .tag {
+          transition: opacity 0.2s ease;
+          opacity: 0;
+          position: absolute;
+          right: 0;
+          bottom: 0px;
+          line-height: 1;
+          background: lightgrey;
+          padding: 0.3em 0.6em 0.3em 0.6em;
+          border-radius: 10rem;
+          font-size: 12px;
+          font-weight: bold;
+          color: #3b3b3b;
+        }
+      }
+    }
+  }
+  // Right col
+  .profile-content {
+    background: #fafafa;
+    .nav-tabs {
+      background: white;
+      cursor: pointer;
+      border: 1px solid #e9ecef #e9ecef #dee2e6;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+      .nav-link {
+        &.active {
+          background: #fafafa;
+          border-bottom-color: #fafafa;
+        }
+      }
+      .nav-item {
+        .badge {
+          box-shadow: none;
+          padding: 0.2rem 0.4rem;
+          margin-left: 0.3rem;
+        }
+      }
+    }
+  }
+  // General things
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
