@@ -4,7 +4,6 @@
 import React from "react";
 // Contains the functionality for uploading a file
 import Dropzone from "react-dropzone";
-
 import {
   MDBModal,
   MDBModalHeader,
@@ -27,10 +26,12 @@ class UploadModal extends React.Component {
         error: [],
         loading: true,
       });
+      
       this.props.uploadTalk(files[0]).then(() => {
         this.setState({
           loading: false,
         });
+        
         this.props.closeModal();
       });
     } else {

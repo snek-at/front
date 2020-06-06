@@ -4,18 +4,15 @@
 import React from "react";
 // React PropTypes
 import PropTypes from "prop-types";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol, MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
 
 //> Components
 import { RegisterForm, LoginForm } from "../forms";
-
 //> Images
 import { ReactComponent as SvgSoftware } from "../../../assets/header/dev.svg";
 import { ReactComponent as SvgMedia } from "../../../assets/header/media.svg";
-
 //> CSS
 import "./useractioncard.scss";
 //#endregion

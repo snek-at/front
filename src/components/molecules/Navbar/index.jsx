@@ -6,7 +6,6 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 // React PropTypes
 import PropTypes from "prop-types";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -27,7 +26,6 @@ import {
 
 //> Images
 import SNEKLogo from "../../../assets/navigation/logo.png";
-
 //> CSS
 import "./navbar.scss";
 //#endregion
