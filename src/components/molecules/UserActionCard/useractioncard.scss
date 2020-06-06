@@ -89,7 +89,7 @@
 
       &:hover {
         i {
-          &:after {
+          &::after {
             color: lighten(#77bd43, 15%);
             transform: scale(1.5);
           }
@@ -126,7 +126,6 @@
           color: #495057;
         }
       }
-
     }
   }
 
