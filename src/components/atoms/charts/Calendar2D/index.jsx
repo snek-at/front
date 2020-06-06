@@ -16,7 +16,7 @@ import "./calendar2d.scss";
 //#endregion
 
 //#region > Constant Variables
-const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 //#endregion
 
 //#region > Components
@@ -165,9 +165,9 @@ class Calender2D extends React.Component {
             <span> contributions in the last year</span>
           </div>
           <MDBRow className="text-center">
-            {months.map((month, key) => {
+            {MONTHS.map((month, key) => {
               return (
-                <MDBCol size="months" key={key}>
+                <MDBCol size="MONTHS" key={key}>
                   <small>{this.getEachMonth(key)}</small>
                 </MDBCol>
               );
