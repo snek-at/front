@@ -6,7 +6,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 //> Components
-import { HomePage } from "./components/pages";
+import { HomePage, CompanyPage } from "./components/pages";
 //#endregion
 
 //#region > Components
@@ -41,6 +41,16 @@ class Routes extends React.Component {
             localStorage.setItem(requestKey, window.location.href);
             window.close();
           }}
+        />
+        <Route
+          exact
+          path="/c/:name"
+          component={(props) => (
+            <CompanyPage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+            />
+          )}
         />
       </Switch>
     );
