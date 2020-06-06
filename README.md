@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://snek.at/" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars2.githubusercontent.com/u/55870326?s=400&u=c6c7f06305ddc94747d474850fde7b2044f53838&v=4" alt="Agency Logo" height="150">
+    <img src="https://avatars2.githubusercontent.com/u/55870326?s=400&u=c6c7f06305ddc94747d474850fde7b2044f53838&v=4" alt="SNEK Logo" height="150">
   </a>
 </p>
 
@@ -23,6 +23,7 @@ The SNEK project is an attempt to create a transparent, open-source non-profit p
 
 ## Table of contents
 
+- [Table of contents](#table-of-contents)
 - [Quick start](#quick-start)
 - [Status](#status)
 - [Bugs and feature requests](#bugs-and-feature-requests)
@@ -139,5 +140,3 @@ to [contribute to our project](#contributing).
 
 SPDX-License-Identifier: (EUPL-1.2)
 Copyright © Simon Prast
-
-[discord-badge]: https://img.shields.io/badge/Discord-Join%20chat%20%E2%86%92-738bd7.svg

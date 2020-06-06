@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://snek.at/" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars2.githubusercontent.com/u/55870326?s=400&u=c6c7f06305ddc94747d474850fde7b2044f53838&v=4" alt="Agency Logo" height="150">
+    <img src="https://avatars2.githubusercontent.com/u/55870326?s=400&u=c6c7f06305ddc94747d474850fde7b2044f53838&v=4" alt="SNEK Logo" height="150">
   </a>
 </p>
 
@@ -15,7 +15,6 @@
 - [Table of contents](#table-of-contents)
 - [Commits](#commits)
 - [Pull Requests](#pull-requests)
-
 
 ## [](#commits)Commits
 
@@ -40,7 +39,6 @@
 - Each pull request must have at least one assigned developers
 - Each pull request must have a label
 - Each pull request should be merged by a reviewer
-
 
 SPDX-License-Identifier: (EUPL-1.2)
 Copyright © Simon Prast
