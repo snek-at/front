@@ -46,6 +46,7 @@ class App extends React.Component {
   //> Authentication methods
   /**
    * Begin Session
+   *
    * @description Start a new session based on authentication history.
    *              New site access will lead to a anonymous login.
    */
@@ -87,6 +88,7 @@ class App extends React.Component {
 
   /**
    * Authenticate
+   *
    * @description Logs in user
    */
   login = async (username, password) => {
@@ -103,6 +105,7 @@ class App extends React.Component {
 
   /**
    * Handle login
+   *
    * @description Handles states for login
    */
   handleLogin = (loggedUser) => {
@@ -125,6 +128,7 @@ class App extends React.Component {
 
   /**
    * Logout user
+   *
    * @description Handles the logging out of active users
    */
   logout = () => {
@@ -142,6 +146,7 @@ class App extends React.Component {
   //> Registration
   /**
    * Fetch GitLab Servers
+   *
    * @description Retrieves a list of available GitLab servers
    */
   fetchGitLabServers = () => {
@@ -166,6 +171,7 @@ class App extends React.Component {
 
   /**
    * Append Source Objects
+   *
    * @description Hands source list over to intel
    */
   appendSourceObjects = async (sourceList) => {
@@ -174,11 +180,13 @@ class App extends React.Component {
 
   /**
    * Register user
+   *
    * @description Handles the registration of users
    */
   registerUser = async (registrationData) => {
     // Get data from source
     let intelData;
+    
     const unhashedPassword = registrationData.password;
 
     // Hash password
@@ -230,6 +238,7 @@ class App extends React.Component {
   //> Data Handling
   /**
    * Get intel data
+   *
    * @description Retrieves data from current applied source list
    */
   getData = async () => {
@@ -243,6 +252,7 @@ class App extends React.Component {
 
   /**
    * Get all talks
+   *
    * @description Retrieves a list of all currently available talks
    */
   getAllTalks = async () => {
@@ -251,6 +261,7 @@ class App extends React.Component {
 
   /**
    * Upload talk
+   *
    * @description Uploads a talk to intel
    */
   uploadTalk = async (file) => {
@@ -273,6 +284,7 @@ class App extends React.Component {
 
   /**
    * Delete talk
+   *
    * @description Deletes a talk
    */
   deleteTalk = async (talk) => {
@@ -301,6 +313,7 @@ class App extends React.Component {
 
   /**
    * Get talk
+   *
    * @description Get a talk
    */
   getTalk = async (uid, username) => {
@@ -328,6 +341,7 @@ class App extends React.Component {
 
   /**
    * Fetch Cache Data
+   *
    * @description Retrieves current cache data and updates it
    */
   fetchCacheData = async (username) => {
@@ -468,6 +482,7 @@ class App extends React.Component {
 
   /**
    * Save settings
+   *
    * @description Saves the user settings
    */
   saveSettings = (state) => {
