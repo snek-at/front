@@ -61,8 +61,8 @@ class Calendar3D extends React.Component {
 
   renderTopStats() {
     let countTotal, averageCount, datesTotal, maxCount, dateBest, contribData;
+
     
-    if (this.props.year) {
     if (this.props.year) {
       contribData = this.props.platformData.statistic.years.find(
         (element) => element.year === this.props.year
@@ -309,6 +309,7 @@ class Calendar3D extends React.Component {
 
   checkCache = () => {
     const cache = localStorage.getItem("3dChart");
+    
     if (cache) {
       const cacheObject = JSON.parse(cache);
       

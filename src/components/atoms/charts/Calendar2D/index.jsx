@@ -22,8 +22,8 @@ const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 class Calender2D extends React.Component {
   constructor(props) {
     super(props);
+    
     this.myInput = React.createRef();
-
     this.state = {
       width: 0,
       hue: 0,
@@ -34,11 +34,8 @@ class Calender2D extends React.Component {
   componentDidMount = () => {
     // Fill calendar
     this.setCalendar(this.props);
-
     // Add resize listener
     window.addEventListener("resize", this.updateDimensions);
-
-    // We could implement color RGB cycling here
   };
 
   componentWillUnmount() {
@@ -93,9 +90,9 @@ class Calender2D extends React.Component {
   getEachMonth = (pos) => {
     // Create new empty array
     let month = new Array();
-
     // Get current month
     let current;
+    
     if (this.props.year) {
       current = 0;
     } else {
