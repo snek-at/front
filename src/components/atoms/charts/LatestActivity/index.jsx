@@ -2,7 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> Additional
 // Charts for displaying user contribution distribution (Chart.js 2)
 import { Line } from "react-chartjs-2";

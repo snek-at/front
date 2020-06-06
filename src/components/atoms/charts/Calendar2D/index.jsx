@@ -1,14 +1,12 @@
 //#region > Imports
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> Additional
 // Used to display popovers on contrib chart items
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 // Used to display the time in a readable format
 import moment from "moment";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol } from "mdbreact";

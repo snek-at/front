@@ -2,7 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> Additional packages
 // Used to display the time in a readable format
 import moment from "moment";
