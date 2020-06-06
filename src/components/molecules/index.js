@@ -1,11 +1,16 @@
 //#region > Imports
 //> Molecules
 // Import all components to export them for easy access from parent components
-//import Molecule from "./Molecule";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
+import LoginForm from "./forms/LoginForm";
+import RegisterForm from "./forms/RegisterForm";
+import UploadModal from "./modals/UploadModal";
+import UserActionCard from "./UserActionCard";
 //#endregion
 
 //#region > Exports
-//export { Molecule };
+export { Footer, Navbar, LoginForm, RegisterForm, UploadModal, UserActionCard };
 //#endregion
 
 /**
