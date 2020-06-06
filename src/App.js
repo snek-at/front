@@ -148,8 +148,7 @@ class App extends React.Component {
           <Navbar
             globalState={this.state}
             globalFunctions={{
-              logout: {},
-              login: () => {},
+              logout: this.logout,
             }}
           />
           <main>

@@ -126,11 +126,7 @@ class Navbar extends React.Component {
               ) : (
                 <>
                   {location.pathname !== "/" && (
-                    <MDBBtn
-                      color="green"
-                      size="md"
-                      onClick={globalFunctions.login}
-                    >
+                    <MDBBtn href="/" color="green" size="md">
                       Sign In
                     </MDBBtn>
                   )}
