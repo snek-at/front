@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -13,7 +14,9 @@ import {
   HomePage
 } from './components/pages';
 */
+//#endregion
 
+//#region > Components
 class Routes extends React.Component {
   render() {
     return (
@@ -31,8 +34,11 @@ class Routes extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default Routes;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
