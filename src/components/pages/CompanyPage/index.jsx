@@ -2,7 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -25,19 +24,17 @@ import { HorizontalBar, Line } from "react-chartjs-2";
 
 //> CSS
 import "./company.scss";
-
 //> Data
 // Dummy data
 import data from "./dummy/data.js";
 import platformData from "./dummy/chart.json";
 //#endregion
 
-/** @todo Change constant variable to uppercase */
-//#region > Configs
-// Base
-const googleMapsBaseURL = "https://www.google.at/maps/place/";
+//#region > Static Variables
+// Google Maps Url
+const GOOGLE_MAPS_BASE_URL = "https://www.google.at/maps/place/";
 // Configure tabs
-const tabs = [
+const TABS = [
   "Overview",
   "People",
   "Talks",
@@ -47,7 +44,7 @@ const tabs = [
   "About",
 ];
 // Line Contribution options
-const contribOptions = {
+const CONTRIB_OPTIONS = {
   responsive: true,
   legend: {
     display: false,
@@ -67,7 +64,6 @@ const contribOptions = {
 //#endregion
 
 //#region > Components
-/** @todo Some parts exceed the maximum line length. Please fix :(  */
 class CompanyPage extends React.Component {
   state = {
     activeTab: 0,
@@ -383,7 +379,7 @@ class CompanyPage extends React.Component {
             <MDBCol lg="3">
               <MDBCard>
                 <MDBCardBody className="p-0 menu">
-                  {tabs.map((tab, i) => {
+                  {TABS.map((tab, i) => {
                     return (
                       <div
                         key={i}
@@ -408,7 +404,7 @@ class CompanyPage extends React.Component {
                       <div className="mb-5">
                         <Line
                           data={this.state.contribLine}
-                          options={this.state.contribLine && contribOptions}
+                          options={this.state.contribLine && CONTRIB_OPTIONS}
                           height="130"
                         />
                       </div>
@@ -548,7 +544,7 @@ class CompanyPage extends React.Component {
                                   </MDBCardBody>
                                   <MDBCardFooter className="p-0">
                                     <a
-                                      href={`${googleMapsBaseURL}${site.address},+${site.zip},+${site.city}`}
+                                      href={`${GOOGLE_MAPS_BASE_URL}${site.address},+${site.zip},+${site.city}`}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                     >
