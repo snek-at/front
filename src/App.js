@@ -242,6 +242,56 @@ class App extends React.Component {
   };
 
   /**
+   * Upload talk
+   * @description Uploads a talk to intel
+   */
+  uploadTalk = async (file) => {
+    await this.intel.appendTalk(file);
+
+    let talks = await this.getAllTalks();
+
+    talks[talks.length - 1].repository = {
+      avatarUrl: this.state.fetchedUser.platformData.profile.avatarUrl,
+      owner: {
+        username: this.state.user,
+      },
+    };
+
+    this.state.fetchedUser.platformData.talks.push(talks[talks.length - 1]);
+    this.session.tasks.user.cache(
+      JSON.stringify(this.state.fetchedUser.platformData)
+    );
+  };
+
+  /**
+   * Delete talk
+   * @description Deletes a talk
+   */
+  deleteTalk = async (talk) => {
+    let talks = this.state.fetchedUser.platformData.talks;
+
+    for (const index in talks) {
+      if (talk.uid === talks[index].uid) {
+        talks.splice(index, 1);
+      }
+    }
+
+    this.setState({
+      fetchedUser: {
+        ...this.state.fetchedUser,
+        platformData: {
+          ...this.state.fetchedUser.platformData,
+          talks,
+        },
+      },
+    });
+
+    this.session.tasks.user.cache(
+      JSON.stringify(this.state.fetchedUser.platformData)
+    );
+  };
+
+  /**
    * Fetch Cache Data
    * @description Retrieves current cache data and updates it
    */
@@ -381,7 +431,6 @@ class App extends React.Component {
     }
   };
 
-  //> Profile Methods
   /**
    * Save settings
    * @description Saves the user settings
@@ -445,6 +494,8 @@ class App extends React.Component {
                 globalFunctions={{
                   fetchCacheData: this.fetchCacheData,
                   updateCache: this.updateCache,
+                  uploadTalk: this.uploadTalk,
+                  deleteTalk: this.deleteTalk,
                   login: this.login,
                   registerUser: this.registerUser,
                   fetchGitLabServers: this.fetchGitLabServers,

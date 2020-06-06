@@ -15,16 +15,14 @@ class SoftwareEngineer extends React.Component {
   state = {};
 
   render() {
-    const { globalState, globalFunctions } = this.props;
-
     return (
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="3">
-            <ProfileInfo globalState={globalState} />
+            <ProfileInfo {...this.props} />
           </MDBCol>
           <MDBCol lg="9">
-            <SoftwareTabs globalState={globalState} />
+            <SoftwareTabs {...this.props} />
           </MDBCol>
         </MDBRow>
       </MDBContainer>
