@@ -123,7 +123,7 @@ class LoginForm extends React.Component {
       );
 
       //#TSID
-      console.log(result);
+      //console.log(result);
 
       if (result) {
         this.setState(
