@@ -5,10 +5,11 @@
 import ScrollToTop from "./ScrollToTop";
 //> User profile
 import Project from "./Project";
+import Pinned from "./Pinned";
 //#endregion
 
 //#region > Exports
-export { ScrollToTop, Project };
+export { ScrollToTop, Project, Pinned };
 //#endregion
 
 /**
