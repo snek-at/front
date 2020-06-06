@@ -1,16 +1,14 @@
-//> Components
+//#region > Imports
+//> Atoms
 // Import all components to export them for easy access from parent components
-import DocsLink from './DocsLink';
-import MenuLink from './MenuLink';
-import SectionContainer from './SectionContainer';
+//import Atom from "./Atom";
+//#endregion
 
-export {
-    DocsLink,
-    MenuLink,
-    SectionContainer,
-};
+//#region > Exports
+//export { Atom };
+//#endregion
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Werbeagentur Christian Aichner
+ * Copyright © Simon Prast
  */

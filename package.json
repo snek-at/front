@@ -1,10 +1,11 @@
 {
-  "name": "react-mdb-template",
-  "version": "1.0.2",
+  "name": "snek-front",
+  "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "license": "(EUPL-1.2)",
   "dependencies": {
-    "mdbreact": "^4.19.1",
+    "mdbreact": "mdbreact-4.26.1.tgz",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -13,12 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aichner/React-MDB-Template.git"
+    "url": "git+https://github.com/snek-at/front.git"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

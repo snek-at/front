@@ -7,8 +7,21 @@ package-lock.json
 # Testing
 /coverage
 
+# MAC
+.DS_Store
+
 # Production
 /build
+
+# Keys
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MDB
+mdb*
 
 # All editor configs but vscode
 .editorconfig
@@ -18,4 +31,4 @@ package-lock.json
 *.log*
 
 # SPDX-License-Identifier: (EUPL-1.2)
-# Copyright © 2019 Werbeagentur Christian Aichner
+# Copyright © Simon Prast

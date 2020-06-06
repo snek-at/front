@@ -1,11 +1,11 @@
 //#region > Imports
-//> Pages
+//> Organisms
 // Import all components to export them for easy access from parent components
-//import Page from "./Page";
+//import Organism from "./Organism";
 //#endregion
 
 //#region > Exports
-//export { Page };
+//export { Organism };
 //#endregion
 
 /**
