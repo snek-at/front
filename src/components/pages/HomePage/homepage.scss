@@ -38,6 +38,7 @@
   }
 
   // Custom buttons
+
   .btn-underlined-red {
     transition: border-bottom 0.2s ease;
     border-bottom: 3px solid rgba(255, 0, 0, 0.1);
@@ -49,6 +50,7 @@
 
     &:hover {
       border-bottom: 3px solid rgba(255, 0, 0, 0.3);
+
       & > i {
         transform: rotate(20deg) scale(1.2);
       }
@@ -58,6 +60,7 @@
     background: white;
     transition: border-bottom 0.2s ease;
     border-bottom: 3px solid rgba(0, 0, 255, 0.1);
+
     &:hover {
       border-bottom: 3px solid rgba(0, 0, 255, 0.3);
     }
