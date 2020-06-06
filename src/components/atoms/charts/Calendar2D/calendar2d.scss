@@ -3,17 +3,21 @@
     max-width: 7.655%;
     flex: 0 0 7.655%;
   }
+
   svg {
     width: 100%;
     overflow: visible;
+
     rect {
       stroke-width: 3;
       stroke: #fafafa;
       transition: all 0.2s ease;
       cursor: pointer;
+
       &:hover {
         stroke-width: 1;
       }
+
       &:focus {
         outline: none;
         fill: #f44336;
@@ -22,7 +26,7 @@
   }
 }
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © Simon Prast
  */
