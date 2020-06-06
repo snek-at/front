@@ -201,7 +201,7 @@ class Calendar3D extends React.Component {
       let contributions = contribData.calendar;
 
       // Define basic variables
-      const size = 2 * Math.round(this.state.width / 80 / 2);
+      let size = 2 * Math.round(this.state.width / 80 / 2);
 
       if (size <= 8) {
         size = 8;
