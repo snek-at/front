@@ -65,7 +65,7 @@
 
       i {
         &.fab {
-          &:after {
+          &::after {
             transition: all 0.1s ease;
             position: absolute;
             font-family: "Font Awesome 5 Free", sans-serif;
@@ -117,15 +117,16 @@
         margin-bottom: 0;
       }
 
+      li {
+        margin-bottom: 0 !important;
+      }
+
       li:not(.disabled) {
         span {
           color: #495057;
         }
       }
 
-      li {
-        margin-bottom: 0 !important;
-      }
     }
   }
 

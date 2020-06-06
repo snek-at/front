@@ -75,17 +75,17 @@ footer {
       color: #212121 !important;
     }
 
-  .madeby {
-    a {
-      color: #212121;
-      border-bottom: solid #77bd43 2px;
-      transition: border-bottom 0.2s ease;
+    .madeby {
+      a {
+        color: #212121;
+        border-bottom: solid #77bd43 2px;
+        transition: border-bottom 0.2s ease;
 
-      &:hover {
-        border-bottom: solid #0366d6 2px;
+        &:hover {
+          border-bottom: solid #0366d6 2px;
+        }
       }
     }
-  }
 
     ul {
       i {
