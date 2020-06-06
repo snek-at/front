@@ -167,7 +167,7 @@ class Calender2D extends React.Component {
           <MDBRow className="text-center">
             {MONTHS.map((month, key) => {
               return (
-                <MDBCol size="MONTHS" key={key}>
+                <MDBCol size="months" key={key}>
                   <small>{this.getEachMonth(key)}</small>
                 </MDBCol>
               );
