@@ -5,6 +5,7 @@
       &:not(.btn-link) {
         background: $themeAlphaHighlight !important;
         color: $themeAlphaHighlightText !important;
+
         &:hover {
           background: lighten($themeAlphaHighlight, 10%) !important;
         }
@@ -34,6 +35,7 @@
             border-bottom: 3px $themeAlphaHighlight solid !important;
           }
         }
+
         &.active:hover {
           border-bottom: 3px lighten($themeAlphaHighlight, 30%) solid !important;
         }
