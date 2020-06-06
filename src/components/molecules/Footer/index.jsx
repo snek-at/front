@@ -4,7 +4,6 @@
 import React from "react";
 // DOM bindings for React Router
 import { Link, withRouter } from "react-router-dom";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -19,7 +18,6 @@ import {
 
 //> CSS
 import "./footer.scss";
-
 //> Images
 // SNEK Logo
 import Logo from "../../../assets/navigation/logo.png";
