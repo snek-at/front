@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/snek-at/front.git"
+    "url": "git+https://github.com/snek-at/front.git"
   },
   "scripts": {
     "start": "react-scripts start",
