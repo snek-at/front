@@ -1,11 +1,11 @@
 //#region > Imports
 //> Molecules
 // Import all components to export them for easy access from parent components
-//import Molecule from "./Molecule";
+import Footer from "./Footer";
 //#endregion
 
 //#region > Exports
-//export { Molecule };
+export { Footer };
 //#endregion
 
 /**

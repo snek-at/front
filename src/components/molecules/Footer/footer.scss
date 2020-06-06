@@ -1,0 +1,95 @@
+footer {
+  transition: all 0.5s ease;
+
+  // Footer link items
+  ul {
+    padding: 0;
+    li {
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.1s ease;
+      padding: 1rem !important;
+      align-items: center;
+      i {
+        width: 30px;
+        text-align: center;
+        padding-right: 0.5rem;
+      }
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .badge {
+        box-shadow: none;
+      }
+    }
+  }
+
+  // Custom pulsating heart
+  .pulse {
+    -webkit-animation: pulse 1s infinite;
+    animation: pulse 1s infinite;
+  }
+
+  // Footer column headers
+  .title {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  // Column header separator
+  .col-md-3,
+  .col-md-4 {
+    hr {
+      width: 60px;
+      height: 1px;
+    }
+  }
+
+  // Social tab
+  .social {
+    padding: 2rem 0 2rem 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  // Company img
+  svg {
+    width: 80%;
+  }
+
+  // Light Mode
+  &.white {
+    ul li {
+      background: rgba(0, 0, 0, 0.05);
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+    .footer-copyright {
+      background: rgba(0, 0, 0, 0.1);
+      color: #212121 !important;
+    }
+    ul {
+      i {
+        color: #212121 !important;
+      }
+      a {
+        color: #212121 !important;
+      }
+    }
+  }
+  .madeby {
+    a {
+      color: #212121;
+      border-bottom: solid #77bd43 2px;
+      transition: border-bottom 0.2s ease;
+      &:hover {
+        border-bottom: solid #0366d6 2px;
+      }
+    }
+  }
+}
+
+/** 
+* SPDX-License-Identifier: (EUPL-1.2)
+* Copyright © Simon Prast
+*/
