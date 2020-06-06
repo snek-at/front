@@ -192,6 +192,7 @@ class RegisterForm extends React.Component {
     let usernames = this.state.usernames.filter(function (obj) {
       return obj.id !== id;
     });
+
     this.setState({
       sourceList,
       usernames,
@@ -234,6 +235,7 @@ class RegisterForm extends React.Component {
           }
         }
       });
+
       if (rtn.includes(true)) {
         return true;
       } else {
@@ -288,6 +290,7 @@ class RegisterForm extends React.Component {
   // Handle sumbit of register form
   handleSubmit = async () => {
     console.log("Handle submit");
+
     // CHANGE TO CONST
     let {
       password1,
@@ -312,6 +315,7 @@ class RegisterForm extends React.Component {
         weight: 10,
       });
     }
+
     if (sourceList.length === 0) {
       errors.push({
         code: 2,
@@ -319,6 +323,7 @@ class RegisterForm extends React.Component {
         weight: 10,
       });
     }
+
     if (firstname === "") {
       errors.push({
         code: 3,
@@ -326,6 +331,7 @@ class RegisterForm extends React.Component {
         weight: 8,
       });
     }
+
     if (lastname === "") {
       errors.push({
         code: 4,
@@ -333,6 +339,7 @@ class RegisterForm extends React.Component {
         weight: 8,
       });
     }
+
     if (email === "") {
       errors.push({
         code: 5,
@@ -340,6 +347,7 @@ class RegisterForm extends React.Component {
         weight: 9,
       });
     }
+
     if (username === "") {
       errors.push({
         code: 6,
@@ -347,6 +355,7 @@ class RegisterForm extends React.Component {
         weight: 10,
       });
     }
+
     if (password1 === "") {
       errors.push({
         code: 7,
@@ -354,6 +363,7 @@ class RegisterForm extends React.Component {
         weight: 10,
       });
     }
+
     if (password2 === "") {
       errors.push({
         code: 8,
@@ -361,6 +371,7 @@ class RegisterForm extends React.Component {
         weight: 10,
       });
     }
+
     if (code === "") {
       errors.push({
         code: 9,
@@ -375,9 +386,8 @@ class RegisterForm extends React.Component {
           loading: true,
         },
         () => {
-          // Cache data
-          let cache = {};
           console.log("Register", this.state);
+
           let registrationData = {
             sources: sourceList,
             username,
@@ -387,6 +397,7 @@ class RegisterForm extends React.Component {
             gift_code: promoCode && code !== "" ? code : null,
             password: password1,
           };
+
           this.props.globalFunctions.registerUser(registrationData);
         }
       );
