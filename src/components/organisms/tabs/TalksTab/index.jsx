@@ -20,7 +20,7 @@ import {
 //> CSS
 import "./talkstab.scss";
 //> Modules
-import UploadModal from "../../../molecules/modals/UploadModal";
+import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
@@ -68,7 +68,7 @@ class Talks extends React.Component {
           timeoutID: setInterval(() => this.updateIframe(talk), 4000),
           loaded: false,
         };
-        
+
         return talk;
       });
     }
