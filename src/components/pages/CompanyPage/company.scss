@@ -1,0 +1,60 @@
+#company {
+  padding: 4rem 0;
+  background: darken(white, 3%);
+  .timeline {
+    padding: 0;
+    max-width: 100%;
+    overflow: visible;
+    margin: 0;
+  }
+  .card {
+    border: 1px lightgray solid;
+    margin-bottom: 2rem;
+    .verified-badge {
+      .badge {
+        background: rgba(0, 200, 81, 0.1) !important;
+        border: 1px #00c851 solid;
+        color: darken(#00c851, 12%) !important;
+        box-shadow: none;
+      }
+    }
+    .unverified-badge {
+      .badge {
+        background: rgba(244, 67, 54, 0.1) !important;
+        border: 1px #f44336 solid;
+        color: darken(#f44336, 12%) !important;
+        box-shadow: none;
+      }
+    }
+    .badge {
+      padding: 0.4rem;
+      margin-right: 0.5rem;
+      i {
+        margin-right: 0.3rem;
+      }
+    }
+    // Navigation bar
+    .menu {
+      div {
+        padding: 0.7rem;
+        border-bottom: 1px lightgray solid;
+        cursor: pointer;
+        transition: background 0.1s ease, border-left 0.3s ease;
+        border-left: 7px white solid;
+        &:hover {
+          background: lighten(lightgray, 15%);
+          border-left: 7px #77bd43 solid;
+        }
+        &.active {
+          background: lighten(lightgray, 15%);
+          border-left: 7px #77bd43 solid;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
