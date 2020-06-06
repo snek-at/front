@@ -12,6 +12,10 @@ import "./calendar3d.scss";
 //#endregion
 
 //#region > Components
+/**
+ * @class A three dimensional calendar which displays each days contributions,
+ *        and contribution related statistics e.g. busiest days and streaks
+ */
 class Calendar3D extends React.Component {
   constructor(props) {
     super(props);

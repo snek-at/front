@@ -11,6 +11,10 @@ import moment from "moment";
 //#endregion
 
 //#region > Components
+/**
+ * @class A week calendar which compares the contributions of a selectable week
+ *        with the current week.
+ */
 class LatestActivity extends React.Component {
   state = {
     dataLineOptions: {

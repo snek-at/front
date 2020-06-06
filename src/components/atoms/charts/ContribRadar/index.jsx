@@ -9,7 +9,11 @@ import { Radar } from "react-chartjs-2";
 //#endregion
 
 //#region > Components
-class ChartsPage extends React.Component {
+/**
+ * @class A contribution statistic which displays the the ratio of
+ *        commits, issues, pull requests and code reviews.
+ */
+class ContribRadar extends React.Component {
   state = {
     dataRadarOptions: {
       responsive: true,
@@ -174,7 +178,7 @@ class ChartsPage extends React.Component {
 //#endregion
 
 //#region > Exports
-export default ChartsPage;
+export default ContribRadar;
 //#endregion
 
 /**

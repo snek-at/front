@@ -20,6 +20,7 @@ import "./calendar2d.scss";
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
 //#region > Components
+/** @class A two dimensional calendar which displays each days contributions */
 class Calender2D extends React.Component {
   constructor(props) {
     super(props);
