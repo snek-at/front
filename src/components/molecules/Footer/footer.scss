@@ -4,19 +4,23 @@ footer {
   // Footer link items
   ul {
     padding: 0;
+
     li {
       background: rgba(255, 255, 255, 0.05);
       transition: all 0.1s ease;
       padding: 1rem !important;
       align-items: center;
+
       i {
         width: 30px;
         text-align: center;
         padding-right: 0.5rem;
       }
+
       &:hover {
         background: rgba(255, 255, 255, 0.1);
       }
+
       .badge {
         box-shadow: none;
       }
@@ -60,28 +64,34 @@ footer {
   &.white {
     ul li {
       background: rgba(0, 0, 0, 0.05);
+
       &:hover {
         background: rgba(0, 0, 0, 0.1);
       }
     }
+
     .footer-copyright {
       background: rgba(0, 0, 0, 0.1);
       color: #212121 !important;
     }
+
     ul {
       i {
         color: #212121 !important;
       }
+
       a {
         color: #212121 !important;
       }
     }
   }
+
   .madeby {
     a {
       color: #212121;
       border-bottom: solid #77bd43 2px;
       transition: border-bottom 0.2s ease;
+
       &:hover {
         border-bottom: solid #0366d6 2px;
       }
@@ -89,7 +99,7 @@ footer {
   }
 }
 
-/** 
-* SPDX-License-Identifier: (EUPL-1.2)
-* Copyright © Simon Prast
-*/
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
