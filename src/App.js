@@ -136,6 +136,88 @@ class App extends React.Component {
     );
   };
 
+  //> Registration
+  /**
+   * Fetch GitLab Servers
+   * @description Retrieves a list of available GitLab servers
+   */
+  fetchGitLabServers = () => {
+    return this.session.tasks.general
+      .gitlabServer()
+      .then(({ data }) => {
+        console.log(data);
+        const gitLabServers = data?.page?.supportedGitlabs;
+        if (gitLabServers) {
+          return gitLabServers;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        console.error("GET GITLAB SERVERS", err);
+        return false;
+      });
+  };
+
+  /**
+   * Append Source Objects
+   * @description Hands source list over to intel
+   */
+  appendSourceObjects = async (sourceList) => {
+    return this.intel.appendList(sourceList);
+  };
+
+  /**
+   * Register user
+   * @description Handles the registration of users
+   */
+  registerUser = async (registrationData) => {
+    // Get data from source
+    let intelData;
+    const unhashedPassword = registrationData.password;
+
+    // Hash password
+    registrationData.password = sha256(registrationData.password);
+
+    this.appendSourceObjects(registrationData.sources)
+      .then(async () => {
+        intelData = await this.getData();
+        this.intel
+          .generateTalks(registrationData.sources)
+          .then(async () => {
+            intelData.talks = await this.getAllTalks();
+
+            // Save Object to platformData as JSON
+            registrationData.platform_data = JSON.stringify(intelData);
+            // Create JSON string out of sources for backend use
+            registrationData.sources = JSON.stringify(registrationData.sources);
+
+            // Register the user in our SNEK engine
+            this.session.tasks.user
+              .registration(registrationData)
+              .then((res) => {
+                if (res.message === "FAIL") {
+                  console.log("warn", "All fields have to be filled!");
+                } else {
+                  // Set cache
+                  this.session.tasks.user.cache(registrationData.platform_data);
+                  // Login user
+                  this.login(registrationData.username, unhashedPassword);
+                }
+              })
+              .catch((err) => {
+                console.error("REGISTRATION IN ENGINE", err);
+              });
+          })
+          .catch((err) => {
+            console.error("GENERATE TALKS", err);
+          });
+      })
+      .catch((err) => {
+        console.error("APPEND SOURCE OBJECTS", err);
+      });
+  };
+
   //> Data Handling
   /**
    * Get intel data
@@ -320,6 +402,8 @@ class App extends React.Component {
                 fetchCacheData: this.fetchCacheData,
                 updateCache: this.updateCache,
                 login: this.login,
+                registerUser: this.registerUser,
+                fetchGitLabServers: this.fetchGitLabServers,
               }}
             />
           </main>
