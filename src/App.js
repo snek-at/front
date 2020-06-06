@@ -10,12 +10,8 @@ import { BrowserRouter as Router } from "react-router-dom";
  * Footer: Global Footer
  * Navbar: Global navigation bar
  */
-/*
-import {
-  Footer,
-  Navbar,
-} from './components/molecules';
-*/
+//import { Footer, Navbar } from "./components/molecules";
+
 //> Routes
 import Routes from "./Routes";
 //#endregion
