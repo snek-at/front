@@ -13,14 +13,13 @@ import "./calendar3d.scss";
 //#region > Components
 /**
  * @class A three dimensional calendar which displays each days contributions,
- *        and contribution related statistics e.g. busiest days and streaks
+ *        and contribution related statistics e.g. busiest days and streaks.
  */
 class Calendar3D extends React.Component {
   constructor(props) {
     super(props);
 
     this.myInput = React.createRef();
-
     this.state = {
       width: 0,
       hue: 0,
@@ -31,6 +30,8 @@ class Calendar3D extends React.Component {
     if (this.props.platformData) {
       // Add resize listener
       window.addEventListener("resize", this.updateDimensions);
+      
+      this.setState(
       this.setState(
         {
           width: this.myInput.current.offsetWidth,
@@ -49,12 +50,6 @@ class Calendar3D extends React.Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    // Use caching for year change
-    //console.log(this.props.year);
-    //console.log(nextProps.year);
-  };
-
   updateDimensions = () => {
     this.setState(
       {
@@ -66,6 +61,8 @@ class Calendar3D extends React.Component {
 
   renderTopStats() {
     let countTotal, averageCount, datesTotal, maxCount, dateBest, contribData;
+    
+    if (this.props.year) {
     if (this.props.year) {
       contribData = this.props.platformData.statistic.years.find(
         (element) => element.year === this.props.year
@@ -81,10 +78,12 @@ class Calendar3D extends React.Component {
       Math.round(
         (contribData.contributions.total / 365 + Number.EPSILON) * 100
       ) / 100;
+      
     datesTotal =
       moment(contributionCalendar.startDate).format("MMM DD, YYYY") +
       " - " +
       moment(contributionCalendar.endDate).format("MMM DD, YYYY");
+      
     /* Busiest day */
     maxCount = contribData.busiestDay.total;
     dateBest = moment(contribData.busiestDay.date);
@@ -121,6 +120,7 @@ class Calendar3D extends React.Component {
 
   renderBottomStats() {
     let streakLongest, datesLongest, streakCurrent, datesCurrent, contribData;
+    
     if (this.props.year) {
       contribData = this.props.platformData.statistic.years.find(
         (element) => element.year === this.props.year
@@ -182,17 +182,17 @@ class Calendar3D extends React.Component {
   renderIsometrics = () => {
     if (this.context) {
       const obelisk = require("obelisk.js");
-
       // Create a canvas 2D point for pixel view world
       let point = new obelisk.Point(70, 70);
-
       // Create view instance to nest everything
       // Canvas could be either DOM or jQuery element
       let pixelView = new obelisk.PixelView(this.context, point);
+      
       pixelView.clear();
 
       // Get contributions of the selected year
       let contribData;
+      
       if (this.props.year) {
         contribData = this.props.platformData.statistic.years.find(
           (element) => element.year === this.props.year
@@ -205,18 +205,20 @@ class Calendar3D extends React.Component {
 
       // Define basic variables
       let SIZE = 2 * Math.round(this.state.width / 80 / 2);
+      
       if (SIZE <= 8) {
         SIZE = 8;
       }
+      
       let MAXHEIGHT = 100;
       let x = 0;
       let y = 0;
       let maxCount = 0; // Max number of contributions / day in the last year
-
       let values = [];
 
       contributions.weeks.map((week, wkey) => {
         values[wkey] = [];
+        
         week.days.map((day, dkey) => {
           // Get max number of contributions
           if (day.total > maxCount) {
@@ -230,6 +232,7 @@ class Calendar3D extends React.Component {
         week.map((day, di) => {
           // Normalize the values to achieve even distribution
           let cubeHeight = 3;
+          
           if (maxCount > 0) {
             cubeHeight += parseInt((MAXHEIGHT / maxCount) * day.total);
           }
@@ -308,6 +311,7 @@ class Calendar3D extends React.Component {
     const cache = localStorage.getItem("3dChart");
     if (cache) {
       const cacheObject = JSON.parse(cache);
+      
       if (cacheObject.timestamp > new Date().getTime() - 3600000) {
         //this.renderCache();
         window.setTimeout(() => this.renderIsometrics(), 0);

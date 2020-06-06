@@ -133,6 +133,7 @@ class Calender2D extends React.Component {
 
   displayDailyInfo = (day, wkey, dkey) => {
     let cname = "item-" + wkey + "-" + dkey;
+    
     if (day.total > 0 && day.total !== 1) {
       tippy(`.${cname}`, {
         content: `${day.total} contributions on ${moment(day.date).format(
