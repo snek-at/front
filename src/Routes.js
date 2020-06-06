@@ -23,7 +23,7 @@ class Routes extends React.Component {
         }
 
         <Route
-          render={function() {
+          render={function () {
             return <h1>Not Found</h1>;
           }}
         />
@@ -36,5 +36,5 @@ export default Routes;
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Werbeagentur Christian Aichner
+ * Copyright © Simon Prast
  */
