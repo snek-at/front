@@ -50,9 +50,10 @@ class App extends React.Component {
    *              New site access will lead to a anonymous login.
    */
   begin = async (user) => {
-    console.log("BEGIN INIT", user);
+    //#TSID
+    //console.log("BEGIN INIT", user);
     const whoami = await this.session.begin(user ? user : undefined);
-    console.log(whoami);
+
     // Check if whoami is not empty
     if (whoami?.username || whoami?.whoami?.username) {
       const username = whoami?.username
@@ -89,16 +90,15 @@ class App extends React.Component {
    * @description Logs in user
    */
   login = async (username, password) => {
-    console.log(username, password);
     return this.begin({
       username,
       password: sha256(password),
-    })
-      .then()
-      .catch((err) => {
-        console.error("LOGIN", err);
-        return false;
-      });
+    }).catch((err) => {
+      //#ERROR
+      console.error("LOGIN", err);
+
+      return false;
+    });
   };
 
   /**
@@ -106,7 +106,8 @@ class App extends React.Component {
    * @description Handles states for login
    */
   handleLogin = (loggedUser) => {
-    console.log("HANDLE LOGIN", loggedUser);
+    //#TSID
+    //console.log("HANDLE LOGIN", loggedUser);
     if (loggedUser) {
       this.setState({
         loggedUser,
@@ -147,8 +148,8 @@ class App extends React.Component {
     return this.session.tasks.general
       .gitlabServer()
       .then(({ data }) => {
-        console.log(data);
         const gitLabServers = data?.page?.supportedGitlabs;
+
         if (gitLabServers) {
           return gitLabServers;
         } else {
@@ -156,7 +157,9 @@ class App extends React.Component {
         }
       })
       .catch((err) => {
+        //#ERROR
         console.error("GET GITLAB SERVERS", err);
+
         return false;
       });
   };
@@ -199,7 +202,8 @@ class App extends React.Component {
               .registration(registrationData)
               .then((res) => {
                 if (res.message === "FAIL") {
-                  console.log("warn", "All fields have to be filled!");
+                  //#WARN
+                  console.warn("All fields have to be filled!");
                 } else {
                   // Set cache
                   this.session.tasks.user.cache(registrationData.platform_data);
@@ -208,14 +212,17 @@ class App extends React.Component {
                 }
               })
               .catch((err) => {
+                //#ERROR
                 console.error("REGISTRATION IN ENGINE", err);
               });
           })
           .catch((err) => {
+            //#ERROR
             console.error("GENERATE TALKS", err);
           });
       })
       .catch((err) => {
+        //#ERROR
         console.error("APPEND SOURCE OBJECTS", err);
       });
   };
@@ -228,7 +235,8 @@ class App extends React.Component {
   getData = async () => {
     const data = await this.intel.get();
 
-    console.log("GET DATA", data);
+    //#TSID
+    //console.log("GET DATA", data);
 
     return data;
   };
@@ -308,10 +316,12 @@ class App extends React.Component {
 
           return talks[0];
         } else {
+          //#ERROR
           console.error("GET TALK", "Can not get talk " + uid);
         }
       })
       .catch((err) => {
+        //#ERROR
         console.error("GET TALK", err);
       });
   };
@@ -324,7 +334,6 @@ class App extends React.Component {
     this.session.tasks.user
       .profile("/registration/" + username)
       .then(async ({ data }) => {
-        console.log("CACHE DATA", data);
         // Check if cache is empty
         if (!data.profile) {
           this.setState(
@@ -332,19 +341,23 @@ class App extends React.Component {
               fetchedUser: false,
               loading: false,
             },
+            //#ERROR
             () => console.error("CACHE NOT LOADED")
           );
         } else {
           // Split profile to chunks
           const profile = data.profile;
+          const sources = profile.sources ? JSON.parse(profile.sources) : null;
+
           let platformData = profile.platformData
             ? JSON.parse(profile.platformData)
             : {};
+
           let user = platformData.user ? platformData.user : {};
-          const sources = profile.sources ? JSON.parse(profile.sources) : null;
 
           // Check if data is valid
           if (!sources) {
+            //#ERROR
             console.error("SOURCES ARE EMPTY", sources);
           } else {
             // Set settings for first time fetching
@@ -353,6 +366,7 @@ class App extends React.Component {
               user.lastName = profile.lastName;
               user.email = profile.email;
             }
+
             if (!user.settings) {
               user.settings = {
                 show3DDiagram: true,
@@ -381,8 +395,6 @@ class App extends React.Component {
                   : null,
               },
             };
-
-            console.log(fetchedUser);
 
             // Update visible data
             this.setState({
@@ -416,6 +428,7 @@ class App extends React.Component {
                 state = false;
               }
             }
+
             if (state) {
               platformData.talks.push(talks[i]);
             }
@@ -423,14 +436,11 @@ class App extends React.Component {
 
           talks = platformData.talks;
 
-          //await this.getData().then((res) => console.log(res));
           platformData = {
             ...(await this.getData()),
             user: platformData.user,
             talks,
           };
-
-          console.log("PLATTFORM DATA AFTER FETCH", platformData);
 
           // Override cache
           this.session.tasks.user
@@ -445,11 +455,11 @@ class App extends React.Component {
             });
         })
         .then(() => {
-          console.log("RESET REDUCER");
           this.intel.resetReducer();
         });
     } else {
-      console.log(
+      //#WARN
+      console.warn(
         "CACHING NOT ACTIVATED",
         "Caching done: " + this.state.caching
       );
@@ -482,10 +492,10 @@ class App extends React.Component {
         activeTheme: state.activeTheme,
       };
     }
+
     const platformData = JSON.stringify(cache);
 
     this.session.tasks.user.cache(platformData).then(({ data }) => {
-      console.log(data);
       this.setState({
         fetchedUser: {
           ...this.state.fetchedUser,

@@ -1,7 +1,7 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -28,9 +28,11 @@ import {
 
 //> CSS
 import "./settings.scss";
+//#endregion
 
+//#region > Constant Variables
 //> Settings data
-const settingsTabs = [
+const SETTINGS_TAB = [
   { name: "Profile", icon: "" },
   { name: "Customization", icon: "" },
   { name: "Account", icon: "" },
@@ -39,7 +41,9 @@ const settingsTabs = [
   { name: "Billing", icon: "" },
   { name: "Security", icon: "" },
 ];
+//#endregion
 
+//#region > Components
 class SettingsModal extends React.Component {
   state = {
     changeDetected: false,
@@ -48,45 +52,35 @@ class SettingsModal extends React.Component {
 
   componentDidMount = () => {
     // Check for the current values
-    if (this.props.globalState) {
-      if (this.props.globalState.fetchedUser) {
-        if (this.props.globalState.fetchedUser.platformData) {
-          const platformData = this.props.globalState.fetchedUser.platformData;
-          console.log(platformData);
-          if (platformData.profile && platformData.user) {
-            const profile = platformData.profile;
-            const data = platformData.user;
-            const enterData = {
-              first_name: data.firstName ? data.firstName : "",
-              last_name: data.lastName ? data.lastName : "",
-              email: data.email ? data.email : "",
-              showEmailPublic: data.settings.showEmailPublic,
-              company: profile.company ? profile.company : "",
-              showCompanyPublic: data.settings.showCompanyPublic,
-              website: profile.websiteUrl ? profile.websiteUrl : "",
-              location: profile.location ? profile.location : "",
-              showLocalRanking: data.settings.showLocalRanking,
-              showTopLanguages: data.settings.showTopLanguages,
-              show3DDiagram: data.settings.show3DDiagram,
-              show2DDiagram: data.settings.show2DDiagram,
-              activeTheme: data.settings.activeTheme
-                ? data.settings.activeTheme
-                : null,
-            };
-            let dataString = this.stringToHash(JSON.stringify(enterData));
-            this.setState({
-              ...enterData,
-              checksum: dataString,
-            });
-          } else {
-            this.initBlank();
-          }
-        } else {
-          this.initBlank();
-        }
-      } else {
-        this.initBlank();
-      }
+    const platformData = this.props.globalState?.fetchedUser?.platformData;
+
+    if (platformData?.profile && platformData?.user) {
+      const profile = platformData.profile;
+      const data = platformData.user;
+      const enterData = {
+        first_name: data.firstName ? data.firstName : "",
+        last_name: data.lastName ? data.lastName : "",
+        email: data.email ? data.email : "",
+        showEmailPublic: data.settings.showEmailPublic,
+        company: profile.company ? profile.company : "",
+        showCompanyPublic: data.settings.showCompanyPublic,
+        website: profile.websiteUrl ? profile.websiteUrl : "",
+        location: profile.location ? profile.location : "",
+        showLocalRanking: data.settings.showLocalRanking,
+        showTopLanguages: data.settings.showTopLanguages,
+        show3DDiagram: data.settings.show3DDiagram,
+        show2DDiagram: data.settings.show2DDiagram,
+        activeTheme: data.settings.activeTheme
+          ? data.settings.activeTheme
+          : null,
+      };
+
+      const dataString = this.stringToHash(JSON.stringify(enterData));
+
+      this.setState({
+        ...enterData,
+        checksum: dataString,
+      });
     } else {
       this.initBlank();
     }
@@ -112,17 +106,20 @@ class SettingsModal extends React.Component {
 
   stringToHash = (string) => {
     let hash = 0;
+
     if (string.length == 0) return hash;
+
     for (let i = 0; i < string.length; i++) {
       let char = string.charCodeAt(i);
+
       hash = (hash << 5) - hash + char;
       hash = hash & hash;
     }
+
     return hash;
   };
 
   handleSelectChange = (val) => {
-    console.log(val);
     this.setState(
       {
         activeTheme: val[0],
@@ -165,6 +162,7 @@ class SettingsModal extends React.Component {
       show2DDiagram: this.state.show2DDiagram,
       activeTheme: this.state.activeTheme ? this.state.activeTheme : null,
     };
+
     // Get hash of current data
     let currentHash = this.stringToHash(JSON.stringify(currentData));
 
@@ -192,7 +190,6 @@ class SettingsModal extends React.Component {
   };
 
   save = () => {
-    console.log(this.state);
     this.props.saveSettings(this.state);
     this.props.closeModal();
   };
@@ -220,7 +217,7 @@ class SettingsModal extends React.Component {
           <MDBRow>
             <MDBCol md="4">
               <MDBNav pills color="primary" className="flex-column">
-                {settingsTabs.map((tab, i) => {
+                {SETTINGS_TAB.map((tab, i) => {
                   return (
                     <MDBNavItem key={i}>
                       <MDBNavLink
@@ -470,8 +467,11 @@ class SettingsModal extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default SettingsModal;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
