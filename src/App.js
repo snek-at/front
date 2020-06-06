@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from "react-router-dom";
  * Footer: Global Footer
  * Navbar: Global navigation bar
  */
-//import { Footer, Navbar } from "./components/molecules";
+import { Footer, Navbar } from "./components/molecules";
 
 //> Routes
 import Routes from "./Routes";
@@ -18,19 +18,25 @@ import Routes from "./Routes";
 
 //#region > Components
 class App extends React.Component {
+  state = {
+    loading: true,
+  };
+
   render() {
     return (
       <Router>
         <div className="flyout">
-          {/*
-          <Navbar />
-          */}
+          <Navbar
+            globalState={this.state}
+            globalFunctions={{
+              logout: {},
+              login: () => {},
+            }}
+          />
           <main>
             <Routes />
           </main>
-          {/*
           <Footer />
-          */}
         </div>
       </Router>
     );
