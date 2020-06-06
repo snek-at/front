@@ -26,12 +26,12 @@ class UploadModal extends React.Component {
         error: [],
         loading: true,
       });
-      
+
       this.props.uploadTalk(files[0]).then(() => {
         this.setState({
           loading: false,
         });
-        
+
         this.props.closeModal();
       });
     } else {
