@@ -73,7 +73,7 @@ class ContribRadar extends React.Component {
   };
 
   componentDidMount = () => {
-    // First render chart with current year
+    // Start of by rendering chart with current year
     this.calculateSources(null);
   };
 
@@ -84,6 +84,7 @@ class ContribRadar extends React.Component {
 
   fillChart = (results) => {
     console.log(results);
+    
     if (results) {
       this.setState({
         dataRadar: {

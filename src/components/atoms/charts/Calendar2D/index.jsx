@@ -15,7 +15,9 @@ import { MDBRow, MDBCol } from "mdbreact";
 import "./calendar2d.scss";
 //#endregion
 
+//#region > Constant Variables
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+//#endregion
 
 //#region > Components
 /** @class A two dimensional calendar which displays each days contributions */

@@ -41,7 +41,7 @@ class LatestActivity extends React.Component {
   };
 
   componentDidMount = () => {
-    // First render chart with current week
+    // Start of by rendering chart with current week
     this.calculateSources(undefined, undefined);
   };
 
@@ -97,7 +97,6 @@ class LatestActivity extends React.Component {
 
   calculateSources = (year, activity) => {
     const { statistic } = this.props;
-
     let contribData, week, lastWeek, lastWeekValues;
 
     if (!year) {
