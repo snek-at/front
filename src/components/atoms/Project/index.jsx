@@ -11,7 +11,7 @@ import { MDBCol, MDBIcon } from "mdbreact";
 
 //#region > Components
 /**
- * @class A project which contains repository data
+ * @class A component which contains repository data
  */
 class Project extends React.Component {
   render() {

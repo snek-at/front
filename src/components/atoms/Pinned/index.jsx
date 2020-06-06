@@ -14,7 +14,7 @@ import "./pinned.scss";
 
 //#region > Components
 /**
- * @class Displays pinned projects
+ * @class A component which contains pinned projects
  */
 class Pinned extends React.Component {
   render() {
