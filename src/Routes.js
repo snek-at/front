@@ -6,18 +6,26 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 //> Components
-// import { SamplePage } from "./components/pages";
+import { HomePage } from "./components/pages";
 //#endregion
 
 //#region > Components
 class Routes extends React.Component {
   render() {
+    const { globalState, globalFunctions } = this.props;
+
     return (
       <Switch>
         <Route
-          render={function () {
-            return <h1>Not Found</h1>;
-          }}
+          exact
+          path="/"
+          component={(props) => (
+            <HomePage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+              {...props}
+            />
+          )}
         />
       </Switch>
     );
