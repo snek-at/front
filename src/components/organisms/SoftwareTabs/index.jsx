@@ -11,7 +11,7 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 //#endregion
 
 //#region > Components
-class SoftwareEngineer extends React.Component {
+class SoftwareTabs extends React.Component {
   state = {
     activeTab: 0,
     tabItems: [
@@ -111,7 +111,7 @@ class SoftwareEngineer extends React.Component {
 //#endregion
 
 //#region > Exports
-export default SoftwareEngineer;
+export default SoftwareTabs;
 //#endregion
 
 /**
