@@ -17,6 +17,8 @@ import { MDBProgress } from "mdbreact";
  * Navbar: Global navigation bar
  */
 import { Footer, Navbar } from "./components/molecules";
+// Starts the page on top when reloaded or redirected
+import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
 //> Intel
@@ -382,33 +384,35 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div className="flyout">
-          {!this.state.caching &&
-            this.state.fetchedUser &&
-            this.state.loggedUser?.username ===
-              this.state.fetchedUser.platformData.user?.username && (
-              <MDBProgress material preloader className="caching-loader" />
-            )}
-          <Navbar
-            globalState={this.state}
-            globalFunctions={{
-              logout: this.logout,
-            }}
-          />
-          <main>
-            <Routes
+        <ScrollToTop>
+          <div className="flyout">
+            {!this.state.caching &&
+              this.state.fetchedUser &&
+              this.state.loggedUser?.username ===
+                this.state.fetchedUser.platformData.user?.username && (
+                <MDBProgress material preloader className="caching-loader" />
+              )}
+            <Navbar
               globalState={this.state}
               globalFunctions={{
-                fetchCacheData: this.fetchCacheData,
-                updateCache: this.updateCache,
-                login: this.login,
-                registerUser: this.registerUser,
-                fetchGitLabServers: this.fetchGitLabServers,
+                logout: this.logout,
               }}
             />
-          </main>
-          <Footer />
-        </div>
+            <main>
+              <Routes
+                globalState={this.state}
+                globalFunctions={{
+                  fetchCacheData: this.fetchCacheData,
+                  updateCache: this.updateCache,
+                  login: this.login,
+                  registerUser: this.registerUser,
+                  fetchGitLabServers: this.fetchGitLabServers,
+                }}
+              />
+            </main>
+            <Footer />
+          </div>
+        </ScrollToTop>
       </Router>
     );
   }
