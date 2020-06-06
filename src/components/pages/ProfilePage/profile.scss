@@ -6,29 +6,35 @@
     .follow {
       background: white;
     }
+
     .bg-elegant {
       background: #fafafa;
     }
+
     .bg-light {
       background: #fafafa !important;
     }
+
     .badges {
       .badge {
         box-shadow: none;
         margin-right: 0.4rem;
       }
     }
+
     .connected {
       i {
         margin-right: 0.4rem;
         position: relative;
         color: lighten(grey, 20%);
+
         &.active {
           color: darken(lightblue, 5%);
+
           &::after {
             transition: all 0.1s ease;
             position: absolute;
-            font-family: "Font Awesome 5 Free";
+            font-family: "Font Awesome 5 Free", sans-serif;
             content: "\f058";
             font-weight: 900;
             font-size: 12px;
@@ -39,6 +45,7 @@
         }
       }
     }
+
     .orgs {
       .btn-link {
         display: inline;
@@ -46,44 +53,21 @@
         overflow: visible;
         margin: 0;
       }
-      .member-list {
-        img {
-          width: 15px;
-          height: auto;
-          border-radius: 50%;
-          margin-left: 0.1rem;
-          transition: all 0.2s ease;
-          &:hover {
-            transform: translateY(-4px);
-          }
-        }
-      }
+
       .org {
         display: inline-block !important;
         position: relative;
+
         .tooltip {
           margin-bottom: 1rem;
         }
-        img {
-          width: 35px;
-          height: 35px;
-          margin: 0.4em;
-          transition: all 0.2s ease;
-          &:hover {
-            transform: translateY(-5px);
-            /* Themes to be added for purchase */
-            /* Themes include: 360 no-scope, scale, translate */
-          }
-          &:hover + .tag {
-            opacity: 1;
-          }
-        }
+
         .tag {
           transition: opacity 0.2s ease;
           opacity: 0;
           position: absolute;
           right: 0;
-          bottom: 0px;
+          bottom: 0;
           line-height: 1;
           background: lightgrey;
           padding: 0.3em 0.6em 0.3em 0.6em;
@@ -92,9 +76,41 @@
           font-weight: bold;
           color: #3b3b3b;
         }
+
+        img {
+          width: 35px;
+          height: 35px;
+          margin: 0.4em;
+          transition: all 0.2s ease;
+          &:hover {
+            transform: translateY(-5px);
+
+            /* Themes to be added for purchase */
+            /* Themes include: 360 no-scope, scale, translate */
+          }
+
+          &:hover + .tag {
+            opacity: 1;
+          }
+        }
+      }
+
+      .member-list {
+        img {
+          width: 15px;
+          height: auto;
+          border-radius: 50%;
+          margin-left: 0.1rem;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: translateY(-4px);
+          }
+        }
       }
     }
   }
+
   // Right col
   .profile-content {
     background: #fafafa;
