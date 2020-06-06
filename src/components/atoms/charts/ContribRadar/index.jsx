@@ -83,8 +83,9 @@ class ContribRadar extends React.Component {
   }
 
   fillChart = (results) => {
+    //#TSID
     console.log(results);
-    
+
     if (results) {
       this.setState({
         dataRadar: {
@@ -104,13 +105,14 @@ class ContribRadar extends React.Component {
 
   calculateSources = (nextPropsYear) => {
     const { statistic } = this.props;
-    let totalReviews = 0,
-      totalIssues = 0,
-      totalRequests = 0,
-      totalCommits = 0,
-      totalSources = 1,
-      year,
-      results = [];
+
+    let totalReviews = 0;
+    let totalIssues = 0;
+    let totalRequests = 0;
+    let totalCommits = 0;
+    let totalSources = 1;
+    let year;
+    let results = [];
 
     if (nextPropsYear === null) {
       year = this.props.year;

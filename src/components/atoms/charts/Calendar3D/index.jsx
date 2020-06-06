@@ -178,6 +178,7 @@ class Calendar3D extends React.Component {
   renderIsometrics = () => {
     if (this.context) {
       const obelisk = require("obelisk.js");
+
       // Create a canvas 2D point for pixel view world
       let point = new obelisk.Point(70, 70);
       // Create view instance to nest everything
@@ -207,6 +208,7 @@ class Calendar3D extends React.Component {
       }
 
       const maxHight = 100;
+
       let x = 0;
       let y = 0;
       let maxCount = 0; // Max number of contributions / day in the last year
@@ -325,6 +327,7 @@ class Calendar3D extends React.Component {
     const data = localStorage.getItem("3dChart");
     const dataObject = JSON.parse(data);
     const context = this.context.getContext("2d");
+
     let img = new Image();
 
     img.src = dataObject.data;

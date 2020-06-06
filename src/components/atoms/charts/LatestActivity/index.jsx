@@ -51,7 +51,9 @@ class LatestActivity extends React.Component {
   }
 
   fillChart = (results, lastWeek) => {
+    //#TSID
     console.log(results, lastWeek);
+
     if (results) {
       this.setState({
         dataLine: {
@@ -97,6 +99,7 @@ class LatestActivity extends React.Component {
 
   calculateSources = (year, activity) => {
     const { statistic } = this.props;
+
     let contribData, week, lastWeek, lastWeekValues;
 
     if (!year) {
