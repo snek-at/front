@@ -43,6 +43,7 @@ const TABS = [
   "Milestones",
   "About",
 ];
+
 // Line Contribution options
 const CONTRIB_OPTIONS = {
   responsive: true,
