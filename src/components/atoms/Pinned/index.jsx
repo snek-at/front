@@ -21,6 +21,9 @@ import "./pinned.scss";
 //#endregion
 
 //#region > Components
+/**
+ * @class Displays pinned projects
+ */
 class Pinned extends React.Component {
   render() {
     const { category, link, pinned } = this.props;

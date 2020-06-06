@@ -19,6 +19,9 @@ import {
 //#endregion
 
 //#region > Components
+/**
+ * @class A project which contains repository data
+ */
 class Project extends React.Component {
   render() {
     const { repo } = this.props;
