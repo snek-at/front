@@ -23,10 +23,10 @@ import "./footer.scss";
 import Logo from "../../../assets/navigation/logo.png";
 //#endregion
 
+//#region > Constant Variables
 //> Local data
 // Slogans
 /** @todo Change to uppercase */
-//#region > Constant Variables
 const slogans = [
   "Become a snek!",
   "Connect with your colleges!",

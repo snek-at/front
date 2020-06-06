@@ -102,6 +102,7 @@ class LoginForm extends React.Component {
         weight: 10,
       });
     }
+    
     if (this.state.login_password === "") {
       errors.push({
         code: 21,
@@ -120,7 +121,9 @@ class LoginForm extends React.Component {
         this.state.login_username,
         this.state.login_password
       );
+
       console.log(result);
+      
       if (result) {
         this.setState(
           {
