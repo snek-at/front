@@ -1,0 +1,72 @@
+@import "../../../utilities/variables";
+
+#home {
+  background: #f0f0f0;
+  .position-relative {
+    height: 100px;
+    .banner-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      .banner {
+        position: absolute;
+        left: -10%;
+        width: 130%;
+        height: 100px;
+        background: $snekGreen;
+        transform-origin: right;
+      }
+    }
+  }
+  .whois {
+    /*background-image: url('../../../assets/header/bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-height: 400px;
+    background-position: center;*/
+    h1 {
+      padding-bottom: 0.5rem;
+      border-bottom: solid $snekGreen 2px;
+    }
+  }
+
+  // Custom buttons
+  .btn-underlined-red {
+    transition: border-bottom 0.2s ease;
+    border-bottom: 3px solid rgba(255, 0, 0, 0.1);
+    & > i {
+      transform: rotate(0deg) scale(1);
+      transition: transform 0.2s ease;
+    }
+    &:hover {
+      border-bottom: 3px solid rgba(255, 0, 0, 0.3);
+      & > i {
+        transform: rotate(20deg) scale(1.2);
+      }
+    }
+  }
+  .btn-underlined-blue {
+    background: white;
+    transition: border-bottom 0.2s ease;
+    border-bottom: 3px solid rgba(0, 0, 255, 0.1);
+    &:hover {
+      border-bottom: 3px solid rgba(0, 0, 255, 0.3);
+    }
+  }
+
+  // Feature section
+  #features {
+    background: $snekGreen;
+    p.lead {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
