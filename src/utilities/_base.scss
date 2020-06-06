@@ -11,18 +11,23 @@
   box-shadow: none;
   border-radius: 0;
   text-transform: initial;
+
   i {
     margin-right: 0.3rem;
   }
+
   &:hover {
     box-shadow: none;
   }
+
   &:active {
     box-shadow: none;
   }
+
   &:focus {
     box-shadow: none;
   }
+
   &:visited {
     box-shadow: none;
   }
@@ -80,6 +85,7 @@
   justify-content: space-between;
   align-items: end;
 }
+
 .position-relative {
   position: relative !important;
 }
@@ -95,40 +101,36 @@
 .splitter {
   overflow: hidden;
 }
+
 .or {
   position: relative !important;
-  padding-bottom: 16px !important;
-  padding-top: 16px !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
   padding-bottom: var(--spacing-rule-text-vertical, 16px) !important;
   padding-top: var(--spacing-rule-text-vertical, 16px) !important;
   padding-left: var(--spacing-rule-text-horizontal, 16px) !important;
   padding-right: var(--spacing-rule-text-horizontal, 16px) !important;
 }
+
 .or-text {
   overflow-wrap: break-word !important;
-  margin: 0px !important;
+  margin: 0 !important;
+
   &::before {
     border-bottom-width: var(--border-rule-border-width, 1px) !important;
     border-bottom-color: #e4e4e4 !important;
     content: "" !important;
     position: absolute !important;
-    border-bottom-width: 1px !important;
     border-bottom-style: solid !important;
-    border-bottom-color: rgb(228, 228, 228) !important;
     top: 50% !important;
     right: 100% !important;
     width: 5000px !important;
   }
+
   &::after {
     border-bottom-width: var(--border-rule-border-width, 1px) !important;
     border-bottom-color: #e4e4e4 !important;
     content: "" !important;
     position: absolute !important;
-    border-bottom-width: 1px !important;
     border-bottom-style: solid !important;
-    border-bottom-color: rgb(228, 228, 228) !important;
     top: 50% !important;
     left: 100% !important;
     width: 5000px !important;
@@ -137,14 +139,15 @@
 
 // Google icon
 .fa-google {
-  background: conic-gradient(
-      from -45deg,
-      #ea4335 110deg,
-      #4285f4 90deg 180deg,
-      #34a853 180deg 270deg,
-      #fbbc05 270deg
-    )
-    73% 55%/150% 150% no-repeat;
+  background: 
+    conic-gradient(
+    from -45deg,
+    #ea4335 110deg,
+    #4285f4 90deg 180deg,
+    #34a853 180deg 270deg,
+    #fbbc05 270deg
+  )
+  73% 55%/150% 150% no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -155,9 +158,10 @@
 .caching-loader {
   position: fixed;
   z-index: 999;
-  margin: 0px;
+  margin: 0;
   height: 5px;
   border-radius: 0;
+
   .indeterminate {
     background-color: $snekGreen;
   }

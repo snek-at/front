@@ -10,21 +10,26 @@
         }
       }
     }
+
     #profile {
       .social {
         .main-avatar {
           border-bottom: 5px $themeAlphaHighlight solid !important;
         }
+
         .connected i {
           color: lighten(#b3b3b3, 10%) !important;
+
           &.active {
             color: lighten($themeAlphaHighlight, 20%) !important;
           }
         }
       }
+
       .content .classic-tabs .nav.tabs-grey li a {
         &.seriouslyActive {
           border-bottom: 3px $themeAlphaHighlight solid !important;
+
           &:hover {
             border-bottom: 3px $themeAlphaHighlight solid !important;
           }
@@ -37,7 +42,7 @@
   }
 }
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © Simon Prast
  */
