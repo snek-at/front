@@ -1,15 +1,27 @@
 #company {
   padding: 4rem 0;
   background: darken(white, 3%);
+
   .timeline {
     padding: 0;
     max-width: 100%;
     overflow: visible;
     margin: 0;
   }
+
   .card {
     border: 1px lightgray solid;
     margin-bottom: 2rem;
+
+    .badge {
+      padding: 0.4rem;
+      margin-right: 0.5rem;
+
+      i {
+        margin-right: 0.3rem;
+      }
+    }
+
     .verified-badge {
       .badge {
         background: rgba(0, 200, 81, 0.1) !important;
@@ -18,6 +30,7 @@
         box-shadow: none;
       }
     }
+
     .unverified-badge {
       .badge {
         background: rgba(244, 67, 54, 0.1) !important;
@@ -26,13 +39,7 @@
         box-shadow: none;
       }
     }
-    .badge {
-      padding: 0.4rem;
-      margin-right: 0.5rem;
-      i {
-        margin-right: 0.3rem;
-      }
-    }
+
     // Navigation bar
     .menu {
       div {
