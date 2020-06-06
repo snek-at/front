@@ -84,7 +84,7 @@ class ContribRadar extends React.Component {
 
   fillChart = (results) => {
     //#TSID
-    console.log(results);
+    //console.log(results);
 
     if (results) {
       this.setState({
