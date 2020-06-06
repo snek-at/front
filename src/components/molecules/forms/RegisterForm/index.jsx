@@ -88,7 +88,8 @@ class RegisterForm extends React.Component {
     const username = this.state.gitlab_username;
     const server = this.state.gitlab_server;
 
-    console.log(username, server);
+    //#TSID
+    //console.log(username, server);
 
     if (username.trim() && server.trim()) {
       if (server !== "Choose your organisation") {
@@ -289,7 +290,8 @@ class RegisterForm extends React.Component {
 
   // Handle sumbit of register form
   handleSubmit = async () => {
-    console.log("Handle submit");
+    //#TSID
+    //console.log("Handle submit");
 
     // CHANGE TO CONST
     let {
@@ -386,7 +388,8 @@ class RegisterForm extends React.Component {
           loading: true,
         },
         () => {
-          console.log("Register", this.state);
+          //#TSID
+          //console.log("Register", this.state);
 
           let registrationData = {
             sources: sourceList,
