@@ -13,6 +13,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-text-loop": "^2.3.0",
+    "react-typed": "^1.2.0",
     "snek-intel": "file:snek-intel-1.0.0.tgz"
   },
   "repository": {
