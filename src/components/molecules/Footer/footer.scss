@@ -75,17 +75,6 @@ footer {
       color: #212121 !important;
     }
 
-    ul {
-      i {
-        color: #212121 !important;
-      }
-
-      a {
-        color: #212121 !important;
-      }
-    }
-  }
-
   .madeby {
     a {
       color: #212121;
@@ -94,6 +83,17 @@ footer {
 
       &:hover {
         border-bottom: solid #0366d6 2px;
+      }
+    }
+  }
+
+    ul {
+      i {
+        color: #212121 !important;
+      }
+
+      a {
+        color: #212121 !important;
       }
     }
   }

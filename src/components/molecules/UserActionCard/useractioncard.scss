@@ -7,7 +7,6 @@
     height: auto;
     transition: all 0.2s ease;
     filter: saturate(0.5);
-    transition: all 0.2s ease;
   }
 
   .selectType {
@@ -27,7 +26,7 @@
         filter: saturate(1);
       }
 
-      &>p.lead {
+      & > p.lead {
         color: #77bd43;
         font-weight: bold;
       }
@@ -54,30 +53,36 @@
     }
   }
 
+  .btn {
+    &.text-muted {
+      color: lighten(#6c757d, 25%) !important;
+    }
+  }
+
   .connect {
     .btn {
       padding: 10px 13px 10px 13px;
-
-      &.disabled {
-        i {
-          &:after {
-            color: lightgrey !important;
-          }
-        }
-      }
 
       i {
         &.fab {
           &:after {
             transition: all 0.1s ease;
             position: absolute;
-            font-family: "Font Awesome 5 Free";
+            font-family: "Font Awesome 5 Free", sans-serif;
             content: "\f055";
             font-weight: 900;
             font-size: 10px;
             color: #77bd43;
             right: 5px;
             bottom: 5px;
+          }
+        }
+      }
+
+      &.disabled {
+        i {
+          &::after {
+            color: lightgrey !important;
           }
         }
       }
@@ -90,12 +95,6 @@
           }
         }
       }
-    }
-  }
-
-  .btn {
-    &.text-muted {
-      color: lighten(#6c757d, 25%) !important;
     }
   }
 
@@ -176,16 +175,6 @@
       }
     }
 
-    &:first-of-type {
-      border-top-left-radius: $borderRadius;
-      border-top-right-radius: $borderRadius;
-    }
-
-    &:last-of-type {
-      border-bottom-left-radius: $borderRadius;
-      border-bottom-right-radius: $borderRadius;
-    }
-
     .username-icon {
       color: lightgray;
       cursor: pointer;
@@ -212,7 +201,7 @@
   }
 }
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © Simon Prast
  */
