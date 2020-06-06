@@ -4,10 +4,11 @@
 //>> User profile
 import Calendar2D from "./charts/Calendar2D";
 import Calendar3D from "./charts/Calendar3D";
+import ContribRadar from "./charts/ContribRadar";
 //#endregion
 
 //#region > Exports
-export { Calendar2D, Calendar3D };
+export { Calendar2D, Calendar3D, ContribRadar };
 //#endregion
 
 /**
