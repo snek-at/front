@@ -1,11 +1,12 @@
 //#region > Imports
 //> Atoms
 // Import all components to export them for easy access from parent components
-//import Atom from "./Atom";
+//> Generic
+import ScrollToTop from "./ScrollToTop";
 //#endregion
 
 //#region > Exports
-//export { Atom };
+export { ScrollToTop };
 //#endregion
 
 /**
