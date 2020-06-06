@@ -23,16 +23,16 @@ The SNEK project is an attempt to create a transparent, open-source non-profit p
 
 ## Table of contents
 
-- [Table of contents](#table-of-contents)
-- [Quick start](#quick-start)
-- [Status](#status)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Contributing](#contributing)
-- [Community](#community)
-- [Versioning](#versioning)
-- [Creators](#creators)
-- [Thanks](#thanks)
-- [Copyright and license](#copyright-and-license)
+-   [Table of contents](#table-of-contents)
+-   [Quick start](#quick-start)
+-   [Status](#status)
+-   [Bugs and feature requests](#bugs-and-feature-requests)
+-   [Contributing](#contributing)
+-   [Community](#community)
+-   [Versioning](#versioning)
+-   [Creators](#creators)
+-   [Thanks](#thanks)
+-   [Copyright and license](#copyright-and-license)
 
 ## [](#quick-start)Quick start
 
@@ -40,7 +40,7 @@ Several quick start options are available:
 
 -   Clone the repo: `https://github.com/snek/front.git`
 
-**This project requires the MDB React Pro license and its library.**
+### This project requires the MDB React Pro license and its library.
 
 You can eigther:
 
