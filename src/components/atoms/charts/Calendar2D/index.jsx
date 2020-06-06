@@ -22,7 +22,7 @@ const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 class Calender2D extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.myInput = React.createRef();
     this.state = {
       width: 0,
@@ -92,7 +92,7 @@ class Calender2D extends React.Component {
     let month = new Array();
     // Get current month
     let current;
-    
+
     if (this.props.year) {
       current = 0;
     } else {
@@ -130,7 +130,7 @@ class Calender2D extends React.Component {
 
   displayDailyInfo = (day, wkey, dkey) => {
     let cname = "item-" + wkey + "-" + dkey;
-    
+
     if (day.total > 0 && day.total !== 1) {
       tippy(`.${cname}`, {
         content: `${day.total} contributions on ${moment(day.date).format(
