@@ -20,7 +20,7 @@ import {
 } from "../../../atoms";
 //#endregion
 
-//#region > Constants
+//#region > Constant Variables
 /** @description Dummy data */
 const pinned = [
   {

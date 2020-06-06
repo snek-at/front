@@ -68,6 +68,7 @@ class Talks extends React.Component {
           timeoutID: setInterval(() => this.updateIframe(talk), 4000),
           loaded: false,
         };
+        
         return talk;
       });
     }
