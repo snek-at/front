@@ -30,7 +30,7 @@ import data from "./dummy/data.js";
 import platformData from "./dummy/chart.json";
 //#endregion
 
-//#region > Static Variables
+//#region > Constant Variables
 // Google Maps Url
 const GOOGLE_MAPS_BASE_URL = "https://www.google.at/maps/place/";
 // Configure tabs
