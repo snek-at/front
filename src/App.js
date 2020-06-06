@@ -4,6 +4,7 @@
 import React from "react";
 // DOM bindings for React Router
 import { BrowserRouter as Router } from "react-router-dom";
+
 //> Components
 /**
  * Footer: Global Footer
@@ -15,7 +16,7 @@ import {
   Navbar,
 } from './components/molecules';
 */
-// Routes
+//> Routes
 import Routes from "./Routes";
 //#endregion
 
