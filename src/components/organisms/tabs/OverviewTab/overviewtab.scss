@@ -1,0 +1,29 @@
+.pinned {
+  margin-bottom: 2rem;
+  .card-body {
+    padding: 0.5rem;
+    border: 1px lighten(grey, 40%) solid;
+    .badge {
+      padding: 0.5rem;
+    }
+  }
+  .col-md-4 {
+    margin-bottom: 1rem;
+  }
+}
+.year-select {
+  .btn {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    &.selected {
+      box-shadow: none;
+      background-color: #77bd43 !important;
+      color: white;
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
