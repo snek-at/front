@@ -1,7 +1,7 @@
 //#region > Imports
 //> Atoms
 // Import all components to export them for easy access from parent components
-//>> User profile
+//> User profile
 import Calendar2D from "./charts/Calendar2D";
 import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
