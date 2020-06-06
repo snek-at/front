@@ -7,6 +7,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
+//> MDB
+// "Material Design for Bootstrap" is a great UI design framework
+import { MDBProgress } from "mdbreact";
 
 //> Components
 /**
@@ -136,6 +139,12 @@ class App extends React.Component {
     return (
       <Router>
         <div className="flyout">
+          {!this.state.caching &&
+            this.state.fetchedUser &&
+            this.state.loggedUser?.username ===
+              this.state.fetchedUser.platformData.user?.username && (
+              <MDBProgress material preloader className="caching-loader" />
+            )}
           <Navbar
             globalState={this.state}
             globalFunctions={{
