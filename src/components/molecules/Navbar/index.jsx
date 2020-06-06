@@ -1,7 +1,7 @@
 //#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
-import React from "react";
+import React, { lazy, Suspense } from "react";
 // DOM bindings for React Router
 import { Link, withRouter } from "react-router-dom";
 // React PropTypes
@@ -28,6 +28,8 @@ import {
 import SNEKLogo from "../../../assets/navigation/logo.png";
 //> CSS
 import "./navbar.scss";
+//> Components
+const Settings = lazy(() => import("../modals/SettingsModal"));
 //#endregion
 
 //#region > Components
@@ -38,104 +40,131 @@ import "./navbar.scss";
 class Navbar extends React.Component {
   state = {
     isOpen: false,
+    showSettings: false,
   };
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  handleSettingsClose = () => {
+    if (this.state.showSettings) {
+      this.setState({
+        showSettings: false,
+      });
+    }
+  };
+
   render() {
     const { globalState, globalFunctions, location } = this.props;
 
     return (
-      <MDBNavbar color="light" light expand="md">
-        <MDBContainer>
-          {location.pathname === "/" ? (
-            <MDBSmoothScroll to="home" className="d-inline">
-              <MDBNavbarBrand className="flex-center">
-                <img
-                  src={SNEKLogo}
-                  alt="SNEK Logo"
-                  className="img-fluid mr-2"
-                />
-                <span className="font-weight-bold">SNEK</span>
-              </MDBNavbarBrand>
-            </MDBSmoothScroll>
-          ) : (
-            <>
-              {!globalState.loading && globalState.loggedUser ? (
-                <a href={"/u/" + globalState.loggedUser?.username}>
-                  <MDBNavbarBrand className="flex-center">
-                    <img
-                      src={SNEKLogo}
-                      alt="SNEK Logo"
-                      className="img-fluid mr-2"
-                    />
-                    <span className="font-weight-bold">SNEK</span>
-                  </MDBNavbarBrand>
-                </a>
-              ) : (
-                <Link to="/">
-                  <MDBNavbarBrand className="flex-center">
-                    <img
-                      src={SNEKLogo}
-                      alt="SNEK Logo"
-                      className="img-fluid mr-2"
-                    />
-                    <span className="font-weight-bold">SNEK</span>
-                  </MDBNavbarBrand>
-                </Link>
-              )}
-            </>
-          )}
-          <MDBNavbarToggler onClick={this.toggleCollapse} />
-          <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
-            <MDBNavbarNav left>
-              <MDBNavItem>{/* SEARCH */}</MDBNavItem>
-            </MDBNavbarNav>
-            <MDBNavbarNav right>
-              {!globalState.loading && globalState.loggedUser ? (
-                <>
-                  <div className="spacer" />
-                  <MDBNavItem>
-                    <MDBDropdown>
-                      <MDBDropdownToggle nav caret>
-                        <img
-                          src={globalState.loggedUser.avatarUrl}
-                          className="z-depth-0"
-                          alt={globalState.loggedUser.username}
-                        />
-                      </MDBDropdownToggle>
-                      <MDBDropdownMenu className="dropdown-default">
-                        <MDBDropdownItem
-                          href={"/u/" + globalState.loggedUser.username}
-                        >
-                          My profile
-                        </MDBDropdownItem>
-                        <Link
-                          to="/"
-                          onClick={globalFunctions.logout}
-                          className="dropdown-item"
-                        >
-                          Sign Out
-                        </Link>
-                      </MDBDropdownMenu>
-                    </MDBDropdown>
-                  </MDBNavItem>
-                </>
-              ) : (
-                <>
-                  {location.pathname !== "/" && (
-                    <MDBBtn href="/" color="green" size="md">
-                      Sign In
-                    </MDBBtn>
-                  )}
-                </>
-              )}
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
+      <>
+        <MDBNavbar color="light" light expand="md">
+          <MDBContainer>
+            {location.pathname === "/" ? (
+              <MDBSmoothScroll to="home" className="d-inline">
+                <MDBNavbarBrand className="flex-center">
+                  <img
+                    src={SNEKLogo}
+                    alt="SNEK Logo"
+                    className="img-fluid mr-2"
+                  />
+                  <span className="font-weight-bold">SNEK</span>
+                </MDBNavbarBrand>
+              </MDBSmoothScroll>
+            ) : (
+              <>
+                {!globalState.loading && globalState.loggedUser ? (
+                  <a href={"/u/" + globalState.loggedUser?.username}>
+                    <MDBNavbarBrand className="flex-center">
+                      <img
+                        src={SNEKLogo}
+                        alt="SNEK Logo"
+                        className="img-fluid mr-2"
+                      />
+                      <span className="font-weight-bold">SNEK</span>
+                    </MDBNavbarBrand>
+                  </a>
+                ) : (
+                  <Link to="/">
+                    <MDBNavbarBrand className="flex-center">
+                      <img
+                        src={SNEKLogo}
+                        alt="SNEK Logo"
+                        className="img-fluid mr-2"
+                      />
+                      <span className="font-weight-bold">SNEK</span>
+                    </MDBNavbarBrand>
+                  </Link>
+                )}
+              </>
+            )}
+            <MDBNavbarToggler onClick={this.toggleCollapse} />
+            <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
+              <MDBNavbarNav left>
+                <MDBNavItem>{/* SEARCH */}</MDBNavItem>
+              </MDBNavbarNav>
+              <MDBNavbarNav right>
+                {!globalState.loading && globalState.loggedUser ? (
+                  <>
+                    <div className="spacer" />
+                    <MDBNavItem>
+                      <MDBDropdown>
+                        <MDBDropdownToggle nav caret>
+                          <img
+                            src={globalState.loggedUser.avatarUrl}
+                            className="z-depth-0"
+                            alt={globalState.loggedUser.username}
+                          />
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu className="dropdown-default">
+                          <MDBDropdownItem
+                            href={"/u/" + globalState.loggedUser.username}
+                          >
+                            My profile
+                          </MDBDropdownItem>
+                          <MDBDropdownItem
+                            onClick={() =>
+                              this.setState({ showSettings: true })
+                            }
+                          >
+                            Settings
+                          </MDBDropdownItem>
+                          <Link
+                            to="/"
+                            onClick={globalFunctions.logout}
+                            className="dropdown-item"
+                          >
+                            Sign Out
+                          </Link>
+                        </MDBDropdownMenu>
+                      </MDBDropdown>
+                    </MDBNavItem>
+                  </>
+                ) : (
+                  <>
+                    {location.pathname !== "/" && (
+                      <MDBBtn href="/" color="green" size="md">
+                        Sign In
+                      </MDBBtn>
+                    )}
+                  </>
+                )}
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBContainer>
+        </MDBNavbar>
+        {this.state.showSettings && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Settings
+              {...this.props}
+              closeModal={this.handleSettingsClose}
+              saveSettings={globalFunctions.saveSettings}
+            />
+          </Suspense>
+        )}
+      </>
     );
   }
 }

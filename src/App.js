@@ -381,6 +381,46 @@ class App extends React.Component {
     }
   };
 
+  //> Profile Methods
+  /**
+   * Save settings
+   * @description Saves the user settings
+   */
+  saveSettings = (state) => {
+    // Fill platformData to be used and edited locally
+    let cache = this.state.fetchedUser.platformData;
+
+    // Check for mandatory fields
+    if (state.email) {
+      cache.user.firstName = state.first_name ? state.first_name : "";
+      cache.user.lastName = state.last_name ? state.last_name : "";
+      cache.user.email = state.email ? state.email : cache.user.email;
+      cache.profile.websiteUrl = state.website ? state.website : "";
+      cache.profile.location = state.location ? state.location : "";
+      cache.profile.company = state.company ? state.company : "";
+      cache.user.settings = {
+        showTopLanguages: state.showTopLanguages,
+        showLocalRanking: state.showLocalRanking,
+        show3DDiagram: state.show3DDiagram,
+        show2DDiagram: state.show2DDiagram,
+        showEmailPublic: state.showEmailPublic,
+        showCompanyPublic: state.showCompanyPublic,
+        activeTheme: state.activeTheme,
+      };
+    }
+    const platformData = JSON.stringify(cache);
+
+    this.session.tasks.user.cache(platformData).then(({ data }) => {
+      console.log(data);
+      this.setState({
+        fetchedUser: {
+          ...this.state.fetchedUser,
+          platformData: JSON.parse(platformData),
+        },
+      });
+    });
+  };
+
   render() {
     return (
       <Router>
@@ -396,6 +436,7 @@ class App extends React.Component {
               globalState={this.state}
               globalFunctions={{
                 logout: this.logout,
+                saveSettings: this.saveSettings,
               }}
             />
             <main>
