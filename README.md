@@ -40,7 +40,7 @@ Several quick start options are available:
 
 -   Clone the repo: `https://github.com/snek/front.git`
 
-### This project requires the MDB React Pro license and its library.
+### This project requires the MDB React Pro license and its library
 
 You can eigther:
 
