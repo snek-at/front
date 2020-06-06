@@ -4,10 +4,11 @@
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import LoginForm from "./forms/LoginForm";
+import RegisterForm from "./forms/RegisterForm";
 //#endregion
 
 //#region > Exports
-export { Footer, Navbar, LoginForm };
+export { Footer, Navbar, LoginForm, RegisterForm };
 //#endregion
 
 /**
