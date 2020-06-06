@@ -292,6 +292,31 @@ class App extends React.Component {
   };
 
   /**
+   * Get talk
+   * @description Get a talk
+   */
+  getTalk = async (uid, username) => {
+    return this.session.tasks.user
+      .profile("/registration/" + username)
+      .then(async ({ data }) => {
+        if (data.profile) {
+          let talks = JSON.parse(data.profile.platformData).talks;
+
+          talks = talks.filter((talk) => {
+            return talk.uid === uid;
+          });
+
+          return talks[0];
+        } else {
+          console.error("GET TALK", "Can not get talk " + uid);
+        }
+      })
+      .catch((err) => {
+        console.error("GET TALK", err);
+      });
+  };
+
+  /**
    * Fetch Cache Data
    * @description Retrieves current cache data and updates it
    */
@@ -496,6 +521,7 @@ class App extends React.Component {
                   updateCache: this.updateCache,
                   uploadTalk: this.uploadTalk,
                   deleteTalk: this.deleteTalk,
+                  getTalk: this.getTalk,
                   login: this.login,
                   registerUser: this.registerUser,
                   fetchGitLabServers: this.fetchGitLabServers,

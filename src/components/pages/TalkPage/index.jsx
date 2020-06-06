@@ -31,34 +31,37 @@ class TalkPage extends React.Component {
     talk: undefined,
   };
 
-  componentWillMount = async () => {
+  componentDidMount = () => {
     if (this.props.match) {
       if (this.props.match.params) {
-        if (this.props.match.params.talk && this.props.match.params.username) {
-          const uid = this.props.match.params.talk;
+        if (
+          this.props.match.params.uid &&
+          this.props.match.params.username &&
+          !this.props.globalState.loading &&
+          !this.props.globalState.fetchedUser &&
+          this.props.globalState.fetchedUser !== false
+        ) {
+          const uid = this.props.match.params.uid;
           const username = this.props.match.params.username;
 
-          if (
-            this.props.globalState.fetchedUser === undefined ||
-            this.state.talk === undefined
-          ) {
-            let talk = await this.props.getTalk(uid, username);
+          if (this.state.talk === undefined) {
+            this.props.globalFunctions.getTalk(uid, username).then((talk) => {
+              talk.social = {
+                likes: 17,
+                date: new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }),
+              };
 
-            talk.social = {
-              likes: 17,
-              date: new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }),
-            };
+              talk.interval = {
+                timeoutID: setInterval(() => this.updateIframe(talk), 4000),
+                loaded: false,
+              };
 
-            talk.interval = {
-              timeoutID: setInterval(() => this.updateIframe(talk), 4000),
-              loaded: false,
-            };
-
-            this.setState({ talk });
+              this.setState({ talk });
+            });
           }
         }
       }

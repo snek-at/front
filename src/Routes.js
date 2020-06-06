@@ -6,7 +6,12 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 //> Components
-import { HomePage, CompanyPage, ProfilePage } from "./components/pages";
+import {
+  HomePage,
+  CompanyPage,
+  ProfilePage,
+  TalkPage,
+} from "./components/pages";
 //#endregion
 
 //#region > Components
@@ -59,6 +64,17 @@ class Routes extends React.Component {
             <CompanyPage
               globalFunctions={globalFunctions}
               globalState={globalState}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/t/:username/:uid"
+          component={(props) => (
+            <TalkPage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+              {...props}
             />
           )}
         />
