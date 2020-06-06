@@ -6,15 +6,7 @@ import React from "react";
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBAlert,
-  MDBInput,
-  MDBBtn,
-  MDBIcon,
-} from "mdbreact";
+import { MDBCol, MDBIcon } from "mdbreact";
 //#endregion
 
 //#region > Components
