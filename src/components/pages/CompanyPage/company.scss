@@ -48,10 +48,12 @@
         cursor: pointer;
         transition: background 0.1s ease, border-left 0.3s ease;
         border-left: 7px white solid;
+
         &:hover {
           background: lighten(lightgray, 15%);
           border-left: 7px #77bd43 solid;
         }
+
         &.active {
           background: lighten(lightgray, 15%);
           border-left: 7px #77bd43 solid;
