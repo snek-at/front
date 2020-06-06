@@ -1,0 +1,92 @@
+#calendar3d {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  display: block;
+
+  .ic-stats-block {
+    position: absolute;
+  }
+
+  .ic-stats-top {
+    top: 8px;
+    right: 20px;
+  }
+
+  .ic-stats-bottom {
+    top: 225px;
+    left: 20px;
+  }
+
+  .ic-stats-table {
+    display: table;
+  }
+
+  .ic-stats-row {
+    display: table-row;
+  }
+
+  .ic-stats-label {
+    display: table-cell;
+    padding-bottom: 12px;
+    font-size: 14px;
+    color: #777;
+    text-align: right;
+    vertical-align: bottom;
+  }
+
+  .ic-stats-count {
+    display: block;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    color: #1e6823;
+  }
+
+  .ic-stats-meta {
+    display: table-cell;
+    padding-bottom: 12px;
+    padding-left: 8px;
+    text-align: left;
+    line-height: 1.2;
+    vertical-align: bottom;
+  }
+
+  .ic-stats-total-meta {
+    vertical-align: middle;
+  }
+
+  .ic-stats-average {
+    font-size: 12px;
+    font-weight: bold;
+    color: #24292e;
+  }
+
+  .ic-stats-unit {
+    display: block;
+    font-size: 14px;
+  }
+
+  .ic-stats-date {
+    display: block;
+    color: #999;
+    font-size: 12px;
+  }
+
+  .ic-footer {
+    position: absolute;
+    top: 380px;
+    left: 20px;
+    font-size: 11px;
+    color: #999;
+  }
+
+  .ic-footer a {
+    color: #777;
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
