@@ -1,0 +1,182 @@
+#useractionscard {
+  // Register selection
+  svg {
+    padding-top: 0.5rem;
+    max-width: 60%;
+    height: auto;
+    transition: all 0.2s ease;
+    filter: saturate(0.5);
+    transition: all 0.2s ease;
+  }
+  .selectType {
+    transition: all 0.2s ease;
+    p.lead {
+      border-top: none;
+      transition: all 0.2s ease;
+    }
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+      svg {
+        filter: saturate(1);
+      }
+      & > p.lead {
+        color: #77bd43;
+        font-weight: bold;
+      }
+    }
+  }
+  input {
+    &[name="code"] {
+      letter-spacing: 1px;
+    }
+    &:focus {
+      color: #495057;
+      border-color: #77bd43;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(119, 189, 67, 0.25);
+    }
+    &.error {
+      color: #495057;
+      border-color: lightcoral;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(240, 128, 128, 0.25);
+    }
+  }
+  .connect {
+    .btn {
+      padding: 10px 13px 10px 13px;
+      &.disabled {
+        i {
+          &:after {
+            color: lightgrey !important;
+          }
+        }
+      }
+      i {
+        &.fab {
+          &:after {
+            transition: all 0.1s ease;
+            position: absolute;
+            font-family: "Font Awesome 5 Free";
+            content: "\f055";
+            font-weight: 900;
+            font-size: 10px;
+            color: #77bd43;
+            right: 5px;
+            bottom: 5px;
+          }
+        }
+      }
+      &:hover {
+        i {
+          &:after {
+            color: lighten(#77bd43, 15%);
+            transform: scale(1.5);
+          }
+        }
+      }
+    }
+  }
+  .btn {
+    &.text-muted {
+      color: lighten(#6c757d, 25%) !important;
+    }
+  }
+
+  // Modal
+  .modal-dialog.modal-notify.modal-orange .modal-header {
+    background-color: #ff8910 !important;
+  }
+  .modal-orange {
+    .select-wrapper {
+      &:focus {
+        color: #495057;
+        border-color: #77bd43;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(119, 189, 67, 0.25);
+      }
+      input {
+        color: lighten(#495057, 20%);
+        margin-bottom: 0;
+      }
+      li:not(.disabled) {
+        span {
+          color: #495057;
+        }
+      }
+      li {
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+  .list-group-item {
+    $borderRadius: 6px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    &.list-item-github {
+      border-left: 5px #333 solid;
+    }
+    &.list-item-gitlab {
+      border-left: 5px #f57c00 solid;
+    }
+    &.list-item-bitbucket {
+      border-left: 5px #1976d2 solid;
+    }
+    .company-icon {
+      margin-right: 0.4rem;
+      &.fa-github {
+        color: #333;
+      }
+      &.fa-gitlab {
+        color: #f57c00;
+      }
+      &.fa-bitbucket {
+        color: #1976d2;
+      }
+    }
+    .close-icon {
+      color: lightgray;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      &:hover {
+        color: lightcoral;
+      }
+    }
+    &:first-of-type {
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+    }
+    &:last-of-type {
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
+    .username-icon {
+      color: lightgray;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      &:hover {
+        color: #77bd43;
+      }
+    }
+    &:first-of-type {
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+    }
+    &:last-of-type {
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
+  }
+  .progress {
+    height: 10px;
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

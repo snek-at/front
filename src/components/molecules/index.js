@@ -6,10 +6,11 @@ import Navbar from "./Navbar";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import UploadModal from "./modals/UploadModal";
+import UserActionCard from "./UserActionCard";
 //#endregion
 
 //#region > Exports
-export { Footer, Navbar, LoginForm, RegisterForm, UploadModal };
+export { Footer, Navbar, LoginForm, RegisterForm, UploadModal, UserActionCard };
 //#endregion
 
 /**
