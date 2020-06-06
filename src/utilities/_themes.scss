@@ -1,0 +1,43 @@
+/* Alpha Theme */
+.theme-9d88bda4657dcf17581ee91dfe6ab2a3 {
+  &:not(#home) {
+    .btn {
+      &:not(.btn-link) {
+        background: $themeAlphaHighlight !important;
+        color: $themeAlphaHighlightText !important;
+        &:hover {
+          background: lighten($themeAlphaHighlight, 10%) !important;
+        }
+      }
+    }
+    #profile {
+      .social {
+        .main-avatar {
+          border-bottom: 5px $themeAlphaHighlight solid !important;
+        }
+        .connected i {
+          color: lighten(#b3b3b3, 10%) !important;
+          &.active {
+            color: lighten($themeAlphaHighlight, 20%) !important;
+          }
+        }
+      }
+      .content .classic-tabs .nav.tabs-grey li a {
+        &.seriouslyActive {
+          border-bottom: 3px $themeAlphaHighlight solid !important;
+          &:hover {
+            border-bottom: 3px $themeAlphaHighlight solid !important;
+          }
+        }
+        &.active:hover {
+          border-bottom: 3px lighten($themeAlphaHighlight, 30%) solid !important;
+        }
+      }
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
