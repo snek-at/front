@@ -2,8 +2,10 @@
 
 #home {
   background: #f0f0f0;
+
   .position-relative {
     height: 100px;
+
     .banner-wrapper {
       position: absolute;
       top: 0;
@@ -11,6 +13,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+
       .banner {
         position: absolute;
         left: -10%;
@@ -21,12 +24,13 @@
       }
     }
   }
+
   .whois {
-    /*background-image: url('../../../assets/header/bg.png');
+    /* background-image: url('../../../assets/header/bg.png');
     background-size: contain;
     background-repeat: no-repeat;
     min-height: 400px;
-    background-position: center;*/
+    background-position: center; */
     h1 {
       padding-bottom: 0.5rem;
       border-bottom: solid $snekGreen 2px;
@@ -37,10 +41,12 @@
   .btn-underlined-red {
     transition: border-bottom 0.2s ease;
     border-bottom: 3px solid rgba(255, 0, 0, 0.1);
+
     & > i {
       transform: rotate(0deg) scale(1);
       transition: transform 0.2s ease;
     }
+
     &:hover {
       border-bottom: 3px solid rgba(255, 0, 0, 0.3);
       & > i {
@@ -60,6 +66,7 @@
   // Feature section
   #features {
     background: $snekGreen;
+
     p.lead {
       margin-bottom: 1rem;
     }
