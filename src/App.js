@@ -522,6 +522,7 @@ class App extends React.Component {
 
   /**
    * Get all users
+   *
    * @description Retrieves a list of all users
    */
   getAllPageUrls = () => {
