@@ -21,10 +21,16 @@ class SoftwareEngineer extends React.Component {
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="3">
-            <ProfileInfo globalState={globalState} />
+            <ProfileInfo
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+            />
           </MDBCol>
           <MDBCol lg="9">
-            <SoftwareTabs globalState={globalState} />
+            <SoftwareTabs
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+            />
           </MDBCol>
         </MDBRow>
       </MDBContainer>

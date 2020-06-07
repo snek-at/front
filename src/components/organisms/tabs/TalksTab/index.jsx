@@ -20,7 +20,7 @@ import {
 //> CSS
 import "./talkstab.scss";
 //> Modules
-import UploadModal from "../../../molecules/modals/UploadModal";
+import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
@@ -50,8 +50,9 @@ class Talks extends React.Component {
   };
 
   render() {
-    const { globalState } = this.props;
+    const { globalState, globalFunctions } = this.props;
     const talkList = globalState.fetchedUser.platformData.talks;
+    const { deleteTalk } = globalFunctions;
 
     if (talkList) {
       talkList.map((talk) => {
@@ -68,7 +69,7 @@ class Talks extends React.Component {
           timeoutID: setInterval(() => this.updateIframe(talk), 4000),
           loaded: false,
         };
-        
+
         return talk;
       });
     }
@@ -79,7 +80,7 @@ class Talks extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {globalState.logged && (
+          {globalState.loggedUser && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -105,8 +106,8 @@ class Talks extends React.Component {
                             : talk.name}
                         </MDBCol>
                         <MDBCol md="1">
-                          {globalState.logged && (
-                            <small onClick={() => this.props.deleteTalk(talk)}>
+                          {globalState.loggedUser && (
+                            <small onClick={() => deleteTalk(talk)}>
                               <MDBIcon
                                 icon="trash-alt"
                                 className="black-text font-weight-bold"
@@ -134,9 +135,7 @@ class Talks extends React.Component {
                               src={talk.displayUrl}
                               onLoad={() => {
                                 clearInterval(talk.interval.timeoutId);
-                                this.props.globalState.fetchedUser.platformData.talks[
-                                  i
-                                ].interval.loaded = true;
+                                talkList[i].interval.loaded = true;
                               }}
                               frameBorder="0"
                             />

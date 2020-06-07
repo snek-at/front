@@ -6,18 +6,77 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 //> Components
-// import { SamplePage } from "./components/pages";
+import {
+  HomePage,
+  CompanyPage,
+  ProfilePage,
+  TalkPage,
+} from "./components/pages";
 //#endregion
 
 //#region > Components
 class Routes extends React.Component {
   render() {
+    const { globalState, globalFunctions } = this.props;
+
     return (
       <Switch>
         <Route
-          render={function () {
-            return <h1>Not Found</h1>;
+          exact
+          path="/"
+          component={(props) => (
+            <HomePage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/redirect"
+          render={() => {
+            // Get name of window which was set by the parent to be the unique
+            // request key
+            const requestKey = window.name;
+
+            // Update corresponding entry with the redirected url which should
+            // contain either access token or failure reason in the query
+            // parameter / hash
+            localStorage.setItem(requestKey, window.location.href);
+            window.close();
           }}
+        />
+        <Route
+          exact
+          path="/u/:username"
+          component={(props) => (
+            <ProfilePage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/c/:name"
+          component={(props) => (
+            <CompanyPage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/t/:username/:uid"
+          component={(props) => (
+            <TalkPage
+              globalFunctions={globalFunctions}
+              globalState={globalState}
+              {...props}
+            />
+          )}
         />
       </Switch>
     );

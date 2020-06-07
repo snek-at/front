@@ -21,13 +21,15 @@ class UploadModal extends React.Component {
   };
 
   onDrop = async (files) => {
+    const { uploadTalk } = this.props.globalFunctions;
+
     if (files.length > 0) {
       this.setState({
         error: [],
         loading: true,
       });
 
-      this.props.uploadTalk(files[0]).then(() => {
+      uploadTalk(files[0]).then(() => {
         this.setState({
           loading: false,
         });

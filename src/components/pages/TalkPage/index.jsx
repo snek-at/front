@@ -31,36 +31,35 @@ class TalkPage extends React.Component {
     talk: undefined,
   };
 
-  componentWillMount = async () => {
-    if (this.props.match) {
-      if (this.props.match.params) {
-        if (this.props.match.params.talk && this.props.match.params.username) {
-          const uid = this.props.match.params.talk;
-          const username = this.props.match.params.username;
+  componentDidMount = () => {
+    const { globalState, globalFunctions } = this.props.globalState;
+    const { uid, username } = this.props.match?.params;
 
-          if (
-            this.props.globalState.fetchedUser === undefined ||
-            this.state.talk === undefined
-          ) {
-            let talk = await this.props.getTalk(uid, username);
+    if (
+      uid &&
+      username &&
+      !globalState.loading &&
+      !globalState.fetchedUser &&
+      globalState.fetchedUser !== false
+    ) {
+      if (this.state.talk === undefined) {
+        globalFunctions.getTalk(uid, username).then((talk) => {
+          talk.social = {
+            likes: 17,
+            date: new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            }),
+          };
 
-            talk.social = {
-              likes: 17,
-              date: new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }),
-            };
+          talk.interval = {
+            timeoutID: setInterval(() => this.updateIframe(talk), 4000),
+            loaded: false,
+          };
 
-            talk.interval = {
-              timeoutID: setInterval(() => this.updateIframe(talk), 4000),
-              loaded: false,
-            };
-
-            this.setState({ talk });
-          }
-        }
+          this.setState({ talk });
+        });
       }
     }
   };
