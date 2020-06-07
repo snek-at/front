@@ -24,6 +24,8 @@ import {
   MDBBtn,
 } from "mdbreact";
 
+//> Searchbar
+import { SearchBar } from "../../atoms";
 //> Images
 import SNEKLogo from "../../../assets/navigation/logo.png";
 //> CSS
@@ -103,7 +105,10 @@ class Navbar extends React.Component {
             <MDBNavbarToggler onClick={this.toggleCollapse} />
             <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
               <MDBNavbarNav left>
-                <MDBNavItem>{/* SEARCH */}</MDBNavItem>
+                <SearchBar
+                  globalState={globalState}
+                  globalFunctions={globalFunctions}
+                />
               </MDBNavbarNav>
               <MDBNavbarNav right>
                 {!globalState.loading && globalState.loggedUser ? (

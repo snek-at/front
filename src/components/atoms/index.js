@@ -10,6 +10,7 @@ import Calendar2D from "./charts/Calendar2D";
 import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
 import LatestActivity from "./charts/LatestActivity";
+import SearchBar from "./SearchBar";
 //#endregion
 
 //#region > Exports
@@ -21,6 +22,7 @@ export {
   ScrollToTop,
   Project,
   Pinned,
+  SearchBar,
 };
 //#endregion
 
