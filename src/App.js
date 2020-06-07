@@ -533,6 +533,7 @@ class App extends React.Component {
         res.data.pages.forEach((page) => {
           if (page.urlPath.includes("registration/")) {
             let url = page.urlPath.split("/")[2];
+            
             urls.push(url);
           }
         });
