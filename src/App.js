@@ -186,7 +186,7 @@ class App extends React.Component {
   registerUser = async (registrationData) => {
     // Get data from source
     let intelData;
-    
+
     const unhashedPassword = registrationData.password;
 
     // Hash password
@@ -520,6 +520,26 @@ class App extends React.Component {
     });
   };
 
+  /**
+   * Get all users
+   * @description Retrieves a list of all users
+   */
+  getAllPageUrls = () => {
+    return this.session.tasks.general.allPageUrls().then((res) => {
+      let urls = [];
+
+      res.data.pages &&
+        res.data.pages.forEach((page) => {
+          if (page.urlPath.includes("registration/")) {
+            let url = page.urlPath.split("/")[2];
+            urls.push(url);
+          }
+        });
+
+      return urls;
+    });
+  };
+
   render() {
     return (
       <Router>
@@ -536,6 +556,7 @@ class App extends React.Component {
               globalFunctions={{
                 logout: this.logout,
                 saveSettings: this.saveSettings,
+                users: this.getAllPageUrls,
               }}
             />
             <main>
