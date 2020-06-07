@@ -82,10 +82,12 @@
           height: 35px;
           margin: 0.4em;
           transition: all 0.2s ease;
+
           &:hover {
             transform: translateY(-5px);
 
             /* Themes to be added for purchase */
+
             /* Themes include: 360 no-scope, scale, translate */
           }
 
@@ -114,18 +116,21 @@
   // Right col
   .profile-content {
     background: #fafafa;
+
     .nav-tabs {
       background: white;
       cursor: pointer;
       border: 1px solid #e9ecef #e9ecef #dee2e6;
       border-top-left-radius: 0.25rem;
       border-top-right-radius: 0.25rem;
+
       .nav-link {
         &.active {
           background: #fafafa;
           border-bottom-color: #fafafa;
         }
       }
+
       .nav-item {
         .badge {
           box-shadow: none;
