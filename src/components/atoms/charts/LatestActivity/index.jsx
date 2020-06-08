@@ -52,7 +52,7 @@ class LatestActivity extends React.Component {
 
   fillChart = (results, lastWeek) => {
     //#TSID5
-    //console.log(results, lastWeek);
+    //console.log("FILL LATEST ACTIVITY CHART", results, lastWeek);
 
     if (results) {
       this.setState({

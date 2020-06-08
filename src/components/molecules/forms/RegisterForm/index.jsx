@@ -89,7 +89,7 @@ class RegisterForm extends React.Component {
     const server = this.state.gitlab_server;
 
     //#TSID7
-    //console.log(username, server);
+    //console.log("REGISTER FORM ADD GITLAB", username, server);
 
     if (username.trim() && server.trim()) {
       if (server !== "Choose your organisation") {
@@ -291,7 +291,7 @@ class RegisterForm extends React.Component {
   // Handle sumbit of register form
   handleSubmit = async () => {
     //#TSID8
-    //console.log("Handle submit");
+    //console.log("REGISTER FORM HANDLE SUBMIT");
 
     // CHANGE TO CONST
     let {
@@ -389,7 +389,7 @@ class RegisterForm extends React.Component {
         },
         () => {
           //#TSID9
-          //console.log("Register", this.state);
+          //console.log("REGISTER FORM REGISTER", this.state);
 
           let registrationData = {
             sources: sourceList,
