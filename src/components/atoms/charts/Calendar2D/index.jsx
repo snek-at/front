@@ -25,6 +25,7 @@ class Calender2D extends React.Component {
   constructor(props) {
     super(props);
 
+    // Create reference to HTML canvas
     this.myInput = React.createRef();
     this.state = {
       width: 0,

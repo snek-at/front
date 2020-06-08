@@ -37,6 +37,7 @@ class LoginForm extends React.Component {
               return false;
             }
           });
+
           if (innerRtn.includes(true)) {
             return true;
           } else {
@@ -44,6 +45,7 @@ class LoginForm extends React.Component {
           }
         }
       });
+
       if (rtn.includes(true)) {
         return true;
       } else {

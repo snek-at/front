@@ -18,7 +18,7 @@
     "react-scripts": "3.0.1",
     "react-text-loop": "^2.3.0",
     "react-typed": "^1.2.0",
-    "snek-intel": "file:snek-intel-1.0.0.tgz",
+    "snek-intel": "^0.1.0",
     "tippy.js": "^6.2.3"
   },
   "repository": {

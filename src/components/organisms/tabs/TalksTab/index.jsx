@@ -51,7 +51,7 @@ class Talks extends React.Component {
 
   render() {
     const { globalState, globalFunctions } = this.props;
-    const talkList = globalState.fetchedUser.platformData.talks;
+    const talkList = globalState?.fetchedUser?.platformData?.talks;
     const { deleteTalk } = globalFunctions;
 
     if (talkList) {

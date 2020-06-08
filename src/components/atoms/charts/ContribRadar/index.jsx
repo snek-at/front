@@ -9,7 +9,7 @@ import { Radar } from "react-chartjs-2";
 
 //#region > Components
 /**
- * @class A contribution statistic which displays the the ratio of
+ * @class contribution statistic component which displays the the ratio of
  *        commits, issues, pull requests and code reviews.
  */
 class ContribRadar extends React.Component {

@@ -7,25 +7,10 @@ import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarNav,
-  MDBNavItem,
-  MDBNavLink,
-  MDBNavbarToggler,
-  MDBCollapse,
-  MDBContainer,
-  MDBDropdown,
-  MDBDropdownItem,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBSmoothScroll,
-  MDBIcon,
   MDBSelect,
   MDBSelectInput,
   MDBSelectOption,
   MDBSelectOptions,
-  MDBBtn,
 } from "mdbreact";
 //> Fuzzysort
 // Fast SublimeText-like fuzzy search for JavaScript

@@ -22,6 +22,7 @@ class Calendar3D extends React.Component {
   constructor(props) {
     super(props);
 
+    // Create reference to HTML canvas
     this.myInput = React.createRef();
     this.state = {
       width: 0,
@@ -338,11 +339,6 @@ class Calendar3D extends React.Component {
         context.drawImage(img, 0, 0);
       };
     }
-    /*if (!this.state.cache) {
-      this.setState({
-        cache: img.src,
-      });
-    }*/
   };
 
   render() {
