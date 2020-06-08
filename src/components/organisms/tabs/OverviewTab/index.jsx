@@ -49,9 +49,7 @@ const pinned = [
 //#endregion
 
 //#region > Components
-/**
- * @class This component implements the overview tab
- */
+/** @class This component implements the overview tab */
 class OverviewTab extends React.Component {
   state = {
     selectedYear: undefined,

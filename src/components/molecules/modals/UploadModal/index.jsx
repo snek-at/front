@@ -4,6 +4,8 @@
 import React from "react";
 // Contains the functionality for uploading a file
 import Dropzone from "react-dropzone";
+//> MDB
+// "Material Design for Bootstrap" is a great UI design framework
 import {
   MDBModal,
   MDBModalHeader,

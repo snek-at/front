@@ -11,9 +11,7 @@ import { SoftwareTabs, ProfileInfo } from "../../index";
 //#endregion
 
 //#region > Components
-/**
- * @class The profile component of a Software Engineer user
- */
+/** @class The profile component of a Software Engineer user */
 class SoftwareEngineer extends React.Component {
   state = {};
 

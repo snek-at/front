@@ -26,9 +26,7 @@ import "./talk.scss";
 //#endregion
 
 //#region > Components
-/**
- * @class This component adds the Talk Page which displays a certain talk
- */
+/** @class This component adds the Talk Page which displays a certain talk */
 class TalkPage extends React.Component {
   state = {
     talk: undefined,

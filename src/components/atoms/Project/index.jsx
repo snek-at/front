@@ -10,9 +10,7 @@ import { MDBCol, MDBIcon } from "mdbreact";
 //#endregion
 
 //#region > Components
-/**
- * @class A component which contains all projects where the given user is involved.
- */
+/** @class A component which contains all projects where the given user is involved */
 class Project extends React.Component {
   render() {
     const { repo } = this.props;

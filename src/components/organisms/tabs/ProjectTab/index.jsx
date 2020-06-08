@@ -15,9 +15,7 @@ import { Project } from "../../../atoms";
 //#endregion
 
 //#region > Components
-/**
- * @class A component which lists all projects
- */
+/** @class A component which lists all projects */
 class ProjectTab extends React.Component {
   render() {
     const { repoList } = this.props;

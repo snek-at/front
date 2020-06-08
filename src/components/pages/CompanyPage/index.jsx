@@ -65,9 +65,7 @@ const CONTRIB_OPTIONS = {
 //#endregion
 
 //#region > Components
-/**
- * @class This component displays the Company Page
- */
+/** @class This component displays the Company Page */
 class CompanyPage extends React.Component {
   state = {
     activeTab: 0,
