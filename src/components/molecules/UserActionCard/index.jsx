@@ -116,6 +116,7 @@ UserActionCard.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default UserActionCard;
 //#endregion
 

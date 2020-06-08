@@ -122,6 +122,7 @@ SearchBar.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default SearchBar;
 //#endregion
 

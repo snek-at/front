@@ -206,6 +206,7 @@ LoginForm.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default LoginForm;
 //#endregion
 

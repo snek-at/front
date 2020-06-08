@@ -184,6 +184,7 @@ Navbar.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default withRouter(Navbar);
 //#endregion
 

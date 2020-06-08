@@ -6,6 +6,7 @@ import ProfileInfo from "./ProfileInfo";
 //#endregion
 
 //#region > Exports
+//> Organisms
 export { SoftwareTabs, ProfileInfo };
 //#endregion
 

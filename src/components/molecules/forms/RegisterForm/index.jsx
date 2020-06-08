@@ -418,6 +418,7 @@ class RegisterForm extends React.Component {
       if (code.length === 4 || code.length === 9) {
         code = code + "-";
       }
+
       this.setState(
         {
           code: code.toUpperCase(),
@@ -810,6 +811,7 @@ RegisterForm.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default RegisterForm;
 //#endregion
 

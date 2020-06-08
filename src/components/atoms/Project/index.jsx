@@ -61,6 +61,7 @@ Project.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default Project;
 //#endregion
 

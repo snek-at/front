@@ -8,6 +8,7 @@ import TalkPage from "./TalkPage";
 //#endregion
 
 //#region > Exports
+//> Pages
 export { CompanyPage, HomePage, ProfilePage, TalkPage };
 //#endregion
 

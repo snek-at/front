@@ -10,6 +10,7 @@ import UserActionCard from "./UserActionCard";
 //#endregion
 
 //#region > Exports
+//> Molecules
 export { Footer, Navbar, LoginForm, RegisterForm, UploadModal, UserActionCard };
 //#endregion
 

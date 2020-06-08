@@ -194,6 +194,7 @@ OverviewTab.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default OverviewTab;
 //#endregion
 

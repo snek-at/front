@@ -226,6 +226,7 @@ class HomePage extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default HomePage;
 //#endregion
 

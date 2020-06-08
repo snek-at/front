@@ -5,6 +5,7 @@ import SoftwareEngineer from "./SoftwareEngineer";
 //#endregion
 
 //#region > Exports
+//> Components
 // Export the components for easy access from parent components
 export { SoftwareEngineer };
 //#endregion

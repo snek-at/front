@@ -7,6 +7,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
+//> Intel
+import { Intel } from "snek-intel";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBProgress } from "mdbreact";
@@ -21,8 +23,6 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
-//> Intel
-import { Intel } from "snek-intel";
 //#endregion
 
 //#region > Components
@@ -586,6 +586,7 @@ class App extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default App;
 //#endregion
 

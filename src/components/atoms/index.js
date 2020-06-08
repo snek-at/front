@@ -14,6 +14,7 @@ import SearchBar from "./SearchBar";
 //#endregion
 
 //#region > Exports
+//> Atoms
 export {
   Calendar2D,
   Calendar3D,

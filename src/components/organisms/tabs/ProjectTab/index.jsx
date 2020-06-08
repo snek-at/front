@@ -41,6 +41,7 @@ ProjectTab.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default ProjectTab;
 //#endregion
 

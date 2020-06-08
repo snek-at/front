@@ -233,6 +233,7 @@ class Calender2D extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default Calender2D;
 //#endregion
 
