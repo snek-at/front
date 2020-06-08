@@ -15,6 +15,9 @@ import {
 //#endregion
 
 //#region > Components
+/**
+ * @class Route component which includes all routes to specified components
+ */
 class Routes extends React.Component {
   render() {
     const { globalState, globalFunctions } = this.props;

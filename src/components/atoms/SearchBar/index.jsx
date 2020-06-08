@@ -27,6 +27,12 @@ class SearchBar extends React.Component {
     usernames: [],
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    if (!nextProps.globalState.loading) {
+      this.getUsernameList();
+    }
+  };
+
   handleSelection = (event, value) => {
     if (event === "user") {
       window.open("/u/" + value, "_self");
@@ -64,10 +70,6 @@ class SearchBar extends React.Component {
 
   render() {
     const { globalState } = this.props;
-
-    if (!globalState.loading) {
-      this.getUsernameList();
-    }
 
     //Select component does not support onChange event. Instead, you can use getValue or getTextContent methods.
     return (

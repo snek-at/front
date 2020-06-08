@@ -12,6 +12,11 @@ import "./profile.scss";
 //#endregion
 
 //#region > Components
+/**
+ * @class This component adds the Profile page and distinguishes
+ *        between software and media technology accounts and
+ *        loads the components accordingly.
+ */
 class ProfilePage extends React.Component {
   state = {};
 

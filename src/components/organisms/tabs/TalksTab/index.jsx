@@ -24,6 +24,9 @@ import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
+/**
+ * @class Adds the talks in the list
+ */
 class Talks extends React.Component {
   state = {
     showUpload: false,

@@ -30,6 +30,9 @@ import imageTrophy from "../../../assets/body/trophy.png";
 //#endregion
 
 //#region > Components
+/**
+ * @class This component displays the landing page including login and register
+ */
 class HomePage extends React.Component {
   constructor(props) {
     super(props);

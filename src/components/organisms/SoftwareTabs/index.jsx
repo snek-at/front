@@ -11,6 +11,9 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 //#endregion
 
 //#region > Components
+/**
+ * @class All tabs for software engineer profile
+ */
 class SoftwareTabs extends React.Component {
   state = {
     activeTab: 0,

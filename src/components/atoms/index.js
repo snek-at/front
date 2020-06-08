@@ -16,13 +16,13 @@ import SearchBar from "./SearchBar";
 //#region > Exports
 //> Atoms
 export {
+  ScrollToTop,
+  Project,
+  Pinned,
   Calendar2D,
   Calendar3D,
   ContribRadar,
   LatestActivity,
-  ScrollToTop,
-  Project,
-  Pinned,
   SearchBar,
 };
 //#endregion

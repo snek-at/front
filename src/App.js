@@ -26,6 +26,9 @@ import Routes from "./Routes";
 //#endregion
 
 //#region > Components
+/**
+ * @class Root component which loads all other components
+ */
 class App extends React.Component {
   state = {
     loggedUser: undefined,

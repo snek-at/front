@@ -18,6 +18,9 @@ import {
 //#endregion
 
 //#region > Components
+/**
+ * @class This component displays personal information and status of a user
+ */
 class ProfileInfo extends React.Component {
   state = {};
 
