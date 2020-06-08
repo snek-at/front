@@ -36,7 +36,7 @@ const slogans = [
 //#endregion
 
 //#region > Components
-/** @class The footer for all pages */
+/** @class The footer component for all pages */
 class Footer extends React.PureComponent {
   state = {
     slogan: "",

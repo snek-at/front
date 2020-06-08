@@ -36,8 +36,8 @@ const Settings = lazy(() => import("../modals/SettingsModal"));
 
 //#region > Components
 /**
- * @class The navbar for all pages. Contains a login button and a profile menu
- *        depending on whether you are logged in or not.
+ * @class The navbar component for all pages. Contains a login button and a
+ *        profile menu depending on whether you are logged in or not.
  */
 class Navbar extends React.Component {
   state = {

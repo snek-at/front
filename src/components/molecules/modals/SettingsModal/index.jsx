@@ -44,6 +44,7 @@ const SETTINGS_TAB = [
 //#endregion
 
 //#region > Components
+/** @class A settings modal component for showing and editing user settings */
 class SettingsModal extends React.Component {
   state = {
     changeDetected: false,

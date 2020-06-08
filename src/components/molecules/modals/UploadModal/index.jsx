@@ -14,6 +14,7 @@ import {
 //#endregion
 
 //#region > Components
+/** @class A upload modal component for uploading files including a drop-zone */
 class UploadModal extends React.Component {
   state = {
     loading: false,

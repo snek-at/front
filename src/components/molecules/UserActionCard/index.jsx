@@ -18,6 +18,10 @@ import "./useractioncard.scss";
 //#endregion
 
 //#region > Components
+/**
+ * @class A user action card component which contains the login and registration
+ *        form component.
+ */
 class UserActionCard extends React.Component {
   state = {
     activeItem: 0,

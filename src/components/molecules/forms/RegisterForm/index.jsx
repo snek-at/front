@@ -35,8 +35,8 @@ import {
 
 //#region > Components
 /**
- * @class A registration form. Contains all fields required for registration
- *        including OAuth and a selectable list of GitLab servers.
+ * @class A registration form component. Contains all fields required for
+ *        registration including OAuth and a selectable list of GitLab servers.
  */
 class RegisterForm extends React.Component {
   state = {

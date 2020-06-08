@@ -16,7 +16,7 @@ import { Project } from "../../../atoms";
 
 //#region > Components
 /**
- * @class Adds the projects in the list
+ * @class A component which lists all projects
  */
 class ProjectTab extends React.Component {
   render() {

@@ -12,7 +12,7 @@ import { SoftwareTabs, ProfileInfo } from "../../index";
 
 //#region > Components
 /**
- * @class The profile of a Software Engineer user
+ * @class The profile component of a Software Engineer user
  */
 class SoftwareEngineer extends React.Component {
   state = {};
