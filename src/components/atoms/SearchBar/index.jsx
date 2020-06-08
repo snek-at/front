@@ -27,6 +27,9 @@ import {
   MDBSelectOptions,
   MDBBtn,
 } from "mdbreact";
+//> Fuzzysort
+// Fast SublimeText-like fuzzy search for JavaScript
+import * as fuzzysort from "fuzzysort";
 //#endregion
 
 //#region > Components
@@ -75,7 +78,6 @@ class SearchBar extends React.Component {
   };
 
   render() {
-    const fuzzysort = require("fuzzysort");
     const { globalState } = this.props;
 
     if (!globalState.loading) {

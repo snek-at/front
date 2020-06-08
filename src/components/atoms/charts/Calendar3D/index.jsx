@@ -5,6 +5,9 @@ import React from "react";
 //> Additional packages
 // Used to display the time in a readable format
 import moment from "moment";
+//> Obelisk
+// A JavaScript library for building isometric pixel objects
+import obelisk from "obelisk.js";
 
 //> CSS
 import "./calendar3d.scss";
@@ -177,8 +180,6 @@ class Calendar3D extends React.Component {
 
   renderIsometrics = () => {
     if (this.context) {
-      const obelisk = require("obelisk.js");
-
       // Create a canvas 2D point for pixel view world
       let point = new obelisk.Point(70, 70);
       // Create view instance to nest everything
