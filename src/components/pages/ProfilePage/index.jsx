@@ -42,7 +42,7 @@ class ProfilePage extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     const { globalState, globalFunctions } = this.props;
 
-    //#TSID
+    //#TSID10
     //console.log("UPDATED", nextProps);
   };
 
@@ -63,7 +63,7 @@ class ProfilePage extends React.Component {
     } else if (!globalState.loading && globalState.fetchedUser === false) {
       return <p>Error. User can not be fetched.</p>;
     } else if (!globalState.loading && globalState.fetchedUser) {
-      //#TSID
+      //#TSID11
       //console.dir(globalState.fetchedUser);
 
       return (

@@ -51,7 +51,7 @@ class App extends React.Component {
    *              New site access will lead to a anonymous login.
    */
   begin = async (user) => {
-    //#TSID
+    //#TSID1
     //console.log("BEGIN INIT", user);
     const whoami = await this.session.begin(user ? user : undefined);
 
@@ -109,7 +109,7 @@ class App extends React.Component {
    * @description Handles states for login
    */
   handleLogin = (loggedUser) => {
-    //#TSID
+    //#TSID2
     //console.log("HANDLE LOGIN", loggedUser);
     if (loggedUser) {
       this.setState({
@@ -244,7 +244,7 @@ class App extends React.Component {
   getData = async () => {
     const data = await this.intel.get();
 
-    //#TSID
+    //#TSID3
     //console.log("GET DATA", data);
 
     return data;
@@ -533,7 +533,7 @@ class App extends React.Component {
         res.data.pages.forEach((page) => {
           if (page.urlPath.includes("registration/")) {
             let url = page.urlPath.split("/")[2];
-            
+
             urls.push(url);
           }
         });
