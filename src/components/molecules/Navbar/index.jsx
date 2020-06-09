@@ -106,10 +106,12 @@ class Navbar extends React.Component {
             <MDBNavbarToggler onClick={this.toggleCollapse} />
             <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
               <MDBNavbarNav left>
-                <SearchBar
-                  globalState={globalState}
-                  globalFunctions={globalFunctions}
-                />
+                <MDBNavItem>
+                  <SearchBar
+                    globalState={globalState}
+                    globalFunctions={globalFunctions}
+                  />
+                </MDBNavItem>
               </MDBNavbarNav>
               <MDBNavbarNav right>
                 {!globalState.loading && globalState.loggedUser ? (
