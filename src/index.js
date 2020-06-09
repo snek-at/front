@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { HashRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 // This serves as an entry point to the DOM and server renderers for React
 import ReactDOM from "react-dom";
 //> Font Awesome
