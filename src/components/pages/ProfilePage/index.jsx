@@ -24,16 +24,12 @@ class ProfilePage extends React.Component {
     this.props.saveSettings(state);
   };
 
-  componentDidMount = () => {
+  refetch = () => {
     const { match, globalState, globalFunctions } = this.props;
     const username = match?.params?.username;
 
-    if (username) {
-      if (
-        !globalState.loading &&
-        !globalState.fetchedUser &&
-        globalState.fetchedUser !== false
-      ) {
+    if (username !== globalState.fetchedUser?.platformData?.user?.username) {
+      if (!globalState.loading) {
         globalFunctions.fetchCacheData(username);
       }
     }
@@ -43,6 +39,11 @@ class ProfilePage extends React.Component {
       globalFunctions.updateCache(globalState.fetchedUser);
     }
   };
+
+  componentWillUpdate() {
+    console.log("dasd");
+    this.refetch();
+  }
 
   componentWillReceiveProps = (nextProps) => {
     const { globalState, globalFunctions } = this.props;

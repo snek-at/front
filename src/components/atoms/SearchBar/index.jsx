@@ -15,6 +15,7 @@ import {
 //> Fuzzysort
 // Fast SublimeText-like fuzzy search for JavaScript
 import * as fuzzysort from "fuzzysort";
+import { withRouter } from "react-router-dom";
 //#endregion
 
 //#region > Components
@@ -35,9 +36,9 @@ class SearchBar extends React.Component {
 
   handleSelection = (event, value) => {
     if (event === "user") {
-      window.open("/u/" + value, "_self");
+      this.props.history.push("/u/" + value);
     } else if (event === "search_page") {
-      window.open("search?q=", "_self");
+      this.props.history.push("/search?q=" + value);
     }
   };
 
@@ -105,14 +106,12 @@ class SearchBar extends React.Component {
 //#endregion
 
 //#region > PropTypes
-SearchBar.propTypes = {
-  repo: PropTypes.object.isRequired,
-};
+SearchBar.propTypes = {};
 //#endregion
 
 //#region > Exports
 //> Default Class
-export default SearchBar;
+export default withRouter(SearchBar);
 //#endregion
 
 /**

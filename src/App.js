@@ -2,8 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
@@ -23,6 +21,7 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
+import { withRouter } from "react-router-dom";
 //#endregion
 
 //#region > Components
@@ -547,42 +546,40 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
-        <ScrollToTop>
-          <div className="flyout">
-            {!this.state.caching &&
-              this.state.fetchedUser &&
-              this.state.loggedUser?.username ===
-                this.state.fetchedUser.platformData.user?.username && (
-                <MDBProgress material preloader className="caching-loader" />
-              )}
-            <Navbar
+      <ScrollToTop>
+        <div className="flyout">
+          {!this.state.caching &&
+            this.state.fetchedUser &&
+            this.state.loggedUser?.username ===
+              this.state.fetchedUser.platformData.user?.username && (
+              <MDBProgress material preloader className="caching-loader" />
+            )}
+          <Navbar
+            globalState={this.state}
+            globalFunctions={{
+              logout: this.logout,
+              saveSettings: this.saveSettings,
+              users: this.getAllPageUrls,
+            }}
+          />
+          <main>
+            <Routes
               globalState={this.state}
               globalFunctions={{
-                logout: this.logout,
-                saveSettings: this.saveSettings,
-                users: this.getAllPageUrls,
+                fetchCacheData: this.fetchCacheData,
+                updateCache: this.updateCache,
+                uploadTalk: this.uploadTalk,
+                deleteTalk: this.deleteTalk,
+                getTalk: this.getTalk,
+                login: this.login,
+                registerUser: this.registerUser,
+                fetchGitLabServers: this.fetchGitLabServers,
               }}
             />
-            <main>
-              <Routes
-                globalState={this.state}
-                globalFunctions={{
-                  fetchCacheData: this.fetchCacheData,
-                  updateCache: this.updateCache,
-                  uploadTalk: this.uploadTalk,
-                  deleteTalk: this.deleteTalk,
-                  getTalk: this.getTalk,
-                  login: this.login,
-                  registerUser: this.registerUser,
-                  fetchGitLabServers: this.fetchGitLabServers,
-                }}
-              />
-            </main>
-            <Footer />
-          </div>
-        </ScrollToTop>
-      </Router>
+          </main>
+          <Footer />
+        </div>
+      </ScrollToTop>
     );
   }
 }
@@ -590,7 +587,7 @@ class App extends React.Component {
 
 //#region > Exports
 //> Default Class
-export default App;
+export default withRouter(App);
 //#endregion
 
 /**
