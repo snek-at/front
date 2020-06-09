@@ -13,7 +13,7 @@
     "react-chartjs-2": "^2.9.0",
     "react-dropzone": "^11.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.4.1",
     "react-text-loop": "^2.3.0",
     "react-typed": "^1.2.0",
     "snek-intel": "^0.1.0",
