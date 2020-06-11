@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
@@ -46,7 +46,42 @@ class App extends React.Component {
     this.begin();
   };
 
-  //> Authentication methods
+  //#region > Refetch Checking
+  /**
+   * Check for refetch for a specific username.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if a refetch is required otherwise False
+   */
+  refetchRequired = (username) => {
+    const loading = this.state.loading;
+    const fetchedUser = this.state.fetchedUser;
+
+    if (!loading) {
+      if (!fetchedUser && fetchedUser !== false) {
+        return true;
+      } else if (
+        fetchedUser &&
+        !this.usernameMatchesFetchedUsername(username)
+      ) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  /**
+   * Check if the provided username matches with the current fetched user.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if the usernames matches otherwise False
+   */
+  usernameMatchesFetchedUsername = (username) => {
+    return username === this.state.fetchedUser?.platformData?.profile?.username;
+  };
+  //#endregion
+
+  //#region > Authentication
   /**
    * Begin Session
    *
@@ -145,8 +180,9 @@ class App extends React.Component {
       () => this.session.end().then(() => this.begin())
     );
   };
+  //#endregion
 
-  //> Registration
+  //#region > Registration
   /**
    * Fetch GitLab Servers
    *
@@ -237,8 +273,9 @@ class App extends React.Component {
         console.error("APPEND SOURCE OBJECTS", err);
       });
   };
+  //#endregion
 
-  //> Data Handling
+  //#region > Data Handling
   /**
    * Get intel data
    *
@@ -424,62 +461,64 @@ class App extends React.Component {
   };
 
   updateCache = async (fetchedUser) => {
-    let platformData = fetchedUser.platformData;
+    if (fetchedUser?.platformData) {
+      let platformData = fetchedUser.platformData;
 
-    if (
-      !this.state.caching &&
-      this.state.loggedUser?.username === platformData.user?.username
-    ) {
-      this.appendSourceObjects(fetchedUser.sources)
-        .then(async () => {
-          await this.intel.generateTalks(fetchedUser.sources);
+      if (
+        !this.state.caching &&
+        this.state.loggedUser?.username === platformData.profile?.username
+      ) {
+        this.appendSourceObjects(fetchedUser.sources)
+          .then(async () => {
+            await this.intel.generateTalks(fetchedUser.sources);
 
-          let talks = await this.getAllTalks();
+            let talks = await this.getAllTalks();
 
-          // Fix duplicates
-          for (const i in talks) {
-            let state = true;
+            // Fix duplicates
+            for (const i in talks) {
+              let state = true;
 
-            for (const i2 in platformData.talks) {
-              if (talks[i].url === platformData.talks[i2].url) {
-                state = false;
+              for (const i2 in platformData.talks) {
+                if (talks[i].url === platformData.talks[i2].url) {
+                  state = false;
+                }
+              }
+
+              if (state) {
+                platformData.talks.push(talks[i]);
               }
             }
 
-            if (state) {
-              platformData.talks.push(talks[i]);
-            }
-          }
+            talks = platformData.talks;
 
-          talks = platformData.talks;
+            platformData = {
+              ...(await this.getData()),
+              user: platformData.user,
+              talks,
+            };
 
-          platformData = {
-            ...(await this.getData()),
-            user: platformData.user,
-            talks,
-          };
+            // Override cache
+            this.session.tasks.user
+              .cache(JSON.stringify(platformData))
+              .then(() => {
+                fetchedUser.platformData = platformData;
 
-          // Override cache
-          this.session.tasks.user
-            .cache(JSON.stringify(platformData))
-            .then(() => {
-              fetchedUser.platformData = platformData;
-
-              this.setState({
-                fetchedUser,
-                caching: true,
+                this.setState({
+                  fetchedUser,
+                  caching: true,
+                });
               });
-            });
-        })
-        .then(() => {
-          this.intel.resetReducer();
-        });
-    } else {
-      //#WARN
-      console.warn(
-        "CACHING NOT ACTIVATED",
-        "Caching done: " + this.state.caching
-      );
+          })
+          .then(() => {
+            this.intel.resetReducer();
+          });
+      } else {
+        //#WARN
+        console.warn(
+          "CACHING NOT ACTIVATED",
+          "Caching done: " + this.state.caching
+        );
+      }
     }
   };
 
@@ -544,45 +583,47 @@ class App extends React.Component {
       return urls;
     });
   };
+  //#endregion
 
   render() {
     return (
-      <Router>
-        <ScrollToTop>
-          <div className="flyout">
-            {!this.state.caching &&
-              this.state.fetchedUser &&
-              this.state.loggedUser?.username ===
-                this.state.fetchedUser.platformData.user?.username && (
-                <MDBProgress material preloader className="caching-loader" />
-              )}
-            <Navbar
+      <ScrollToTop>
+        <div className="flyout">
+          {!this.state.caching &&
+            this.state.fetchedUser &&
+            this.state.loggedUser?.username ===
+              this.state.fetchedUser.platformData.profile?.username && (
+              <MDBProgress material preloader className="caching-loader" />
+            )}
+          <Navbar
+            globalState={this.state}
+            globalFunctions={{
+              logout: this.logout,
+              saveSettings: this.saveSettings,
+              users: this.getAllPageUrls,
+            }}
+          />
+          <main>
+            <Routes
               globalState={this.state}
               globalFunctions={{
-                logout: this.logout,
-                saveSettings: this.saveSettings,
-                users: this.getAllPageUrls,
+                fetchCacheData: this.fetchCacheData,
+                updateCache: this.updateCache,
+                uploadTalk: this.uploadTalk,
+                deleteTalk: this.deleteTalk,
+                getTalk: this.getTalk,
+                login: this.login,
+                registerUser: this.registerUser,
+                fetchGitLabServers: this.fetchGitLabServers,
+                refetchRequired: this.refetchRequired,
+                usernameMatchesFetchedUsername: this
+                  .usernameMatchesFetchedUsername,
               }}
             />
-            <main>
-              <Routes
-                globalState={this.state}
-                globalFunctions={{
-                  fetchCacheData: this.fetchCacheData,
-                  updateCache: this.updateCache,
-                  uploadTalk: this.uploadTalk,
-                  deleteTalk: this.deleteTalk,
-                  getTalk: this.getTalk,
-                  login: this.login,
-                  registerUser: this.registerUser,
-                  fetchGitLabServers: this.fetchGitLabServers,
-                }}
-              />
-            </main>
-            <Footer />
-          </div>
-        </ScrollToTop>
-      </Router>
+          </main>
+          <Footer />
+        </div>
+      </ScrollToTop>
     );
   }
 }
@@ -590,7 +631,7 @@ class App extends React.Component {
 
 //#region > Exports
 //> Default Class
-export default App;
+export default withRouter(App);
 //#endregion
 
 /**

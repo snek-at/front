@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// DOM bindings for React Router
+import { withRouter } from "react-router-dom";
 // React PropTypes
 import PropTypes from "prop-types";
 //> MDB
@@ -15,6 +17,8 @@ import {
 //> Fuzzysort
 // Fast SublimeText-like fuzzy search for JavaScript
 import * as fuzzysort from "fuzzysort";
+//> CSS
+import "./search.scss";
 //#endregion
 
 //#region > Components
@@ -35,16 +39,14 @@ class SearchBar extends React.Component {
 
   handleSelection = (event, value) => {
     if (event === "user") {
-      window.open("/u/" + value, "_self");
+      this.props.history.push("/u/" + value);
     } else if (event === "search_page") {
-      window.open("search?q=", "_self");
+      this.props.history.push("/search?q=" + value);
     }
   };
 
   search = (event) => {
-    let value = document
-      .getElementById("selectSearchInput")
-      .getAttribute("value");
+    const value = event.target.value;
 
     // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
     if (event.key === "Enter") {
@@ -75,24 +77,26 @@ class SearchBar extends React.Component {
     return (
       <MDBSelect
         id="search"
-        onKeyUp={(event) => this.search(event)}
+        onKeyUp={(e) => this.search(e)}
         getValue={(value) => this.handleSelection("user", value)}
+        outline
       >
         <MDBSelectInput selected="Find a user" />
-        <MDBSelectOptions search>
+        <MDBSelectOptions search searchLabel="">
           {this.state.usernames ? (
             this.state.usernames.length > 0 && this.state.filter.length > 0 ? (
-              <>
-                {fuzzysort
-                  .go(this.state.filter, this.state.usernames)
-                  .map((element, i) => {
-                    return (
-                      <MDBSelectOption key={i}>
-                        {element.target}
-                      </MDBSelectOption>
-                    );
-                  })}
-              </>
+              fuzzysort
+                .go(this.state.filter, this.state.usernames)
+                .map((element, i) => {
+                  return (
+                    <MDBSelectOption
+                      key={i}
+                      icon={"https://octodex.github.com/images/nyantocat.gif"}
+                    >
+                      {element.target}
+                    </MDBSelectOption>
+                  );
+                })
             ) : null
           ) : (
             <span>Loading</span>
@@ -105,14 +109,12 @@ class SearchBar extends React.Component {
 //#endregion
 
 //#region > PropTypes
-SearchBar.propTypes = {
-  repo: PropTypes.object.isRequired,
-};
+SearchBar.propTypes = {};
 //#endregion
 
 //#region > Exports
 //> Default Class
-export default SearchBar;
+export default withRouter(SearchBar);
 //#endregion
 
 /**

@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// DOM bindings for React Router
+import { BrowserRouter as Router } from "react-router-dom";
 // This serves as an entry point to the DOM and server renderers for React
 import ReactDOM from "react-dom";
 //> Font Awesome
@@ -24,7 +26,12 @@ import registerServiceWorker from "./registerServiceWorker";
 //#endregion
 
 // Render the root component to <div id="root"></div>
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Router basename={process.env.PUBLIC_URL + "/"}>
+    <App />
+  </Router>,
+  document.getElementById("root")
+);
 
 registerServiceWorker();
 

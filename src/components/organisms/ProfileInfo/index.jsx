@@ -297,7 +297,7 @@ class ProfileInfo extends React.Component {
                 </>
               ) : (
                 <small>
-                  {globalState.fetchedUser.platformData.user.username} hasn't
+                  {globalState.fetchedUser.platformData.profile.username} hasn't
                   joined an organisation yet.
                 </small>
               )}
