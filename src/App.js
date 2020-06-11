@@ -105,7 +105,7 @@ class App extends React.Component {
         const loggedUser = {
           username,
           avatarUrl:
-            "https://avatars2.githubusercontent.com/u/21159914?u=afab4659183999f1adc85089bb713aefbf085b94",
+            "https://www.clipartmax.com/png/full/166-1669056_the-20-cooler-octocat-github-octocat.png",
         };
 
         // Real user is logged in
@@ -127,7 +127,7 @@ class App extends React.Component {
   /**
    * Authenticate
    *
-   * @description Logs in user
+   * @description Authenticates a user
    */
   login = async (username, password) => {
     return this.begin({
@@ -144,7 +144,7 @@ class App extends React.Component {
   /**
    * Handle login
    *
-   * @description Handles states for login
+   * @description Handles states associated with login
    */
   handleLogin = (loggedUser) => {
     //#TSID2
@@ -167,7 +167,7 @@ class App extends React.Component {
   /**
    * Logout user
    *
-   * @description Handles the logging out of active users
+   * @description Handles the logout of an active user
    */
   logout = () => {
     this.setState(
@@ -220,7 +220,7 @@ class App extends React.Component {
   /**
    * Register user
    *
-   * @description Handles the registration of users
+   * @description Handles the registration of a user
    */
   registerUser = async (registrationData) => {
     // Get data from source
@@ -279,7 +279,7 @@ class App extends React.Component {
   /**
    * Get intel data
    *
-   * @description Retrieves data from current applied source list
+   * @description Retrieves data from applied source list
    */
   getData = async () => {
     const data = await this.intel.get();
@@ -525,7 +525,7 @@ class App extends React.Component {
   /**
    * Save settings
    *
-   * @description Saves the user settings
+   * @description Saves the user settings to cache
    */
   saveSettings = (state) => {
     // Fill platformData to be used and edited locally

@@ -247,7 +247,7 @@ class Calendar3D extends React.Component {
             parseInt("0x" + fill.replace("#", ""))
           );
 
-          // ANIMATION TOGGLE for kleberbaum to play with
+          // ANIMATION TOGGLE for @kleberbaum to play with
           const animated = false;
 
           if (animated) {
@@ -315,7 +315,6 @@ class Calendar3D extends React.Component {
       const cacheObject = JSON.parse(cache);
 
       if (cacheObject.timestamp > new Date().getTime() - 3600000) {
-        //this.renderCache();
         window.setTimeout(() => this.renderIsometrics(), 0);
       } else {
         window.setTimeout(() => this.renderIsometrics(), 0);
