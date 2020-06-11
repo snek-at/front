@@ -77,7 +77,7 @@ class App extends React.Component {
    * @returns {boolean} True if the usernames matches otherwise False
    */
   usernameMatchesFetchedUsername = (username) => {
-    return username === this.state.fetchedUser?.platformData?.user?.username;
+    return username === this.state.fetchedUser?.platformData?.profile?.username;
   };
 
   //> Authentication methods
