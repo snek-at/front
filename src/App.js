@@ -424,62 +424,62 @@ class App extends React.Component {
   };
 
   updateCache = async (fetchedUser) => {
-    let platformData = fetchedUser.platformData;
+    if (fetchedUser?.platformData) {
+      let platformData = fetchedUser.platformData;
+      if (
+        !this.state.caching &&
+        this.state.loggedUser?.username === platformData.profile?.username
+      ) {
+        this.appendSourceObjects(fetchedUser.sources)
+          .then(async () => {
+            await this.intel.generateTalks(fetchedUser.sources);
+            let talks = await this.getAllTalks();
 
-    if (
-      !this.state.caching &&
-      this.state.loggedUser?.username === platformData.user?.username
-    ) {
-      this.appendSourceObjects(fetchedUser.sources)
-        .then(async () => {
-          await this.intel.generateTalks(fetchedUser.sources);
+            // Fix duplicates
+            for (const i in talks) {
+              let state = true;
 
-          let talks = await this.getAllTalks();
+              for (const i2 in platformData.talks) {
+                if (talks[i].url === platformData.talks[i2].url) {
+                  state = false;
+                }
+              }
 
-          // Fix duplicates
-          for (const i in talks) {
-            let state = true;
-
-            for (const i2 in platformData.talks) {
-              if (talks[i].url === platformData.talks[i2].url) {
-                state = false;
+              if (state) {
+                platformData.talks.push(talks[i]);
               }
             }
 
-            if (state) {
-              platformData.talks.push(talks[i]);
-            }
-          }
+            talks = platformData.talks;
 
-          talks = platformData.talks;
+            platformData = {
+              ...(await this.getData()),
+              user: platformData.user,
+              talks,
+            };
 
-          platformData = {
-            ...(await this.getData()),
-            user: platformData.user,
-            talks,
-          };
+            // Override cache
+            this.session.tasks.user
+              .cache(JSON.stringify(platformData))
+              .then(() => {
+                fetchedUser.platformData = platformData;
 
-          // Override cache
-          this.session.tasks.user
-            .cache(JSON.stringify(platformData))
-            .then(() => {
-              fetchedUser.platformData = platformData;
-
-              this.setState({
-                fetchedUser,
-                caching: true,
+                this.setState({
+                  fetchedUser,
+                  caching: true,
+                });
               });
-            });
-        })
-        .then(() => {
-          this.intel.resetReducer();
-        });
-    } else {
-      //#WARN
-      console.warn(
-        "CACHING NOT ACTIVATED",
-        "Caching done: " + this.state.caching
-      );
+          })
+          .then(() => {
+            this.intel.resetReducer();
+          });
+      } else {
+        //#WARN
+        console.warn(
+          "CACHING NOT ACTIVATED",
+          "Caching done: " + this.state.caching
+        );
+      }
     }
   };
 
