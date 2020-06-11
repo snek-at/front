@@ -463,6 +463,7 @@ class App extends React.Component {
   updateCache = async (fetchedUser) => {
     if (fetchedUser?.platformData) {
       let platformData = fetchedUser.platformData;
+
       if (
         !this.state.caching &&
         this.state.loggedUser?.username === platformData.profile?.username
@@ -470,6 +471,7 @@ class App extends React.Component {
         this.appendSourceObjects(fetchedUser.sources)
           .then(async () => {
             await this.intel.generateTalks(fetchedUser.sources);
+
             let talks = await this.getAllTalks();
 
             // Fix duplicates
