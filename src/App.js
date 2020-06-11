@@ -46,7 +46,7 @@ class App extends React.Component {
     this.begin();
   };
 
-  //> Refetch checking
+  //#region > Refetch Checking
   /**
    * Check for refetch for a specific username.
    *
@@ -79,8 +79,9 @@ class App extends React.Component {
   usernameMatchesFetchedUsername = (username) => {
     return username === this.state.fetchedUser?.platformData?.profile?.username;
   };
+  //#endregion
 
-  //> Authentication methods
+  //#region > Authentication
   /**
    * Begin Session
    *
@@ -179,8 +180,9 @@ class App extends React.Component {
       () => this.session.end().then(() => this.begin())
     );
   };
+  //#endregion
 
-  //> Registration
+  //#region > Registration
   /**
    * Fetch GitLab Servers
    *
@@ -271,8 +273,9 @@ class App extends React.Component {
         console.error("APPEND SOURCE OBJECTS", err);
       });
   };
+  //#endregion
 
-  //> Data Handling
+  //#region > Data Handling
   /**
    * Get intel data
    *
@@ -578,6 +581,7 @@ class App extends React.Component {
       return urls;
     });
   };
+  //#endregion
 
   render() {
     return (
