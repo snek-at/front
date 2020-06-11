@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
