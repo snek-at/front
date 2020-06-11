@@ -46,6 +46,40 @@ class App extends React.Component {
     this.begin();
   };
 
+  //> Refetch checking
+  /**
+   * Check for refetch for a specific username.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if a refetch is required otherwise False
+   */
+  refetchRequired = (username) => {
+    const loading = this.state.loading;
+    const fetchedUser = this.state.fetchedUser;
+
+    if (!loading) {
+      if (!fetchedUser && fetchedUser !== false) {
+        return true;
+      } else if (
+        fetchedUser &&
+        !this.usernameMatchesFetchedUsername(username)
+      ) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  /**
+   * Check if the provided username matches with the current fetched user.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if the usernames matches otherwise False
+   */
+  usernameMatchesFetchedUsername = (username) => {
+    return username === this.state.fetchedUser?.platformData?.user?.username;
+  };
+
   //> Authentication methods
   /**
    * Begin Session
