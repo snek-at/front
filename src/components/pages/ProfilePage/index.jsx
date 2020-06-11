@@ -29,18 +29,16 @@ class ProfilePage extends React.Component {
     const username = match?.params?.username;
 
     if (username) {
-      if (
-        !globalState.loading &&
-        !globalState.fetchedUser &&
-        globalState.fetchedUser !== false
-      ) {
+      if (globalFunctions.refetchRequired(username)) {
         globalFunctions.fetchCacheData(username);
       }
-    }
 
-    // Call update cache
-    if (globalState.fetchedUser && globalState.loggedUser) {
-      globalFunctions.updateCache(globalState.fetchedUser);
+      if (
+        globalState.loggedUser &&
+        globalFunctions.usernameMatchesFetchedUsername(username)
+      ) {
+        globalFunctions.updateCache(globalState?.fetchedUser);
+      }
     }
   };
 
