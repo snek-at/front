@@ -227,146 +227,22 @@ class App extends React.Component {
   };
 
   /**
-   * Fetch Cache Data
+   * Handle talk deletion.
    *
-   * @description Retrieves current cache data and updates it
+   * @param talk A talk that should be deleted
+   * @description Handles states for talk deleting
    */
-  fetchCacheData = async (username) => {
-    this.session.tasks.user
-      .profile("/registration/" + username)
-      .then(async ({ data }) => {
-        // Check if cache is empty
-        if (!data.profile) {
-          this.setState(
-            {
-              fetchedUser: false,
-              loading: false,
-            },
-            //#ERROR
-            () => console.error("CACHE NOT LOADED")
-          );
-        } else {
-          // Split profile to chunks
-          const profile = data.profile;
-          const sources = profile.sources ? JSON.parse(profile.sources) : null;
-
-          let platformData = profile.platformData
-            ? JSON.parse(profile.platformData)
-            : {};
-
-          let user = platformData.user ? platformData.user : {};
-
-          // Check if data is valid
-          if (!sources) {
-            //#ERROR
-            console.error("SOURCES ARE EMPTY", sources);
-          } else {
-            // Set settings for first time fetching
-            if (Object.keys(user).length === 0) {
-              user.firstName = profile.firstName;
-              user.lastName = profile.lastName;
-              user.email = profile.email;
-            }
-
-            if (!user.settings) {
-              user.settings = {
-                show3DDiagram: true,
-                show2DDiagram: true,
-                showCompanyPublic: true,
-                showEmailPublic: true,
-                showLocalRanking: true,
-                activeTheme: null,
-              };
-            }
-
-            // Build fetchedUser object
-            let fetchedUser = {
-              platformData: {
-                ...platformData,
-                user,
-              },
-              sources,
-              verified: data.profile.verified,
-              accessories: {
-                badges: data.profile.bids
-                  ? JSON.parse(data.profile.bids)
-                  : null,
-                themes: data.profile.tids
-                  ? JSON.parse(data.profile.tids)
-                  : null,
-              },
-            };
-
-            // Update visible data
-            this.setState({
-              fetchedUser,
-              loading: false,
-            });
-          }
-        }
+  handleTalkDeletion = async (talk) => {
+    ferry(deleteTalk(talk), {
+      currentCache: this.state.fetchedUser.platformData,
+    }).then((platformData) => {
+      this.setState({
+        fetchedUser: {
+          ...this.state.fetchedUser,
+          platformData,
+        },
       });
-  };
-
-  updateCache = async (fetchedUser) => {
-    if (fetchedUser?.platformData) {
-      let platformData = fetchedUser.platformData;
-
-      if (
-        !this.state.caching &&
-        this.state.loggedUser?.username === platformData.profile?.username
-      ) {
-        this.appendSourceObjects(fetchedUser.sources)
-          .then(async () => {
-            await this.intel.generateTalks(fetchedUser.sources);
-
-            let talks = await this.getAllTalks();
-
-            // Fix duplicates
-            for (const i in talks) {
-              let state = true;
-
-              for (const i2 in platformData.talks) {
-                if (talks[i].url === platformData.talks[i2].url) {
-                  state = false;
-                }
-              }
-
-              if (state) {
-                platformData.talks.push(talks[i]);
-              }
-            }
-
-            talks = platformData.talks;
-
-            platformData = {
-              ...(await this.getData()),
-              user: platformData.user,
-              talks,
-            };
-
-            // Override cache
-            this.session.tasks.user
-              .cache(JSON.stringify(platformData))
-              .then(() => {
-                fetchedUser.platformData = platformData;
-
-                this.setState({
-                  fetchedUser,
-                  caching: true,
-                });
-              });
-          })
-          .then(() => {
-            this.intel.resetReducer();
-          });
-      } else {
-        //#WARN
-        console.warn(
-          "CACHING NOT ACTIVATED",
-          "Caching done: " + this.state.caching
-        );
-      }
-    }
+    });
   };
 
   /**
