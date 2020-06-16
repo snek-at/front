@@ -291,28 +291,12 @@ class App extends React.Component {
             )}
           <Navbar
             globalState={this.state}
-            globalFunctions={{
-              logout: this.logout,
-              saveSettings: this.saveSettings,
-              users: this.getAllPageUrls,
-            }}
+            globalFunctions={this.globalFunctions}
           />
           <main>
             <Routes
               globalState={this.state}
-              globalFunctions={{
-                fetchCacheData: this.fetchCacheData,
-                updateCache: this.updateCache,
-                uploadTalk: this.uploadTalk,
-                deleteTalk: this.deleteTalk,
-                getTalk: this.getTalk,
-                login: this.login,
-                registerUser: this.registerUser,
-                fetchGitLabServers: this.fetchGitLabServers,
-                refetchRequired: this.refetchRequired,
-                usernameMatchesFetchedUsername: this
-                  .usernameMatchesFetchedUsername,
-              }}
+              globalFunctions={this.globalFunctions}
             />
           </main>
           <Footer />
