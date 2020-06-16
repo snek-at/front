@@ -26,6 +26,8 @@ import Routes from "./Routes";
 //> Actions
 import {
   ferry,
+  login,
+  logout,
 } from "./actions";
 //#endregion
 
@@ -41,11 +43,11 @@ class App extends React.Component {
     caching: false,
   };
 
-  componentDidMount = () => {
-    // Create new intel instance
-    this.intel = new Intel();
-    // Create new session link for easy access
-    this.session = this.intel.snekclient.session;
+  globalFunctions = {
+    /** Authentication Actions*/
+    login: async (username, password) =>
+      this.handleLoginSession({ username, password: sha256(password) }),
+    logout: async () => this.handleLogout(),
     // Begin session
     this.begin();
   };

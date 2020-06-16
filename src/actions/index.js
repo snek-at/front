@@ -2,11 +2,12 @@
 //> Intel
 // Import all components to export them for easy access from parent components
 import { ferry } from "./core";
+import { login, logout } from "./Intel/authActions";
 //#endregion
 
 //#region > Exports
 //> Actions
-export { ferry };
+export { ferry, login, logout };
 //#endregion
 
 /**
