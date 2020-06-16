@@ -423,24 +423,26 @@ class SettingsModal extends React.Component {
                           />
                           <MDBSelectOptions>
                             <MDBSelectOption value="">Default</MDBSelectOption>
-                            {this.props.globalState.fetchedUser.accessories.themes.tids.map(
-                              (tid, i) => {
-                                let name = "Unnamed";
-                                switch (tid) {
-                                  case "9d88bda4657dcf17581ee91dfe6ab2a3":
-                                    name = "Alpha";
-                                    break;
-                                  default:
-                                    name = "Unnamed";
+                            {this.props.globalState.fetchedUser.accessories
+                              .themes &&
+                              this.props.globalState.fetchedUser.accessories.themes.tids.map(
+                                (tid, i) => {
+                                  let name = "Unnamed";
+                                  switch (tid) {
+                                    case "9d88bda4657dcf17581ee91dfe6ab2a3":
+                                      name = "Alpha";
+                                      break;
+                                    default:
+                                      name = "Unnamed";
+                                  }
+                                  name += " Theme";
+                                  return (
+                                    <MDBSelectOption key={i} value={tid}>
+                                      {tid}
+                                    </MDBSelectOption>
+                                  );
                                 }
-                                name += " Theme";
-                                return (
-                                  <MDBSelectOption key={i} value={tid}>
-                                    {tid}
-                                  </MDBSelectOption>
-                                );
-                              }
-                            )}
+                              )}
                           </MDBSelectOptions>
                         </MDBSelect>
                       </MDBCol>
