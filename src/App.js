@@ -136,11 +136,11 @@ class App extends React.Component {
   };
 
   /**
-   * Logout user
+   * Handle logout.
    *
-   * @description Handles the logging out of active users
+   * @description Handles states for logout
    */
-  logout = () => {
+  handleLogout = () => {
     this.setState(
       {
         loggedUser: undefined,
@@ -148,10 +148,9 @@ class App extends React.Component {
         loading: false,
         caching: false,
       },
-      () => this.session.end().then(() => this.begin())
+      () => ferry(logout()).then(() => this.handleLoginSession())
     );
   };
-  //#endregion
 
   //#region > Registration
   /**
