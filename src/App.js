@@ -108,97 +108,31 @@ class App extends React.Component {
   };
 
   /**
-   * Check if the provided username matches with the current fetched user.
+   * Handle login session.
    *
-   * @param {string} username The username associated with a profile page
-   * @returns {boolean} True if the usernames matches otherwise False
-   */
-  usernameMatchesFetchedUsername = (username) => {
-    return username === this.state.fetchedUser?.platformData?.profile?.username;
-  };
-  //#endregion
-
-  //#region > Authentication
-  /**
-   * Begin Session
-   *
-   * @description Start a new session based on authentication history.
-   *              New site access will lead to a anonymous login.
-   */
-  begin = async (user) => {
-    //#TSID1
-    //console.log("BEGIN INIT", user);
-    const whoami = await this.session.begin(user ? user : undefined);
-
-    // Check if whoami is not empty
-    if (whoami?.username || whoami?.whoami?.username) {
-      const username = whoami?.username
-        ? whoami?.username
-        : whoami?.whoami?.username;
-
-      // Check if whoami user is not anonymous user
-      if (username !== process.env.REACT_APP_ANONYMOUS_USER) {
-        // Get loggedUser object
-        const loggedUser = {
-          username,
-          avatarUrl:
-            "https://avatars2.githubusercontent.com/u/21159914?u=afab4659183999f1adc85089bb713aefbf085b94",
-        };
-
-        // Real user is logged in
-        this.handleLogin(loggedUser);
-
-        return true;
-      } else {
-        this.handleLogin(null);
-
-        return false;
-      }
-    } else {
-      this.handleLogin(false);
-
-      return false;
-    }
-  };
-
-  /**
-   * Authenticate
-   *
-   * @description Logs in user
-   */
-  login = async (username, password) => {
-    return this.begin({
-      username,
-      password: sha256(password),
-    }).catch((err) => {
-      //#ERROR
-      console.error("LOGIN", err);
-
-      return false;
-    });
-  };
-
-  /**
-   * Handle login
-   *
+   * @param user A user to login with
    * @description Handles states for login
    */
-  handleLogin = (loggedUser) => {
-    //#TSID2
-    //console.log("HANDLE LOGIN", loggedUser);
-    if (loggedUser) {
-      this.setState({
-        loggedUser,
-        loading: false,
-      });
-    } else {
-      if (this.state.loggedUser !== null) {
-        this.setState({
-          loggedUser: null,
-          loading: false,
-        });
+  handleLoginSession = async (user) => {
+    return ferry(login(user)).then((loggedUser) => {
+      if (loggedUser) {
+        this.setState(
+          {
+            loggedUser,
+            loading: false,
+          },
+          () => console.log(this.state)
+        );
+        console.log(this.state);
+      } else {
+        if (this.state.loggedUser !== null) {
+          this.setState({
+            loggedUser: null,
+            loading: false,
+          });
+        }
       }
-    }
+    });
   };
 
   /**
