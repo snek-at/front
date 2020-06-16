@@ -246,40 +246,19 @@ class App extends React.Component {
   };
 
   /**
-   * Save settings
+   * Handle save settings.
    *
-   * @description Saves the user settings
+   * @param nextSettings A settings object that should be applied
+   * @description Handles states for saving settings
    */
-  saveSettings = (state) => {
-    // Fill platformData to be used and edited locally
-    let cache = this.state.fetchedUser.platformData;
-
-    // Check for mandatory fields
-    if (state.email) {
-      cache.user.firstName = state.first_name ? state.first_name : "";
-      cache.user.lastName = state.last_name ? state.last_name : "";
-      cache.user.email = state.email ? state.email : cache.user.email;
-      cache.profile.websiteUrl = state.website ? state.website : "";
-      cache.profile.location = state.location ? state.location : "";
-      cache.profile.company = state.company ? state.company : "";
-      cache.user.settings = {
-        showTopLanguages: state.showTopLanguages,
-        showLocalRanking: state.showLocalRanking,
-        show3DDiagram: state.show3DDiagram,
-        show2DDiagram: state.show2DDiagram,
-        showEmailPublic: state.showEmailPublic,
-        showCompanyPublic: state.showCompanyPublic,
-        activeTheme: state.activeTheme,
-      };
-    }
-
-    const platformData = JSON.stringify(cache);
-
-    this.session.tasks.user.cache(platformData).then(({ data }) => {
+  handleSaveSettings = async (nextSettings) => {
+    ferry(saveSettings(nextSettings), {
+      currentCache: this.state.fetchedUser.platformData,
+    }).then((platformData) => {
       this.setState({
         fetchedUser: {
           ...this.state.fetchedUser,
-          platformData: JSON.parse(platformData),
+          platformData,
         },
       });
     });
