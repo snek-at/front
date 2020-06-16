@@ -28,6 +28,11 @@ import {
   ferry,
   login,
   logout,
+  fetchGitLabServers,
+  appendSourceObjects,
+  getAllPageUrls,
+  getData,
+  saveSettings,
 } from "./actions";
 //#endregion
 
@@ -48,8 +53,12 @@ class App extends React.Component {
     login: async (username, password) =>
       this.handleLoginSession({ username, password: sha256(password) }),
     logout: async () => this.handleLogout(),
-    // Begin session
-    this.begin();
+    /** General Actions */
+    fetchGitLabServers: async () => ferry(fetchGitLabServers()),
+    appendSourceObjects: async (sourceList) =>
+      ferry(appendSourceObjects(sourceList)),
+    users: async () => ferry(getAllPageUrls()),
+    saveSettings: async (nextSettings) => this.handleSaveSettings(nextSettings),
   };
 
   //#region > Refetch Checking
