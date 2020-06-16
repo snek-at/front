@@ -247,7 +247,7 @@ class Calendar3D extends React.Component {
             parseInt("0x" + fill.replace("#", ""))
           );
 
-          // ANIMATION TOGGLE for kleberbaum to play with
+          // ANIMATION TOGGLE for @kleberbaum to play with
           const animated = false;
 
           if (animated) {
@@ -294,17 +294,17 @@ class Calendar3D extends React.Component {
 
   cacheChart = async () => {
     if (!localStorage.getItem("3dChart")) {
-      window.setTimeout(
-        () =>
+      window.setTimeout(() => {
+        if (this.context) {
           localStorage.setItem(
             "3dChart",
             JSON.stringify({
               data: this.context.toDataURL(),
               timestamp: new Date().getTime(),
             })
-          ),
-        0
-      );
+          );
+        }
+      }, 0);
     }
   };
 
@@ -315,7 +315,6 @@ class Calendar3D extends React.Component {
       const cacheObject = JSON.parse(cache);
 
       if (cacheObject.timestamp > new Date().getTime() - 3600000) {
-        //this.renderCache();
         window.setTimeout(() => this.renderIsometrics(), 0);
       } else {
         window.setTimeout(() => this.renderIsometrics(), 0);
