@@ -152,30 +152,19 @@ class App extends React.Component {
     );
   };
 
-  //#region > Registration
   /**
-   * Fetch GitLab Servers
+   * Handle registration
    *
-   * @description Retrieves a list of available GitLab servers
+   * @param registrationData Data to register a user
+   * @description Handles states for registration
    */
-  fetchGitLabServers = () => {
-    return this.session.tasks.general
-      .gitlabServer()
-      .then(({ data }) => {
-        const gitLabServers = data?.page?.supportedGitlabs;
-
-        if (gitLabServers) {
-          return gitLabServers;
-        } else {
-          return false;
-        }
-      })
-      .catch((err) => {
-        //#ERROR
-        console.error("GET GITLAB SERVERS", err);
-
-        return false;
+  handleRegistration = (registrationData) => {
+    ferry(register(registrationData)).then((res) => {
+      this.globalFunctions.login(res.username, res.password).then(() => {
+        this.globalFunctions.writeCache(registrationData.platform_data);
+        this.setState({ caching: true, loading: false });
       });
+    });
   };
 
   /**
