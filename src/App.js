@@ -23,6 +23,10 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
+//> Actions
+import {
+  ferry,
+} from "./actions";
 //#endregion
 
 //#region > Components
