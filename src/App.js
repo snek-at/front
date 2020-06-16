@@ -7,8 +7,6 @@ import { withRouter } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
-//> Intel
-import { Intel } from "snek-intel";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBProgress } from "mdbreact";
