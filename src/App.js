@@ -264,26 +264,38 @@ class App extends React.Component {
     });
   };
 
+  //#region > Refetch Checking
   /**
-   * Get all users
+   * Check for refetch for a specific username.
    *
-   * @description Retrieves a list of all users
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if a refetch is required otherwise False
    */
-  getAllPageUrls = () => {
-    return this.session.tasks.general.allPageUrls().then((res) => {
-      let urls = [];
+  refetchRequired = (username) => {
+    const loading = this.state.loading;
+    const fetchedUser = this.state.fetchedUser;
 
-      res.data.pages &&
-        res.data.pages.forEach((page) => {
-          if (page.urlPath.includes("registration/")) {
-            let url = page.urlPath.split("/")[2];
+    if (!loading) {
+      if (!fetchedUser && fetchedUser !== false) {
+        return true;
+      } else if (
+        fetchedUser &&
+        !this.usernameMatchesFetchedUsername(username)
+      ) {
+        return true;
+      }
+      return false;
+    }
+  };
 
-            urls.push(url);
-          }
-        });
-
-      return urls;
-    });
+  /**
+   * Check if the provided username matches with the current fetched user.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if the usernames matches otherwise False
+   */
+  usernameMatchesFetchedUsername = (username) => {
+    return username === this.state.fetchedUser?.platformData?.profile?.username;
   };
   //#endregion
 
