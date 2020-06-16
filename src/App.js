@@ -77,6 +77,10 @@ class App extends React.Component {
     deleteTalk: async (talk) => this.handleTalkDeletion(talk),
     uploadTalk: async (file, talkInfo) => this.handleTalkUpload(file, talkInfo),
     getTalk: (uid, username) => ferry(getTalk(uid, username)),
+    /** Controlling Actions */
+    refetchRequired: (username) => this.refetchRequired(username),
+    usernameMatchesFetchedUsername: (username) =>
+      this.usernameMatchesFetchedUsername(username),
   };
 
   //#region > Refetch Checking
