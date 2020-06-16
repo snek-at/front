@@ -16,6 +16,12 @@ import {
   updateCache,
   writeCache,
 } from "./Intel/userActions";
+import {
+  getAllTalks,
+  getTalk,
+  uploadTalk,
+  deleteTalk,
+} from "./Intel/talksActions";
 //#endregion
 
 //#region > Exports
@@ -33,6 +39,10 @@ export {
   readCache,
   updateCache,
   writeCache,
+  getAllTalks,
+  getTalk,
+  uploadTalk,
+  deleteTalk,
 };
 //#endregion
 

@@ -37,6 +37,10 @@ import {
   readCache,
   updateCache,
   writeCache,
+  getAllTalks,
+  getTalk,
+  uploadTalk,
+  deleteTalk,
 } from "./actions";
 //#endregion
 
@@ -69,6 +73,10 @@ class App extends React.Component {
     registerUser: async (registrationData) =>
       this.handleRegistration(registrationData),
     fetchCacheData: async (username) => this.handleProfileFetching(username),
+    /** Talk Actions */
+    deleteTalk: async (talk) => this.handleTalkDeletion(talk),
+    uploadTalk: async (file, talkInfo) => this.handleTalkUpload(file, talkInfo),
+    getTalk: (uid, username) => ferry(getTalk(uid, username)),
   };
 
   //#region > Refetch Checking
