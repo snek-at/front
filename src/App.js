@@ -33,6 +33,10 @@ import {
   getAllPageUrls,
   getData,
   saveSettings,
+  register,
+  readCache,
+  updateCache,
+  writeCache,
 } from "./actions";
 //#endregion
 
@@ -59,6 +63,12 @@ class App extends React.Component {
       ferry(appendSourceObjects(sourceList)),
     users: async () => ferry(getAllPageUrls()),
     saveSettings: async (nextSettings) => this.handleSaveSettings(nextSettings),
+    /** User Actions */
+    updateCache: async (fetchedUser) => this.handleCacheRenewal(fetchedUser),
+    writeCache: async (platformData) => ferry(writeCache(platformData)),
+    registerUser: async (registrationData) =>
+      this.handleRegistration(registrationData),
+    fetchCacheData: async (username) => this.handleProfileFetching(username),
   };
 
   //#region > Refetch Checking

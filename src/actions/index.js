@@ -10,6 +10,12 @@ import {
   getData,
   saveSettings,
 } from "./Intel/generalActions";
+import {
+  register,
+  readCache,
+  updateCache,
+  writeCache,
+} from "./Intel/userActions";
 //#endregion
 
 //#region > Exports
@@ -23,6 +29,10 @@ export {
   saveSettings,
   getAllPageUrls,
   fetchGitLabServers,
+  register,
+  readCache,
+  updateCache,
+  writeCache,
 };
 //#endregion
 
