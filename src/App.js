@@ -190,19 +190,20 @@ class App extends React.Component {
     }
   };
 
-  //#region > Data Handling
   /**
-   * Get intel data
+   * Handle profile fetching.
    *
-   * @description Retrieves data from current applied source list
+   * @param username A username to read the cache from
+   * @description Handles states for profile fetching
    */
-  getData = async () => {
-    const data = await this.intel.get();
+  handleProfileFetching = async (username) => {
+    const fetchedUser = await ferry(readCache(username));
 
-    //#TSID3
-    //console.log("GET DATA", data);
-
-    return data;
+    // Update visible data
+    this.setState({
+      fetchedUser: fetchedUser ? fetchedUser : false,
+      loading: false,
+    });
   };
 
   /**
