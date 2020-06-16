@@ -207,92 +207,23 @@ class App extends React.Component {
   };
 
   /**
-   * Get all talks
+   * Handle talk upload.
    *
-   * @description Retrieves a list of all currently available talks
+   * @param file A file to be uploaded
+   * @param talkInfo Additional information to add to the talk
+   * @description Handles states for talk uploading
    */
-  getAllTalks = async () => {
-    return this.intel.getTalks();
-  };
-
-  /**
-   * Upload talk
-   *
-   * @description Uploads a talk to intel
-   */
-  uploadTalk = async (file) => {
-    await this.intel.appendTalk(file);
-
-    let talks = await this.getAllTalks();
-
-    talks[talks.length - 1].repository = {
-      avatarUrl: this.state.fetchedUser.platformData.profile.avatarUrl,
-      owner: {
-        username: this.state.user,
-      },
-    };
-
-    this.state.fetchedUser.platformData.talks.push(talks[talks.length - 1]);
-    this.session.tasks.user.cache(
-      JSON.stringify(this.state.fetchedUser.platformData)
-    );
-  };
-
-  /**
-   * Delete talk
-   *
-   * @description Deletes a talk
-   */
-  deleteTalk = async (talk) => {
-    let talks = this.state.fetchedUser.platformData.talks;
-
-    for (const index in talks) {
-      if (talk.uid === talks[index].uid) {
-        talks.splice(index, 1);
-      }
-    }
-
-    this.setState({
-      fetchedUser: {
-        ...this.state.fetchedUser,
-        platformData: {
-          ...this.state.fetchedUser.platformData,
-          talks,
+  handleTalkUpload = async (file, talkInfo) => {
+    ferry(uploadTalk(file, talkInfo), {
+      currentCache: this.state.fetchedUser.platformData,
+    }).then((platformData) => {
+      this.setState({
+        fetchedUser: {
+          ...this.state.fetchedUser,
+          platformData,
         },
-      },
-    });
-
-    this.session.tasks.user.cache(
-      JSON.stringify(this.state.fetchedUser.platformData)
-    );
-  };
-
-  /**
-   * Get talk
-   *
-   * @description Get a talk
-   */
-  getTalk = async (uid, username) => {
-    return this.session.tasks.user
-      .profile("/registration/" + username)
-      .then(async ({ data }) => {
-        if (data.profile) {
-          let talks = JSON.parse(data.profile.platformData).talks;
-
-          talks = talks.filter((talk) => {
-            return talk.uid === uid;
-          });
-
-          return talks[0];
-        } else {
-          //#ERROR
-          console.error("GET TALK", "Can not get talk " + uid);
-        }
-      })
-      .catch((err) => {
-        //#ERROR
-        console.error("GET TALK", err);
       });
+    });
   };
 
   /**
