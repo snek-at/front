@@ -168,71 +168,27 @@ class App extends React.Component {
   };
 
   /**
-   * Append Source Objects
+   * Handle cache renewal.
    *
-   * @description Hands source list over to intel
+   * @param fetchedUser A fetched user object
+   * @description Handles states for cache renewal
    */
-  appendSourceObjects = async (sourceList) => {
-    return this.intel.appendList(sourceList);
-  };
+  handleCacheRenewal = async (fetchedUser) => {
+    console.log("Cache update test", fetchedUser);
+    if (
+      !this.state.caching &&
+      this.state.loggedUser?.username ===
+        fetchedUser?.platformData.profile?.username
+    ) {
+      // Renew cache
+      const fetchedUser = await ferry(updateCache(fetchedUser));
 
-  /**
-   * Register user
-   *
-   * @description Handles the registration of users
-   */
-  registerUser = async (registrationData) => {
-    // Get data from source
-    let intelData;
-
-    const unhashedPassword = registrationData.password;
-
-    // Hash password
-    registrationData.password = sha256(registrationData.password);
-
-    this.appendSourceObjects(registrationData.sources)
-      .then(async () => {
-        intelData = await this.getData();
-        this.intel
-          .generateTalks(registrationData.sources)
-          .then(async () => {
-            intelData.talks = await this.getAllTalks();
-
-            // Save Object to platformData as JSON
-            registrationData.platform_data = JSON.stringify(intelData);
-            // Create JSON string out of sources for backend use
-            registrationData.sources = JSON.stringify(registrationData.sources);
-
-            // Register the user in our SNEK engine
-            this.session.tasks.user
-              .registration(registrationData)
-              .then((res) => {
-                if (res.message === "FAIL") {
-                  //#WARN
-                  console.warn("All fields have to be filled!");
-                } else {
-                  // Set cache
-                  this.session.tasks.user.cache(registrationData.platform_data);
-                  // Login user
-                  this.login(registrationData.username, unhashedPassword);
-                }
-              })
-              .catch((err) => {
-                //#ERROR
-                console.error("REGISTRATION IN ENGINE", err);
-              });
-          })
-          .catch((err) => {
-            //#ERROR
-            console.error("GENERATE TALKS", err);
-          });
-      })
-      .catch((err) => {
-        //#ERROR
-        console.error("APPEND SOURCE OBJECTS", err);
+      this.setState({
+        fetchedUser,
+        caching: true,
       });
+    }
   };
-  //#endregion
 
   //#region > Data Handling
   /**
