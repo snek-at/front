@@ -55,33 +55,34 @@ class App extends React.Component {
   };
 
   globalFunctions = {
-    /** Authentication Actions*/
+    // Authentication Actions
     login: async (username, password) =>
       this.handleLoginSession({ username, password: sha256(password) }),
     logout: async () => this.handleLogout(),
-    /** General Actions */
+    // General Actions
     fetchGitLabServers: async () => ferry(fetchGitLabServers()),
     appendSourceObjects: async (sourceList) =>
       ferry(appendSourceObjects(sourceList)),
     users: async () => ferry(getAllPageUrls()),
     saveSettings: async (nextSettings) => this.handleSaveSettings(nextSettings),
-    /** User Actions */
+    // User Actions
     updateCache: async (fetchedUser) => this.handleCacheRenewal(fetchedUser),
     writeCache: async (platformData) => ferry(writeCache(platformData)),
     registerUser: async (registrationData) =>
       this.handleRegistration(registrationData),
     fetchCacheData: async (username) => this.handleProfileFetching(username),
-    /** Talk Actions */
+    // Talk Actions
     deleteTalk: async (talk) => this.handleTalkDeletion(talk),
     uploadTalk: async (file, talkInfo) => this.handleTalkUpload(file, talkInfo),
     getTalk: (uid, username) => ferry(getTalk(uid, username)),
-    /** Controlling Actions */
+    // Controlling Actions
     refetchRequired: (username) => this.refetchRequired(username),
     usernameMatchesFetchedUsername: (username) =>
       this.usernameMatchesFetchedUsername(username),
   };
 
   componentDidMount = () => {
+    // Start a session as anonymous user
     this.handleLoginSession();
   };
 
