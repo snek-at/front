@@ -21,9 +21,10 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
+//> Core
+import { ferry } from "./actions";
 //> Actions
 import {
-  ferry,
   login,
   logout,
   fetchGitLabServers,
@@ -39,7 +40,7 @@ import {
   getTalk,
   uploadTalk,
   deleteTalk,
-} from "./actions";
+} from "./actions/Intel";
 //#endregion
 
 //#region > Components
