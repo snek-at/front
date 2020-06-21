@@ -40,7 +40,7 @@ import {
   getTalk,
   uploadTalk,
   deleteTalk,
-} from "./actions/Intel";
+} from "./actions/intel";
 //#endregion
 
 //#region > Components
