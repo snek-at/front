@@ -154,11 +154,9 @@ class App extends React.Component {
    * @description Handles states for cache renewal
    */
   handleCacheRenewal = async (fetchedUser) => {
-    console.log("Cache update test", fetchedUser);
     if (
       !this.state.caching &&
-      this.state.loggedUser?.username ===
-        fetchedUser?.platformData.profile?.username
+      this.state.loggedUser?.username === fetchedUser?.username
     ) {
       // Renew cache
       const fetchedUser = await ferry(updateCache(fetchedUser));
@@ -178,7 +176,6 @@ class App extends React.Component {
    */
   handleProfileFetching = async (username) => {
     const fetchedUser = await ferry(readCache(username));
-
     // Update visible data
     this.setState({
       fetchedUser: fetchedUser ? fetchedUser : false,
@@ -275,7 +272,7 @@ class App extends React.Component {
    * @returns {boolean} True if the usernames matches otherwise False
    */
   usernameMatchesFetchedUsername = (username) => {
-    return username === this.state.fetchedUser?.platformData?.profile?.username;
+    return username === this.state.fetchedUser?.username;
   };
   //#endregion
 
@@ -286,7 +283,7 @@ class App extends React.Component {
           {!this.state.caching &&
             this.state.fetchedUser &&
             this.state.loggedUser?.username ===
-              this.state.fetchedUser.platformData.profile?.username && (
+              this.state.fetchedUser.username && (
               <MDBProgress material preloader className="caching-loader" />
             )}
           <Navbar

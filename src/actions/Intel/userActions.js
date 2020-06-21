@@ -148,6 +148,7 @@ const readCache = (username) => {
 
               // Build fetchedUser object
               let fetchedUser = {
+                username: profile.username,
                 platformData: {
                   ...platformData,
                   user,
