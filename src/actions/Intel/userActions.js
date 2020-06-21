@@ -41,8 +41,8 @@ const register = (registrationData) => {
         .then((res) => {
           if (res.result === "FAIL") {
             return {
-              errorCode: 6,
-              message: "Registration failed",
+              errorCode: 606,
+              message: "Registration failed due to false registration result",
               raw: undefined,
             };
           } else {
@@ -55,7 +55,7 @@ const register = (registrationData) => {
         });
     } catch (ex) {
       return {
-        errorCode: 6,
+        errorCode: 617,
         message: "Registration failed",
         raw: ex,
       };
@@ -79,7 +79,7 @@ const writeCache = (platformData) => {
       return session.tasks.user.cache(platformData);
     } catch (ex) {
       return {
-        errorCode: 7,
+        errorCode: 607,
         message: "Writing to cache failed",
         raw: ex,
       };
@@ -103,7 +103,7 @@ const readCache = (username) => {
         .then(async ({ data }) => {
           if (!data.profile) {
             return {
-              errorCode: 8,
+              errorCode: 608,
               message: "Cache not loaded",
               raw: undefined,
             };
@@ -123,7 +123,7 @@ const readCache = (username) => {
             // Check if data is valid
             if (!sources) {
               return {
-                errorCode: 9,
+                errorCode: 609,
                 message: "Sources are empty",
                 raw: undefined,
               };
@@ -171,7 +171,7 @@ const readCache = (username) => {
         });
     } catch (ex) {
       return {
-        errorCode: 10,
+        errorCode: 610,
         message: "Reading from cache failed",
         raw: ex,
       };
@@ -230,7 +230,7 @@ const updateCache = (fetchedUser) => {
       return fetchedUser;
     } catch (ex) {
       return {
-        errorCode: 7,
+        errorCode: 618,
         message: "Updating cache failed",
         raw: ex,
       };

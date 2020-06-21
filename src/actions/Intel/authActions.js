@@ -23,7 +23,7 @@ const login = (user) => {
       });
     } catch (ex) {
       return {
-        errorCode: 0,
+        errorCode: 600,
         message: "Login failed",
         raw: ex,
       };
@@ -46,7 +46,7 @@ const logout = () => {
       return true;
     } catch (ex) {
       return {
-        errorCode: 1,
+        errorCode: 601,
         message: "Logout failed",
         raw: ex,
       };

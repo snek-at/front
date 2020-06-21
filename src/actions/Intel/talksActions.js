@@ -10,7 +10,7 @@ const getAllTalks = () => {
       return intel.getTalks();
     } catch (ex) {
       return {
-        errorCode: 11,
+        errorCode: 611,
         message: "Getting intel talks failed",
         raw: ex,
       };
@@ -43,7 +43,7 @@ const getTalk = (uid, username) => {
             return talks[0];
           } else {
             return {
-              errorCode: 13,
+              errorCode: 613,
               message: "Cannot get specific talk " + uid,
               raw: undefined,
             };
@@ -51,7 +51,7 @@ const getTalk = (uid, username) => {
         });
     } catch (ex) {
       return {
-        errorCode: 14,
+        errorCode: 614,
         message: "Getting talks failed",
         raw: ex,
       };
@@ -84,7 +84,7 @@ const uploadTalk = (file, talkInfo) => {
       });
     } catch (ex) {
       return {
-        errorCode: 12,
+        errorCode: 612,
         message: "Uploading talk failed",
         raw: ex,
       };
@@ -113,7 +113,7 @@ const deleteTalk = (talk) => {
       return currentCache;
     } catch (ex) {
       return {
-        errorCode: 12,
+        errorCode: 615,
         message: "Uploading talk failed",
         raw: ex,
       };

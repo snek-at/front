@@ -11,7 +11,7 @@ const appendSourceObjects = (sourceList) => {
       return intel.appendList(sourceList);
     } catch (ex) {
       return {
-        errorCode: 2,
+        errorCode: 602,
         message: "Appending source objects failed",
         raw: ex,
       };
@@ -40,7 +40,7 @@ const fetchGitLabServers = () => {
       });
     } catch (ex) {
       return {
-        errorCode: 5,
+        errorCode: 605,
         message: "Fetching GitLab server failed",
         raw: ex,
       };
@@ -61,7 +61,7 @@ const getData = () => {
       return intel.get();
     } catch (ex) {
       return {
-        errorCode: 3,
+        errorCode: 603,
         message: "Getting intel data failed",
         raw: ex,
       };
@@ -116,7 +116,7 @@ const saveSettings = (nextSettings) => {
       return currentCache;
     } catch (ex) {
       return {
-        errorCode: 4,
+        errorCode: 604,
         message: "Saving settings failed",
         raw: ex,
       };
@@ -150,7 +150,7 @@ const getAllPageUrls = () => {
       });
     } catch (ex) {
       return {
-        errorCode: 5,
+        errorCode: 616,
         message: "Getting all page urls failed",
         raw: ex,
       };
