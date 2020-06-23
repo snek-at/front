@@ -9,7 +9,6 @@
     }
   ],
   "start_url": "./index.html",
-  "error_url": "./error.html",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
