@@ -110,22 +110,24 @@ class RegisterForm extends React.Component {
     );
   };
 
-  connectGitHub = () => {
+  oauthGitHubSuccess = (response) => {
     this.setState(
       {
         loadingGitHub: true,
       },
       async () => {
-        const data = await RSA.acquireTokenAsync(GithubProvider);
-
         this.pushToSourceList(
           "github",
-          data.username,
+          response.username,
           "https://api.github.com/graphql",
-          data.accessToken
+          response.accessToken
         );
       }
     );
+  };
+
+  oauthGitHubFailure = (response) => {
+    console.log(response);
   };
 
   pushToSourceList = (platformName, username, platformUrl, token) => {
@@ -600,9 +602,25 @@ class RegisterForm extends React.Component {
               >
                 <MDBIcon fab icon="gitlab" size="lg" />
               </MDBBtn>
-              <MDBBtn color="elegant" onClick={this.connectGitHub}>
-                <MDBIcon fab icon="github" size="lg" />
-              </MDBBtn>
+              {window.location.hostname === "snek.at" ? (
+                <OAuthGitHub
+                  authorizationUrl="https://github.com/login/oauth/authorize"
+                  clientId="2148629809594d57c113"
+                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
+                  redirectUri="https://snek.at/redirect"
+                  onSuccess={this.oauthGitHubSuccess}
+                  onFailure={this.oauthGitHubFailure}
+                />
+              ) : (
+                <OAuthGitHub
+                  authorizationUrl="https://github.com/login/oauth/authorize"
+                  clientId="1440dd4c1d1c4c0fa124"
+                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
+                  redirectUri="http://localhost:3000/redirect"
+                  onSuccess={this.oauthGitHubSuccess}
+                  onFailure={this.oauthGitHubFailure}
+                />
+              )}
               <MDBBtn color="primary" disabled>
                 <MDBIcon fab icon="bitbucket" size="lg" />
               </MDBBtn>
