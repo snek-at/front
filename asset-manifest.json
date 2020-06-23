@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "./static/css/main.619085ea.chunk.css",
-    "main.js": "./static/js/main.d1f41878.chunk.js",
-    "main.js.map": "./static/js/main.d1f41878.chunk.js.map",
+    "main.css": "./static/css/main.ad3668ef.chunk.css",
+    "main.js": "./static/js/main.d3eddcbc.chunk.js",
+    "main.js.map": "./static/js/main.d3eddcbc.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.e11008b7.js",
     "runtime-main.js.map": "./static/js/runtime-main.e11008b7.js.map",
     "static/css/2.af035489.chunk.css": "./static/css/2.af035489.chunk.css",
-    "static/js/2.5f8a1536.chunk.js": "./static/js/2.5f8a1536.chunk.js",
-    "static/js/2.5f8a1536.chunk.js.map": "./static/js/2.5f8a1536.chunk.js.map",
+    "static/js/2.8fcc9d0a.chunk.js": "./static/js/2.8fcc9d0a.chunk.js",
+    "static/js/2.8fcc9d0a.chunk.js.map": "./static/js/2.8fcc9d0a.chunk.js.map",
     "index.html": "./index.html",
-    "precache-manifest.6b6cb6ae7a1331886bd55a99285ad13e.js": "./precache-manifest.6b6cb6ae7a1331886bd55a99285ad13e.js",
+    "precache-manifest.3c1da83cac1a3d8a13f0ec476e7aff12.js": "./precache-manifest.3c1da83cac1a3d8a13f0ec476e7aff12.js",
     "service-worker.js": "./service-worker.js",
     "static/css/2.af035489.chunk.css.map": "./static/css/2.af035489.chunk.css.map",
-    "static/css/main.619085ea.chunk.css.map": "./static/css/main.619085ea.chunk.css.map",
-    "static/js/2.5f8a1536.chunk.js.LICENSE.txt": "./static/js/2.5f8a1536.chunk.js.LICENSE.txt",
+    "static/css/main.ad3668ef.chunk.css.map": "./static/css/main.ad3668ef.chunk.css.map",
+    "static/js/2.8fcc9d0a.chunk.js.LICENSE.txt": "./static/js/2.8fcc9d0a.chunk.js.LICENSE.txt",
     "static/media/mdb.css": "./static/media/default-skin.b257fa9c.svg",
-    "static/media/dev.38b90028.svg": "./static/media/dev.38b90028.svg",
+    "static/media/dev.c067674a.svg": "./static/media/dev.c067674a.svg",
     "static/media/all.min.css": "./static/media/fa-solid-900.ec763292.svg",
-    "static/media/media.acba215a.svg": "./static/media/media.acba215a.svg",
+    "static/media/media.888b7568.svg": "./static/media/media.888b7568.svg",
     "static/media/profiles.png": "./static/media/profiles.bb782f9f.png",
     "static/media/ranking.png": "./static/media/ranking.7e91527c.png",
     "static/media/trophy.png": "./static/media/trophy.5c08a90e.png"
@@ -25,8 +25,8 @@
   "entrypoints": [
     "static/js/runtime-main.e11008b7.js",
     "static/css/2.af035489.chunk.css",
-    "static/js/2.5f8a1536.chunk.js",
-    "static/css/main.619085ea.chunk.css",
-    "static/js/main.d1f41878.chunk.js"
+    "static/js/2.8fcc9d0a.chunk.js",
+    "static/css/main.ad3668ef.chunk.css",
+    "static/js/main.d3eddcbc.chunk.js"
   ]
 }
