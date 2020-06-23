@@ -4,8 +4,6 @@
 import React from "react";
 // React PropTypes
 import PropTypes from "prop-types";
-//> Intel
-import RSA, { GithubProvider } from "snek-intel/lib/utils/oauth";
 //> Additional
 // Text animations
 import TextLoop from "react-text-loop";
@@ -31,6 +29,9 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdbreact";
+
+//> OAuth
+import { OAuthGitHub } from "../../../atoms";
 //#endregion
 
 //#region > Components
