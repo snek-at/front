@@ -37,15 +37,10 @@ class Routes extends React.Component {
           exact
           path="/redirect"
           render={() => {
-            // Get name of window which was set by the parent to be the unique
-            // request key
-            const requestKey = window.name;
-
-            // Update corresponding entry with the redirected url which should
-            // contain either access token or failure reason in the query
-            // parameter / hash
-            localStorage.setItem(requestKey, window.location.href);
-            window.close();
+            // Close the window after GitHub redirect
+            this.componentDidMount = () => {
+              window.close();
+            };
           }}
         />
         <Route
