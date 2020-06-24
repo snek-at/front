@@ -2,7 +2,7 @@
   "name": "snek-front",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://snek.at",
   "license": "(EUPL-1.2)",
   "dependencies": {
     "fuzzysort": "^1.1.4",

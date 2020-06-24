@@ -3,8 +3,6 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
-// DOM bindings for React Router
 import { withRouter } from "react-router-dom";
 //> Additional
 // SHA Hashing algorithm
@@ -45,6 +43,10 @@ import {
 } from "./actions/intel";
 //#endregion
 
+//#region > Components
+/**
+ * @class Root component which loads all other components
+ */
 class App extends React.Component {
   state = {
     loggedUser: undefined,
@@ -275,8 +277,6 @@ class App extends React.Component {
   //#endregion
 
   render() {
-    console.log("STATE MAP: Render - LOC App.js");
-
     return (
       <ScrollToTop>
         <div className="flyout">
@@ -290,29 +290,7 @@ class App extends React.Component {
             globalState={this.state}
             globalFunctions={this.globalFunctions}
           />
-          {/* <Navbar
-              username={this.state.user}
-              logmeout={this.logout}
-              users={this.getAllPageUrls}
-              globalState={this.state}
-            />
-            <ToastContainer
-              hideProgressBar={false}
-              newestOnTop={true}
-              autoClose={3000}
-            /> */}
-          <main
-          // className={
-          //   this.state.fetchedUser &&
-          //   this.state.fetchedUser.platformData.user &&
-          //   this.state.fetchedUser.platformData.user.settings &&
-          //   this.state.fetchedUser.platformData.user.settings.activeTheme
-          //     ? "theme-" +
-          //       this.state.fetchedUser.platformData.user.settings
-          //         .activeTheme
-          //     : undefined
-          // }
-          >
+          <main>
             <Routes
               globalState={this.state}
               globalFunctions={this.globalFunctions}
@@ -324,10 +302,14 @@ class App extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
+//> Default Class
 export default withRouter(App);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © Simon Prast
+ * Copyright © 2019-2020 Simon Prast
  */
