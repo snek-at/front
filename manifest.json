@@ -1,6 +1,6 @@
 {
-  "short_name": "SNEK",
-  "name": "SNEK - Social Network for Engineers and Knowledged",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
