@@ -75,6 +75,13 @@
       margin-bottom: 1rem;
     }
   }
+
+  // Chart dummy activity
+  .chart{
+    .chartjs-size-monitor, .chartjs-size-monitor-expand, .chartjs-size-monitor-shrink{
+      position: relative;
+    }  
+  }
 }
 
 /**

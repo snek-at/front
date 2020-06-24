@@ -100,41 +100,53 @@ class LatestActivity extends React.Component {
   calculateSources = (year, activity) => {
     const { statistic } = this.props;
 
-    let contribData, week, lastWeek, lastWeekValues;
+    if (statistic) {
+      // Real data
+      let contribData, week, lastWeek, lastWeekValues;
 
-    if (!year) {
-      contribData = statistic.current;
-    } else {
-      contribData = statistic.years.find((element) => element.year === year);
-    }
+      if (!year) {
+        contribData = statistic.current;
+      } else {
+        contribData = statistic.years.find((element) => element.year === year);
+      }
 
-    const weeks = contribData.calendar.weeks;
+      const weeks = contribData.calendar.weeks;
 
-    if (!activity) {
-      week = weeks[weeks.length - 1];
-      lastWeek = weeks[weeks.length - 2];
-    } else {
-      week = weeks[activity.wkey];
-      lastWeek = weeks[activity.wkey - 1];
-    }
+      if (!activity) {
+        week = weeks[weeks.length - 1];
+        lastWeek = weeks[weeks.length - 2];
+      } else {
+        week = weeks[activity.wkey];
+        lastWeek = weeks[activity.wkey - 1];
+      }
 
-    const values = week.days.map((day, i) => {
-      return day.total;
-    });
-
-    if (lastWeek) {
-      lastWeekValues = lastWeek.days.map((day, i) => {
+      const values = week.days.map((day, i) => {
         return day.total;
       });
-    }
 
-    this.setState(
-      {
-        startDate: week.days[0]?.date,
-        endDate: week.days[6]?.date,
-      },
-      () => this.fillChart(values, lastWeekValues)
-    );
+      if (lastWeek) {
+        lastWeekValues = lastWeek.days.map((day, i) => {
+          return day.total;
+        });
+      }
+
+      this.setState(
+        {
+          startDate: week.days[0]?.date,
+          endDate: week.days[6]?.date,
+        },
+        () => this.fillChart(values, lastWeekValues)
+      );
+    } else {
+      // Dummy data for displaying purposes
+      this.setState(
+        {
+          startDate: "01.01.2020",
+          endDate: "07.01.2020",
+        },
+        () => this.fillChart([0, 10, 5, 2, 5, 6, 0], [5, 2, 6, 1, 1, 1, 0])
+      );
+    }
   };
 
   render() {
