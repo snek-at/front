@@ -128,16 +128,8 @@ class LoginForm extends React.Component {
       //console.log("LOGIN FORM PROCEED TO LOGIN", result);
 
       if (result) {
-        this.setState(
-          {
-            loginFail: false,
-          },
-          () => this.props.handleLogin(result)
-        );
-      } else {
-        // Login fail
         this.setState({
-          loginFail: true,
+          loginFail: false,
         });
       }
     }

@@ -143,52 +143,52 @@ class Talks extends React.Component {
                           </div>
                         </div>
                       </MDBCardBody>
-                      <div className="clearfix" />
-                      <MDBCardFooter>
-                        {talk.social && (
+                    </a>
+                    <div className="clearfix" />
+                    <MDBCardFooter>
+                      {talk.social && (
+                        <span className="d-inline-block mr-4">
+                          <MDBIcon
+                            icon="thumbs-up"
+                            className="green-text font-weight-bold"
+                          />{" "}
+                          <span className="font-weight-bold green-text">
+                            {talk.social.likes}
+                          </span>{" "}
+                          likes
+                          <br />
+                          <small className="text-muted">
+                            published on {talk.social.date}
+                          </small>
+                        </span>
+                      )}
+                      {talk.downloadUrl && (
+                        <a href={talk.downloadUrl}>
                           <span className="d-inline-block mr-4">
                             <MDBIcon
-                              icon="thumbs-up"
-                              className="green-text font-weight-bold"
+                              icon="file-download"
+                              className="blue-text font-weight-bold"
                             />{" "}
-                            <span className="font-weight-bold green-text">
-                              {talk.social.likes}
-                            </span>{" "}
-                            likes
-                            <br />
-                            <small className="text-muted">
-                              published on {talk.social.date}
-                            </small>
+                            download
                           </span>
-                        )}
-                        {talk.downloadUrl && (
-                          <a href={talk.downloadUrl}>
-                            <span className="d-inline-block mr-4">
-                              <MDBIcon
-                                icon="file-download"
-                                className="blue-text font-weight-bold"
-                              />{" "}
-                              download
-                            </span>
-                          </a>
-                        )}
-                        <a
-                          href={talk.repository.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <div>
-                            <img
-                              src={talk.repository.avatarUrl}
-                              alt={talk.repository.name}
-                            />
-                            <small>
-                              Owned by {talk.repository.owner.username}
-                            </small>
-                          </div>
                         </a>
-                      </MDBCardFooter>
-                    </a>
+                      )}
+                      <a
+                        href={talk.repository.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <div>
+                          <img
+                            src={talk.repository.avatarUrl}
+                            alt={talk.repository.name}
+                          />
+                          <small>
+                            Owned by {talk.repository.owner.username}
+                          </small>
+                        </div>
+                      </a>
+                    </MDBCardFooter>
                   </MDBCard>
                 </MDBCol>
               );

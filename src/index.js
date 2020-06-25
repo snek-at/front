@@ -27,7 +27,7 @@ import registerServiceWorker from "./registerServiceWorker";
 
 // Render the root component to <div id="root"></div>
 ReactDOM.render(
-  <Router basename={process.env.PUBLIC_URL + "/"}>
+  <Router>
     <App />
   </Router>,
   document.getElementById("root")

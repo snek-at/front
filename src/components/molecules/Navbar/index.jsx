@@ -79,7 +79,7 @@ class Navbar extends React.Component {
             ) : (
               <>
                 {!globalState.loading && globalState.loggedUser ? (
-                  <a href={"/u/" + globalState.loggedUser?.username}>
+                  <Link to={"/u/" + globalState.loggedUser?.username}>
                     <MDBNavbarBrand className="flex-center">
                       <img
                         src={SNEKLogo}
@@ -88,7 +88,7 @@ class Navbar extends React.Component {
                       />
                       <span className="font-weight-bold">SNEK</span>
                     </MDBNavbarBrand>
-                  </a>
+                  </Link>
                 ) : (
                   <Link to="/">
                     <MDBNavbarBrand className="flex-center">

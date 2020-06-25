@@ -33,7 +33,7 @@ class TalkPage extends React.Component {
   };
 
   componentDidMount = () => {
-    const { globalState, globalFunctions } = this.props.globalState;
+    const { globalState, globalFunctions } = this.props;
     const { uid, username } = this.props.match?.params;
 
     if (
