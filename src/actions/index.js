@@ -1,11 +1,11 @@
 //#region > Imports
 //> Core
-import { ferry } from "./core";
+import { ferryIntel } from "./core";
 //#endregion
 
 //#region > Export
 //> Core
-export { ferry };
+export { ferryIntel };
 //#endregion
 
 /**

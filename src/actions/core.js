@@ -15,7 +15,7 @@ const INTEL = new Intel();
  * @param args Arguments to use for the action
  * @description The intel ferry is used to deliver calls to the SNEK-Intel
  */
-const ferry = async (actionFn, args) => {
+const ferryIntel = async (actionFn, args) => {
   return actionFn(INTEL, args).then((res) => {
     console.log(res);
     switch (res.errorCode) {
@@ -32,7 +32,7 @@ const ferry = async (actionFn, args) => {
 //#endregion
 
 //#region > Exports
-export { ferry };
+export { ferryIntel };
 //#endregion
 
 /**

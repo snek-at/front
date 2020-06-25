@@ -22,7 +22,7 @@ import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
 //> Core
-import { ferry } from "./actions";
+import { ferryIntel } from "./actions";
 //> Actions
 import {
   login,
@@ -61,21 +61,21 @@ class App extends React.Component {
       this.handleLoginSession({ username, password: sha256(password) }),
     logout: async () => this.handleLogout(),
     //> General
-    fetchGitLabServers: async () => ferry(fetchGitLabServers()),
+    fetchGitLabServers: async () => ferryIntel(fetchGitLabServers()),
     appendSourceObjects: async (sourceList) =>
-      ferry(appendSourceObjects(sourceList)),
-    users: async () => ferry(getAllPageUrls()),
+      ferryIntel(appendSourceObjects(sourceList)),
+    users: async () => ferryIntel(getAllPageUrls()),
     saveSettings: async (nextSettings) => this.handleSaveSettings(nextSettings),
     //> User
     updateCache: async (fetchedUser) => this.handleCacheRenewal(fetchedUser),
-    writeCache: async (platformData) => ferry(writeCache(platformData)),
+    writeCache: async (platformData) => ferryIntel(writeCache(platformData)),
     registerUser: async (registrationData) =>
       this.handleRegistration(registrationData),
     fetchCacheData: async (username) => this.handleProfileFetching(username),
     //> Talk
     deleteTalk: async (talk) => this.handleTalkDeletion(talk),
     uploadTalk: async (file, talkInfo) => this.handleTalkUpload(file, talkInfo),
-    getTalk: (uid, username) => ferry(getTalk(uid, username)),
+    getTalk: (uid, username) => ferryIntel(getTalk(uid, username)),
     //> State checking
     refetchRequired: (username) => this.refetchRequired(username),
     usernameMatchesFetchedUsername: (username) =>
@@ -94,7 +94,7 @@ class App extends React.Component {
    * @description Handles states for login
    */
   handleLoginSession = async (user) => {
-    return ferry(login(user)).then((loggedUser) => {
+    return ferryIntel(login(user)).then((loggedUser) => {
       if (loggedUser) {
         this.setState(
           {
@@ -128,7 +128,7 @@ class App extends React.Component {
         loading: false,
         caching: false,
       },
-      () => ferry(logout()).then(() => this.handleLoginSession())
+      () => ferryIntel(logout()).then(() => this.handleLoginSession())
     );
   };
 
@@ -139,7 +139,7 @@ class App extends React.Component {
    * @description Handles states for registration
    */
   handleRegistration = (registrationData) => {
-    ferry(register(registrationData)).then((res) => {
+    ferryIntel(register(registrationData)).then((res) => {
       this.globalFunctions.login(res.username, res.password).then(() => {
         this.globalFunctions.writeCache(registrationData.platform_data);
         this.setState({ caching: true, loading: false });
@@ -159,7 +159,7 @@ class App extends React.Component {
       this.state.loggedUser?.username === fetchedUser?.username
     ) {
       // Renew cache
-      const fetchedUser = await ferry(updateCache(fetchedUser));
+      const fetchedUser = await ferryIntel(updateCache(fetchedUser));
 
       this.setState({
         fetchedUser,
@@ -175,7 +175,7 @@ class App extends React.Component {
    * @description Handles states for profile fetching
    */
   handleProfileFetching = async (username) => {
-    const fetchedUser = await ferry(readCache(username));
+    const fetchedUser = await ferryIntel(readCache(username));
     // Update visible data
     this.setState({
       fetchedUser: fetchedUser ? fetchedUser : false,
@@ -191,7 +191,7 @@ class App extends React.Component {
    * @description Handles states for talk uploading
    */
   handleTalkUpload = async (file, talkInfo) => {
-    ferry(uploadTalk(file, talkInfo), {
+    ferryIntel(uploadTalk(file, talkInfo), {
       currentCache: this.state.fetchedUser.platformData,
     }).then((platformData) => {
       this.setState({
@@ -210,7 +210,7 @@ class App extends React.Component {
    * @description Handles states for talk deleting
    */
   handleTalkDeletion = async (talk) => {
-    ferry(deleteTalk(talk), {
+    ferryIntel(deleteTalk(talk), {
       currentCache: this.state.fetchedUser.platformData,
     }).then((platformData) => {
       this.setState({
@@ -229,7 +229,7 @@ class App extends React.Component {
    * @description Handles states for saving settings
    */
   handleSaveSettings = async (nextSettings) => {
-    ferry(saveSettings(nextSettings), {
+    ferryIntel(saveSettings(nextSettings), {
       currentCache: this.state.fetchedUser.platformData,
     }).then((platformData) => {
       this.setState({
