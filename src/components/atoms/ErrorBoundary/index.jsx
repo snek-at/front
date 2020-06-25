@@ -49,7 +49,6 @@ class ErrorBoundary extends React.Component {
             <code>{"696 - Oops, something went wrong :("}</code>
             <div class="pl-2">
               <p class="pt-3">{this.state.error.toString()}</p>
-
               <label
                 class="mdb-main-label mb-3"
                 color="primary"
@@ -75,6 +74,7 @@ class ErrorBoundary extends React.Component {
         );
       }
     }
+    
     return this.props.children;
   }
 }
@@ -84,7 +84,7 @@ class ErrorBoundary extends React.Component {
 ErrorBoundary.propTypes = {
   hidden: PropTypes.bool,
 };
-//#endregi
+//#endregion
 
 //#region > Exports
 export default ErrorBoundary;
