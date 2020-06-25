@@ -96,14 +96,10 @@ class App extends React.Component {
   handleLoginSession = async (user) => {
     return ferryIntel(login(user)).then((loggedUser) => {
       if (loggedUser) {
-        this.setState(
-          {
-            loggedUser,
-            loading: false,
-          },
-          () => console.log(this.state)
-        );
-        console.log(this.state);
+        this.setState({
+          loggedUser,
+          loading: false,
+        });
       } else {
         if (this.state.loggedUser !== null) {
           this.setState({
@@ -277,8 +273,6 @@ class App extends React.Component {
   //#endregion
 
   render() {
-    console.log("STATE MAP: Render - LOC App.js");
-
     return (
       <ScrollToTop>
         <div className="flyout">

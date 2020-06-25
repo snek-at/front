@@ -40,7 +40,6 @@ class UploadModal extends React.Component {
           },
         })
         .then(() => {
-          console.log("UPLOAD DONE", globalState);
           this.setState({
             loading: false,
           });

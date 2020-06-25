@@ -17,13 +17,11 @@ const INTEL = new Intel();
  */
 const ferryIntel = async (actionFn, args) => {
   return actionFn(INTEL, args).then((res) => {
-    console.log(res);
     switch (res.errorCode) {
       case undefined:
-        console.log("SUCCESS", res);
         return res;
       default:
-        console.log("ERROR");
+        //#ERROR
         console.error(res.message);
         return null;
     }

@@ -111,7 +111,6 @@ class RegisterForm extends React.Component {
   };
 
   oauthGitHubSuccess = (response) => {
-    console.log(response);
     this.setState(
       {
         loadingGitHub: true,
@@ -128,7 +127,8 @@ class RegisterForm extends React.Component {
   };
 
   oauthGitHubFailure = (response) => {
-    console.log(response);
+    //#ERROR
+    console.error(response);
   };
 
   pushToSourceList = (platformName, username, platformUrl, token) => {
