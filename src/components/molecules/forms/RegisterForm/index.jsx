@@ -603,21 +603,22 @@ class RegisterForm extends React.Component {
               >
                 <MDBIcon fab icon="gitlab" size="lg" />
               </MDBBtn>
-              {window.location.hostname === "snek.at" ? (
+              {!process.env.NODE_ENV ||
+              process.env.NODE_ENV === "development" ? (
                 <GitHubOAuth
                   authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="2148629809594d57c113"
-                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
-                  redirectUri="https://snek.at/redirect"
+                  clientId="1440dd4c1d1c4c0fa124"
+                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
+                  redirectUri="http://localhost:3000/redirect"
                   onSuccess={this.oauthGitHubSuccess}
                   onFailure={this.oauthGitHubFailure}
                 />
               ) : (
                 <GitHubOAuth
                   authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="1440dd4c1d1c4c0fa124"
-                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
-                  redirectUri="http://localhost:3000/redirect"
+                  clientId="2148629809594d57c113"
+                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
+                  redirectUri="https://snek.at/redirect"
                   onSuccess={this.oauthGitHubSuccess}
                   onFailure={this.oauthGitHubFailure}
                 />
