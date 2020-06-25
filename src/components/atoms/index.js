@@ -10,7 +10,9 @@ import Calendar2D from "./charts/Calendar2D";
 import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
 import LatestActivity from "./charts/LatestActivity";
+//> General
 import SearchBar from "./SearchBar";
+import ErrorBoundary from "./ErrorBoundary";
 //#endregion
 
 //#region > Exports
@@ -24,6 +26,7 @@ export {
   ContribRadar,
   LatestActivity,
   SearchBar,
+  ErrorBoundary,
 };
 //#endregion
 
