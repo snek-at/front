@@ -31,7 +31,7 @@ import {
 } from "mdbreact";
 
 //> OAuth
-import { OAuthGitHub } from "../../../atoms";
+import GitHubOAuth from "reactjs-oauth";
 //#endregion
 
 //#region > Components
@@ -111,6 +111,7 @@ class RegisterForm extends React.Component {
   };
 
   oauthGitHubSuccess = (response) => {
+    console.log(response);
     this.setState(
       {
         loadingGitHub: true,
@@ -603,7 +604,7 @@ class RegisterForm extends React.Component {
                 <MDBIcon fab icon="gitlab" size="lg" />
               </MDBBtn>
               {window.location.hostname === "snek.at" ? (
-                <OAuthGitHub
+                <GitHubOAuth
                   authorizationUrl="https://github.com/login/oauth/authorize"
                   clientId="2148629809594d57c113"
                   clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
@@ -612,7 +613,7 @@ class RegisterForm extends React.Component {
                   onFailure={this.oauthGitHubFailure}
                 />
               ) : (
-                <OAuthGitHub
+                <GitHubOAuth
                   authorizationUrl="https://github.com/login/oauth/authorize"
                   clientId="1440dd4c1d1c4c0fa124"
                   clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"

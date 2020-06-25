@@ -11,8 +11,6 @@ import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
 import LatestActivity from "./charts/LatestActivity";
 import SearchBar from "./SearchBar";
-//> OAuth
-import OAuthGitHub from "./OAuth/GitHub";
 //#endregion
 
 //#region > Exports
@@ -26,7 +24,6 @@ export {
   ContribRadar,
   LatestActivity,
   SearchBar,
-  OAuthGitHub,
 };
 //#endregion
 
