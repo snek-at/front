@@ -8,8 +8,8 @@ import { Route, Switch } from "react-router-dom";
 //> Components
 import {
   HomePage,
-  CompanyPage,
   ProfilePage,
+  CompanyPage,
   TalkPage,
 } from "./components/pages";
 //#endregion
@@ -32,21 +32,6 @@ class Routes extends React.Component {
               {...props}
             />
           )}
-        />
-        <Route
-          exact
-          path="/redirect"
-          render={() => {
-            // Get name of window which was set by the parent to be the unique
-            // request key
-            const requestKey = window.name;
-
-            // Update corresponding entry with the redirected url which should
-            // contain either access token or failure reason in the query
-            // parameter / hash
-            localStorage.setItem(requestKey, window.location.href);
-            window.close();
-          }}
         />
         <Route
           exact
@@ -79,6 +64,42 @@ class Routes extends React.Component {
             />
           )}
         />
+        <Route
+          exact
+          path="/redirect"
+          render={() => {
+            // Close the window after GitHub redirect
+            this.componentDidMount = () => {
+              window.close();
+            };
+          }}
+        />
+        {/* Some debugging routes */}
+        <Route
+          render={function () {
+            return <h1>Not Found</h1>;
+          }}
+        />
+        <Route
+          exact
+          path="/first"
+          render={function () {
+            return <h1>First Layer</h1>;
+          }}
+        />
+        <Route
+          exact
+          path="/first/second"
+          render={function () {
+            return <h1>Second Layer</h1>;
+          }}
+        />
+        <Route
+          path="/first/second/third"
+          render={function () {
+            return <h1>Third Layer</h1>;
+          }}
+        />
       </Switch>
     );
   }
@@ -86,7 +107,6 @@ class Routes extends React.Component {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default Routes;
 //#endregion
 

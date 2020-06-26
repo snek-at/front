@@ -24,7 +24,7 @@ class UploadModal extends React.Component {
   };
 
   onDrop = async (files) => {
-    const { uploadTalk } = this.props.globalFunctions;
+    const { globalState, globalFunctions } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -32,13 +32,20 @@ class UploadModal extends React.Component {
         loading: true,
       });
 
-      uploadTalk(files[0]).then(() => {
-        this.setState({
-          loading: false,
-        });
+      globalFunctions
+        .uploadTalk(files[0], {
+          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
+          owner: {
+            username: globalState.loggedUser.username,
+          },
+        })
+        .then(() => {
+          this.setState({
+            loading: false,
+          });
 
-        this.props.closeModal();
-      });
+          this.props.closeModal();
+        });
     } else {
       this.setState({ error: ["Only PDF files can be uploaded!"] });
     }
