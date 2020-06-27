@@ -14,7 +14,7 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 /** @class A component which contains all tabs for software engineer profile */
 class SoftwareTabs extends React.Component {
   state = {
-    activeTab: 0,
+    activeTab: this.props.globalState?.active?.softwareTab,
     tabItems: [
       {
         title: "Overview",
@@ -61,6 +61,14 @@ class SoftwareTabs extends React.Component {
     ],
   };
 
+  setActiveTab = (activeTab) => {
+    this.props.globalState.active.softwareTab = activeTab;
+
+    this.setState({
+      activeTab,
+    });
+  };
+
   render() {
     const { globalState } = this.props;
     const { activeTab } = this.state;
@@ -73,7 +81,7 @@ class SoftwareTabs extends React.Component {
               <li className="nav-item" key={i}>
                 <span
                   className={activeTab === i ? "nav-link active" : "nav-link"}
-                  onClick={() => this.setState({ activeTab: i })}
+                  onClick={() => this.setActiveTab(i)}
                 >
                   {item.title}
                   <MDBBadge color="primary">{item.pill}</MDBBadge>
