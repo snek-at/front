@@ -53,6 +53,10 @@ class App extends React.Component {
     fetchedUser: undefined,
     loading: true,
     caching: false,
+    active: {
+      softwareTab: 0,
+      actionCard: 0,
+    },
   };
 
   globalFunctions = {
