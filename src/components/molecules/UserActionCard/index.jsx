@@ -24,13 +24,22 @@ import "./useractioncard.scss";
  */
 class UserActionCard extends React.Component {
   state = {
-    activeItem: 0,
+    activeItem: this.props.globalState?.active?.actionCard,
   };
 
   goTo = (item) => {
+    console.log(item);
     this.setState({
       activeItem: item,
     });
+  };
+
+  setActiveItem = (activeItem) => {
+    this.setState({
+      activeItem,
+    });
+
+    this.props.globalState.active.actionCard = activeItem;
   };
 
   render() {
@@ -41,10 +50,7 @@ class UserActionCard extends React.Component {
       <div className="text-center" id="useractionscard">
         {activeItem === 0 && (
           <>
-            <MDBBtn
-              color="green"
-              onClick={() => this.setState({ activeItem: 1 })}
-            >
+            <MDBBtn color="green" onClick={() => this.setActiveItem(1)}>
               Login to SNEK
             </MDBBtn>
             <div className="w-100">
@@ -60,7 +66,7 @@ class UserActionCard extends React.Component {
               <MDBCol md="6">
                 <div
                   className="selectType"
-                  onClick={() => this.setState({ activeItem: 2 })}
+                  onClick={() => this.setActiveItem(2)}
                 >
                   <p className="lead">Software Engineer</p>
                   <SvgSoftware />
@@ -69,7 +75,7 @@ class UserActionCard extends React.Component {
               <MDBCol md="6">
                 <div
                   className="selectType"
-                  onClick={() => this.setState({ activeItem: 3 })}
+                  onClick={() => this.setActiveItem(3)}
                 >
                   <p className="lead">Media Engineer</p>
                   <SvgMedia />
