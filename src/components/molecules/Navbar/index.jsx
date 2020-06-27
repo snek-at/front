@@ -153,7 +153,14 @@ class Navbar extends React.Component {
                 ) : (
                   <>
                     {location.pathname !== "/" && (
-                      <MDBBtn href="/" color="green" size="md">
+                      <MDBBtn
+                        href="/"
+                        color="green"
+                        size="md"
+                        onClick={() => {
+                          localStorage.setItem("actionCard", 1);
+                        }}
+                      >
                         Sign In
                       </MDBBtn>
                     )}
