@@ -489,6 +489,7 @@ class CompanyPage extends React.Component {
                                 <MDBCardFooter className="p-0">
                                   <MDBBtn
                                     color="green"
+                                    outline
                                     className="w-100 h-100 m-0"
                                   >
                                     Follow
@@ -605,7 +606,7 @@ class CompanyPage extends React.Component {
                           );
                         })}
                         <MDBCol md="4">
-                          <MDBBtn color="green">
+                          <MDBBtn color="green" outline>
                             <MDBIcon icon="plus-circle" />
                             Add platform
                           </MDBBtn>

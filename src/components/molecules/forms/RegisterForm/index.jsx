@@ -724,6 +724,7 @@ class RegisterForm extends React.Component {
             <MDBBtn
               color="green"
               className="mb-0"
+              outline
               onClick={this.handleSubmit}
               /*disabled={!this.state.hasGitHub}*/
             >

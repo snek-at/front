@@ -12,7 +12,7 @@
 // Buttons
 .btn {
   box-shadow: none;
-  border-radius: 0;
+  border-radius: .4rem;
   text-transform: initial;
 
   i {
@@ -37,11 +37,27 @@
 
   //> Button types
   // Button green
-  &.btn-green {
-    background-color: #77bd43 !important;
-
+  &.btn-outline-green {
+    background-color: transparentize($color: $snekGreen, $amount: 0.9) !important;
+    border: 2px $snekGreen solid;
+    color: darken($snekGreen, 10%);
     &:hover {
-      background-color: darken(#77bd43, 5%) !important;
+      background-color: transparentize($color: $snekGreen, $amount: 0.8) !important;
+    }
+  }
+  &.btn-green {
+    background-color: transparentize($color: $snekGreen, $amount: 0.4) !important;
+    border: 2px $snekGreen solid;
+    &:hover {
+      background-color: transparentize($color: $snekGreen, $amount: 0.3) !important;
+    }
+  }
+  &.btn-outline-primary {
+    background-color: transparentize($color: $blue, $amount: 0.9) !important;
+    border: 2px $blue solid;
+    color: darken($blue, 10%);
+    &:hover {
+      background-color: transparentize($color: $blue, $amount: 0.8) !important;
     }
   }
   // Button WhatsApp
@@ -148,7 +164,7 @@
     conic-gradient(
       from -45deg,
       #ea4335 110deg,
-      #4285f4 90deg 180deg,
+      $blue 90deg 180deg,
       #34a853 180deg 270deg,
       #fbbc05 270deg
     )

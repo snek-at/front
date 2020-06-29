@@ -156,6 +156,7 @@ class Navbar extends React.Component {
                       <MDBBtn
                         href="/"
                         color="green"
+                        outline
                         size="md"
                         onClick={() => {
                           localStorage.setItem("actionCard", 1);

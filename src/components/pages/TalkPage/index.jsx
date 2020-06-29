@@ -154,7 +154,7 @@ class TalkPage extends React.Component {
                                 </MDBBtn>
                               </a>
                               <a>
-                                <MDBBtn color="green" size="md">
+                                <MDBBtn color="green" outline size="md">
                                   <MDBIcon icon="heart"></MDBIcon>
                                   Follow
                                 </MDBBtn>
@@ -180,7 +180,7 @@ class TalkPage extends React.Component {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <MDBBadge color="green">
+                                <MDBBadge color="green" outline>
                                   <MDBIcon icon="dragon" />
                                   On SNEK
                                 </MDBBadge>

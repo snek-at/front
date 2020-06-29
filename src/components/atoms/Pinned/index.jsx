@@ -23,8 +23,8 @@ class Pinned extends React.Component {
     return (
       <MDBCol md="4" className="pinned-item">
         <MDBCard>
-          <div className={`text-center pinned-header ${category?.color}`} />
           <MDBCardBody>
+            <div className={`text-center pinned-header ${category?.color}`} />
             <div className="text-center mt-2">
               <p className="text-muted">{pinned?.description}</p>
             </div>

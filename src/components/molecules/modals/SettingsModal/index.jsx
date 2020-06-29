@@ -458,7 +458,7 @@ class SettingsModal extends React.Component {
         </MDBModalBody>
         <MDBModalFooter className="text-right">
           {this.state.changeDetected && (
-            <MDBBtn color="green" onClick={this.save}>
+            <MDBBtn color="green" outline onClick={this.save}>
               Save
             </MDBBtn>
           )}

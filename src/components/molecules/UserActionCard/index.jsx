@@ -50,7 +50,7 @@ class UserActionCard extends React.Component {
       <div className="text-center" id="useractionscard">
         {activeItem === 0 && (
           <>
-            <MDBBtn color="green" onClick={() => this.setActiveItem(1)}>
+            <MDBBtn color="green" outline onClick={() => this.setActiveItem(1)}>
               Login to SNEK
             </MDBBtn>
             <div className="w-100">
