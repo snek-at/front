@@ -14,7 +14,7 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 /** @class A component which contains all tabs for software engineer profile */
 class SoftwareTabs extends React.Component {
   state = {
-    activeTab: this.props.globalState?.active?.softwareTab,
+    activeTab: 0,
     tabItems: [
       {
         title: "Overview",
@@ -62,7 +62,7 @@ class SoftwareTabs extends React.Component {
   };
 
   setActiveTab = (activeTab) => {
-    this.props.globalState.active.softwareTab = activeTab;
+    // this.props.globalState.active.softwareTab = activeTab;
 
     this.setState({
       activeTab,

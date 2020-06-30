@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React, { lazy, Suspense } from "react";
 // DOM bindings for React Router
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, NavLink } from "react-router-dom";
 // React PropTypes
 import PropTypes from "prop-types";
 //> MDB
@@ -153,16 +153,18 @@ class Navbar extends React.Component {
                 ) : (
                   <>
                     {location.pathname !== "/" && (
-                      <MDBBtn
-                        href="/"
-                        color="green"
-                        size="md"
-                        onClick={() => {
-                          localStorage.setItem("actionCard", 1);
+                      <Link
+                        to={{
+                          pathname: "/",
+                          state: {
+                            actionCard: 1,
+                          },
                         }}
                       >
-                        Sign In
-                      </MDBBtn>
+                        <MDBBtn color="green" size="md">
+                          Sign In
+                        </MDBBtn>
+                      </Link>
                     )}
                   </>
                 )}

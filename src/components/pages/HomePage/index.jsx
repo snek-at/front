@@ -95,6 +95,7 @@ class HomePage extends React.Component {
 
   render() {
     const { globalState, globalFunctions } = this.props;
+    const activeActionCard = this.props.location?.state?.actionCard;
 
     if (!globalState.loading && globalState.loggedUser) {
       return <Redirect to={"/u/" + globalState.loggedUser.username} />;
@@ -154,6 +155,7 @@ class HomePage extends React.Component {
                   <UserActionCard
                     globalFunctions={globalFunctions}
                     globalState={globalState}
+                    activeIndex={activeActionCard ? activeActionCard : 0}
                   />
                 </MDBCard>
               </MDBCol>

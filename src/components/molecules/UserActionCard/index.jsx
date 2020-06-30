@@ -24,7 +24,7 @@ import "./useractioncard.scss";
  */
 class UserActionCard extends React.Component {
   state = {
-    activeItem: this.props.globalState?.active?.actionCard,
+    activeItem: this.props.activeIndex,
   };
 
   goTo = (item) => {
@@ -38,12 +38,10 @@ class UserActionCard extends React.Component {
     this.setState({
       activeItem,
     });
-
-    this.props.globalState.active.actionCard = activeItem;
   };
 
   render() {
-    const { globalState, globalFunctions } = this.props;
+    const { globalFunctions } = this.props;
     const { activeItem } = this.state;
 
     return (

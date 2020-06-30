@@ -53,10 +53,6 @@ class App extends React.Component {
     fetchedUser: undefined,
     loading: true,
     caching: false,
-    active: {
-      softwareTab: 0,
-      actionCard: 0,
-    },
   };
 
   globalFunctions = {
@@ -89,13 +85,6 @@ class App extends React.Component {
   componentDidMount = () => {
     // Start a session as anonymous user
     this.handleLoginSession();
-    if (localStorage.getItem("actionCard")) {
-      this.state.active.actionCard = parseInt(
-        localStorage.getItem("actionCard")
-      );
-
-      localStorage.removeItem("actionCard");
-    }
   };
 
   /**
