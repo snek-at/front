@@ -44,21 +44,26 @@ const getIntel = () => {
   return INTEL;
 };
 
-const STORE = createStore(
-  rootReducer /* preloadedState, */,
-  compose(
-    applyMiddleware(
-      loadingBarMiddleware(),
-      thunk.withExtraArgument({
-        getIntel, // Intel
+const composeEnhancers =
+  typeof window === "object" &&
+  process.env.NODE_ENV !== "production" &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
       })
-    ),
-    process.env.NODE_ENV !== "production" &&
-      typeof window === "object" &&
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__()
+    : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(
+    loadingBarMiddleware(),
+    thunk.withExtraArgument({
+      getIntel, // Intel
+    })
   )
+  // other store enhancers if any
 );
+
+const STORE = createStore(rootReducer /* preloadedState, */, enhancer);
 
 // Render the root component to <div id="root"></div>
 ReactDOM.render(
