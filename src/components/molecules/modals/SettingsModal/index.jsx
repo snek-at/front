@@ -198,7 +198,7 @@ class SettingsModal extends React.Component {
 
   save = () => {
     this.props.saveSettings(this.state);
-    this.props.this.props.closeModal();
+    this.props.closeModal();
   };
 
   render() {

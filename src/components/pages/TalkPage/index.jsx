@@ -32,63 +32,36 @@ import { connect } from "react-redux";
 class TalkPage extends React.Component {
   state = {
     loading: true,
-    talk: this.props.selectedTalk,
+    talk: undefined,
+  };
+
+  componentDidUpdate = () => {
+    console.log("UPDATE");
   };
 
   componentDidMount = () => {
-    const { fetchedUser, selectedTalk } = this.props;
     const { uid, username } = this.props.match?.params;
 
-    console.log("TALKS,", fetchedUser, selectedTalk);
-    console.log(this.state);
-    if (!this.state.loading) {
-      if (uid && username && fetchedUser) {
-        if (!this.state.talk) {
-          selectedTalk.social = {
-            likes: 17,
-            date: new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            }),
-          };
+    this.props.getTalk(uid, username).then(() => {
+      const { selectedTalk } = this.props;
 
-          selectedTalk.interval = {
-            timeoutID: setInterval(() => this.updateIframe(selectedTalk), 4000),
-            loaded: false,
-          };
-          this.setState({ talk: selectedTalk });
-        }
+      if (uid && username) {
+        selectedTalk.social = {
+          likes: 17,
+          date: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          }),
+        };
+
+        selectedTalk.interval = {
+          timeoutID: setInterval(() => this.updateIframe(selectedTalk), 4000),
+          loaded: false,
+        };
       }
-    } else {
-      console.log("TrY to get talks");
-      this.props.getTalk(uid, username).then(() => {
-        console.log("INFO", uid, username, fetchedUser);
-        if (uid && username && fetchedUser) {
-          console.log(this.state.talk, "TALLK");
-          if (!this.state.talk) {
-            selectedTalk.social = {
-              likes: 17,
-              date: new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }),
-            };
-
-            selectedTalk.interval = {
-              timeoutID: setInterval(
-                () => this.updateIframe(selectedTalk),
-                4000
-              ),
-              loaded: false,
-            };
-            console.log(selectedTalk, "SEL TALK");
-            this.setState({ talk: selectedTalk, loading: false });
-          }
-        }
-      });
-    }
+      this.setState({ talk: selectedTalk, loading: false });
+    });
   };
 
   updateIframe = (talk) => {
@@ -104,7 +77,7 @@ class TalkPage extends React.Component {
 
   render() {
     const talk = this.state.talk;
-    console.log(talk);
+    console.log(this.state);
     return (
       <div id="talk">
         {talk && (
@@ -404,7 +377,6 @@ class TalkPage extends React.Component {
 //#endregion
 
 const mapStateToProps = (state) => ({
-  fetchedUser: state.user.fetchedUser,
   selectedTalk: state.user.selectedTalk,
 });
 

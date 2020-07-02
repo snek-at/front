@@ -512,7 +512,7 @@ const deleteTalkAction = (talk) => {
       const intel = getIntel();
       const state = getState();
 
-      const fetchedUser = state.user.fetchedUser.platformData;
+      const fetchedUser = state.user.fetchedUser;
       const session = intel.snekclient.session;
 
       for (const index in fetchedUser.platformData.talks) {

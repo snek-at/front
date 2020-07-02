@@ -80,7 +80,7 @@ class Navbar extends React.Component {
               </MDBSmoothScroll>
             ) : (
               <>
-                {loggedUser ? (
+                {!loggedUser.anonymous ? (
                   <Link to={"/u/" + loggedUser?.username}>
                     <MDBNavbarBrand className="flex-center">
                       <img

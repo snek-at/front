@@ -24,7 +24,9 @@ import { connect } from "react-redux";
  *        loads the components accordingly.
  */
 class ProfilePage extends React.Component {
-  state = {};
+  state = {
+    cachingDone: false,
+  };
 
   saveSettings = (state) => {
     this.props.saveSettings(state);
@@ -37,7 +39,7 @@ class ProfilePage extends React.Component {
    * @returns {boolean} True if a refetch is required otherwise False
    */
   refetchRequired = (username) => {
-    const fetchedUser = this.state.fetchedUser;
+    const fetchedUser = this.props.fetchedUser;
 
     if (!fetchedUser) {
       return true;
@@ -54,24 +56,61 @@ class ProfilePage extends React.Component {
    * @returns {boolean} True if the usernames matches otherwise False
    */
   usernameMatchesFetchedUsername = (username) => {
-    return username === this.state.fetchedUser?.username;
+    return username === this.props.fetchedUser?.username;
   };
 
   componentDidMount = () => {
-    console.log("MIUNT");
+    this._isMounted = true;
+
     const { match, loggedUser, fetchedUser } = this.props;
     const username = match?.params?.username;
 
+    console.log("BAR USERNAME", username);
+    console.log("REFETCH REQUIRED", this.refetchRequired(username));
+    console.log("LOGGED", loggedUser);
+    console.log("FETCHED", fetchedUser);
+    console.log(
+      "USERNAME MATCHES FETCHED USERNAME",
+      this.usernameMatchesFetchedUsername(username)
+    );
     if (username) {
       if (this.refetchRequired(username)) {
         this.props.readCache(username);
       }
-
-      if (loggedUser && this.usernameMatchesFetchedUsername(username)) {
-        this.props.updateCache(fetchedUser);
-      }
+      console.log(
+        !loggedUser.anonymous && loggedUser.username === fetchedUser?.username
+      );
     }
   };
+
+  componentDidUpdate() {
+    const { loggedUser, fetchedUser } = this.props;
+
+    if (!this.state.cachingDone) {
+      if (
+        !loggedUser.anonymous &&
+        loggedUser.username === fetchedUser?.username
+      ) {
+        console.log("UPDATE CACHE");
+        this.props.updateCache(fetchedUser).then(() => {
+          console.log("UPDATEd");
+          if (this._isMounted) {
+            this.props.readCache(loggedUser.username);
+            this.setState(
+              { cachingDone: true },
+              console.log("CACHING DONE", this.props.fetchedUser)
+            );
+          } else {
+            console.log("CACHING DONE BUT NOT MOUNTED");
+          }
+        });
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   componentWillReceiveProps = (nextProps) => {
     //#TSID10

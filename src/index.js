@@ -33,6 +33,7 @@ import App from "./App";
 import rootReducer from "./store/reducers";
 //> Service Worker
 import registerServiceWorker from "./registerServiceWorker";
+import { loadingBarMiddleware } from "react-redux-loading-bar";
 //#endregion
 
 const INTEL = new Intel();
@@ -47,6 +48,7 @@ const STORE = createStore(
   rootReducer /* preloadedState, */,
   compose(
     applyMiddleware(
+      loadingBarMiddleware(),
       thunk.withExtraArgument({
         getIntel, // Intel
       })

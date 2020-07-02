@@ -15,6 +15,10 @@ import { SoftwareTabs, ProfileInfo } from "../../index";
 class SoftwareEngineer extends React.Component {
   state = {};
 
+  componentDidUpdate() {
+    console.log("UPDATE SOFTWARE ENGINEER");
+  }
+
   render() {
     return (
       <MDBContainer className="py-5">

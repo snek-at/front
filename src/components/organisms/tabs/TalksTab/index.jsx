@@ -34,6 +34,10 @@ class Talks extends React.Component {
     loading: true,
   };
 
+  componentDidUpdate() {
+    console.log("UPDATE TALKS TAB");
+  }
+
   handleUploadClose = () => {
     if (this.state.showUpload) {
       this.setState({
@@ -56,6 +60,7 @@ class Talks extends React.Component {
   render() {
     const { loggedUser, fetchedUser } = this.props;
     const talkList = fetchedUser?.platformData?.talks;
+    console.log("rerender");
 
     if (talkList) {
       talkList.map((talk) => {
@@ -76,7 +81,6 @@ class Talks extends React.Component {
         return talk;
       });
     }
-
     return (
       <>
         <MDBRow>

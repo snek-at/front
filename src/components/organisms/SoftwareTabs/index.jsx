@@ -16,7 +16,25 @@ import { connect } from "react-redux";
 class SoftwareTabs extends React.Component {
   state = {
     activeTab: 0,
-    tabItems: [
+  };
+
+  setActiveTab = (activeTab) => {
+    this.setState({
+      activeTab,
+    });
+  };
+
+  componentDidUpdate() {
+    console.log("UPDATE SOFTWARE TABS", this.state.activeTab);
+  }
+
+  render() {
+    const { fetchedUser } = this.props;
+    const { activeTab } = this.state;
+
+    console.log(fetchedUser);
+
+    const tabItems = [
       {
         title: "Overview",
         visible: true,
@@ -57,24 +75,12 @@ class SoftwareTabs extends React.Component {
           : "0",
         notification: false,
       },
-    ],
-  };
-
-  setActiveTab = (activeTab) => {
-    this.setState({
-      activeTab,
-    });
-  };
-
-  render() {
-    const { fetchedUser } = this.props;
-    const { activeTab } = this.state;
-    console.log("SOFTWARE", this.props);
+    ];
 
     return (
       <div className="profile-content">
         <ul className="nav nav-tabs">
-          {this.state.tabItems.map((item, i) => {
+          {tabItems.map((item, i) => {
             return (
               <li className="nav-item" key={i}>
                 <span

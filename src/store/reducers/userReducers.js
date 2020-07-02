@@ -14,7 +14,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "SIGNUP_SUCCESS":
       return {
         ...state,
-        registrationHistory: action.payload,
+        registrationHistory: { ...action.payload },
       };
 
     case "SIGNUP_FAILED" || "SIGNUP_ERROR":
@@ -41,7 +41,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "READ_CACHE_SUCCESS":
       return {
         ...state,
-        fetchedUser: action.payload.fetchedUser,
+        fetchedUser: { ...action.payload.fetchedUser },
       };
 
     case "READ_CACHE_FAILED" || "READ_CACHE_ERROR":
@@ -55,7 +55,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "UPDATE_CACHE_SUCCESS":
       return {
         ...state,
-        fetchedUser: action.payload.fetchedUser,
+        // fetchedUser: { ...action.payload.fetchedUser },
       };
 
     case "UPDATE_CACHE_ERROR":
@@ -69,7 +69,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "SAVE_SETTING_SUCCESS":
       return {
         ...state,
-        fetchedUser: action.payload.fetchedUser,
+        fetchedUser: { ...action.payload.fetchedUser },
       };
 
     case "SAVE_SETTING_ERROR":
@@ -83,7 +83,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "GET_TALK_SUCCESS":
       return {
         ...state,
-        selectedTalk: action.payload.talk,
+        selectedTalk: { ...action.payload.talk },
       };
 
     case "GET_TALK_FAILED" || "GET_TALK_ERROR":
@@ -97,7 +97,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "UPLOAD_TALK_SUCCESS":
       return {
         ...state,
-        fetchedUser: action.payload.fetchedUser,
+        fetchedUser: { ...action.payload.fetchedUser },
       };
 
     case "UPLOAD_TALK_ERROR":
@@ -111,7 +111,7 @@ const userReducer = (state = INIT_STATE, action) => {
     case "DELETING_TALK_SUCCESS":
       return {
         ...state,
-        fetchedUser: action.payload.fetchedUser,
+        fetchedUser: { ...action.payload.fetchedUser },
       };
 
     case "DELETING_TALK_ERROR":

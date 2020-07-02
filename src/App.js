@@ -4,6 +4,7 @@
 import React, { useEffect } from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
+import LoadingBar, { showLoading, resetLoading } from "react-redux-loading-bar";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
@@ -349,15 +350,17 @@ function App() {
   }, []);
 
   return (
-    <ScrollToTop>
-      <div className="flyout">
-        <Navbar />
-        <main>
-          <Routes />
-        </main>
-        <Footer />
-      </div>
-    </ScrollToTop>
+    <>
+      <ScrollToTop>
+        <div className="flyout">
+          <Navbar />
+          <main>
+            <Routes />
+          </main>
+          <Footer />
+        </div>
+      </ScrollToTop>
+    </>
   );
 }
 
