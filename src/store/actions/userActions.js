@@ -37,7 +37,7 @@ const registerAction = (registrationData) => {
       // Create JSON string out of sources for backend use
       registrationData.sources = JSON.stringify(registrationData.sources);
 
-      session.tasks.user
+      return session.tasks.user
         .registration(registrationData)
         .then((res) => {
           if (res.result === "FAIL") {

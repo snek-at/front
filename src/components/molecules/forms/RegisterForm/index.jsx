@@ -32,6 +32,10 @@ import {
 
 //> OAuth
 import GitHubOAuth from "reactjs-oauth";
+import { registerAction } from "../../../../store/actions/userActions";
+import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
+import { loginAction } from "../../../../store/actions/authActions";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -77,10 +81,10 @@ class RegisterForm extends React.Component {
     // Check if GitLab Servers have already been set
     if (this.state.gitlab_servers === undefined) {
       // Retrieve GitLab servers
-      const gitlab_servers = await this.props.globalFunctions.fetchGitLabServers();
-
-      this.setState({
-        gitlab_servers,
+      this.props.fetchGitLabServers().then(() => {
+        this.setState({
+          gitlab_servers: this.props.gitlabServers,
+        });
       });
     }
   };
@@ -404,8 +408,17 @@ class RegisterForm extends React.Component {
             gift_code: promoCode && code !== "" ? code : null,
             password: password1,
           };
+          console.log(this.props);
+          this.props.register(registrationData).then(() => {
+            const { username, password } = registrationData;
 
-          this.props.globalFunctions.registerUser(registrationData);
+            console.log({ username, password });
+
+            this.props.login({
+              username,
+              password,
+            });
+          });
         }
       );
     } else {
@@ -828,10 +841,22 @@ RegisterForm.propTypes = {
   goto: PropTypes.func,
 };
 //#endregion
+const mapStateToProps = (state) => ({
+  registrationHistory: state.user.registrationHistory,
+  gitlabServers: state.general.allGitlabServers,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (registrationData) => dispatch(registerAction(registrationData)),
+    login: (user) => dispatch(loginAction(user)),
+    fetchGitLabServers: () => dispatch(fetchGitLabServersAction()),
+  };
+};
 
 //#region > Exports
 //> Default Class
-export default RegisterForm;
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
 //#endregion
 
 /**
