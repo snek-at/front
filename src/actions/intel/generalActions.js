@@ -82,6 +82,9 @@ const saveSettings = (nextSettings) => {
 
       // Check for mandatory fields
       if (nextSettings.email) {
+        currentCache.profile.avatarUrl = nextSettings.avatar_url
+          ? nextSettings.avatar_url
+          : "";
         currentCache.user.firstName = nextSettings.first_name
           ? nextSettings.first_name
           : "";
@@ -112,7 +115,7 @@ const saveSettings = (nextSettings) => {
       }
 
       session.tasks.user.cache(JSON.stringify(currentCache));
-
+      console.log(currentCache, "Current Cache");
       return currentCache;
     } catch (ex) {
       return {
