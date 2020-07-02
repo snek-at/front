@@ -270,16 +270,17 @@ const updateCacheAction = (fetchedUser) => {
 
       intel.resetReducer();
 
-      session.tasks.user
+      return session.tasks.user
         .cache(JSON.stringify(fetchedUser.platformData))
+        .then(
+          dispatch({
+            type: "UPDATE_CACHE_SUCCESS",
+            payload: { fetchedUser },
+          })
+        )
         .catch((ex) =>
           dispatch({ type: "UPDATE_CACHE_ERROR", payload: { error: ex } })
         );
-
-      dispatch({
-        type: "UPDATE_CACHE_SUCCESS",
-        payload: { fetchedUser },
-      });
     } catch (ex) {
       dispatch({
         type: "UPDATE_CACHE_ERROR",

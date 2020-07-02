@@ -24,9 +24,7 @@ import { connect } from "react-redux";
  *        loads the components accordingly.
  */
 class ProfilePage extends React.Component {
-  state = {
-    cachingDone: false,
-  };
+  state = {};
 
   saveSettings = (state) => {
     this.props.saveSettings(state);
@@ -86,7 +84,7 @@ class ProfilePage extends React.Component {
   componentDidUpdate() {
     const { loggedUser, fetchedUser } = this.props;
 
-    if (!this.state.cachingDone) {
+    if (!this.props.cachingDone) {
       if (
         !loggedUser.anonymous &&
         loggedUser.username === fetchedUser?.username
@@ -96,10 +94,8 @@ class ProfilePage extends React.Component {
           console.log("UPDATEd");
           if (this._isMounted) {
             this.props.readCache(loggedUser.username);
-            this.setState(
-              { cachingDone: true },
-              console.log("CACHING DONE", this.props.fetchedUser)
-            );
+
+            console.log("CACHING DONE", this.props.fetchedUser);
           } else {
             console.log("CACHING DONE BUT NOT MOUNTED");
           }
@@ -147,6 +143,7 @@ class ProfilePage extends React.Component {
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
   fetchedUser: state.user.fetchedUser,
+  cachingDone: state.user.cachingDone,
 });
 
 const mapDispatchToProps = (dispatch) => {

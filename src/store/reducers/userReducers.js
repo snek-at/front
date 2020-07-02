@@ -4,6 +4,8 @@ const INIT_STATE = {
   fetchedUser: null,
   registrationHistory: null,
   selectedTalk: null,
+  newCachedUser: null,
+  cachingDone: false,
   userError: null,
   userErrorDetails: null,
 };
@@ -55,7 +57,8 @@ const userReducer = (state = INIT_STATE, action) => {
     case "UPDATE_CACHE_SUCCESS":
       return {
         ...state,
-        // fetchedUser: { ...action.payload.fetchedUser },
+        newCachedUser: { ...action.payload.fetchedUser },
+        cachingDone: true,
       };
 
     case "UPDATE_CACHE_ERROR":
