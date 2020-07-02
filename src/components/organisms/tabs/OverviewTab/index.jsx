@@ -93,7 +93,7 @@ class OverviewTab extends React.Component {
               })}
             </MDBRow>
           )}
-          {true && (
+          {false && (
             <>
               <MDBRow className="m-0 p-0">
                 <MDBCol md="6 text-left">

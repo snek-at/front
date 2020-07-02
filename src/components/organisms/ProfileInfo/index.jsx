@@ -15,13 +15,16 @@ import {
   MDBIcon,
   MDBTooltip,
 } from "mdbreact";
+//> Redux
 import { connect } from "react-redux";
+//> Components
+import { LanguageChart } from "../../atoms";
 //#endregion
 
 //#region > Components
 /** @class This component displays personal information and status of a user */
 class ProfileInfo extends React.Component {
-  state = {};
+  state = { limitLanguages: true };
 
   componentDidMount = () => {
     const { fetchedUser } = this.props;
@@ -289,11 +292,53 @@ class ProfileInfo extends React.Component {
               )}
             </div>
           )}
-          <hr />
-          <p>Top languages</p>
-          <div className="px-4">
-            <p>Language Chart</p>
-          </div>
+          {fetchedUser.platformData?.statistic?.languages?.length > 0 && (
+            <div className="px-1">
+              <hr />
+              <p>Top languages</p>
+              <LanguageChart
+                languages={fetchedUser.platformData.statistic.languages}
+                height={10}
+              />
+              {fetchedUser.platformData.statistic.languages
+                .slice(
+                  0,
+                  this.state.limitLanguages
+                    ? 3
+                    : fetchedUser.platformData.statistic.languages.length - 1
+                )
+                .map((language, i) => {
+                  return (
+                    <small className="text-left text-muted d-block" key={i}>
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <MDBIcon
+                            icon="square"
+                            className="pr-1"
+                            style={{
+                              color: language.color,
+                            }}
+                          />
+                          <span>{language.name}</span>
+                        </div>
+                        <span className="text-muted small">
+                          {language.share}%
+                        </span>
+                      </div>
+                    </small>
+                  );
+                })}
+              {this.state.limitLanguages &&
+                fetchedUser.platformData.statistic.languages.length > 3 && (
+                  <p
+                    className="small clickable blue-text d-inline"
+                    onClick={() => this.setState({ limitLanguages: false })}
+                  >
+                    Show more
+                  </p>
+                )}
+            </div>
+          )}
         </div>
       </div>
     );
