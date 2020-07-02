@@ -87,7 +87,7 @@ class Talks extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {loggedUser && (
+          {loggedUser.username === fetchedUser.username && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -113,7 +113,7 @@ class Talks extends React.Component {
                             : talk.name}
                         </MDBCol>
                         <MDBCol md="1">
-                          {loggedUser && (
+                          {loggedUser.username === fetchedUser.username && (
                             <small onClick={() => this.props.deleteTalk(talk)}>
                               <MDBIcon
                                 icon="trash-alt"
