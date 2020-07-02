@@ -39,10 +39,16 @@ const loginAction = (user) => {
           }
         })
         .catch((ex) =>
-          dispatch({ type: "LOGIN_ERROR", payload: { error: ex } })
+          dispatch({
+            type: "LOGIN_FAILED",
+            payload: {
+              errorCode: 619,
+              message: "Login failed invalid credentials",
+              error: ex,
+            },
+          })
         );
     } catch (ex) {
-      console.log("ERRORRR");
       dispatch({
         type: "LOGIN_ERROR",
         payload: { errorCode: 600, message: "Login failed", error: ex },
