@@ -126,9 +126,12 @@ class Navbar extends React.Component {
                           />
                         </MDBDropdownToggle>
                         <MDBDropdownMenu className="dropdown-default">
-                          <MDBDropdownItem href={"/u/" + loggedUser.username}>
+                          <Link
+                            to={"/u/" + loggedUser.username}
+                            className="dropdown-item"
+                          >
                             My profile
-                          </MDBDropdownItem>
+                          </Link>
                           <MDBDropdownItem
                             onClick={() =>
                               this.setState({ showSettings: true })
