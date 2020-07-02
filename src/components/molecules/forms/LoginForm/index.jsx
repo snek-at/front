@@ -21,6 +21,7 @@ class LoginForm extends React.Component {
   state = {
     login_username: "",
     login_password: "",
+    loginFail: false,
   };
 
   testForError = (id) => {
@@ -129,10 +130,10 @@ class LoginForm extends React.Component {
 
       //#TSID6
       //console.log("LOGIN FORM PROCEED TO LOGIN", result);
-
-      if (result) {
+      if (result.payload.error) {
         this.setState({
-          loginFail: false,
+          loginFail: true,
+          errorMsg: result.payload.message,
         });
       }
     }
@@ -152,7 +153,7 @@ class LoginForm extends React.Component {
         <p className="lead">Login to SNEK</p>
         {this.state.loginFail && (
           <MDBAlert color="danger" className="mt-3 mb-3">
-            Can not perform login. Please check your username and password.
+            {this.state.errorMsg}
           </MDBAlert>
         )}
         <form onSubmit={this.login}>
