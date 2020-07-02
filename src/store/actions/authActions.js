@@ -17,7 +17,7 @@ const loginAction = (user) => {
 
       console.log(session);
 
-      session
+      return session
         .begin(user)
         .then((whoami) => {
           console.log("WHOAMI", whoami);
