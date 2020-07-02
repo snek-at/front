@@ -32,8 +32,6 @@ import SNEKLogo from "../../../assets/navigation/logo.png";
 import "./navbar.scss";
 import { connect } from "react-redux";
 import { logoutAction } from "../../../store/actions/authActions";
-//> Components
-const Settings = lazy(() => import("../modals/SettingsModal"));
 //#endregion
 
 //#region > Components
@@ -64,68 +62,103 @@ class Navbar extends React.Component {
     const { location, loggedUser } = this.props;
     console.log(this.props);
     return (
-      <>
-        <MDBNavbar color="light" light expand="md">
-          <MDBContainer>
-            {location.pathname === "/" ? (
-              <MDBSmoothScroll to="home" className="d-inline">
-                <MDBNavbarBrand className="flex-center">
-                  <img
-                    src={SNEKLogo}
-                    alt="SNEK Logo"
-                    className="img-fluid mr-2"
-                  />
-                  <span className="font-weight-bold">SNEK</span>
-                </MDBNavbarBrand>
-              </MDBSmoothScroll>
-            ) : (
-              <>
-                {!loggedUser.anonymous ? (
-                  <Link to={"/u/" + loggedUser?.username}>
-                    <MDBNavbarBrand className="flex-center">
-                      <img
-                        src={SNEKLogo}
-                        alt="SNEK Logo"
-                        className="img-fluid mr-2"
-                      />
-                      <span className="font-weight-bold">SNEK</span>
-                    </MDBNavbarBrand>
-                  </Link>
-                ) : (
-                  <Link to="/">
-                    <MDBNavbarBrand className="flex-center">
-                      <img
-                        src={SNEKLogo}
-                        alt="SNEK Logo"
-                        className="img-fluid mr-2"
-                      />
-                      <span className="font-weight-bold">SNEK</span>
-                    </MDBNavbarBrand>
-                  </Link>
-                )}
-              </>
-            )}
-            <MDBNavbarToggler onClick={this.toggleCollapse} />
-            <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
-              <MDBNavbarNav left>
-                <MDBNavItem>
-                  <SearchBar />
-                </MDBNavItem>
-              </MDBNavbarNav>
-              <MDBNavbarNav right>
-                {!loggedUser.anonymous ? (
-                  <>
-                    <div className="spacer" />
-                    <MDBNavItem>
-                      <MDBDropdown>
-                        <MDBDropdownToggle nav caret>
-                          <img
-                            src={loggedUser.avatarUrl}
-                            className="z-depth-0"
-                            alt={loggedUser.username}
-                          />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu className="dropdown-default">
+      <MDBNavbar color="light" light expand="md">
+        <MDBContainer>
+          {location.pathname === "/" ? (
+            <MDBSmoothScroll to="home" className="d-inline">
+              <MDBNavbarBrand className="flex-center">
+                <img
+                  src={SNEKLogo}
+                  alt="SNEK Logo"
+                  className="img-fluid mr-2"
+                />
+                <span className="font-weight-bold">SNEK</span>
+              </MDBNavbarBrand>
+            </MDBSmoothScroll>
+          ) : (
+            <>
+              {!loggedUser.anonymous ? (
+                <Link to={"/u/" + loggedUser?.username}>
+                  <MDBNavbarBrand className="flex-center">
+                    <img
+                      src={SNEKLogo}
+                      alt="SNEK Logo"
+                      className="img-fluid mr-2"
+                    />
+                    <span className="font-weight-bold">SNEK</span>
+                  </MDBNavbarBrand>
+                </Link>
+              ) : (
+                <Link to="/">
+                  <MDBNavbarBrand className="flex-center">
+                    <img
+                      src={SNEKLogo}
+                      alt="SNEK Logo"
+                      className="img-fluid mr-2"
+                    />
+                    <span className="font-weight-bold">SNEK</span>
+                  </MDBNavbarBrand>
+                </Link>
+              )}
+            </>
+          )}
+          <MDBNavbarToggler onClick={this.toggleCollapse} />
+          <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
+            <MDBNavbarNav left>
+              <MDBNavItem>
+                <SearchBar />
+              </MDBNavItem>
+            </MDBNavbarNav>
+            <MDBNavbarNav right>
+              {!loggedUser.anonymous ? (
+                <>
+                  <div className="spacer" />
+                  <MDBNavItem>
+                    <MDBDropdown>
+                      <MDBDropdownToggle nav caret>
+                        <img
+                          src={loggedUser.avatarUrl}
+                          className="z-depth-0"
+                          alt={loggedUser.username}
+                        />
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu className="dropdown-default">
+                        <Link to="/settings" className="dropdown-item">
+                          Settings
+                        </Link>
+                        <Link
+                          to="/"
+                          onClick={this.props.logout}
+                          className="dropdown-item"
+                        >
+                          Sign Out
+                        </Link>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavItem>
+                </>
+              ) : (
+                <>
+                  {location.pathname !== "/" && (
+                    <Link
+                      to={{
+                        pathname: "/",
+                        state: {
+                          actionCard: 1,
+                        },
+                      }}
+                    >
+                      <MDBBtn color="green" size="md">
+                        Sign In
+                      </MDBBtn>
+                    </Link>
+                  )}
+                </>
+              )}
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBContainer>
+      </MDBNavbar>
                           <Link
                             to={"/u/" + loggedUser.username}
                             className="dropdown-item"
@@ -133,51 +166,6 @@ class Navbar extends React.Component {
                             My profile
                           </Link>
                           <MDBDropdownItem
-                            onClick={() =>
-                              this.setState({ showSettings: true })
-                            }
-                          >
-                            Settings
-                          </MDBDropdownItem>
-                          <Link
-                            to="/"
-                            onClick={this.props.logout}
-                            className="dropdown-item"
-                          >
-                            Sign Out
-                          </Link>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    </MDBNavItem>
-                  </>
-                ) : (
-                  <>
-                    {location.pathname !== "/" && (
-                      <Link
-                        to={{
-                          pathname: "/",
-                          state: {
-                            actionCard: 1,
-                          },
-                        }}
-                      >
-                        <MDBBtn color="green" size="md">
-                          Sign In
-                        </MDBBtn>
-                      </Link>
-                    )}
-                  </>
-                )}
-              </MDBNavbarNav>
-            </MDBCollapse>
-          </MDBContainer>
-        </MDBNavbar>
-        {this.state.showSettings && (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Settings {...this.props} closeModal={this.handleSettingsClose} />
-          </Suspense>
-        )}
-      </>
     );
   }
 }

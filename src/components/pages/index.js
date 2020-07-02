@@ -5,11 +5,12 @@ import CompanyPage from "./CompanyPage";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import TalkPage from "./TalkPage";
+import SettingsPage from "./SettingsPage";
 //#endregion
 
 //#region > Exports
 //> Pages
-export { CompanyPage, HomePage, ProfilePage, TalkPage };
+export { CompanyPage, HomePage, ProfilePage, TalkPage, SettingsPage };
 //#endregion
 
 /**

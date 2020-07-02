@@ -1,14 +1,14 @@
 //#region > Imports
 //> Components
 // Import all components to export them for easy access from parent components
-import UploadModal from "./UploadModal";
-import SettingModal from "./SettingsModal";
+import TalkUploadModal from "./TalkUploadModal";
+import ProfilePictureModal from "./ProfilePictureModal";
 //#endregion
 
 //#region > Exports
 //> Components
 // Export the components for easy access from parent components
-export { UploadModal, SettingModal };
+export { TalkUploadModal, ProfilePictureModal };
 //#endregion
 
 /**

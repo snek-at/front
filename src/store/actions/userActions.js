@@ -314,6 +314,9 @@ const saveSettingsActions = (nextSettings) => {
       if (fetchedUser.platformData) {
         // Check for mandatory fields
         if (nextSettings.email) {
+          fetchedUser.platformData.profile.avatarUrl = nextSettings.avatar_url
+            ? nextSettings.avatar_url
+            : "";
           fetchedUser.platformData.user.firstName = nextSettings.first_name
             ? nextSettings.first_name
             : "";
