@@ -19,6 +19,8 @@ import {
 import * as fuzzysort from "fuzzysort";
 //> CSS
 import "./search.scss";
+import { connect } from "react-redux";
+import { getAllPageUrlsAction } from "../../../store/actions/generalActions";
 //#endregion
 
 //#region > Components
@@ -28,14 +30,14 @@ import "./search.scss";
 class SearchBar extends React.Component {
   state = {
     filter: "",
-    usernames: [],
+    usernames: this.props.allRegisteredUsernames,
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    if (!nextProps.globalState.loading) {
-      this.getUsernameList();
-    }
-  };
+  componentDidMount() {
+    this.props.allUsernames().then(() => {
+      this.setState({ usernames: this.props.allRegisteredUsernames });
+    });
+  }
 
   handleSelection = (event, value) => {
     if (event === "user") {
@@ -60,19 +62,7 @@ class SearchBar extends React.Component {
     }
   };
 
-  getUsernameList = () => {
-    const { globalFunctions } = this.props;
-
-    globalFunctions.users().then((usernames) => {
-      this.setState({
-        usernames,
-      });
-    });
-  };
-
   render() {
-    const { globalState } = this.props;
-
     //Select component does not support onChange event. Instead, you can use getValue or getTextContent methods.
     return (
       <MDBSelect
@@ -112,9 +102,21 @@ class SearchBar extends React.Component {
 SearchBar.propTypes = {};
 //#endregion
 
+const mapStateToProps = (state) => ({
+  allRegisteredUsernames: state.general.allRegisteredUsernames,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    allUsernames: () => dispatch(getAllPageUrlsAction()),
+  };
+};
+
 //#region > Exports
 //> Default Class
-export default withRouter(SearchBar);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SearchBar)
+);
 //#endregion
 
 /**

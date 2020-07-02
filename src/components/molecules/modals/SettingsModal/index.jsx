@@ -28,6 +28,11 @@ import {
 
 //> CSS
 import "./settings.scss";
+import { connect } from "react-redux";
+import {
+  saveSettingsActions,
+  readCacheAction,
+} from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Constant Variables
@@ -52,8 +57,9 @@ class SettingsModal extends React.Component {
   };
 
   componentDidMount = () => {
+    const { fetchedUser } = this.props;
     // Check for the current values
-    const platformData = this.props.globalState?.fetchedUser?.platformData;
+    const platformData = fetchedUser?.platformData;
 
     if (platformData?.profile && platformData?.user) {
       const profile = platformData.profile;
@@ -192,7 +198,7 @@ class SettingsModal extends React.Component {
 
   save = () => {
     this.props.saveSettings(this.state);
-    this.props.closeModal();
+    this.props.this.props.closeModal();
   };
 
   render() {
@@ -423,9 +429,8 @@ class SettingsModal extends React.Component {
                           />
                           <MDBSelectOptions>
                             <MDBSelectOption value="">Default</MDBSelectOption>
-                            {this.props.globalState.fetchedUser.accessories
-                              .themes &&
-                              this.props.globalState.fetchedUser.accessories.themes.tids.map(
+                            {this.props.fetchedUser.accessories.themes &&
+                              this.props.fetchedUser.accessories.themes.tids.map(
                                 (tid, i) => {
                                   let name = "Unnamed";
                                   switch (tid) {
@@ -472,9 +477,19 @@ class SettingsModal extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveSettings: (nextSettings) => dispatch(saveSettingsActions(nextSettings)),
+  };
+};
+
 //#region > Exports
 //> Default Class
-export default SettingsModal;
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsModal);
 //#endregion
 
 /**

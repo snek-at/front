@@ -30,6 +30,8 @@ import { SearchBar } from "../../atoms";
 import SNEKLogo from "../../../assets/navigation/logo.png";
 //> CSS
 import "./navbar.scss";
+import { connect } from "react-redux";
+import { logoutAction } from "../../../store/actions/authActions";
 //> Components
 const Settings = lazy(() => import("../modals/SettingsModal"));
 //#endregion
@@ -59,8 +61,8 @@ class Navbar extends React.Component {
   };
 
   render() {
-    const { globalState, globalFunctions, location } = this.props;
-
+    const { location, loggedUser } = this.props;
+    console.log(this.props);
     return (
       <>
         <MDBNavbar color="light" light expand="md">
@@ -78,8 +80,8 @@ class Navbar extends React.Component {
               </MDBSmoothScroll>
             ) : (
               <>
-                {!globalState.loading && globalState.loggedUser ? (
-                  <Link to={"/u/" + globalState.loggedUser?.username}>
+                {loggedUser ? (
+                  <Link to={"/u/" + loggedUser?.username}>
                     <MDBNavbarBrand className="flex-center">
                       <img
                         src={SNEKLogo}
@@ -107,29 +109,24 @@ class Navbar extends React.Component {
             <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
               <MDBNavbarNav left>
                 <MDBNavItem>
-                  <SearchBar
-                    globalState={globalState}
-                    globalFunctions={globalFunctions}
-                  />
+                  <SearchBar />
                 </MDBNavItem>
               </MDBNavbarNav>
               <MDBNavbarNav right>
-                {!globalState.loading && globalState.loggedUser ? (
+                {!loggedUser.anonymous ? (
                   <>
                     <div className="spacer" />
                     <MDBNavItem>
                       <MDBDropdown>
                         <MDBDropdownToggle nav caret>
                           <img
-                            src={globalState.loggedUser.avatarUrl}
+                            src={loggedUser.avatarUrl}
                             className="z-depth-0"
-                            alt={globalState.loggedUser.username}
+                            alt={loggedUser.username}
                           />
                         </MDBDropdownToggle>
                         <MDBDropdownMenu className="dropdown-default">
-                          <MDBDropdownItem
-                            href={"/u/" + globalState.loggedUser.username}
-                          >
+                          <MDBDropdownItem href={"/u/" + loggedUser.username}>
                             My profile
                           </MDBDropdownItem>
                           <MDBDropdownItem
@@ -141,7 +138,7 @@ class Navbar extends React.Component {
                           </MDBDropdownItem>
                           <Link
                             to="/"
-                            onClick={globalFunctions.logout}
+                            onClick={this.props.logout}
                             className="dropdown-item"
                           >
                             Sign Out
@@ -174,11 +171,7 @@ class Navbar extends React.Component {
         </MDBNavbar>
         {this.state.showSettings && (
           <Suspense fallback={<div>Loading...</div>}>
-            <Settings
-              {...this.props}
-              closeModal={this.handleSettingsClose}
-              saveSettings={globalFunctions.saveSettings}
-            />
+            <Settings {...this.props} closeModal={this.handleSettingsClose} />
           </Suspense>
         )}
       </>
@@ -188,16 +181,25 @@ class Navbar extends React.Component {
 //#endregion
 
 //#region > PropTypes
+// is it required to write down all stuff in map...toProps??
 Navbar.propTypes = {
-  globalState: PropTypes.object,
-  globalFunctions: PropTypes.object,
   location: PropTypes.object,
 };
 //#endregion
 
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logoutAction()),
+  };
+};
+
 //#region > Exports
 //> Default Class
-export default withRouter(Navbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
 //#endregion
 
 /**

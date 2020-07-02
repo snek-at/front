@@ -825,8 +825,6 @@ class RegisterForm extends React.Component {
 
 //#region > PropTypes
 RegisterForm.propTypes = {
-  globalState: PropTypes.object,
-  globalFunctions: PropTypes.object,
   goto: PropTypes.func,
 };
 //#endregion

@@ -9,6 +9,12 @@ import { withRouter } from "react-router-dom";
 import { SoftwareEngineer } from "../../organisms/profiles";
 //> CSS
 import "./profile.scss";
+import {
+  readCacheAction,
+  updateCacheAction,
+  saveSettingsActions,
+} from "../../../store/actions/userActions";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -24,38 +30,58 @@ class ProfilePage extends React.Component {
     this.props.saveSettings(state);
   };
 
+  /**
+   * Check for refetch for a specific username.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if a refetch is required otherwise False
+   */
+  refetchRequired = (username) => {
+    const fetchedUser = this.state.fetchedUser;
+
+    if (!fetchedUser) {
+      return true;
+    } else if (fetchedUser && !this.usernameMatchesFetchedUsername(username)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Check if the provided username matches with the current fetched user.
+   *
+   * @param {string} username The username associated with a profile page
+   * @returns {boolean} True if the usernames matches otherwise False
+   */
+  usernameMatchesFetchedUsername = (username) => {
+    return username === this.state.fetchedUser?.username;
+  };
+
   componentDidMount = () => {
-    const { match, globalState, globalFunctions } = this.props;
+    console.log("MIUNT");
+    const { match, loggedUser, fetchedUser } = this.props;
     const username = match?.params?.username;
 
     if (username) {
-      if (globalFunctions.refetchRequired(username)) {
-        globalFunctions.fetchCacheData(username);
+      if (this.refetchRequired(username)) {
+        this.props.readCache(username);
       }
 
-      if (
-        globalState.loggedUser &&
-        globalFunctions.usernameMatchesFetchedUsername(username)
-      ) {
-        globalFunctions.updateCache(globalState?.fetchedUser);
+      if (loggedUser && this.usernameMatchesFetchedUsername(username)) {
+        this.props.updateCache(fetchedUser);
       }
     }
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const { globalState, globalFunctions } = this.props;
-
     //#TSID10
     //console.log("PROFILE PAGE NEXT PROPS", nextProps);
   };
 
   render() {
-    const { globalState, globalFunctions } = this.props;
-
-    if (
-      globalState.loading ||
-      (!globalState.loading && !globalState.fetchedUser)
-    ) {
+    const { fetchedUser } = this.props;
+    console.log(fetchedUser);
+    if (!fetchedUser) {
       return (
         <div className="text-center my-5 py-5">
           <div className="spinner-grow text-success" role="status">
@@ -63,18 +89,13 @@ class ProfilePage extends React.Component {
           </div>
         </div>
       );
-    } else if (!globalState.loading && globalState.fetchedUser === false) {
-      return <p>Error. User can not be fetched.</p>;
-    } else if (!globalState.loading && globalState.fetchedUser) {
+    } else if (fetchedUser) {
       //#TSID11
-      //console.dir("PROFILE PAGE RENDER SUCCESS", globalState.fetchedUser);
+      //console.dir("PROFILE PAGE RENDER SUCCESS", this.props.fetchedUser);
 
       return (
         <div id="profile">
-          <SoftwareEngineer
-            globalState={globalState}
-            globalFunctions={globalFunctions}
-          />
+          <SoftwareEngineer />
         </div>
       );
     } else {
@@ -84,9 +105,24 @@ class ProfilePage extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveSettings: (nextSettings) => dispatch(saveSettingsActions(nextSettings)),
+    readCache: (username) => dispatch(readCacheAction(username)),
+    updateCache: (fetchedUser) => dispatch(updateCacheAction(fetchedUser)),
+  };
+};
+
 //#region > Exports
 //> Default Class
-export default withRouter(ProfilePage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+);
 //#endregion
 
 /**

@@ -41,7 +41,6 @@ class UserActionCard extends React.Component {
   };
 
   render() {
-    const { globalFunctions } = this.props;
     const { activeItem } = this.state;
 
     return (
@@ -82,12 +81,8 @@ class UserActionCard extends React.Component {
             </MDBRow>
           </>
         )}
-        {activeItem === 1 && (
-          <LoginForm globalFunctions={globalFunctions} goTo={this.goTo} />
-        )}
-        {activeItem === 2 && (
-          <RegisterForm globalFunctions={globalFunctions} goTo={this.goTo} />
-        )}
+        {activeItem === 1 && <LoginForm goTo={this.goTo} />}
+        {activeItem === 2 && <RegisterForm goTo={this.goTo} />}
         {activeItem === 3 && (
           <>
             <div className="text-left mb-4">
@@ -114,13 +109,6 @@ class UserActionCard extends React.Component {
     );
   }
 }
-//#endregion
-
-//#region > PropTypes
-UserActionCard.propTypes = {
-  globalState: PropTypes.object,
-  globalFunctions: PropTypes.object,
-};
 //#endregion
 
 //#region > Exports

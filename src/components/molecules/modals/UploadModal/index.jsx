@@ -13,6 +13,8 @@ import {
   MDBModalBody,
   MDBProgress,
 } from "mdbreact";
+import { connect } from "react-redux";
+import { uploadTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -24,7 +26,7 @@ class UploadModal extends React.Component {
   };
 
   onDrop = async (files) => {
-    const { globalState, globalFunctions } = this.props;
+    const { loggedUser, fetchedUser } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -32,11 +34,11 @@ class UploadModal extends React.Component {
         loading: true,
       });
 
-      globalFunctions
+      this.props
         .uploadTalk(files[0], {
-          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
+          avatarUrl: fetchedUser.platformData.profile.avatarUrl,
           owner: {
-            username: globalState.loggedUser.username,
+            username: loggedUser.username,
           },
         })
         .then(() => {
@@ -145,9 +147,18 @@ class UploadModal extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  loggedUser: state.user.fetchedUser,
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return { uploadTalk: (file) => dispatch(uploadTalkAction(file)) };
+};
+
 //#region > Exports
 //> Default Class
-export default UploadModal;
+export default connect(mapStateToProps, mapDispatchToProps)(UploadModal);
 //#endregion
 
 /**

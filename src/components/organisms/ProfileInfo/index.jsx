@@ -15,6 +15,7 @@ import {
   MDBIcon,
   MDBTooltip,
 } from "mdbreact";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -23,10 +24,11 @@ class ProfileInfo extends React.Component {
   state = {};
 
   componentDidMount = () => {
-    const { globalState } = this.props;
-
-    if (this.props.globalState.fetchedUser && !this.state.sources) {
-      this.displaySources(globalState.fetchedUser.platformData.profile.sources);
+    const { fetchedUser } = this.props;
+    console.log(this.props);
+    console.log("PROFILE INFO", fetchedUser);
+    if (fetchedUser && !this.state.sources) {
+      this.displaySources(fetchedUser.platformData.profile.sources);
     }
   };
 
@@ -50,90 +52,77 @@ class ProfileInfo extends React.Component {
   };
 
   render() {
-    const { globalState } = this.props;
+    const { fetchedUser } = this.props;
 
     return (
       <div className="social">
         <MDBView>
           <img
             className="img-fluid main-avatar"
-            src={
-              globalState.fetchedUser &&
-              globalState.fetchedUser.platformData.profile.avatarUrl
-            }
+            src={fetchedUser && fetchedUser.platformData.profile.avatarUrl}
           />
           <MDBMask />
         </MDBView>
         <div className="bg-elegant py-3 px-3">
           <h4 className="mb-0">
-            {globalState.fetchedUser &&
-              globalState.fetchedUser.platformData.user.firstName &&
-              globalState.fetchedUser.platformData.user.lastName && (
+            {fetchedUser &&
+              fetchedUser.platformData.user.firstName &&
+              fetchedUser.platformData.user.lastName && (
                 <>
-                  {globalState.fetchedUser.platformData.user.firstName + " "}
-                  {globalState.fetchedUser.platformData.user.lastName}
+                  {fetchedUser.platformData.user.firstName + " "}
+                  {fetchedUser.platformData.user.lastName}
                 </>
               )}
           </h4>
-          {globalState.fetchedUser &&
-            globalState.fetchedUser.platformData.user.settings &&
-            globalState.fetchedUser.platformData.user.settings
-              .showLocalRanking && (
+          {fetchedUser &&
+            fetchedUser.platformData.user.settings &&
+            fetchedUser.platformData.user.settings.showLocalRanking && (
               <p className="mb-1 text-muted">
                 <small>
                   <a href="#!">#3</a> in your region
                 </small>
               </p>
             )}
-          {globalState.fetchedUser &&
-            globalState.fetchedUser.platformData.profile.company && (
+          {fetchedUser && fetchedUser.platformData.profile.company && (
+            <>
+              {fetchedUser &&
+                fetchedUser.platformData.user.settings.showCompanyPublic && (
+                  <small className="text-muted py-3">
+                    {fetchedUser.platformData.profile.company}
+                  </small>
+                )}
+            </>
+          )}
+          <div className="badges">
+            {fetchedUser && fetchedUser.accessories.badges && (
               <>
-                {globalState.fetchedUser &&
-                  globalState.fetchedUser.platformData.user.settings
-                    .showCompanyPublic && (
-                    <small className="text-muted py-3">
-                      {globalState.fetchedUser.platformData.profile.company}
-                    </small>
-                  )}
+                {fetchedUser.accessories.badges.bids.map((bid, i) => {
+                  switch (bid) {
+                    case "6403bf4d17b8472735a93b71a37e0bd0":
+                      return (
+                        <MDBBadge color="secondary-color" key={i}>
+                          Alpha
+                        </MDBBadge>
+                      );
+                  }
+                })}
               </>
             )}
-          <div className="badges">
-            {globalState.fetchedUser &&
-              globalState.fetchedUser.accessories.badges && (
-                <>
-                  {globalState.fetchedUser.accessories.badges.bids.map(
-                    (bid, i) => {
-                      switch (bid) {
-                        case "6403bf4d17b8472735a93b71a37e0bd0":
-                          return (
-                            <MDBBadge color="secondary-color" key={i}>
-                              Alpha
-                            </MDBBadge>
-                          );
-                      }
-                    }
-                  )}
-                </>
-              )}
           </div>
-          {globalState.fetchedUser &&
-            globalState.fetchedUser.platformData.profile.statusMessage && (
-              <div className="d-flex pt-3">
-                {globalState.fetchedUser.platformData.profile
-                  .statusEmojiHTML && (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        globalState.fetchedUser.platformData.profile
-                          .statusEmojiHTML,
-                    }}
-                  />
-                )}
-                <small className="px-1">
-                  {globalState.fetchedUser.platformData.profile.statusMessage}
-                </small>
-              </div>
-            )}
+          {fetchedUser && fetchedUser.platformData.profile.statusMessage && (
+            <div className="d-flex pt-3">
+              {fetchedUser.platformData.profile.statusEmojiHTML && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: fetchedUser.platformData.profile.statusEmojiHTML,
+                  }}
+                />
+              )}
+              <small className="px-1">
+                {fetchedUser.platformData.profile.statusMessage}
+              </small>
+            </div>
+          )}
         </div>
         <div className="py-3 follow text-center">
           <MDBBtn color="green" size="md">
@@ -181,19 +170,17 @@ class ProfileInfo extends React.Component {
           </div>
           <hr />
           <p>Organisations</p>
-          {globalState.fetchedUser && (
+          {fetchedUser && (
             <div
               className={
-                globalState.fetchedUser.platformData.profile.organizations
-                  .length >= 5
+                fetchedUser.platformData.profile.organizations.length >= 5
                   ? "orgs text-center"
                   : "orgs"
               }
             >
-              {globalState.fetchedUser.platformData.profile.organizations
-                .length > 0 ? (
+              {fetchedUser.platformData.profile.organizations.length > 0 ? (
                 <>
-                  {globalState.fetchedUser.platformData.profile.organizations.map(
+                  {fetchedUser.platformData.profile.organizations.map(
                     (org, i) => {
                       return (
                         <MDBPopover placement="top" popover clickable key={i}>
@@ -297,8 +284,7 @@ class ProfileInfo extends React.Component {
                 </>
               ) : (
                 <small>
-                  {globalState.fetchedUser.username} hasn't joined an
-                  organisation yet.
+                  {fetchedUser.username} hasn't joined an organisation yet.
                 </small>
               )}
             </div>
@@ -315,9 +301,17 @@ class ProfileInfo extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
 //#region > Exports
 //> Default Class
-export default ProfileInfo;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
 //#endregion
 
 /**

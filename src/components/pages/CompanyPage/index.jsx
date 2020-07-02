@@ -160,8 +160,6 @@ class CompanyPage extends React.Component {
   };
 
   render() {
-    const { globalState } = this.props;
-
     return (
       <div id="company">
         <MDBContainer>

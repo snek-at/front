@@ -8,6 +8,7 @@ import { MDBBadge } from "mdbreact";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -25,10 +26,8 @@ class SoftwareTabs extends React.Component {
       {
         title: "Projects",
         visible: true,
-        pill: this.props.globalState?.fetchedUser?.platformData?.profile
-          ?.repositories
-          ? this.props.globalState?.fetchedUser?.platformData?.profile
-              ?.repositories?.length
+        pill: this.props.fetchedUser?.platformData?.profile?.repositories
+          ? this.props.fetchedUser?.platformData?.profile?.repositories?.length
           : "0",
         notification: false,
       },
@@ -53,8 +52,8 @@ class SoftwareTabs extends React.Component {
         title: "Talks",
         visible: true,
         notification: false,
-        pill: this.props.globalState.fetchedUser.platformData.talks
-          ? this.props.globalState.fetchedUser.platformData.talks.length
+        pill: this.props.fetchedUser?.platformData.talks
+          ? this.props.fetchedUser?.platformData.talks.length
           : "0",
         notification: false,
       },
@@ -62,16 +61,15 @@ class SoftwareTabs extends React.Component {
   };
 
   setActiveTab = (activeTab) => {
-    // this.props.globalState.active.softwareTab = activeTab;
-
     this.setState({
       activeTab,
     });
   };
 
   render() {
-    const { globalState } = this.props;
+    const { fetchedUser } = this.props;
     const { activeTab } = this.state;
+    console.log("SOFTWARE", this.props);
 
     return (
       <div className="profile-content">
@@ -93,16 +91,13 @@ class SoftwareTabs extends React.Component {
         <div className="p-3">
           {activeTab === 0 && (
             <OverviewTab
-              platformData={
-                globalState.fetchedUser && globalState.fetchedUser.platformData
-              }
+              platformData={fetchedUser && fetchedUser.platformData}
             />
           )}
           {activeTab === 1 && (
             <ProjectTab
               repoList={
-                globalState.fetchedUser &&
-                globalState.fetchedUser.platformData.profile.repositories
+                fetchedUser && fetchedUser.platformData.profile.repositories
               }
             />
           )}
@@ -119,9 +114,17 @@ class SoftwareTabs extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
 //#region > Exports
 //> Default Class
-export default SoftwareTabs;
+export default connect(mapStateToProps, mapDispatchToProps)(SoftwareTabs);
 //#endregion
 
 /**
