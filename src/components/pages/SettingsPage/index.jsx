@@ -221,7 +221,7 @@ class SettingsPage extends React.Component {
     const { fetchedUser, loggedUser } = this.props;
     const { activeItem } = this.state;
 
-    if (fetchedUser) {
+    if (fetchedUser && this.state.avatar_url) {
       return (
         <>
           {this.state.showNotification && (
