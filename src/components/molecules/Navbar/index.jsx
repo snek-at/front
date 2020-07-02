@@ -123,6 +123,12 @@ class Navbar extends React.Component {
                         />
                       </MDBDropdownToggle>
                       <MDBDropdownMenu className="dropdown-default">
+                        <Link
+                          to={"/u/" + loggedUser.username}
+                          className="dropdown-item"
+                        >
+                          My profile
+                        </Link>
                         <Link to="/settings" className="dropdown-item">
                           Settings
                         </Link>
@@ -159,13 +165,6 @@ class Navbar extends React.Component {
           </MDBCollapse>
         </MDBContainer>
       </MDBNavbar>
-                          <Link
-                            to={"/u/" + loggedUser.username}
-                            className="dropdown-item"
-                          >
-                            My profile
-                          </Link>
-                          <MDBDropdownItem
     );
   }
 }
