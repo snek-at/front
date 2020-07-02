@@ -20,7 +20,7 @@ import {
 //> CSS
 import "./talkstab.scss";
 //> Modules
-import { UploadModal } from "../../../molecules/modals";
+import { TalkUploadModal } from "../../../molecules/modals";
 import { connect } from "react-redux";
 import { TalksTab } from "..";
 import { deleteTalkAction } from "../../../../store/actions/userActions";
@@ -202,7 +202,10 @@ class Talks extends React.Component {
             })}
         </MDBRow>
         {this.state.showUpload && (
-          <UploadModal {...this.props} closeModal={this.handleUploadClose} />
+          <TalkUploadModal
+            {...this.props}
+            closeModal={this.handleUploadClose}
+          />
         )}
       </>
     );

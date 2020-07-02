@@ -13,20 +13,18 @@ import {
   MDBModalBody,
   MDBProgress,
 } from "mdbreact";
-import { connect } from "react-redux";
-import { uploadTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
 /** @class A upload modal component for uploading files including a drop-zone */
-class UploadModal extends React.Component {
+class TalkUploadModal extends React.Component {
   state = {
     loading: false,
     error: [],
   };
 
   onDrop = async (files) => {
-    const { loggedUser, fetchedUser } = this.props;
+    const { globalState, globalFunctions } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -34,11 +32,11 @@ class UploadModal extends React.Component {
         loading: true,
       });
 
-      this.props
+      globalFunctions
         .uploadTalk(files[0], {
-          avatarUrl: fetchedUser.platformData.profile.avatarUrl,
+          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
           owner: {
-            username: loggedUser.username,
+            username: globalState.loggedUser.username,
           },
         })
         .then(() => {
@@ -147,18 +145,9 @@ class UploadModal extends React.Component {
 }
 //#endregion
 
-const mapStateToProps = (state) => ({
-  loggedUser: state.user.fetchedUser,
-  fetchedUser: state.user.fetchedUser,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return { uploadTalk: (file) => dispatch(uploadTalkAction(file)) };
-};
-
 //#region > Exports
 //> Default Class
-export default connect(mapStateToProps, mapDispatchToProps)(UploadModal);
+export default TalkUploadModal;
 //#endregion
 
 /**
