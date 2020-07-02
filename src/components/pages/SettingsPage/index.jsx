@@ -82,60 +82,35 @@ class SettingsPage extends React.Component {
 
     if (fetchedUser && this.state.loading) {
       const platformData = this.props.fetchedUser?.platformData;
+      const profile = platformData.profile;
+      const data = platformData.user;
+      const enterData = {
+        avatar_url: profile.avatarUrl ? profile.avatarUrl : "",
+        first_name: data.firstName ? data.firstName : "",
+        last_name: data.lastName ? data.lastName : "",
+        email: data.email ? data.email : "",
+        showEmailPublic: data.settings.showEmailPublic,
+        company: profile.company ? profile.company : "",
+        showCompanyPublic: data.settings.showCompanyPublic,
+        website: profile.websiteUrl ? profile.websiteUrl : "",
+        location: profile.location ? profile.location : "",
+        showLocalRanking: data.settings.showLocalRanking,
+        showTopLanguages: data.settings.showTopLanguages,
+        show3DDiagram: data.settings.show3DDiagram,
+        show2DDiagram: data.settings.show2DDiagram,
+        activeTheme: data.settings.activeTheme
+          ? data.settings.activeTheme
+          : null,
+      };
 
-      if (platformData?.profile && platformData?.user) {
-        const profile = platformData.profile;
-        const data = platformData.user;
-        const enterData = {
-          avatar_url: profile.avatarUrl ? profile.avatarUrl : "",
-          first_name: data.firstName ? data.firstName : "",
-          last_name: data.lastName ? data.lastName : "",
-          email: data.email ? data.email : "",
-          showEmailPublic: data.settings.showEmailPublic,
-          company: profile.company ? profile.company : "",
-          showCompanyPublic: data.settings.showCompanyPublic,
-          website: profile.websiteUrl ? profile.websiteUrl : "",
-          location: profile.location ? profile.location : "",
-          showLocalRanking: data.settings.showLocalRanking,
-          showTopLanguages: data.settings.showTopLanguages,
-          show3DDiagram: data.settings.show3DDiagram,
-          show2DDiagram: data.settings.show2DDiagram,
-          activeTheme: data.settings.activeTheme
-            ? data.settings.activeTheme
-            : null,
-        };
+      const dataString = this.stringToHash(JSON.stringify(enterData));
 
-        const dataString = this.stringToHash(JSON.stringify(enterData));
-
-        this.setState({
-          ...enterData,
-          checksum: dataString,
-          loading: false,
-        });
-      } else {
-        this.initBlank();
-      }
+      this.setState({
+        ...enterData,
+        checksum: dataString,
+        loading: false,
+      });
     }
-  };
-
-  initBlank = () => {
-    this.setState({
-      loading: false,
-      avatar_url: "",
-      first_name: "",
-      last_name: "",
-      email: "",
-      showEmailPublic: true,
-      company: "",
-      showCompanyPublic: true,
-      website: "",
-      location: "",
-      showLocalRanking: true,
-      showTopLanguages: true,
-      show3DDiagram: true,
-      show2DDiagram: true,
-      activeTheme: null,
-    });
   };
 
   stringToHash = (string) => {
@@ -246,7 +221,7 @@ class SettingsPage extends React.Component {
     const { fetchedUser, loggedUser } = this.props;
     const { activeItem } = this.state;
 
-    if (fetchedUser) {
+    if (fetchedUser && this.state.avatar_url) {
       return (
         <>
           {this.state.showNotification && (
