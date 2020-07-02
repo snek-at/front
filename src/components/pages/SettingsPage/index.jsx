@@ -47,6 +47,7 @@ import "./settings.scss";
  */
 class SettingsPage extends React.Component {
   state = {
+    loading: true,
     changeDetected: false,
     showProfilePicture: false,
     showNotification: false,
@@ -63,53 +64,63 @@ class SettingsPage extends React.Component {
     ],
   };
 
+  // triggers every time the settings menu tab is pressed
   componentDidMount = () => {
-    console.log("XYX");
-    // Check for the current values
-    const { loggedUser, fetchedUser } = this.props;
-    const username = loggedUser?.username;
+    const { loggedUser } = this.props;
+    if (!loggedUser.anonymous) {
+      this.props.readCache(loggedUser.username);
+    }
+  };
 
-    if (username) {
-      this.props.readCache(username);
+  // important for direct url access
+  componentDidUpdate = () => {
+    const { loggedUser, fetchedUser } = this.props;
+
+    if (!fetchedUser && !loggedUser.anonymous) {
+      this.props.readCache(loggedUser.username);
     }
 
-    const platformData = this.props.fetchedUser?.platformData;
+    if (fetchedUser && this.state.loading) {
+      const platformData = this.props.fetchedUser?.platformData;
 
-    if (platformData?.profile && platformData?.user) {
-      const profile = platformData.profile;
-      const data = platformData.user;
-      const enterData = {
-        avatar_url: profile.avatarUrl ? profile.avatarUrl : "",
-        first_name: data.firstName ? data.firstName : "",
-        last_name: data.lastName ? data.lastName : "",
-        email: data.email ? data.email : "",
-        showEmailPublic: data.settings.showEmailPublic,
-        company: profile.company ? profile.company : "",
-        showCompanyPublic: data.settings.showCompanyPublic,
-        website: profile.websiteUrl ? profile.websiteUrl : "",
-        location: profile.location ? profile.location : "",
-        showLocalRanking: data.settings.showLocalRanking,
-        showTopLanguages: data.settings.showTopLanguages,
-        show3DDiagram: data.settings.show3DDiagram,
-        show2DDiagram: data.settings.show2DDiagram,
-        activeTheme: data.settings.activeTheme
-          ? data.settings.activeTheme
-          : null,
-      };
+      if (platformData?.profile && platformData?.user) {
+        const profile = platformData.profile;
+        const data = platformData.user;
+        const enterData = {
+          avatar_url: profile.avatarUrl ? profile.avatarUrl : "",
+          first_name: data.firstName ? data.firstName : "",
+          last_name: data.lastName ? data.lastName : "",
+          email: data.email ? data.email : "",
+          showEmailPublic: data.settings.showEmailPublic,
+          company: profile.company ? profile.company : "",
+          showCompanyPublic: data.settings.showCompanyPublic,
+          website: profile.websiteUrl ? profile.websiteUrl : "",
+          location: profile.location ? profile.location : "",
+          showLocalRanking: data.settings.showLocalRanking,
+          showTopLanguages: data.settings.showTopLanguages,
+          show3DDiagram: data.settings.show3DDiagram,
+          show2DDiagram: data.settings.show2DDiagram,
+          activeTheme: data.settings.activeTheme
+            ? data.settings.activeTheme
+            : null,
+        };
 
-      const dataString = this.stringToHash(JSON.stringify(enterData));
+        const dataString = this.stringToHash(JSON.stringify(enterData));
 
-      this.setState({
-        ...enterData,
-        checksum: dataString,
-      });
-    } else {
-      this.initBlank();
+        this.setState({
+          ...enterData,
+          checksum: dataString,
+          loading: false,
+        });
+      } else {
+        this.initBlank();
+      }
     }
   };
 
   initBlank = () => {
     this.setState({
+      loading: false,
       avatar_url: "",
       first_name: "",
       last_name: "",
