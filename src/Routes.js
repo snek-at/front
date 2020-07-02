@@ -11,6 +11,7 @@ import {
   ProfilePage,
   CompanyPage,
   TalkPage,
+  SettingsPage,
 } from "./components/pages";
 //#endregion
 
@@ -41,6 +42,11 @@ class Routes extends React.Component {
               window.close();
             };
           }}
+        />
+        <Route
+          exact
+          path="/settings"
+          component={(props) => <SettingsPage {...props} />}
         />
         {/* Some debugging routes */}
         <Route
