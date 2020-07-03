@@ -141,8 +141,8 @@ class LatestActivity extends React.Component {
       // Dummy data for displaying purposes
       this.setState(
         {
-          startDate: "01.01.2020",
-          endDate: "07.01.2020",
+          startDate: "2020-01-01",
+          endDate: "2020-10-20",
         },
         () => this.fillChart([0, 10, 5, 2, 5, 6, 0], [5, 2, 6, 1, 1, 1, 0])
       );
