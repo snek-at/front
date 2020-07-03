@@ -179,7 +179,7 @@ class OverviewTab extends React.Component {
                   size="md"
                 />
               </p>
-              <p className="text-muted mb-0">Week overview</p>
+              <p className="text-muted mb-0">Weekly overview</p>
               <LatestActivity
                 statistic={platformData.statistic}
                 year={this.state.selectedYear}

@@ -20,6 +20,7 @@ import {
 } from "mdbreact";
 
 //> Components
+import LatestActivity from "../../atoms/charts/LatestActivity";
 import { UserActionCard } from "../../molecules";
 //> CSS
 import "./homepage.scss";
@@ -27,6 +28,8 @@ import "./homepage.scss";
 import imageRanking from "../../../assets/body/ranking.png";
 import imageProfiles from "../../../assets/body/profiles.png";
 import imageTrophy from "../../../assets/body/trophy.png";
+import gitHubLab from "../../../assets/body/githublab.png";
+import shareImage from "../../../assets/body/share.png";
 //#endregion
 
 //#region > Components
@@ -215,6 +218,78 @@ class HomePage extends React.Component {
                     your friends and challenge them over achievements, so give
                     it a try and create your 21st century portfolio.
                   </p>
+                </MDBCol>
+              </MDBRow>
+            </MDBContainer>
+          </section>
+          <section className="py-5">
+            <MDBContainer>
+              <MDBRow className="align-items-center">
+                <MDBCol md="6">
+                  <img
+                    src={gitHubLab}
+                    className="img-fluid"
+                    alt="GitHub and GitLab"
+                  />
+                </MDBCol>
+                <MDBCol md="6">
+                  <h2 className="font-weight-bold">Connect your work</h2>
+                  <p className="lead">
+                    Get powerful insights into your workflow
+                  </p>
+                  <p>
+                    We merge your GitHub and GitLab accounts to create an
+                    immersive social experience that includes all of your work.
+                  </p>
+                  <hr />
+                  <MDBRow className="mt-3">
+                    <MDBCol md="6">
+                      <div className="chart">
+                        <LatestActivity />
+                      </div>
+                    </MDBCol>
+                    <MDBCol md="6">
+                      <p className="lead font-weight-bold">
+                        Compare your weeks
+                      </p>
+                      <p>
+                        Gain insights into your work habits and learn how to
+                        improve productivity.
+                      </p>
+                      <p className="text-muted mb-0">
+                        <small>(And flex on your co-workers)</small>
+                      </p>
+                    </MDBCol>
+                  </MDBRow>
+                </MDBCol>
+              </MDBRow>
+            </MDBContainer>
+          </section>
+          <section className="py-5">
+            <MDBContainer>
+              <MDBRow className="align-items-center">
+                <MDBCol md="6">
+                  <h2 className="font-weight-bold">Share your story</h2>
+                  <p className="lead">
+                    Look back at your work and develop your future
+                  </p>
+                  <p>
+                    Impress your network by sharing your experience. Share
+                    projects, repositories, talks and more!
+                  </p>
+                  <hr />
+                  <MDBSmoothScroll to="home" className="d-inline">
+                    <MDBBtn color="green" size="lg">
+                      Sign up
+                    </MDBBtn>
+                  </MDBSmoothScroll>
+                </MDBCol>
+                <MDBCol md="6">
+                  <img
+                    src={shareImage}
+                    className="img-fluid"
+                    alt="GitHub and GitLab"
+                  />
                 </MDBCol>
               </MDBRow>
             </MDBContainer>
