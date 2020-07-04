@@ -25,7 +25,13 @@ class Project extends React.Component {
               <p className="mb-1 font-weight-bold">{repo.name.split("/")[1]}</p>
             </div>
             <div>
-              <img src={repo.avatarUrl} alt={repo.name} />
+              <img
+                src={
+                  repo.avatarUrl
+                    ? repo.avatarUrl
+                    : "https://img.favpng.com/4/1/20/computer-icons-gregorio-lvarez-museum-png-favpng-xPCKYGtUJihZeAkdqind0HH2N.jpg"
+                }
+              />
               <small>/{repo.owner.username}</small>
             </div>
             <div className="pt-3">
