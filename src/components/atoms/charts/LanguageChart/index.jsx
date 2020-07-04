@@ -9,6 +9,8 @@ import "./languages.scss";
 
 //#region > Components
 /**
+ * @todo The namings of the component and the description does not fit the
+ *       actual usecase.
  * @class A week calendar which compares the contributions of a selectable week
  *        with the current week.
  */
