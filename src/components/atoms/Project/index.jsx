@@ -6,7 +6,8 @@ import React from "react";
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBCol, MDBIcon, MDBProgress } from "mdbreact";
+import { MDBCol, MDBIcon } from "mdbreact";
+
 //> Components
 import { LanguageChart } from "../../atoms";
 //#endregion

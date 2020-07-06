@@ -28,14 +28,17 @@ import {
   MDBSelectInput,
   MDBBtn,
 } from "mdbreact";
+//> Redux
 import { connect } from "react-redux";
 
-// Profile Picture Editor
-import { ProfilePictureModal } from "../../../components/molecules/modals";
+//> Actions
 import {
   readCacheAction,
   saveSettingsActions,
 } from "../../../store/actions/userActions";
+//> Components
+// Profile Picture Editor
+import { ProfilePictureModal } from "../../../components/molecules/modals";
 //> CSS
 import "./settings.scss";
 //#endregion
@@ -559,6 +562,7 @@ class SettingsPage extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
   fetchedUser: state.user.fetchedUser,
@@ -570,6 +574,7 @@ const mapDispatchToProps = (dispatch) => {
     readCache: (username) => dispatch(readCacheAction(username)),
   };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

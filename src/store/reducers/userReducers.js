@@ -1,5 +1,10 @@
+//#region > Imports
+//> Error Serialization
+// Serialize/deserialize an error into a plain object
 import { serializeError } from "serialize-error";
+//#endregion
 
+//#region > Constant Variables
 const INIT_STATE = {
   fetchedUser: null,
   registrationHistory: null,
@@ -9,7 +14,9 @@ const INIT_STATE = {
   userError: null,
   userErrorDetails: null,
 };
+//#endregion
 
+//#region > User Reducers
 const userReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     //> registerAction
@@ -129,5 +136,8 @@ const userReducer = (state = INIT_STATE, action) => {
       return state;
   }
 };
+//#endregion
 
+//#region > Exports
 export default userReducer;
+//#endregion

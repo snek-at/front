@@ -4,7 +4,7 @@
 import sha256 from "js-sha256";
 //#endregion
 
-//#region > Register
+//#region > Register Actions
 /**
  * Register user.
  *
@@ -77,7 +77,7 @@ const registerAction = (registrationData) => {
 };
 //#endregion
 
-//#region > Caching
+//#region > Caching Actions
 /**
  * Write cache.
  *
@@ -374,7 +374,8 @@ const saveSettingsActions = (nextSettings) => {
 
 //#endregion
 
-//#region > Talks
+//#region > Talks Actions
+//> Is currently not needed but has been left for later implementations!
 // /**
 //  * Get all talks.
 //  *
@@ -558,7 +559,7 @@ export {
   readCacheAction,
   updateCacheAction,
   saveSettingsActions,
-  // getAllTalksAction,
+  //getAllTalksAction,
   getTalkAction,
   uploadTalkAction,
   deleteTalkAction,

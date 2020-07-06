@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ReactDOM from "react-dom";
 //> Redux
 import { createStore, applyMiddleware, compose } from "redux";
+import { loadingBarMiddleware } from "react-redux-loading-bar";
 import { Provider } from "react-redux";
 // Thunk
 import thunk from "redux-thunk";
@@ -33,9 +34,9 @@ import App from "./App";
 import rootReducer from "./store/reducers";
 //> Service Worker
 import registerServiceWorker from "./registerServiceWorker";
-import { loadingBarMiddleware } from "react-redux-loading-bar";
 //#endregion
 
+//#region > Redux Store Initialization
 const INTEL = new Intel();
 
 //#TODO
@@ -64,6 +65,7 @@ const enhancer = composeEnhancers(
 );
 
 const STORE = createStore(rootReducer /* preloadedState, */, enhancer);
+//#endregion
 
 // Render the root component to <div id="root"></div>
 ReactDOM.render(

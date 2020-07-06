@@ -1,4 +1,4 @@
-//#region > Registration
+//#region > Registration Actions
 /**
  * Append Source Objects
  *
@@ -69,7 +69,7 @@ const fetchGitLabServersAction = () => {
 };
 //#endregion
 
-//#region > Data Handling
+//#region > Data Handling Actions
 /**
  * Get intel data
  *

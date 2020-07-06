@@ -4,8 +4,6 @@
 import React from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
-// React PropTypes
-import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -17,10 +15,13 @@ import {
 //> Fuzzysort
 // Fast SublimeText-like fuzzy search for JavaScript
 import * as fuzzysort from "fuzzysort";
+//> Redux
+import { connect } from "react-redux";
+
+//> Actions
+import { getAllPageUrlsAction } from "../../../store/actions/generalActions";
 //> CSS
 import "./search.scss";
-import { connect } from "react-redux";
-import { getAllPageUrlsAction } from "../../../store/actions/generalActions";
 //#endregion
 
 //#region > Components
@@ -111,10 +112,7 @@ class SearchBar extends React.Component {
 }
 //#endregion
 
-//#region > PropTypes
-SearchBar.propTypes = {};
-//#endregion
-
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   allRegisteredUsernames: state.general.allRegisteredUsernames,
 });
@@ -124,6 +122,7 @@ const mapDispatchToProps = (dispatch) => {
     allUsernames: () => dispatch(getAllPageUrlsAction()),
   };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

@@ -16,14 +16,15 @@ import {
   MDBCardBody,
   MDBCardFooter,
 } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
+//> Actions
+import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> CSS
 import "./talkstab.scss";
 //> Modules
 import { TalkUploadModal } from "../../../molecules/modals";
-import { connect } from "react-redux";
-import { TalksTab } from "..";
-import { deleteTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -213,6 +214,7 @@ class Talks extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
   fetchedUser: state.user.fetchedUser,
@@ -221,10 +223,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return { deleteTalk: (talk) => dispatch(deleteTalkAction(talk)) };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Talks));
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

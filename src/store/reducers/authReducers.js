@@ -1,11 +1,18 @@
+//#region > Imports
+//> Error Serialization
+// Serialize/deserialize an error into a plain object
 import { serializeError } from "serialize-error";
+//#endregion
 
+//#region > Constant Variables
 const INIT_STATE = {
   loggedUser: { anonymous: true },
   authError: null,
   authErrorDetails: null,
 };
+//#endregion
 
+//#region > Reducers
 const authReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     //> LOGIN
@@ -46,5 +53,8 @@ const authReducer = (state = INIT_STATE, action) => {
       return state;
   }
 };
+//#endregion
 
+//#region > Exports
 export default authReducer;
+//#endregion

@@ -18,6 +18,8 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
 //> Components
 import LatestActivity from "../../atoms/charts/LatestActivity";
@@ -30,8 +32,6 @@ import imageProfiles from "../../../assets/body/profiles.png";
 import imageTrophy from "../../../assets/body/trophy.png";
 import gitHubLab from "../../../assets/body/githublab.png";
 import shareImage from "../../../assets/body/share.png";
-
-import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -301,6 +301,7 @@ class HomePage extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
 });
@@ -308,6 +309,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

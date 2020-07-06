@@ -17,6 +17,7 @@ import {
 } from "mdbreact";
 //> Redux
 import { connect } from "react-redux";
+
 //> Components
 import { LanguageChart } from "../../atoms";
 //#endregion
@@ -346,6 +347,7 @@ class ProfileInfo extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   fetchedUser: state.user.fetchedUser,
 });
@@ -353,6 +355,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

@@ -4,15 +4,18 @@
 import React from "react";
 // React PropTypes
 import PropTypes from "prop-types";
-//> Additional
-// Text animations
-import TextLoop from "react-text-loop";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
-import { loginAction } from "../../../../store/actions/authActions";
+//> Additional
+// SHA hashing algorithm
 import { sha256 } from "js-sha256";
+//> Redux
 import { connect } from "react-redux";
+
+//> Actions
+import { loginAction } from "../../../../store/actions/authActions";
+
 //#endregion
 
 //#region > Components
@@ -202,11 +205,13 @@ LoginForm.propTypes = {
 };
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => {
   return { login: (user) => dispatch(loginAction(user)) };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

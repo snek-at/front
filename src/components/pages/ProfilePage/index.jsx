@@ -4,17 +4,20 @@
 import React from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
+//> Redux
+import { connect } from "react-redux";
 
-//> Components
-import { SoftwareEngineer } from "../../organisms/profiles";
-//> CSS
-import "./profile.scss";
+//> Actions
 import {
   readCacheAction,
   updateCacheAction,
   saveSettingsActions,
 } from "../../../store/actions/userActions";
-import { connect } from "react-redux";
+//> Components
+import { SoftwareEngineer } from "../../organisms/profiles";
+//> CSS
+import "./profile.scss";
+
 //#endregion
 
 //#region > Components
@@ -140,6 +143,7 @@ class ProfilePage extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
   fetchedUser: state.user.fetchedUser,
@@ -153,6 +157,7 @@ const mapDispatchToProps = (dispatch) => {
     updateCache: (fetchedUser) => dispatch(updateCacheAction(fetchedUser)),
   };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

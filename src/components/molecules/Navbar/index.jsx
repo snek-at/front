@@ -1,7 +1,7 @@
 //#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
-import React, { lazy, Suspense } from "react";
+import React from "react";
 // DOM bindings for React Router
 import { Link, withRouter, NavLink } from "react-router-dom";
 // React PropTypes
@@ -17,21 +17,22 @@ import {
   MDBCollapse,
   MDBContainer,
   MDBDropdown,
-  MDBDropdownItem,
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBSmoothScroll,
   MDBBtn,
 } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
-//> Searchbar
+//> Actions
+import { logoutAction } from "../../../store/actions/authActions";
+//> SearchBar
 import { SearchBar } from "../../atoms";
 //> Images
 import SNEKLogo from "../../../assets/navigation/logo.png";
 //> CSS
 import "./navbar.scss";
-import { connect } from "react-redux";
-import { logoutAction } from "../../../store/actions/authActions";
 //#endregion
 
 //#region > Components
@@ -177,6 +178,7 @@ Navbar.propTypes = {
 };
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.auth.loggedUser,
 });
@@ -186,6 +188,7 @@ const mapDispatchToProps = (dispatch) => {
     logout: () => dispatch(logoutAction()),
   };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

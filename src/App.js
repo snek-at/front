@@ -7,6 +7,8 @@ import { withRouter } from "react-router-dom";
 //> Redux
 import { useDispatch } from "react-redux";
 
+//> Actions
+import { loginAction } from "./store/actions/authActions";
 //> Components
 /**
  * Footer: Global Footer
@@ -17,8 +19,6 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
-//> Actions
-import { loginAction } from "./store/actions/authActions";
 //#endregion
 
 //#region > Components

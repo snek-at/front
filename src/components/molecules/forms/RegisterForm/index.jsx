@@ -29,13 +29,15 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdbreact";
-
 //> OAuth
 import GitHubOAuth from "reactjs-oauth";
+//> Redux
+import { connect } from "react-redux";
+
+//> Actions
 import { registerAction } from "../../../../store/actions/userActions";
 import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
 import { loginAction } from "../../../../store/actions/authActions";
-import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -841,6 +843,8 @@ RegisterForm.propTypes = {
   goto: PropTypes.func,
 };
 //#endregion
+
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   registrationHistory: state.user.registrationHistory,
   gitlabServers: state.general.allGitlabServers,
@@ -853,6 +857,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchGitLabServers: () => dispatch(fetchGitLabServersAction()),
   };
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

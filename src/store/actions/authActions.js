@@ -1,4 +1,4 @@
-//#region > Authentication
+//#region > Authentication Actions
 /**
  * Handle login
  *

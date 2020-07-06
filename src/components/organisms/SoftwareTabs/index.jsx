@@ -5,10 +5,12 @@ import React from "react";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBadge } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
-import { connect } from "react-redux";
+
 //#endregion
 
 //#region > Components
@@ -120,6 +122,7 @@ class SoftwareTabs extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   fetchedUser: state.user.fetchedUser,
 });
@@ -127,6 +130,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
+//#endregion
 
 //#region > Exports
 //> Default Class

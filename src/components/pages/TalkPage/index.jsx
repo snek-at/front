@@ -20,11 +20,13 @@ import {
   MDBPageNav,
   MDBPagination,
 } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
+//> Actions
+import { getTalkAction } from "../../../store/actions/userActions";
 //> CSS
 import "./talk.scss";
-import { getTalkAction } from "../../../store/actions/userActions";
-import { connect } from "react-redux";
 //#endregion
 
 //#region > Components

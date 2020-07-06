@@ -57,6 +57,7 @@ class LanguageBar extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Class
 export default LanguageBar;
 //#endregion
 
