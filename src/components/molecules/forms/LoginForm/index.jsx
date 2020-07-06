@@ -130,7 +130,7 @@ class LoginForm extends React.Component {
 
       //#TSID6
       //console.log("LOGIN FORM PROCEED TO LOGIN", result);
-      if (result.payload.error) {
+      if (result?.payload.error) {
         this.setState({
           loginFail: true,
           errorMsg: result.payload.message,
