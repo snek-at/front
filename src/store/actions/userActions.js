@@ -124,6 +124,8 @@ const writeCacheAction = (platformData) => {
 const readCacheAction = (username) => {
   return async (dispatch, getState, { getIntel }) => {
     try {
+      dispatch(showLoading());
+
       const intel = getIntel();
       const session = intel.snekclient.session;
 
@@ -203,6 +205,7 @@ const readCacheAction = (username) => {
                     : null,
                 },
               };
+              dispatch(hideLoading());
 
               dispatch({
                 type: "READ_CACHE_SUCCESS",

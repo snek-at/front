@@ -25,9 +25,13 @@ class Routes extends React.Component {
         <Route
           exact
           path="/u/:username"
-          component={(props) => <ProfilePage />}
+          component={(props) => <ProfilePage {...props} />}
         />
-        <Route exact path="/c/:name" component={(props) => <CompanyPage />} />
+        <Route
+          exact
+          path="/c/:name"
+          component={(props) => <CompanyPage {...props} />}
+        />
         <Route
           exact
           path="/t/:username/:uid"
@@ -48,7 +52,7 @@ class Routes extends React.Component {
           path="/settings"
           component={(props) => <SettingsPage {...props} />}
         />
-        {/* Some debugging routes */}
+        {/* Some debugging routes start*/}
         <Route
           render={function () {
             return <h1>Not Found</h1>;
@@ -74,6 +78,7 @@ class Routes extends React.Component {
             return <h1>Third Layer</h1>;
           }}
         />
+        {/* Some debugging routes end*/}
       </Switch>
     );
   }

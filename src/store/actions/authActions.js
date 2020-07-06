@@ -1,6 +1,6 @@
 //#region > Authentication Actions
 /**
- * Handle login
+ * Handle login.
  *
  * @param user A user to login with
  * @description Handles states for login
@@ -59,6 +59,7 @@ const logoutAction = () => {
     try {
       const intel = getIntel();
       const session = intel.snekclient.session;
+
       await session
         .end()
         .then(() =>
