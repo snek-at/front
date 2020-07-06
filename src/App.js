@@ -19,6 +19,7 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
+import LoadingBarContainer from "react-redux-loading-bar";
 //#endregion
 
 //#region > Components
@@ -34,6 +35,9 @@ function App() {
 
   return (
     <>
+      <header className="loading">
+        <LoadingBarContainer className="loading" maxProgress={35} />
+      </header>
       <ScrollToTop>
         <div className="flyout">
           <Navbar />

@@ -3,6 +3,7 @@
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
 //#endregion
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 //#region > Register Actions
 /**
@@ -235,6 +236,8 @@ const readCacheAction = (username) => {
 const updateCacheAction = (fetchedUser) => {
   return async (dispatch, getState, { getIntel }) => {
     try {
+      dispatch(showLoading());
+
       const intel = getIntel();
       const session = intel.snekclient.session;
 
@@ -273,6 +276,8 @@ const updateCacheAction = (fetchedUser) => {
       };
 
       intel.resetReducer();
+
+      dispatch(hideLoading());
 
       return session.tasks.user
         .cache(JSON.stringify(fetchedUser.platformData))
