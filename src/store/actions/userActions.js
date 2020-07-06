@@ -163,7 +163,7 @@ const readCacheAction = (username) => {
               });
             } else {
               // Set settings for first time fetching
-              if (Object.keys(user).length === 0 || true) {
+              if (Object.keys(user).length === 0) {
                 user.firstName = platformData.profile.firstName;
                 user.lastName = platformData.profile.lastName;
                 user.email = platformData.profile.email;
