@@ -62,7 +62,7 @@ class ProfileInfo extends React.Component {
         <MDBView>
           <img
             className="img-fluid main-avatar"
-            src={fetchedUser && fetchedUser.platformData.profile.avatarUrl}
+            src={fetchedUser && fetchedUser.platformData.user.avatarUrl}
           />
           <MDBMask />
         </MDBView>
@@ -86,12 +86,12 @@ class ProfileInfo extends React.Component {
                 </small>
               </p>
             )}
-          {fetchedUser && fetchedUser.platformData.profile.company && (
+          {fetchedUser && fetchedUser.platformData.user.company && (
             <>
               {fetchedUser &&
                 fetchedUser.platformData.user.settings.showCompanyPublic && (
                   <small className="text-muted py-3">
-                    {fetchedUser.platformData.profile.company}
+                    {fetchedUser.platformData.user.company}
                   </small>
                 )}
             </>

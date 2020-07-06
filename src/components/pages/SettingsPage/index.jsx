@@ -89,18 +89,17 @@ class SettingsPage extends React.Component {
 
     if (fetchedUser && this.state.loading) {
       const platformData = this.props.fetchedUser?.platformData;
-      const profile = platformData.profile;
       const data = platformData.user;
       const enterData = {
-        avatar_url: profile.avatarUrl ? profile.avatarUrl : "",
+        avatar_url: data.avatarUrl ? data.avatarUrl : "",
         first_name: data.firstName ? data.firstName : "",
         last_name: data.lastName ? data.lastName : "",
         email: data.email ? data.email : "",
         showEmailPublic: data.settings.showEmailPublic,
-        company: profile.company ? profile.company : "",
+        company: data.company ? data.company : "",
         showCompanyPublic: data.settings.showCompanyPublic,
-        website: profile.websiteUrl ? profile.websiteUrl : "",
-        location: profile.location ? profile.location : "",
+        website: data.websiteUrl ? data.websiteUrl : "",
+        location: data.location ? data.location : "",
         showLocalRanking: data.settings.showLocalRanking,
         showTopLanguages: data.settings.showTopLanguages,
         show3DDiagram: data.settings.show3DDiagram,

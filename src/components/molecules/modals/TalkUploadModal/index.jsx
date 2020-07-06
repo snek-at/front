@@ -34,7 +34,7 @@ class TalkUploadModal extends React.Component {
 
       globalFunctions
         .uploadTalk(files[0], {
-          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
+          avatarUrl: globalState.fetchedUser.platformData.user.avatarUrl,
           owner: {
             username: globalState.loggedUser.username,
           },

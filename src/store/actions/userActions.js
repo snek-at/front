@@ -163,10 +163,14 @@ const readCacheAction = (username) => {
               });
             } else {
               // Set settings for first time fetching
-              if (Object.keys(user).length === 0) {
-                user.firstName = profile.firstName;
-                user.lastName = profile.lastName;
-                user.email = profile.email;
+              if (Object.keys(user).length === 0 || true) {
+                user.firstName = platformData.profile.firstName;
+                user.lastName = platformData.profile.lastName;
+                user.email = platformData.profile.email;
+                user.avatarUrl = platformData.profile.avatarUrl;
+                user.websiteUrl = platformData.profile.websiteUrl;
+                user.location = platformData.profile.location;
+                user.company = platformData.profile.company;
               }
 
               if (!user.settings) {
@@ -314,7 +318,7 @@ const saveSettingsActions = (nextSettings) => {
       if (fetchedUser.platformData) {
         // Check for mandatory fields
         if (nextSettings.email) {
-          fetchedUser.platformData.profile.avatarUrl = nextSettings.avatar_url
+          fetchedUser.platformData.user.avatarUrl = nextSettings.avatar_url
             ? nextSettings.avatar_url
             : "";
           fetchedUser.platformData.user.firstName = nextSettings.first_name
@@ -326,13 +330,13 @@ const saveSettingsActions = (nextSettings) => {
           fetchedUser.platformData.user.email = nextSettings.email
             ? nextSettings.email
             : fetchedUser.platformData.user.email;
-          fetchedUser.platformData.profile.websiteUrl = nextSettings.website
+          fetchedUser.platformData.user.websiteUrl = nextSettings.website
             ? nextSettings.website
             : "";
-          fetchedUser.platformData.profile.location = nextSettings.location
+          fetchedUser.platformData.user.location = nextSettings.location
             ? nextSettings.location
             : "";
-          fetchedUser.platformData.profile.company = nextSettings.company
+          fetchedUser.platformData.user.company = nextSettings.company
             ? nextSettings.company
             : "";
           fetchedUser.platformData.user.settings = {
