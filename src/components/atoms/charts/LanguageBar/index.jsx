@@ -9,12 +9,9 @@ import "./languages.scss";
 
 //#region > Components
 /**
- * @todo The namings of the component and the description does not fit the
- *       actual usecase.
- * @class A week calendar which compares the contributions of a selectable week
- *        with the current week.
+ * @class A language chart which contains several items with their shares.
  */
-class LatestActivity extends React.Component {
+class LanguageBar extends React.Component {
   state = {};
 
   renderBars = (languages) => {
@@ -60,8 +57,7 @@ class LatestActivity extends React.Component {
 //#endregion
 
 //#region > Exports
-//> Default Class
-export default LatestActivity;
+export default LanguageBar;
 //#endregion
 
 /**
