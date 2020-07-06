@@ -10,6 +10,9 @@ import TextLoop from "react-text-loop";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
+import { loginAction } from "../../../../store/actions/authActions";
+import { sha256 } from "js-sha256";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -18,6 +21,7 @@ class LoginForm extends React.Component {
   state = {
     login_username: "",
     login_password: "",
+    loginFail: false,
   };
 
   testForError = (id) => {
@@ -119,17 +123,17 @@ class LoginForm extends React.Component {
       });
     } else {
       // Proceed to login
-      const result = await this.props.globalFunctions.login(
-        this.state.login_username,
-        this.state.login_password
-      );
+      const result = await this.props.login({
+        username: this.state.login_username,
+        password: sha256(this.state.login_password), // Hash password
+      });
 
       //#TSID6
       //console.log("LOGIN FORM PROCEED TO LOGIN", result);
-
-      if (result) {
+      if (result?.payload.error) {
         this.setState({
-          loginFail: false,
+          loginFail: true,
+          errorMsg: result.payload.message,
         });
       }
     }
@@ -149,7 +153,7 @@ class LoginForm extends React.Component {
         <p className="lead">Login to SNEK</p>
         {this.state.loginFail && (
           <MDBAlert color="danger" className="mt-3 mb-3">
-            Can not perform login. Please check your username and password.
+            {this.state.errorMsg}
           </MDBAlert>
         )}
         <form onSubmit={this.login}>
@@ -194,14 +198,19 @@ class LoginForm extends React.Component {
 
 //#region > PropTypes
 LoginForm.propTypes = {
-  globalFunctions: PropTypes.object,
   goTo: PropTypes.func,
 };
 //#endregion
 
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => {
+  return { login: (user) => dispatch(loginAction(user)) };
+};
+
 //#region > Exports
 //> Default Class
-export default LoginForm;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 //#endregion
 
 /**

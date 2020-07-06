@@ -15,23 +15,19 @@ import { SoftwareTabs, ProfileInfo } from "../../index";
 class SoftwareEngineer extends React.Component {
   state = {};
 
-  render() {
-    const { globalState, globalFunctions } = this.props;
+  componentDidUpdate() {
+    console.log("UPDATE SOFTWARE ENGINEER");
+  }
 
+  render() {
     return (
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="3">
-            <ProfileInfo
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-            />
+            <ProfileInfo />
           </MDBCol>
           <MDBCol lg="9">
-            <SoftwareTabs
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-            />
+            <SoftwareTabs />
           </MDBCol>
         </MDBRow>
       </MDBContainer>

@@ -27,6 +27,7 @@ import "./homepage.scss";
 import imageRanking from "../../../assets/body/ranking.png";
 import imageProfiles from "../../../assets/body/profiles.png";
 import imageTrophy from "../../../assets/body/trophy.png";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -94,13 +95,11 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const { globalState, globalFunctions } = this.props;
+    const { loggedUser } = this.props;
     const activeActionCard = this.props.location?.state?.actionCard;
 
-    if (!globalState.loading && globalState.loggedUser) {
-      return <Redirect to={"/u/" + globalState.loggedUser.username} />;
-    } else if (globalState.loading) {
-      return <p>Loading</p>;
+    if (!loggedUser.anonymous) {
+      return <Redirect to={"/u/" + loggedUser.username} />;
     } else {
       return (
         <div id="home" className="pt-5">
@@ -153,8 +152,6 @@ class HomePage extends React.Component {
               <MDBCol md="6">
                 <MDBCard className="px-3 py-4">
                   <UserActionCard
-                    globalFunctions={globalFunctions}
-                    globalState={globalState}
                     activeIndex={activeActionCard ? activeActionCard : 0}
                   />
                 </MDBCard>
@@ -228,9 +225,17 @@ class HomePage extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
 //#region > Exports
 //> Default Class
-export default HomePage;
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 //#endregion
 
 /**

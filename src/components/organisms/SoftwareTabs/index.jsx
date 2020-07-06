@@ -8,6 +8,7 @@ import { MDBBadge } from "mdbreact";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
@@ -15,7 +16,25 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 class SoftwareTabs extends React.Component {
   state = {
     activeTab: 0,
-    tabItems: [
+  };
+
+  setActiveTab = (activeTab) => {
+    this.setState({
+      activeTab,
+    });
+  };
+
+  componentDidUpdate() {
+    console.log("UPDATE SOFTWARE TABS", this.state.activeTab);
+  }
+
+  render() {
+    const { fetchedUser } = this.props;
+    const { activeTab } = this.state;
+
+    console.log(fetchedUser);
+
+    const tabItems = [
       {
         title: "Overview",
         visible: true,
@@ -25,10 +44,8 @@ class SoftwareTabs extends React.Component {
       {
         title: "Projects",
         visible: true,
-        pill: this.props.globalState?.fetchedUser?.platformData?.profile
-          ?.repositories
-          ? this.props.globalState?.fetchedUser?.platformData?.profile
-              ?.repositories?.length
+        pill: this.props.fetchedUser?.platformData?.profile?.repositories
+          ? this.props.fetchedUser?.platformData?.profile?.repositories?.length
           : "0",
         notification: false,
       },
@@ -53,30 +70,17 @@ class SoftwareTabs extends React.Component {
         title: "Talks",
         visible: true,
         notification: false,
-        pill: this.props.globalState.fetchedUser.platformData.talks
-          ? this.props.globalState.fetchedUser.platformData.talks.length
+        pill: this.props.fetchedUser?.platformData.talks
+          ? this.props.fetchedUser?.platformData.talks.length
           : "0",
         notification: false,
       },
-    ],
-  };
-
-  setActiveTab = (activeTab) => {
-    // this.props.globalState.active.softwareTab = activeTab;
-
-    this.setState({
-      activeTab,
-    });
-  };
-
-  render() {
-    const { globalState } = this.props;
-    const { activeTab } = this.state;
+    ];
 
     return (
       <div className="profile-content">
         <ul className="nav nav-tabs">
-          {this.state.tabItems.map((item, i) => {
+          {tabItems.map((item, i) => {
             return (
               <li className="nav-item" key={i}>
                 <span
@@ -93,16 +97,13 @@ class SoftwareTabs extends React.Component {
         <div className="p-3">
           {activeTab === 0 && (
             <OverviewTab
-              platformData={
-                globalState.fetchedUser && globalState.fetchedUser.platformData
-              }
+              platformData={fetchedUser && fetchedUser.platformData}
             />
           )}
           {activeTab === 1 && (
             <ProjectTab
               repoList={
-                globalState.fetchedUser &&
-                globalState.fetchedUser.platformData.profile.repositories
+                fetchedUser && fetchedUser.platformData.profile.repositories
               }
             />
           )}
@@ -119,9 +120,17 @@ class SoftwareTabs extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
 //#region > Exports
 //> Default Class
-export default SoftwareTabs;
+export default connect(mapStateToProps, mapDispatchToProps)(SoftwareTabs);
 //#endregion
 
 /**

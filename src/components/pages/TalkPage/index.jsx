@@ -23,46 +23,45 @@ import {
 
 //> CSS
 import "./talk.scss";
+import { getTalkAction } from "../../../store/actions/userActions";
+import { connect } from "react-redux";
 //#endregion
 
 //#region > Components
 /** @class This component adds the Talk Page which displays a certain talk */
 class TalkPage extends React.Component {
   state = {
+    loading: true,
     talk: undefined,
   };
 
+  componentDidUpdate = () => {
+    console.log("UPDATE");
+  };
+
   componentDidMount = () => {
-    const { globalState, globalFunctions } = this.props;
     const { uid, username } = this.props.match?.params;
 
-    if (
-      uid &&
-      username &&
-      !globalState.loading &&
-      !globalState.fetchedUser &&
-      globalState.fetchedUser !== false
-    ) {
-      if (this.state.talk === undefined) {
-        globalFunctions.getTalk(uid, username).then((talk) => {
-          talk.social = {
-            likes: 17,
-            date: new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            }),
-          };
+    this.props.getTalk(uid, username).then(() => {
+      const { selectedTalk } = this.props;
 
-          talk.interval = {
-            timeoutID: setInterval(() => this.updateIframe(talk), 4000),
-            loaded: false,
-          };
+      if (uid && username) {
+        selectedTalk.social = {
+          likes: 17,
+          date: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          }),
+        };
 
-          this.setState({ talk });
-        });
+        selectedTalk.interval = {
+          timeoutID: setInterval(() => this.updateIframe(selectedTalk), 4000),
+          loaded: false,
+        };
       }
-    }
+      this.setState({ talk: selectedTalk, loading: false });
+    });
   };
 
   updateIframe = (talk) => {
@@ -78,7 +77,7 @@ class TalkPage extends React.Component {
 
   render() {
     const talk = this.state.talk;
-
+    console.log(this.state);
     return (
       <div id="talk">
         {talk && (
@@ -123,7 +122,7 @@ class TalkPage extends React.Component {
                       <MDBRow className="d-flex align-items-center">
                         <MDBCol lg="2">
                           <img
-                            src={talk.repository.avatarUrl}
+                            src={talk.repository?.avatarUrl}
                             alt="logo"
                             className="img-fluid"
                           />
@@ -132,9 +131,9 @@ class TalkPage extends React.Component {
                           <div className="d-flex justify-content-space-between">
                             <div>
                               <p className="lead font-weight-bold mb-1">
-                                Owned by {talk.repository.owner.username}
+                                Owned by {talk.repository?.owner.username}
                               </p>
-                              {talk.repository.owner && (
+                              {talk.repository?.owner && (
                                 <div className="verified-badge mb-1">
                                   <MDBBadge color="success">
                                     <MDBIcon icon="check-circle" />
@@ -143,7 +142,7 @@ class TalkPage extends React.Component {
                                 </div>
                               )}
                               <p className="text-muted mb-1">
-                                {talk.repository.description}
+                                {talk.repository?.description}
                               </p>
                             </div>
                             <div className="d-flex">
@@ -226,7 +225,7 @@ class TalkPage extends React.Component {
                 {/* <MDBCol lg="12">
               <MDBCard>
                 <MDBCardBody>
-                  {talk1.repository.readme}
+                  {talk1.repository?.readme}
                 </MDBCardBody>
               </MDBCard>
             </MDBCol> */}
@@ -377,9 +376,17 @@ class TalkPage extends React.Component {
 }
 //#endregion
 
+const mapStateToProps = (state) => ({
+  selectedTalk: state.user.selectedTalk,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return { getTalk: (uid, username) => dispatch(getTalkAction(uid, username)) };
+};
+
 //#region > Exports
 //> Default Class
-export default TalkPage;
+export default connect(mapStateToProps, mapDispatchToProps)(TalkPage);
 //#endregion
 
 /**

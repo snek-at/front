@@ -17,7 +17,7 @@ import {
 
 //#region > Components
 /** @class A upload modal component for uploading files including a drop-zone */
-class UploadModal extends React.Component {
+class TalkUploadModal extends React.Component {
   state = {
     loading: false,
     error: [],
@@ -34,7 +34,7 @@ class UploadModal extends React.Component {
 
       globalFunctions
         .uploadTalk(files[0], {
-          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
+          avatarUrl: globalState.fetchedUser.platformData.user.avatarUrl,
           owner: {
             username: globalState.loggedUser.username,
           },
@@ -147,7 +147,7 @@ class UploadModal extends React.Component {
 
 //#region > Exports
 //> Default Class
-export default UploadModal;
+export default TalkUploadModal;
 //#endregion
 
 /**
