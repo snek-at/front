@@ -21,20 +21,19 @@
     width: 100%;
     height: 8.4px;
     cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
     background: #77bd43;
     border-radius: 1.3px;
     border: 0.2px solid #010101;
   }
 
   input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
+    border: 1px solid #000;
     height: 20px;
     width: 16px;
     border-radius: 3px;
-    background: #ffffff;
+    background: #fff;
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -7px;
@@ -48,20 +47,19 @@
     width: 100%;
     height: 8.4px;
     cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
     background: #77bd43;
     border-radius: 1.3px;
     border: 0.2px solid #010101;
   }
 
   input[type=range]::-moz-range-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
+    border: 1px solid #000;
     height: 36px;
     width: 16px;
     border-radius: 3px;
-    background: #ffffff;
+    background: #fff;
     cursor: pointer;
   }
 
@@ -69,7 +67,6 @@
     width: 100%;
     height: 8.4px;
     cursor: pointer;
-    animate: 0.2s;
     background: transparent;
     border-color: transparent;
     border-width: 16px 0;
@@ -80,23 +77,23 @@
     background: #77bd43;
     border: 0.2px solid #010101;
     border-radius: 2.6px;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
   }
 
   input[type=range]::-ms-fill-upper {
     background: #77bd43;
     border: 0.2px solid #010101;
     border-radius: 2.6px;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
   }
 
   input[type=range]::-ms-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
+    box-shadow: 1 1 1 #000, 0 0 1 #0d0d0d;
+    border: 1px solid #000;
     height: 36px;
     width: 16px;
     border-radius: 3px;
-    background: #ffffff;
+    background: #fff;
     cursor: pointer;
   }
 

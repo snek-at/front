@@ -4,11 +4,13 @@
   margin: 0.3rem 0;
   position: relative;
   transition: height 0.2s ease;
+
   .filler {
     height: 100%;
     border-radius: inherit;
     text-align: right;
     position: absolute;
+
     &:last-child {
       border-top-right-radius: 0.3rem;
       border-bottom-right-radius: 0.3rem;
@@ -16,9 +18,6 @@
     border-top-left-radius: 0.3rem;
     border-bottom-left-radius: 0.3rem;
   }
-  /*&:hover {
-    height: 30px;
-  }*/
 }
 
 /**
