@@ -67,9 +67,18 @@ class SettingsPage extends React.Component {
   // triggers every time the settings menu tab is pressed
   componentDidMount = () => {
     const { loggedUser } = this.props;
+
     if (!loggedUser.anonymous) {
       this.props.readCache(loggedUser.username);
-    } else {
+    }
+  };
+
+  // important for direct url access
+  componentDidUpdate = () => {
+    const { loggedUser, fetchedUser } = this.props;
+
+    // redirect to root if the loggedUser is anonymous
+    if (loggedUser.anonymous) {
       this.props.history.push({
         pathname: "/",
         state: {
@@ -77,11 +86,6 @@ class SettingsPage extends React.Component {
         },
       });
     }
-  };
-
-  // important for direct url access
-  componentDidUpdate = () => {
-    const { loggedUser, fetchedUser } = this.props;
 
     if (!fetchedUser && !loggedUser.anonymous) {
       this.props.readCache(loggedUser.username);
