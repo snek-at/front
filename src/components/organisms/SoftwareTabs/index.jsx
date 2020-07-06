@@ -26,15 +26,9 @@ class SoftwareTabs extends React.Component {
     });
   };
 
-  componentDidUpdate() {
-    console.log("UPDATE SOFTWARE TABS", this.state.activeTab);
-  }
-
   render() {
     const { fetchedUser } = this.props;
     const { activeTab } = this.state;
-
-    console.log(fetchedUser);
 
     const tabItems = [
       {

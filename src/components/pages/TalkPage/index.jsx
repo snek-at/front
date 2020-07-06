@@ -37,10 +37,6 @@ class TalkPage extends React.Component {
     talk: undefined,
   };
 
-  componentDidUpdate = () => {
-    console.log("UPDATE");
-  };
-
   componentDidMount = () => {
     const { uid, username } = this.props.match?.params;
 
@@ -79,7 +75,7 @@ class TalkPage extends React.Component {
 
   render() {
     const talk = this.state.talk;
-    console.log(this.state);
+
     return (
       <div id="talk">
         {talk && (

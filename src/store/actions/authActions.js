@@ -6,21 +6,14 @@
  * @description Handles states for login
  */
 const loginAction = (user) => {
-  console.log("USER", user);
-  console.log("run action");
   return (dispatch, getState, { getIntel }) => {
     try {
       const intel = getIntel();
-      console.log(intel);
-
       const session = intel.snekclient.session;
-
-      console.log(session);
 
       return session
         .begin(user)
         .then((whoami) => {
-          console.log("WHOAMI", whoami);
           if (whoami?.username !== process.env.REACT_APP_ANONYMOUS_USER) {
             dispatch({
               type: "LOGIN_SUCCESS",
@@ -31,7 +24,6 @@ const loginAction = (user) => {
               },
             });
           } else {
-            console.log(whoami.username, process.env.REACT_APP_ANONYMOUS_USER);
             dispatch({
               type: "LOGIN_ANON_SUCCESS",
               payload: {},

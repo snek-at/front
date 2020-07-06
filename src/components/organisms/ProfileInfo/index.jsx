@@ -29,8 +29,7 @@ class ProfileInfo extends React.Component {
 
   componentDidMount = () => {
     const { fetchedUser } = this.props;
-    console.log(this.props);
-    console.log("PROFILE INFO", fetchedUser);
+
     if (fetchedUser && !this.state.sources) {
       this.displaySources(fetchedUser.platformData.profile.sources);
     }

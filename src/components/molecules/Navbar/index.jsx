@@ -61,7 +61,7 @@ class Navbar extends React.Component {
 
   render() {
     const { location, loggedUser } = this.props;
-    console.log(this.props);
+
     return (
       <MDBNavbar color="light" light expand="md">
         <MDBContainer>

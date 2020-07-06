@@ -410,11 +410,9 @@ class RegisterForm extends React.Component {
             gift_code: promoCode && code !== "" ? code : null,
             password: password1,
           };
-          console.log(this.props);
+
           this.props.register(registrationData).then(() => {
             const { username, password } = registrationData;
-
-            console.log({ username, password });
 
             this.props.login({
               username,

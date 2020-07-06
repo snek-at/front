@@ -66,21 +66,10 @@ class ProfilePage extends React.Component {
     const { match, loggedUser, fetchedUser } = this.props;
     const username = match?.params?.username;
 
-    console.log("BAR USERNAME", username);
-    console.log("REFETCH REQUIRED", this.refetchRequired(username));
-    console.log("LOGGED", loggedUser);
-    console.log("FETCHED", fetchedUser);
-    console.log(
-      "USERNAME MATCHES FETCHED USERNAME",
-      this.usernameMatchesFetchedUsername(username)
-    );
     if (username) {
       if (this.refetchRequired(username)) {
         this.props.readCache(username);
       }
-      console.log(
-        !loggedUser.anonymous && loggedUser.username === fetchedUser?.username
-      );
     }
   };
 
@@ -92,15 +81,9 @@ class ProfilePage extends React.Component {
         !loggedUser.anonymous &&
         loggedUser.username === fetchedUser?.username
       ) {
-        console.log("UPDATE CACHE");
         this.props.updateCache(fetchedUser).then(() => {
-          console.log("UPDATEd");
           if (this._isMounted) {
             this.props.readCache(loggedUser.username);
-
-            console.log("CACHING DONE", this.props.fetchedUser);
-          } else {
-            console.log("CACHING DONE BUT NOT MOUNTED");
           }
         });
       }
@@ -118,7 +101,7 @@ class ProfilePage extends React.Component {
 
   render() {
     const { fetchedUser } = this.props;
-    console.log(fetchedUser);
+
     if (!fetchedUser) {
       return (
         <div className="text-center my-5 py-5">

@@ -306,14 +306,11 @@ const updateCacheAction = (fetchedUser) => {
 const saveSettingsActions = (nextSettings) => {
   return async (dispatch, getState, { getIntel }) => {
     try {
-      console.log("save settings");
       const intel = getIntel();
       const state = getState();
 
       const fetchedUser = state.user.fetchedUser;
       const session = intel.snekclient.session;
-
-      console.log("save settings", fetchedUser, nextSettings);
 
       if (fetchedUser.platformData) {
         // Check for mandatory fields
@@ -482,7 +479,7 @@ const uploadTalkAction = (file, talkInfo) => {
           talks[talks.length - 1].repository = talkInfo;
 
           fetchedUser.platformData.talks.push(talks[talks.length - 1]);
-          console.log("BEFORE CACHING");
+
           session.tasks.user
             .cache(JSON.stringify(fetchedUser.platformData))
             .then(() =>

@@ -107,7 +107,6 @@ const getDataAction = () => {
 const getAllPageUrlsAction = () => {
   return async (dispatch, getState, { getIntel }) => {
     try {
-      console.log("getAllPageUrlsAction");
       const intel = getIntel();
       const session = intel.snekclient.session;
 

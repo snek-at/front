@@ -26,7 +26,6 @@ class UserActionCard extends React.Component {
   };
 
   goTo = (item) => {
-    console.log(item);
     this.setState({
       activeItem: item,
     });
