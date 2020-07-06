@@ -63,7 +63,6 @@ Pinned.propTypes = {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default Pinned;
 //#endregion
 

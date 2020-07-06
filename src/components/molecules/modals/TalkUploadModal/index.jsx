@@ -146,7 +146,6 @@ class TalkUploadModal extends React.Component {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default TalkUploadModal;
 //#endregion
 

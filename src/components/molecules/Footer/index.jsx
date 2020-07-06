@@ -254,7 +254,6 @@ class Footer extends React.PureComponent {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default withRouter(Footer);
 //#endregion
 

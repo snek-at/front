@@ -387,7 +387,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 //#region > Exports
-//> Default Class
 export default connect(mapStateToProps, mapDispatchToProps)(TalkPage);
 //#endregion
 

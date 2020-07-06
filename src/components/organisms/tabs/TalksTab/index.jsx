@@ -226,7 +226,6 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Talks));
 //#endregion
 
