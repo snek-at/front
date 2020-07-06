@@ -43,7 +43,7 @@ const loginAction = (user) => {
             type: "LOGIN_FAILED",
             payload: {
               errorCode: 619,
-              message: "Login failed invalid credentials",
+              message: "Incorrect username or password",
               error: ex,
             },
           })
