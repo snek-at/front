@@ -69,6 +69,13 @@ class SettingsPage extends React.Component {
     const { loggedUser } = this.props;
     if (!loggedUser.anonymous) {
       this.props.readCache(loggedUser.username);
+    } else {
+      this.props.history.push({
+        pathname: "/",
+        state: {
+          actionCard: 1,
+        },
+      });
     }
   };
 
