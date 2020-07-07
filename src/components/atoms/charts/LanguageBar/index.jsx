@@ -17,41 +17,53 @@ class LanguageBar extends React.Component {
   renderBars = (languages) => {
     let latest = 0;
 
-    return languages.map((language, i) => {
-      const { color, share } = language;
-      const value = latest + share;
+    console.log("LANG", languages);
 
-      latest += share;
+    if (languages[0].size !== 0) {
+      return languages.map((language, i) => {
+        const { color, share } = language;
+        const value = latest + share;
 
+        latest += share;
+
+        return (
+          <div
+            className="filler"
+            key={i}
+            style={{
+              width: `${value}%`,
+              backgroundColor: color,
+              zIndex: languages.length - i,
+            }}
+          ></div>
+        );
+      });
+    } else {
       return (
         <div
           className="filler"
-          key={i}
+          key={1}
           style={{
-            width: `${value}%`,
-            backgroundColor: color,
-            zIndex: languages.length - i,
+            width: `100%`,
+            backgroundColor: "grey",
+            zIndex: "1",
           }}
         ></div>
       );
-    });
+    }
   };
 
   render() {
     const { languages, height } = this.props;
 
-    if (languages) {
-      return (
-        <div
-          className="languages"
-          style={{ height: `${height ? height + "px" : "7px"}` }}
-        >
-          {this.renderBars(languages)}
-        </div>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <div
+        className="languages"
+        style={{ height: `${height ? height + "px" : "7px"}` }}
+      >
+        {this.renderBars(languages)}
+      </div>
+    );
   }
 }
 //#endregion
