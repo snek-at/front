@@ -4,11 +4,14 @@
   "editor.snippetSuggestions": "top",
   "editor.rulers": [80, 120],
   "editor.formatOnSave": false,
-    "[javascript]": {
-        "editor.formatOnSave": true
-    },
-    "[javascriptreact]": {
-      "editor.formatOnSave": true
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
   },
   "terminal.integrated.fontFamily": "Consolas",
   "workbench.colorTheme": "Dracula Soft",
