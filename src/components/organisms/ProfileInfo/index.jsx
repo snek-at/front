@@ -128,7 +128,7 @@ class ProfileInfo extends React.Component {
           )}
         </div>
         <div className="py-3 follow text-center">
-          <MDBBtn color="green" size="md">
+          <MDBBtn color="green" outline size="md">
             <MDBIcon icon="plus-circle" className="mr-2" />
             Follow
           </MDBBtn>

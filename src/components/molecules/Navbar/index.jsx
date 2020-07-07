@@ -155,7 +155,7 @@ class Navbar extends React.Component {
                         },
                       }}
                     >
-                      <MDBBtn color="green" size="md">
+                      <MDBBtn color="green" outline size="md">
                         Sign In
                       </MDBBtn>
                     </Link>

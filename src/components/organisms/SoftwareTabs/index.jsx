@@ -90,7 +90,7 @@ class SoftwareTabs extends React.Component {
             );
           })}
         </ul>
-        <div className="p-3">
+        <div className="p-3 content">
           {activeTab === 0 && (
             <OverviewTab
               platformData={fetchedUser && fetchedUser.platformData}
