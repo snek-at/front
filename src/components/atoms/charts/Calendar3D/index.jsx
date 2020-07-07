@@ -346,7 +346,9 @@ class Calendar3D extends React.Component {
                 <div className="item">
                   <p className="green-text lead font-weight-bold">
                     {this.state.streak.streakLongest}{" "}
-                    <span className="days">days</span>
+                    <span className="days">
+                      {this.state.streak.streakLongest === 1 ? "day" : "days"}
+                    </span>
                   </p>
                   <p className="small font-weight-bold">Longest</p>
                   <p className="text-muted small">
@@ -356,7 +358,9 @@ class Calendar3D extends React.Component {
                 <div className="item">
                   <p className="green-text lead font-weight-bold">
                     {this.state.streak.streakCurrent}{" "}
-                    <span className="days">days</span>
+                    <span className="days">
+                      {this.state.streak.streakCurrent === 1 ? "day" : "days"}
+                    </span>
                   </p>
                   <p className="small font-weight-bold">Current</p>
                   <p className="text-muted small">
