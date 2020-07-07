@@ -13,6 +13,22 @@
   .col-md-4 {
     margin-bottom: 1rem;
   }
+
+  .SortableList {
+    display: flex;
+    .SortableItem {
+      margin: 0.2rem;
+    }
+  }
+}
+
+.interchange-charts {
+  .SortableList {
+    display: flex;
+    .SortableItem {
+      margin: 0.2rem;
+    }
+  }
 }
 
 .year-select {
