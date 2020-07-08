@@ -103,6 +103,7 @@ class ProfilePictureModal extends React.Component {
             <MDBCol md="3">
               <MDBBtn
                 color="green"
+                outline
                 size="sm"
                 id="btn-save"
                 onClick={this.onClickSave}

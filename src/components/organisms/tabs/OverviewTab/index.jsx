@@ -127,7 +127,7 @@ class OverviewTab extends React.Component {
                           <MDBCol md="4" key={i}>
                             <span className="mb-2 text-muted">
                               <MDBIcon
-                                icon="square"
+                                icon="circle"
                                 className="pr-2"
                                 style={{ color: language.color }}
                               />

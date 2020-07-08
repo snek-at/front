@@ -39,6 +39,8 @@ class Calendar3D extends React.Component {
         {
           width: this.myInput.current.offsetWidth,
           loading: true,
+          contrib: this.renderTopStats(),
+          streak: this.renderBottomStats(),
         },
         () => this.checkCache()
       );
@@ -82,9 +84,9 @@ class Calendar3D extends React.Component {
       ) / 100;
 
     datesTotal =
-      moment(contributionCalendar.startDate).format("MMM DD, YYYY") +
-      " - " +
-      moment(contributionCalendar.endDate).format("MMM DD, YYYY");
+      moment(contributionCalendar.startDate).format("MMM D") +
+      " → " +
+      moment(contributionCalendar.endDate).format("MMM D");
 
     /* Busiest day */
     maxCount = contribData.busiestDay.total;
@@ -92,30 +94,11 @@ class Calendar3D extends React.Component {
     dateBest = dateBest.isValid() ? dateBest.format("MMM DD") : "-";
 
     return {
-      __html: `<div class="ic-stats-block ic-stats-top">\n
-    <span class="ic-stats-table">\n
-    <span class="ic-stats-row">\n
-    <span class="ic-stats-label">1 year total\n
-    <span class="ic-stats-count">${countTotal}</span>\n
-    <span class="ic-stats-average">${averageCount}</span> per day\n
-    </span>\n
-    <span class="ic-stats-meta ic-stats-total-meta">\n
-    <span class="ic-stats-unit">contributions</span>\n
-    <span class="ic-stats-date">${datesTotal}</span>\n
-    </span>\n
-    </span>\n
-    <span class="ic-stats-row">\n
-    <span class="ic-stats-label">Busiest day\n
-    <span class="ic-stats-count">${maxCount}</span>\n
-    </span>\n
-    <span class="ic-stats-meta">\n
-    <span class="ic-stats-unit">contributions</span>\n
-    <span class="ic-stats-date">${dateBest}</span>\n
-    </span>\n
-    </span>\n
-    </span>\n
-    </span>\n
-    </div>`,
+      countTotal,
+      averageCount,
+      datesTotal,
+      maxCount,
+      dateBest,
     };
   }
 
@@ -135,9 +118,9 @@ class Calendar3D extends React.Component {
     if (contribData.streak.longest) {
       streakLongest = contribData.streak.longest.totalDays;
       datesLongest =
-        moment(contribData.streak.longest.startDate).format("MMM DD, YYYY") +
-        " - " +
-        moment(contribData.streak.longest.endDate).format("MMM DD, YYYY");
+        moment(contribData.streak.longest.startDate).format("MMM D") +
+        " → " +
+        moment(contribData.streak.longest.endDate).format("MMM D");
     } else {
       streakLongest = "0";
       datesLongest = "-";
@@ -145,37 +128,19 @@ class Calendar3D extends React.Component {
     if (contribData.streak.current.id !== -1) {
       streakCurrent = contribData.streak.current.totalDays;
       datesCurrent =
-        moment(contribData.streak.current.startDate).format("MMM DD, YYYY") +
-        " - " +
-        moment(contribData.streak.current.endDate).format("MMM DD, YYYY");
+        moment(contribData.streak.current.startDate).format("MMM D") +
+        " → " +
+        moment(contribData.streak.current.endDate).format("MMM D");
     } else {
       streakCurrent = "0";
       datesCurrent = "-";
     }
 
     return {
-      __html: `<div class="ic-stats-block ic-stats-bottom">\n
-    <span class="ic-stats-table">\n
-    <span class="ic-stats-row">\n
-    <span class="ic-stats-label">Longest streak\n
-    <span class="ic-stats-count">${streakLongest}</span>\n
-    </span>\n
-    <span class="ic-stats-meta">\n
-    <span class="ic-stats-unit">days</span>\n
-    <span class="ic-stats-date">${datesLongest}</span>\n
-    </span>\n
-    </span>\n
-    <span class="ic-stats-row">\n
-    <span class="ic-stats-label">Current streak\n
-    <span class="ic-stats-count">${streakCurrent}</span>\n
-    </span>\n
-    <span class="ic-stats-meta">\n
-    <span class="ic-stats-unit">days</span>\n
-    <span class="ic-stats-date">${datesCurrent}</span>\n
-    </span>\n
-    </span>\n
-    </span>\n
-    </div>`,
+      streakLongest,
+      datesLongest,
+      streakCurrent,
+      datesCurrent,
     };
   }
 
@@ -209,7 +174,7 @@ class Calendar3D extends React.Component {
         size = 8;
       }
 
-      const maxHight = 100;
+      const maxHight = 60;
 
       let x = 0;
       let y = 0;
@@ -343,17 +308,74 @@ class Calendar3D extends React.Component {
   render() {
     return (
       <div id="calendar3d">
-        {this.props.platformData && this.state.width > 500 && (
+        {this.state.width > 500 && (
           <>
-            <div dangerouslySetInnerHTML={this.renderTopStats()} />
-            <div dangerouslySetInnerHTML={this.renderBottomStats()} />
+            <div className="top-stats">
+              <p className="font-weight-bold mb-1">Contributions</p>
+              <div className="stats d-flex justify-content-between border">
+                <div className="item">
+                  <p className="green-text lead font-weight-bold">
+                    {this.state.contrib.countTotal}
+                  </p>
+                  <p className="small font-weight-bold">Total</p>
+                  <p className="text-muted small">
+                    {this.state.contrib.datesTotal}
+                  </p>
+                </div>
+                <div className="item">
+                  <p className="green-text lead font-weight-bold">
+                    {this.state.contrib.maxCount}
+                  </p>
+                  <p className="small font-weight-bold">Best day</p>
+                  <p className="text-muted small">
+                    {this.state.contrib.dateBest}
+                  </p>
+                </div>
+              </div>
+              <p className="small text-right mt-1">
+                Average:{" "}
+                <span className="green-text">
+                  {this.state.contrib.averageCount}
+                </span>{" "}
+                / day
+              </p>
+            </div>
+            <div className="bottom-stats">
+              <p className="font-weight-bold mb-1">Streaks</p>
+              <div className="stats d-flex justify-content-between border">
+                <div className="item">
+                  <p className="green-text lead font-weight-bold">
+                    {this.state.streak.streakLongest}{" "}
+                    <span className="days">
+                      {this.state.streak.streakLongest === 1 ? "day" : "days"}
+                    </span>
+                  </p>
+                  <p className="small font-weight-bold">Longest</p>
+                  <p className="text-muted small">
+                    {this.state.streak.datesLongest}
+                  </p>
+                </div>
+                <div className="item">
+                  <p className="green-text lead font-weight-bold">
+                    {this.state.streak.streakCurrent}{" "}
+                    <span className="days">
+                      {this.state.streak.streakCurrent === 1 ? "day" : "days"}
+                    </span>
+                  </p>
+                  <p className="small font-weight-bold">Current</p>
+                  <p className="text-muted small">
+                    {this.state.streak.datesCurrent}
+                  </p>
+                </div>
+              </div>
+            </div>
           </>
         )}
         <div ref={this.myInput}>
           <canvas
             ref={(c) => (this.context = c)}
             width={this.state.width}
-            height="350"
+            height="400"
           ></canvas>
         </div>
         {this.state.cache && <img src={this.state.cache} alt="" />}

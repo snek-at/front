@@ -21,6 +21,7 @@ import {
   MDBDropdownMenu,
   MDBSmoothScroll,
   MDBBtn,
+  MDBIcon,
 } from "mdbreact";
 //> Redux
 import { connect } from "react-redux";
@@ -113,6 +114,12 @@ class Navbar extends React.Component {
             <MDBNavbarNav right>
               {!loggedUser.anonymous ? (
                 <>
+                  <Link to={"/u/" + loggedUser.username}>
+                    <MDBBtn color="white">
+                      <MDBIcon far icon="user-circle" />
+                      Profile
+                    </MDBBtn>
+                  </Link>
                   <div className="spacer" />
                   <MDBNavItem>
                     <MDBDropdown>
@@ -124,12 +131,6 @@ class Navbar extends React.Component {
                         />
                       </MDBDropdownToggle>
                       <MDBDropdownMenu className="dropdown-default">
-                        <Link
-                          to={"/u/" + loggedUser.username}
-                          className="dropdown-item"
-                        >
-                          My profile
-                        </Link>
                         <Link to="/settings" className="dropdown-item">
                           Settings
                         </Link>
@@ -155,7 +156,7 @@ class Navbar extends React.Component {
                         },
                       }}
                     >
-                      <MDBBtn color="green" size="md">
+                      <MDBBtn color="green" outline size="md">
                         Sign In
                       </MDBBtn>
                     </Link>

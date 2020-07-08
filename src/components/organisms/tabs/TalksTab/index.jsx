@@ -87,6 +87,7 @@ class Talks extends React.Component {
             <MDBCol md="2">
               <MDBBtn
                 color="green"
+                outline
                 size="md"
                 onClick={() => this.setState({ showUpload: true })}
               >

@@ -151,7 +151,7 @@ class TalkPage extends React.Component {
                                 </MDBBtn>
                               </a>
                               <a>
-                                <MDBBtn color="green" size="md">
+                                <MDBBtn color="green" outline size="md">
                                   <MDBIcon icon="heart"></MDBIcon>
                                   Follow
                                 </MDBBtn>
