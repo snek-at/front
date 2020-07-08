@@ -116,6 +116,8 @@ class MovableBoundary extends React.Component {
 
     indexArray.splice(newIndex, 0, indexArray.splice(oldIndex, 1)[0]);
 
+    // Save item order when items swap
+    this.saveItemOrder();
     this.setState({ indexArray });
   };
 
