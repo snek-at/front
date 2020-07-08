@@ -11,6 +11,7 @@ const appendSourceObjectsAction = (sourceList) => {
       const intel = getIntel();
 
       intel.appendList(sourceList);
+
       dispatch({
         type: "APPEND_SOURCE_OBJECTS_SUCCESS",
         payload: {},

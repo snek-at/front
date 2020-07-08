@@ -254,8 +254,10 @@ class Footer extends React.PureComponent {
 //#endregion
 
 //#region > Exports
-// Got access to the history object’s properties and the closest
-// <Route>'s match.
+/**
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
 export default withRouter(Footer);
 //#endregion
 

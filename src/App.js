@@ -56,8 +56,10 @@ function App() {
 //#endregion
 
 //#region > Exports
-// Got access to the history object’s properties and the closest
-// <Route>'s match.
+/**
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
 export default withRouter(App);
 //#endregion
 

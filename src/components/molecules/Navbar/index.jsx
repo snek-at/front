@@ -176,7 +176,6 @@ class Navbar extends React.Component {
 //#endregion
 
 //#region > PropTypes
-// is it required to write down all stuff in map...toProps??
 Navbar.propTypes = {
   location: PropTypes.object,
 };
