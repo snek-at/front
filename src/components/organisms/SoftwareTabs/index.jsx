@@ -6,11 +6,12 @@ import React from "react";
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBadge } from "mdbreact";
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { connect } from "react-redux";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
-
 //#endregion
 
 //#region > Components
@@ -35,7 +36,6 @@ class SoftwareTabs extends React.Component {
   render() {
     const { fetchedUser } = this.props;
     const { activeTab } = this.state;
-
     const tabItems = [
       {
         title: "Overview",
@@ -135,8 +135,10 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
-// Provides its connected component with the pieces of the data it needs from
-// the store, and the functions it can use to dispatch actions to the store.
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(SoftwareTabs);
 //#endregion
 

@@ -11,9 +11,12 @@ import { MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
 // SHA hashing algorithm
 import { sha256 } from "js-sha256";
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { connect } from "react-redux";
 
 //> Actions
+// Functions to send data from the application to the store
 import { loginAction } from "../../../../store/actions/authActions";
 
 //#endregion
@@ -214,10 +217,10 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
-// Provides its connected component with the pieces of the data it needs from
-// the store, and the functions it can use to dispatch actions to the store.
-// Got access to the history object’s properties and the closest
-// <Route>'s match.
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 //#endregion
 

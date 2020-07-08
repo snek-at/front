@@ -5,9 +5,12 @@ import React, { useEffect } from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { useDispatch } from "react-redux";
 
 //> Actions
+// Functions to send data from the application to the store
 import { loginAction } from "./store/actions/authActions";
 //> Components
 /**

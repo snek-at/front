@@ -19,6 +19,8 @@ import {
   MDBIcon,
 } from "mdbreact";
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { connect } from "react-redux";
 
 //> Components
@@ -312,8 +314,10 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
-// Provides its connected component with the pieces of the data it needs from
-// the store, and the functions it can use to dispatch actions to the store.
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 //#endregion
 

@@ -7,6 +7,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 // This serves as an entry point to the DOM and server renderers for React
 import ReactDOM from "react-dom";
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { createStore, applyMiddleware, compose } from "redux";
 import { loadingBarMiddleware } from "react-redux-loading-bar";
 import { Provider } from "react-redux";

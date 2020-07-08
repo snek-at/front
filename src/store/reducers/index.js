@@ -1,5 +1,7 @@
 //#region > Imports
 //> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
 import { combineReducers } from "redux";
 //> Reducers
 import { loadingBarReducer } from "react-redux-loading-bar";
