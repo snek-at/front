@@ -92,7 +92,7 @@ const writeCacheAction = (platformData) => {
       const session = intel.snekclient.session;
 
       return session.tasks.user
-        .cache(platformData)
+        .cache(JSON.stringify(platformData))
         .then(() =>
           dispatch({
             type: "WRITE_CACHE_SUCCESS",
@@ -124,8 +124,6 @@ const writeCacheAction = (platformData) => {
 const readCacheAction = (username) => {
   return async (dispatch, getState, { getIntel }) => {
     try {
-      dispatch(showLoading());
-
       const intel = getIntel();
       const session = intel.snekclient.session;
 
@@ -166,7 +164,18 @@ const readCacheAction = (username) => {
               });
             } else {
               // Set settings for first time fetching
-              if (Object.keys(user).length === 0) {
+              if (
+                ![
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "avatarUrl",
+                  "websiteUrl",
+                  "websiteUrl",
+                  "location",
+                  "company",
+                ].every((item) => user.hasOwnProperty(item))
+              ) {
                 user.firstName = platformData.profile.firstName;
                 user.lastName = platformData.profile.lastName;
                 user.email = platformData.profile.email;
@@ -205,7 +214,6 @@ const readCacheAction = (username) => {
                     : null,
                 },
               };
-              dispatch(hideLoading());
 
               dispatch({
                 type: "READ_CACHE_SUCCESS",

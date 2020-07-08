@@ -1,0 +1,30 @@
+.SortableItem {
+  list-style: none;
+  cursor: move;
+  outline: none;
+  user-select: text !important;
+
+  // View when sorting is enabled
+  &:not(.unsortable) {
+    background: transparentize($color: white, $amount: 0.5) !important;
+    margin-bottom: 1rem;
+    border-radius: 0.3rem;
+    padding-top: 0.3rem;
+    user-select: none !important;
+  }
+}
+
+.SortableList {
+  display: grid;
+  grid: initial;
+  padding: 0;
+}
+
+.unsortable {
+  cursor: default;
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */
