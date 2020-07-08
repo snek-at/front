@@ -7,6 +7,7 @@ import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import TalkUploadModal from "./modals/TalkUploadModal";
 import UserActionCard from "./UserActionCard";
+import MovableBoundary from "./MovableBoundary";
 //#endregion
 
 //#region > Exports
@@ -18,6 +19,7 @@ export {
   RegisterForm,
   TalkUploadModal,
   UserActionCard,
+  MovableBoundary,
 };
 //#endregion
 

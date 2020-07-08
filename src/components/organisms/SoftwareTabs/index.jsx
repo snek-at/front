@@ -26,6 +26,12 @@ class SoftwareTabs extends React.Component {
     });
   };
 
+  isSameOrigin = () => {
+    const { fetchedUser, loggedUser } = this.props;
+
+    return fetchedUser.username === loggedUser.username;
+  };
+
   render() {
     const { fetchedUser } = this.props;
     const { activeTab } = this.state;
@@ -94,6 +100,7 @@ class SoftwareTabs extends React.Component {
           {activeTab === 0 && (
             <OverviewTab
               platformData={fetchedUser && fetchedUser.platformData}
+              sameOrigin={this.isSameOrigin()}
             />
           )}
           {activeTab === 1 && (
@@ -118,6 +125,7 @@ class SoftwareTabs extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
   fetchedUser: state.user.fetchedUser,
 });
 
