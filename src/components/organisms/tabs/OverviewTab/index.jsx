@@ -24,7 +24,6 @@ import {
   ErrorBoundary,
 } from "../../../atoms";
 import { MovableBoundary } from "../../../molecules";
-
 //#endregion
 
 //#region > Constant Variables
@@ -73,12 +72,11 @@ class OverviewTab extends React.Component {
     });
   };
 
-  componentDidMount = () => {};
-
   handleEditClick = (platformData) => {
     if (this.state.edit) {
       this.props.writeCache(platformData);
     }
+
     this.setState({ edit: !this.state.edit });
   };
 

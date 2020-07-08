@@ -1,23 +1,21 @@
 //#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
-import React, { lazy, Suspense } from "react";
-// DOM bindings for React Router
-import { Link, withRouter } from "react-router-dom";
+import React from "react";
 // React PropTypes
 import PropTypes from "prop-types";
-
 //> MDB Sortable
 // MDB plugin for sortable item lists
 import MDBSortable from "mdb-react-sortable";
 
-//> SCSS
+//> CSS
 import "./movableboundary.scss";
 //#endregion
 
 //#region > Components
 /**
- * @class This enables implememntation of horizontally or vertically movable items into a page.
+ * @class This enables implementation of horizontally or vertically movable
+ *        items into a page.
  */
 class MovableBoundary extends React.Component {
   state = {
@@ -30,14 +28,14 @@ class MovableBoundary extends React.Component {
       items: nextProps.items ? nextProps.items : null,
     });
 
-    // If props.edit changes to false, save indexArray.
+    // If props.edit changes to false, save indexArray
     if (!nextProps.edit && this.props.edit) {
       this.saveItemOrder();
     }
   };
 
   componentDidMount() {
-    // Load item order after mounting.
+    // Load item order after mounting
     this.loadItemOrder();
   }
 
@@ -48,9 +46,11 @@ class MovableBoundary extends React.Component {
     }
   }
 
-  // Load the indexArray from storage.
-  // If there's no indexArray,
-  // default indexArray [0, 1, 2, 3, ...] will be generated.
+  /**
+   * Load the indexArray from storage.
+   * If there's no indexArray,
+   * default indexArray [0, 1, 2, 3, ...] will be generated.
+   */
   loadItemOrder() {
     let indexArray = this.props.pool[this.props.uid];
 
@@ -69,7 +69,7 @@ class MovableBoundary extends React.Component {
     this.setState({ indexArray });
   }
 
-  // Returns items ordered by indexArray.
+  // Returns items ordered by indexArray
   reorderItems() {
     let orderedItems = [];
 
@@ -80,12 +80,12 @@ class MovableBoundary extends React.Component {
     return orderedItems;
   }
 
-  // Store indexArray.
+  // Store indexArray
   saveItemOrder() {
     this.props.pool[this.props.uid] = JSON.stringify(this.state.indexArray);
   }
 
-  // Returns items to be rendered in the Sortable.
+  // Returns items to be rendered in the Sortable
   renderItems(edit) {
     const items = this.reorderItems();
 
@@ -102,7 +102,7 @@ class MovableBoundary extends React.Component {
     });
   }
 
-  // Swaps indexArray position of element.
+  // Swaps indexArray position of element
   swap = (newIndex, oldIndex) => {
     let indexArray = this.state.indexArray;
 
@@ -134,7 +134,7 @@ class MovableBoundary extends React.Component {
               }
               listClassName="SortableList"
               onSortEnd={(obj, e) => {
-                // When item is let go of, change indexArray position of Item.
+                // When item is let go of, change indexArray position of item
                 this.swap(obj.newIndex, obj.oldIndex);
               }}
             />
