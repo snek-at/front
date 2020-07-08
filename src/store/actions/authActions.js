@@ -62,12 +62,16 @@ const logoutAction = () => {
 
       await session
         .end()
-        .then(() =>
+        .then(() => {
           dispatch({
             type: "LOGOUT_SUCCESS",
             payload: {},
-          })
-        )
+          });
+
+          dispatch({
+            type: "REMOVE_LOGGED_USER",
+          });
+        })
         .catch((ex) =>
           dispatch({ type: "LOGOUT_ERROR", payload: { error: ex } })
         );

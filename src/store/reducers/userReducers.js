@@ -7,6 +7,7 @@ import { serializeError } from "serialize-error";
 //#region > Constant Variables
 const INIT_STATE = {
   fetchedUser: null,
+  loggedUser: null,
   registrationHistory: null,
   selectedTalk: null,
   newCachedUser: null,
@@ -129,6 +130,20 @@ const userReducer = (state = INIT_STATE, action) => {
         ...state,
         authError: action.payload,
         authErrorDetails: serializeError(action.payload.error),
+      };
+
+    /** Temporary implementation */
+    //> loggedUser
+    case "SET_LOGGED_USER":
+      return {
+        ...state,
+        loggedUser: action.payload.fetchedUser,
+      };
+
+    case "REMOVE_LOGGED_USER":
+      return {
+        ...state,
+        loggedUser: null,
       };
 
     //> Default

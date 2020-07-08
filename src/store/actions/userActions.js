@@ -219,6 +219,15 @@ const readCacheAction = (username) => {
                 type: "READ_CACHE_SUCCESS",
                 payload: { fetchedUser },
               });
+
+              const state = getState();
+
+              if (fetchedUser.username === state.auth.loggedUser?.username) {
+                dispatch({
+                  type: "SET_LOGGED_USER",
+                  payload: { fetchedUser },
+                });
+              }
             }
           }
         })

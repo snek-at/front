@@ -65,6 +65,9 @@ class Navbar extends React.Component {
 
   render() {
     const { location, loggedUser } = this.props;
+    const avatarUrl = loggedUser.platformData?.user?.avatarUrl
+      ? loggedUser.platformData.user.avatarUrl
+      : loggedUser.avatarUrl;
 
     return (
       <MDBNavbar color="light" light expand="md">
@@ -128,7 +131,7 @@ class Navbar extends React.Component {
                     <MDBDropdown>
                       <MDBDropdownToggle nav caret>
                         <img
-                          src={loggedUser.avatarUrl}
+                          src={avatarUrl}
                           className="z-depth-0"
                           alt={loggedUser.username}
                         />
@@ -183,7 +186,7 @@ Navbar.propTypes = {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  loggedUser: { ...state.auth.loggedUser, ...state.user.loggedUser },
 });
 
 const mapDispatchToProps = (dispatch) => {
