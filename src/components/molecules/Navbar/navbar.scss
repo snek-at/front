@@ -9,6 +9,7 @@
     background: transparentize($color: white, $amount: 0.3) !important;
     border: 2px white solid;
     padding: 0.5rem 1rem;
+
     &:hover {
       background: white !important;
       border: 2px $snekGreen solid;
