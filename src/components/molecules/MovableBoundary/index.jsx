@@ -41,11 +41,18 @@ class MovableBoundary extends React.Component {
     this.loadItemOrder();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // Load items when pool changes
+    if (prevProps.pool !== this.props.pool) {
+      this.loadItemOrder();
+    }
+  }
+
   // Load the indexArray from storage.
   // If there's no indexArray,
   // default indexArray [0, 1, 2, 3, ...] will be generated.
   loadItemOrder() {
-    let indexArray = localStorage.getItem([this.props.uid]);
+    let indexArray = this.props.pool[this.props.uid];
 
     if (!indexArray) {
       let baseIndexArray = [];
@@ -75,10 +82,7 @@ class MovableBoundary extends React.Component {
 
   // Store indexArray.
   saveItemOrder() {
-    localStorage.setItem(
-      [this.props.uid],
-      JSON.stringify(this.state.indexArray)
-    );
+    this.props.pool[this.props.uid] = JSON.stringify(this.state.indexArray);
   }
 
   // Returns items to be rendered in the Sortable.
@@ -142,6 +146,7 @@ class MovableBoundary extends React.Component {
 
 //#region > PropTypes
 MovableBoundary.propTypes = {
+  pool: PropTypes.object,
   movementAxis: PropTypes.string,
   items: PropTypes.array.isRequired,
   uid: PropTypes.string.isRequired,
