@@ -7,7 +7,11 @@ import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol, MDBBtn, MDBIcon } from "mdbreact";
+//> Redux
+import { connect } from "react-redux";
 
+//> Actions
+import { writeCacheAction } from "../../../../store/actions/userActions";
 //> CSS
 import "./overviewtab.scss";
 //> Components
@@ -56,6 +60,7 @@ const pinned = [
 class OverviewTab extends React.Component {
   state = {
     selectedYear: undefined,
+    edit: false,
   };
 
   selectDay = (day, wkey, dkey) => {
@@ -68,8 +73,25 @@ class OverviewTab extends React.Component {
     });
   };
 
+  componentDidMount = () => {};
+
+  handleEditClick = (platformData) => {
+    if (this.state.edit) {
+      this.props.writeCache(platformData);
+    }
+    this.setState({ edit: !this.state.edit });
+  };
+
   render() {
-    const { platformData, sameOrigin } = this.props;
+    const { fetchedUser, sameOrigin } = this.props;
+    const platformData = fetchedUser.platformData;
+
+    // Create empty pool if there isn't already one
+    if (!fetchedUser.platformData.user.movablePool) {
+      fetchedUser.platformData.user.movablePool = {};
+    }
+
+    const movablePool = fetchedUser.platformData.user.movablePool;
 
     return (
       <>
@@ -80,7 +102,7 @@ class OverviewTab extends React.Component {
               <MDBBtn
                 color={this.state.edit ? "success" : "green"}
                 size="md"
-                onClick={() => this.setState({ edit: !this.state.edit })}
+                onClick={() => this.handleEditClick(platformData)}
               >
                 {this.state.edit ? (
                   <span>
@@ -94,6 +116,7 @@ class OverviewTab extends React.Component {
             </div>
           )}
           <MovableBoundary
+            pool={movablePool}
             uid="overview"
             edit={this.state.edit}
             items={[
@@ -198,6 +221,7 @@ class OverviewTab extends React.Component {
               </>,
               <div className="interchange-charts">
                 <MovableBoundary
+                  pool={movablePool}
                   uid="contribtype"
                   edit={this.state.edit}
                   items={[
@@ -249,8 +273,22 @@ OverviewTab.propTypes = {
 };
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    writeCache: (platformData) => dispatch(writeCacheAction(platformData)),
+  };
+};
+//#endregion
+
 //#region > Exports
-export default OverviewTab;
+// Provides its connected component with the pieces of the data it needs from
+// the store, and the functions it can use to dispatch actions to the store.
+export default connect(mapStateToProps, mapDispatchToProps)(OverviewTab);
 //#endregion
 
 /**
