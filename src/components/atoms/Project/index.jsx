@@ -46,7 +46,7 @@ class Project extends React.Component {
                     className="pr-1"
                     style={{ color: repo.languages[0].color }}
                   />
-                  {repo.languages[0].name ? repo.languages[0].name : "none"}
+                  {repo.languages[0].name ? repo.languages[0].name : "Unknown"}
                 </small>
               )}
             </div>
