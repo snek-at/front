@@ -198,6 +198,15 @@
   }
 }
 
+// Loading bar
+.loading {
+  z-index: 99999;
+  height: 3px;
+  width: auto;
+  position: fixed;
+  background-color: #4285f4;
+}
+
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019-2020 Simon Prast
