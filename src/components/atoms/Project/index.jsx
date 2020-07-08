@@ -33,7 +33,7 @@ class Project extends React.Component {
                     : "https://img.favpng.com/4/1/20/computer-icons-gregorio-lvarez-museum-png-favpng-xPCKYGtUJihZeAkdqind0HH2N.jpg"
                 }
               />
-              <small>/{repo.owner.username}</small>
+              <small>@{repo.owner.username}</small>
             </div>
             <div className="pt-3">
               {repo.languages.length > 0 && (
