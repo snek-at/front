@@ -92,7 +92,7 @@ const writeCacheAction = (platformData) => {
       const session = intel.snekclient.session;
 
       return session.tasks.user
-        .cache(platformData)
+        .cache(JSON.stringify(platformData))
         .then(() =>
           dispatch({
             type: "WRITE_CACHE_SUCCESS",
