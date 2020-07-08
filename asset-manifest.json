@@ -1,32 +1,34 @@
 {
   "files": {
-    "main.css": "/static/css/main.d9bcc1c8.chunk.css",
-    "main.js": "/static/js/main.179d3d0b.chunk.js",
-    "main.js.map": "/static/js/main.179d3d0b.chunk.js.map",
+    "main.css": "/static/css/main.2e52e225.chunk.css",
+    "main.js": "/static/js/main.052272c0.chunk.js",
+    "main.js.map": "/static/js/main.052272c0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.451cde3f.js",
     "runtime-main.js.map": "/static/js/runtime-main.451cde3f.js.map",
     "static/css/2.cd011b1e.chunk.css": "/static/css/2.cd011b1e.chunk.css",
-    "static/js/2.3ba7f90b.chunk.js": "/static/js/2.3ba7f90b.chunk.js",
-    "static/js/2.3ba7f90b.chunk.js.map": "/static/js/2.3ba7f90b.chunk.js.map",
+    "static/js/2.89882b6a.chunk.js": "/static/js/2.89882b6a.chunk.js",
+    "static/js/2.89882b6a.chunk.js.map": "/static/js/2.89882b6a.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.e1c15a993c090a65255d9a825d79429c.js": "/precache-manifest.e1c15a993c090a65255d9a825d79429c.js",
+    "precache-manifest.5b3818218bf3baa897dbee39063aa701.js": "/precache-manifest.5b3818218bf3baa897dbee39063aa701.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.cd011b1e.chunk.css.map": "/static/css/2.cd011b1e.chunk.css.map",
-    "static/css/main.d9bcc1c8.chunk.css.map": "/static/css/main.d9bcc1c8.chunk.css.map",
-    "static/js/2.3ba7f90b.chunk.js.LICENSE.txt": "/static/js/2.3ba7f90b.chunk.js.LICENSE.txt",
+    "static/css/main.2e52e225.chunk.css.map": "/static/css/main.2e52e225.chunk.css.map",
+    "static/js/2.89882b6a.chunk.js.LICENSE.txt": "/static/js/2.89882b6a.chunk.js.LICENSE.txt",
     "static/media/mdb.css": "/static/media/default-skin.b257fa9c.svg",
     "static/media/dev.38b90028.svg": "/static/media/dev.38b90028.svg",
     "static/media/all.min.css": "/static/media/fa-solid-900.f3a7d3b5.woff",
+    "static/media/githublab.png": "/static/media/githublab.307b52c0.png",
     "static/media/media.acba215a.svg": "/static/media/media.acba215a.svg",
     "static/media/profiles.png": "/static/media/profiles.bb782f9f.png",
     "static/media/ranking.png": "/static/media/ranking.7e91527c.png",
+    "static/media/share.png": "/static/media/share.d80aea3b.png",
     "static/media/trophy.png": "/static/media/trophy.5c08a90e.png"
   },
   "entrypoints": [
     "static/js/runtime-main.451cde3f.js",
     "static/css/2.cd011b1e.chunk.css",
-    "static/js/2.3ba7f90b.chunk.js",
-    "static/css/main.d9bcc1c8.chunk.css",
-    "static/js/main.179d3d0b.chunk.js"
+    "static/js/2.89882b6a.chunk.js",
+    "static/css/main.2e52e225.chunk.css",
+    "static/js/main.052272c0.chunk.js"
   ]
 }
