@@ -60,7 +60,8 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     loadingBarMiddleware(),
     thunk.withExtraArgument({
-      getIntel, // Intel
+      // Intel
+      getIntel,
     })
   )
   // other store enhancers if any
