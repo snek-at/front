@@ -29,9 +29,18 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdbreact";
-
 //> OAuth
 import GitHubOAuth from "reactjs-oauth";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
+
+//> Actions
+// Functions to send data from the application to the store
+import { registerAction } from "../../../../store/actions/userActions";
+import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
+import { loginAction } from "../../../../store/actions/authActions";
 //#endregion
 
 //#region > Components
@@ -77,10 +86,10 @@ class RegisterForm extends React.Component {
     // Check if GitLab Servers have already been set
     if (this.state.gitlab_servers === undefined) {
       // Retrieve GitLab servers
-      const gitlab_servers = await this.props.globalFunctions.fetchGitLabServers();
-
-      this.setState({
-        gitlab_servers,
+      this.props.fetchGitLabServers().then(() => {
+        this.setState({
+          gitlab_servers: this.props.gitlabServers,
+        });
       });
     }
   };
@@ -405,7 +414,14 @@ class RegisterForm extends React.Component {
             password: password1,
           };
 
-          this.props.globalFunctions.registerUser(registrationData);
+          this.props.register(registrationData).then(() => {
+            const { username, password } = registrationData;
+
+            this.props.login({
+              username,
+              password,
+            });
+          });
         }
       );
     } else {
@@ -723,6 +739,7 @@ class RegisterForm extends React.Component {
             </div>
             <MDBBtn
               color="green"
+              outline
               className="mb-0"
               onClick={this.handleSubmit}
               /*disabled={!this.state.hasGitHub}*/
@@ -825,15 +842,31 @@ class RegisterForm extends React.Component {
 
 //#region > PropTypes
 RegisterForm.propTypes = {
-  globalState: PropTypes.object,
-  globalFunctions: PropTypes.object,
   goto: PropTypes.func,
 };
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  registrationHistory: state.user.registrationHistory,
+  gitlabServers: state.general.allGitlabServers,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (registrationData) => dispatch(registerAction(registrationData)),
+    login: (user) => dispatch(loginAction(user)),
+    fetchGitLabServers: () => dispatch(fetchGitLabServersAction()),
+  };
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default RegisterForm;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
 //#endregion
 
 /**

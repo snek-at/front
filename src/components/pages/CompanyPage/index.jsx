@@ -50,6 +50,11 @@ const CONTRIB_OPTIONS = {
   legend: {
     display: false,
   },
+  elements: {
+    point: {
+      radius: 0,
+    },
+  },
   scales: {
     xAxes: [
       {
@@ -160,8 +165,6 @@ class CompanyPage extends React.Component {
   };
 
   render() {
-    const { globalState } = this.props;
-
     return (
       <div id="company">
         <MDBContainer>
@@ -489,6 +492,7 @@ class CompanyPage extends React.Component {
                                 <MDBCardFooter className="p-0">
                                   <MDBBtn
                                     color="green"
+                                    outline
                                     className="w-100 h-100 m-0"
                                   >
                                     Follow
@@ -605,7 +609,7 @@ class CompanyPage extends React.Component {
                           );
                         })}
                         <MDBCol md="4">
-                          <MDBBtn color="green">
+                          <MDBBtn color="green" outline>
                             <MDBIcon icon="plus-circle" />
                             Add platform
                           </MDBBtn>
@@ -668,7 +672,6 @@ class CompanyPage extends React.Component {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default CompanyPage;
 //#endregion
 

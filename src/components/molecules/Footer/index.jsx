@@ -207,13 +207,13 @@ class Footer extends React.PureComponent {
               <h4>{this.state.slogan}</h4>
               {this.props.location.pathname === "/" ? (
                 <MDBSmoothScroll to="home" className="d-inline">
-                  <MDBBtn size="lg" color="green">
+                  <MDBBtn size="lg" outline color="green">
                     Join now
                   </MDBBtn>
                 </MDBSmoothScroll>
               ) : (
                 <Link to="/">
-                  <MDBBtn size="lg" color="green">
+                  <MDBBtn size="lg" outline color="green">
                     Join now
                   </MDBBtn>
                 </Link>
@@ -254,7 +254,10 @@ class Footer extends React.PureComponent {
 //#endregion
 
 //#region > Exports
-//> Default Class
+/**
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
 export default withRouter(Footer);
 //#endregion
 

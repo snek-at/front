@@ -4,8 +4,6 @@
 import React from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
-// React PropTypes
-import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -17,6 +15,14 @@ import {
 //> Fuzzysort
 // Fast SublimeText-like fuzzy search for JavaScript
 import * as fuzzysort from "fuzzysort";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
+
+//> Actions
+// Functions to send data from the application to the store
+import { getAllPageUrlsAction } from "../../../store/actions/generalActions";
 //> CSS
 import "./search.scss";
 //#endregion
@@ -27,15 +33,21 @@ import "./search.scss";
  */
 class SearchBar extends React.Component {
   state = {
+    loading: true,
     filter: "",
-    usernames: [],
+    usernames: this.props.allRegisteredUsernames,
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    if (!nextProps.globalState.loading) {
-      this.getUsernameList();
+  componentDidMount() {
+    if (this.state.loading) {
+      this.props.allUsernames().then(() => {
+        this.setState({
+          loading: false,
+          usernames: this.props.allRegisteredUsernames,
+        });
+      });
     }
-  };
+  }
 
   handleSelection = (event, value) => {
     if (event === "user") {
@@ -60,19 +72,7 @@ class SearchBar extends React.Component {
     }
   };
 
-  getUsernameList = () => {
-    const { globalFunctions } = this.props;
-
-    globalFunctions.users().then((usernames) => {
-      this.setState({
-        usernames,
-      });
-    });
-  };
-
   render() {
-    const { globalState } = this.props;
-
     //Select component does not support onChange event. Instead, you can use getValue or getTextContent methods.
     return (
       <MDBSelect
@@ -83,7 +83,7 @@ class SearchBar extends React.Component {
       >
         <MDBSelectInput selected="Find a user" />
         <MDBSelectOptions search searchLabel="">
-          {this.state.usernames ? (
+          {!this.state.loading && this.state.usernames ? (
             this.state.usernames.length > 0 && this.state.filter.length > 0 ? (
               fuzzysort
                 .go(this.state.filter, this.state.usernames)
@@ -108,13 +108,29 @@ class SearchBar extends React.Component {
 }
 //#endregion
 
-//#region > PropTypes
-SearchBar.propTypes = {};
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  allRegisteredUsernames: state.general.allRegisteredUsernames,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    allUsernames: () => dispatch(getAllPageUrlsAction()),
+  };
+};
 //#endregion
 
 //#region > Exports
-//> Default Class
-export default withRouter(SearchBar);
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ *
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SearchBar)
+);
 //#endregion
 
 /**

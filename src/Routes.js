@@ -11,6 +11,7 @@ import {
   ProfilePage,
   CompanyPage,
   TalkPage,
+  SettingsPage,
 } from "./components/pages";
 //#endregion
 
@@ -18,51 +19,23 @@ import {
 /** @class Route component which includes all routes to specified components */
 class Routes extends React.Component {
   render() {
-    const { globalState, globalFunctions } = this.props;
-
     return (
       <Switch>
-        <Route
-          exact
-          path="/"
-          component={(props) => (
-            <HomePage
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-              {...props}
-            />
-          )}
-        />
+        <Route exact path="/" component={(props) => <HomePage {...props} />} />
         <Route
           exact
           path="/u/:username"
-          component={(props) => (
-            <ProfilePage
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-            />
-          )}
+          component={(props) => <ProfilePage {...props} />}
         />
         <Route
           exact
           path="/c/:name"
-          component={(props) => (
-            <CompanyPage
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-            />
-          )}
+          component={(props) => <CompanyPage {...props} />}
         />
         <Route
           exact
           path="/t/:username/:uid"
-          component={(props) => (
-            <TalkPage
-              globalFunctions={globalFunctions}
-              globalState={globalState}
-              {...props}
-            />
-          )}
+          component={(props) => <TalkPage {...props} />}
         />
         <Route
           exact
@@ -74,7 +47,12 @@ class Routes extends React.Component {
             };
           }}
         />
-        {/* Some debugging routes */}
+        <Route
+          exact
+          path="/settings"
+          component={(props) => <SettingsPage {...props} />}
+        />
+        {/* Some debugging routes start*/}
         <Route
           render={function () {
             return <h1>Not Found</h1>;
@@ -100,6 +78,7 @@ class Routes extends React.Component {
             return <h1>Third Layer</h1>;
           }}
         />
+        {/* Some debugging routes end*/}
       </Switch>
     );
   }

@@ -180,7 +180,6 @@ class ContribRadar extends React.Component {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default ContribRadar;
 //#endregion
 

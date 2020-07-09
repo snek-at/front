@@ -5,6 +5,10 @@ import React from "react";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBadge } from "mdbreact";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
@@ -15,7 +19,24 @@ import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
 class SoftwareTabs extends React.Component {
   state = {
     activeTab: 0,
-    tabItems: [
+  };
+
+  setActiveTab = (activeTab) => {
+    this.setState({
+      activeTab,
+    });
+  };
+
+  isSameOrigin = () => {
+    const { fetchedUser, loggedUser } = this.props;
+
+    return fetchedUser.username === loggedUser.username;
+  };
+
+  render() {
+    const { fetchedUser } = this.props;
+    const { activeTab } = this.state;
+    const tabItems = [
       {
         title: "Overview",
         visible: true,
@@ -25,10 +46,8 @@ class SoftwareTabs extends React.Component {
       {
         title: "Projects",
         visible: true,
-        pill: this.props.globalState?.fetchedUser?.platformData?.profile
-          ?.repositories
-          ? this.props.globalState?.fetchedUser?.platformData?.profile
-              ?.repositories?.length
+        pill: this.props.fetchedUser?.platformData?.profile?.repositories
+          ? this.props.fetchedUser?.platformData?.profile?.repositories?.length
           : "0",
         notification: false,
       },
@@ -53,27 +72,22 @@ class SoftwareTabs extends React.Component {
         title: "Talks",
         visible: true,
         notification: false,
-        pill: this.props.globalState.fetchedUser.platformData.talks
-          ? this.props.globalState.fetchedUser.platformData.talks.length
+        pill: this.props.fetchedUser?.platformData.talks
+          ? this.props.fetchedUser?.platformData.talks.length
           : "0",
         notification: false,
       },
-    ],
-  };
-
-  render() {
-    const { globalState } = this.props;
-    const { activeTab } = this.state;
+    ];
 
     return (
       <div className="profile-content">
         <ul className="nav nav-tabs">
-          {this.state.tabItems.map((item, i) => {
+          {tabItems.map((item, i) => {
             return (
               <li className="nav-item" key={i}>
                 <span
                   className={activeTab === i ? "nav-link active" : "nav-link"}
-                  onClick={() => this.setState({ activeTab: i })}
+                  onClick={() => this.setActiveTab(i)}
                 >
                   {item.title}
                   <MDBBadge color="primary">{item.pill}</MDBBadge>
@@ -82,19 +96,17 @@ class SoftwareTabs extends React.Component {
             );
           })}
         </ul>
-        <div className="p-3">
+        <div className="p-3 content">
           {activeTab === 0 && (
             <OverviewTab
-              platformData={
-                globalState.fetchedUser && globalState.fetchedUser.platformData
-              }
+              platformData={fetchedUser && fetchedUser.platformData}
+              sameOrigin={this.isSameOrigin()}
             />
           )}
           {activeTab === 1 && (
             <ProjectTab
               repoList={
-                globalState.fetchedUser &&
-                globalState.fetchedUser.platformData.profile.repositories
+                fetchedUser && fetchedUser.platformData.profile.repositories
               }
             />
           )}
@@ -111,9 +123,23 @@ class SoftwareTabs extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default SoftwareTabs;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(SoftwareTabs);
 //#endregion
 
 /**

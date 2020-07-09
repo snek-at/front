@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 //> React Router bindings to DOM
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -16,11 +16,18 @@ import {
   MDBCardBody,
   MDBCardFooter,
 } from "mdbreact";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
 
+//> Actions
+// Functions to send data from the application to the store
+import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> CSS
 import "./talkstab.scss";
 //> Modules
-import { UploadModal } from "../../../molecules/modals";
+import { TalkUploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
@@ -51,9 +58,8 @@ class Talks extends React.Component {
   };
 
   render() {
-    const { globalState, globalFunctions } = this.props;
-    const talkList = globalState?.fetchedUser?.platformData?.talks;
-    const { deleteTalk } = globalFunctions;
+    const { loggedUser, fetchedUser } = this.props;
+    const talkList = fetchedUser?.platformData?.talks;
 
     if (talkList) {
       talkList.map((talk) => {
@@ -81,10 +87,11 @@ class Talks extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {globalState.loggedUser && (
+          {loggedUser.username === fetchedUser.username && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
+                outline
                 size="md"
                 onClick={() => this.setState({ showUpload: true })}
               >
@@ -107,8 +114,8 @@ class Talks extends React.Component {
                             : talk.name}
                         </MDBCol>
                         <MDBCol md="1">
-                          {globalState.loggedUser && (
-                            <small onClick={() => deleteTalk(talk)}>
+                          {loggedUser.username === fetchedUser.username && (
+                            <small onClick={() => this.props.deleteTalk(talk)}>
                               <MDBIcon
                                 icon="trash-alt"
                                 className="black-text font-weight-bold"
@@ -118,14 +125,14 @@ class Talks extends React.Component {
                         </MDBCol>
                       </MDBRow>
                     </MDBCardHeader>
-                    <a
-                      href={
+                    <Link
+                      to={
                         "/t/" +
                         this.props.match.params.username +
                         "/" +
                         talk.uid
                       }
-                      target="_blank"
+                      params={{}}
                       rel="noopener noreferrer"
                     >
                       <MDBCardBody className="lead">
@@ -143,7 +150,7 @@ class Talks extends React.Component {
                           </div>
                         </div>
                       </MDBCardBody>
-                    </a>
+                    </Link>
                     <div className="clearfix" />
                     <MDBCardFooter>
                       {talk.social && (
@@ -174,17 +181,17 @@ class Talks extends React.Component {
                         </a>
                       )}
                       <a
-                        href={talk.repository.url}
+                        href={talk.repository?.url}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <div>
                           <img
-                            src={talk.repository.avatarUrl}
-                            alt={talk.repository.name}
+                            src={talk.repository?.avatarUrl}
+                            alt={talk.repository?.name}
                           />
                           <small>
-                            Owned by {talk.repository.owner.username}
+                            Owned by {talk.repository?.owner.username}
                           </small>
                         </div>
                       </a>
@@ -195,7 +202,10 @@ class Talks extends React.Component {
             })}
         </MDBRow>
         {this.state.showUpload && (
-          <UploadModal {...this.props} closeModal={this.handleUploadClose} />
+          <TalkUploadModal
+            {...this.props}
+            closeModal={this.handleUploadClose}
+          />
         )}
       </>
     );
@@ -203,9 +213,26 @@ class Talks extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return { deleteTalk: (talk) => dispatch(deleteTalkAction(talk)) };
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default withRouter(Talks);
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ *
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Talks));
 //#endregion
 
 /**

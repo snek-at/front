@@ -13,18 +13,26 @@ import {
   MDBModalBody,
   MDBProgress,
 } from "mdbreact";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
+
+//> Actions
+// Functions to send data from the application to the store
+import { uploadTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
 /** @class A upload modal component for uploading files including a drop-zone */
-class UploadModal extends React.Component {
+class TalkUploadModal extends React.Component {
   state = {
     loading: false,
     error: [],
   };
 
   onDrop = async (files) => {
-    const { globalState, globalFunctions } = this.props;
+    const { loggedUser, fetchedUser } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -32,11 +40,11 @@ class UploadModal extends React.Component {
         loading: true,
       });
 
-      globalFunctions
+      this.props
         .uploadTalk(files[0], {
-          avatarUrl: globalState.fetchedUser.platformData.profile.avatarUrl,
+          avatarUrl: fetchedUser.platformData.user.avatarUrl,
           owner: {
-            username: globalState.loggedUser.username,
+            username: loggedUser.username,
           },
         })
         .then(() => {
@@ -145,9 +153,23 @@ class UploadModal extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  loggedUser: state.user.fetchedUser,
+  fetchedUser: state.user.fetchedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return { uploadTalk: (file) => dispatch(uploadTalkAction(file)) };
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default UploadModal;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(TalkUploadModal);
 //#endregion
 
 /**

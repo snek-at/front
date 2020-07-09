@@ -8,17 +8,31 @@
     }
 
     .bg-elegant {
-      background: #fafafa;
+      background: darken(white, 0.5%) !important;
+      border: 1px solid #e1e4e8;
+      border-radius: 0.3rem;
     }
 
     .bg-light {
-      background: #fafafa !important;
+      background: darken(white, 0.5%) !important;
+      border: 1px #e1e4e8 solid;
+      border-radius: 0.3rem;
     }
 
     .badges {
       .badge {
         box-shadow: none;
         margin-right: 0.4rem;
+        padding: 0.4rem;
+        border-radius: 0.4rem;
+
+        &.badge-secondary-color {
+          background: transparentize(
+            $color: $secondary,
+            $amount: 0.3
+          ) !important;
+          border: 2px $secondary solid;
+        }
       }
     }
 
@@ -115,7 +129,15 @@
 
   // Right col
   .profile-content {
-    background: #fafafa;
+    background: darken(white, 0.5%) !important;
+
+    // Content
+    .content {
+      border-top: none !important;
+      border: 1px #e1e4e8 solid;
+      border-bottom-left-radius: 0.3rem;
+      border-bottom-right-radius: 0.3rem;
+    }
 
     .nav-tabs {
       background: white;
@@ -140,7 +162,6 @@
       }
     }
   }
-  // General things
 }
 
 /**

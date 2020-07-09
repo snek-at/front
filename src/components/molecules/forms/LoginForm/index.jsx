@@ -4,12 +4,21 @@
 import React from "react";
 // React PropTypes
 import PropTypes from "prop-types";
-//> Additional
-// Text animations
-import TextLoop from "react-text-loop";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
+//> Additional
+// SHA hashing algorithm
+import { sha256 } from "js-sha256";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
+
+//> Actions
+// Functions to send data from the application to the store
+import { loginAction } from "../../../../store/actions/authActions";
+
 //#endregion
 
 //#region > Components
@@ -18,6 +27,7 @@ class LoginForm extends React.Component {
   state = {
     login_username: "",
     login_password: "",
+    loginFail: false,
   };
 
   testForError = (id) => {
@@ -119,17 +129,17 @@ class LoginForm extends React.Component {
       });
     } else {
       // Proceed to login
-      const result = await this.props.globalFunctions.login(
-        this.state.login_username,
-        this.state.login_password
-      );
+      const result = await this.props.login({
+        username: this.state.login_username,
+        password: sha256(this.state.login_password), // Hash password
+      });
 
       //#TSID6
       //console.log("LOGIN FORM PROCEED TO LOGIN", result);
-
-      if (result) {
+      if (result?.payload.error) {
         this.setState({
-          loginFail: false,
+          loginFail: true,
+          errorMsg: result.payload.message,
         });
       }
     }
@@ -149,7 +159,7 @@ class LoginForm extends React.Component {
         <p className="lead">Login to SNEK</p>
         {this.state.loginFail && (
           <MDBAlert color="danger" className="mt-3 mb-3">
-            Can not perform login. Please check your username and password.
+            {this.state.errorMsg}
           </MDBAlert>
         )}
         <form onSubmit={this.login}>
@@ -181,7 +191,7 @@ class LoginForm extends React.Component {
             }
             value={this.state.login_password}
           />
-          <MDBBtn color="green" className="mb-0" type="submit">
+          <MDBBtn color="green" outline className="mb-0" type="submit">
             Login
             <MDBIcon icon="angle-right" className="pl-1" />
           </MDBBtn>
@@ -194,14 +204,24 @@ class LoginForm extends React.Component {
 
 //#region > PropTypes
 LoginForm.propTypes = {
-  globalFunctions: PropTypes.object,
   goTo: PropTypes.func,
 };
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => {
+  return { login: (user) => dispatch(loginAction(user)) };
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default LoginForm;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 //#endregion
 
 /**

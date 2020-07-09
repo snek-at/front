@@ -5,13 +5,22 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
-import UploadModal from "./modals/UploadModal";
+import TalkUploadModal from "./modals/TalkUploadModal";
 import UserActionCard from "./UserActionCard";
+import MovableBoundary from "./MovableBoundary";
 //#endregion
 
 //#region > Exports
 //> Molecules
-export { Footer, Navbar, LoginForm, RegisterForm, UploadModal, UserActionCard };
+export {
+  Footer,
+  Navbar,
+  LoginForm,
+  RegisterForm,
+  TalkUploadModal,
+  UserActionCard,
+  MovableBoundary,
+};
 //#endregion
 
 /**

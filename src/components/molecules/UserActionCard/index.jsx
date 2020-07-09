@@ -2,8 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// React PropTypes
-import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol, MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
@@ -24,7 +22,7 @@ import "./useractioncard.scss";
  */
 class UserActionCard extends React.Component {
   state = {
-    activeItem: 0,
+    activeItem: this.props.activeIndex,
   };
 
   goTo = (item) => {
@@ -33,18 +31,20 @@ class UserActionCard extends React.Component {
     });
   };
 
+  setActiveItem = (activeItem) => {
+    this.setState({
+      activeItem,
+    });
+  };
+
   render() {
-    const { globalState, globalFunctions } = this.props;
     const { activeItem } = this.state;
 
     return (
       <div className="text-center" id="useractionscard">
         {activeItem === 0 && (
           <>
-            <MDBBtn
-              color="green"
-              onClick={() => this.setState({ activeItem: 1 })}
-            >
+            <MDBBtn color="green" outline onClick={() => this.setActiveItem(1)}>
               Login to SNEK
             </MDBBtn>
             <div className="w-100">
@@ -60,7 +60,7 @@ class UserActionCard extends React.Component {
               <MDBCol md="6">
                 <div
                   className="selectType"
-                  onClick={() => this.setState({ activeItem: 2 })}
+                  onClick={() => this.setActiveItem(2)}
                 >
                   <p className="lead">Software Engineer</p>
                   <SvgSoftware />
@@ -69,7 +69,7 @@ class UserActionCard extends React.Component {
               <MDBCol md="6">
                 <div
                   className="selectType"
-                  onClick={() => this.setState({ activeItem: 3 })}
+                  onClick={() => this.setActiveItem(3)}
                 >
                   <p className="lead">Media Engineer</p>
                   <SvgMedia />
@@ -78,12 +78,8 @@ class UserActionCard extends React.Component {
             </MDBRow>
           </>
         )}
-        {activeItem === 1 && (
-          <LoginForm globalFunctions={globalFunctions} goTo={this.goTo} />
-        )}
-        {activeItem === 2 && (
-          <RegisterForm globalFunctions={globalFunctions} goTo={this.goTo} />
-        )}
+        {activeItem === 1 && <LoginForm goTo={this.goTo} />}
+        {activeItem === 2 && <RegisterForm goTo={this.goTo} />}
         {activeItem === 3 && (
           <>
             <div className="text-left mb-4">
@@ -112,15 +108,7 @@ class UserActionCard extends React.Component {
 }
 //#endregion
 
-//#region > PropTypes
-UserActionCard.propTypes = {
-  globalState: PropTypes.object,
-  globalFunctions: PropTypes.object,
-};
-//#endregion
-
 //#region > Exports
-//> Default Class
 export default UserActionCard;
 //#endregion
 

@@ -7,6 +7,9 @@ import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBCol, MDBIcon } from "mdbreact";
+
+//> Components
+import { LanguageChart } from "../../atoms";
 //#endregion
 
 //#region > Components
@@ -20,29 +23,39 @@ class Project extends React.Component {
         <a href={repo.url} target="_blank" rel="noopener noreferrer">
           <li>
             <div>
-              <p className="lead mb-1 float-left">
-                {repo.name.length > 25
-                  ? repo.name.substring(0, 25) + "..."
-                  : repo.name}
-              </p>
+              <p className="mb-1 font-weight-bold">{repo.name.split("/")[1]}</p>
+            </div>
+            <div>
+              <img
+                src={
+                  repo.avatarUrl
+                    ? repo.avatarUrl
+                    : "https://img.favpng.com/4/1/20/computer-icons-gregorio-lvarez-museum-png-favpng-xPCKYGtUJihZeAkdqind0HH2N.jpg"
+                }
+              />
+              <small>
+                @
+                {repo.owner.username ? (
+                  repo.owner.username
+                ) : (
+                  <span className="text-muted">unknown</span>
+                )}
+              </small>
+            </div>
+            <div className="pt-3">
               {repo.languages.length > 0 && (
-                <small className="mb-1 float-right text-muted">
+                <LanguageChart languages={repo.languages} />
+              )}
+              {repo.languages.length > 0 && (
+                <small className="text-left text-muted">
                   <MDBIcon
                     icon="square"
                     className="pr-1"
                     style={{ color: repo.languages[0].color }}
                   />
-                  {repo.languages[0].name}
+                  {repo.languages[0].name ? repo.languages[0].name : "Unknown"}
                 </small>
               )}
-            </div>
-            <div className="clearfix" />
-            <div>
-              <img src={repo.avatarUrl} alt={repo.name} />
-              <small>Owned by {repo.owner.username}</small>
-            </div>
-            <div className="py-2">
-              <img className="img-badge" />
             </div>
           </li>
         </a>
@@ -59,7 +72,6 @@ Project.propTypes = {
 //#endregion
 
 //#region > Exports
-//> Default Class
 export default Project;
 //#endregion
 

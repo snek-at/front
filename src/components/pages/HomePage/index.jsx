@@ -18,6 +18,10 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdbreact";
+//> Redux
+// Allows to React components read data from a Redux store, and dispatch actions
+// to the store to update data.
+import { connect } from "react-redux";
 
 //> Components
 import LatestActivity from "../../atoms/charts/LatestActivity";
@@ -97,12 +101,11 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const { globalState, globalFunctions } = this.props;
+    const { loggedUser } = this.props;
+    const activeActionCard = this.props.location?.state?.actionCard;
 
-    if (!globalState.loading && globalState.loggedUser) {
-      return <Redirect to={"/u/" + globalState.loggedUser.username} />;
-    } else if (globalState.loading) {
-      return <p>Loading</p>;
+    if (!loggedUser.anonymous) {
+      return <Redirect to={"/u/" + loggedUser.username} />;
     } else {
       return (
         <div id="home" className="pt-5">
@@ -155,8 +158,7 @@ class HomePage extends React.Component {
               <MDBCol md="6">
                 <MDBCard className="px-3 py-4">
                   <UserActionCard
-                    globalFunctions={globalFunctions}
-                    globalState={globalState}
+                    activeIndex={activeActionCard ? activeActionCard : 0}
                   />
                 </MDBCard>
               </MDBCol>
@@ -301,9 +303,22 @@ class HomePage extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  loggedUser: state.auth.loggedUser,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+//#endregion
+
 //#region > Exports
-//> Default Class
-export default HomePage;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 //#endregion
 
 /**
