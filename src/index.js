@@ -10,8 +10,9 @@ import ReactDOM from "react-dom";
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { createStore, applyMiddleware, compose } from "redux";
-import { loadingBarMiddleware } from "react-redux-loading-bar";
 import { Provider } from "react-redux";
+// Allows to manually display a LoadingBar
+import { loadingBarMiddleware } from "react-redux-loading-bar";
 // Thunk
 import thunk from "redux-thunk";
 //> Intel

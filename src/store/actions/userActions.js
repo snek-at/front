@@ -1,9 +1,11 @@
 //#region > Imports
+//> Redux
+// Allows to manually display a LoadingBar
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 //> Additional
 // SHA Hashing algorithm
 import sha256 from "js-sha256";
 //#endregion
-import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 //#region > Register Actions
 /**
@@ -322,6 +324,7 @@ const updateCacheAction = (fetchedUser) => {
     }
   };
 };
+
 /**
  * Save settings
  *
@@ -393,7 +396,6 @@ const saveSettingsActions = (nextSettings) => {
     }
   };
 };
-
 //#endregion
 
 //#region > Talks Actions

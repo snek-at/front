@@ -8,6 +8,8 @@ import { withRouter } from "react-router-dom";
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { useDispatch } from "react-redux";
+// Allows to manually display a LoadingBar
+import LoadingBarContainer from "react-redux-loading-bar";
 
 //> Actions
 // Functions to send data from the application to the store
@@ -22,7 +24,6 @@ import { Footer, Navbar } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 //> Routes
 import Routes from "./Routes";
-import LoadingBarContainer from "react-redux-loading-bar";
 //#endregion
 
 //#region > Components

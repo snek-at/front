@@ -113,8 +113,6 @@ class Calendar3D extends React.Component {
       contribData = this.props.platformData.statistic.current;
     }
 
-    let contributionCalendar = contribData.calendar;
-
     if (contribData.streak.longest) {
       streakLongest = contribData.streak.longest.totalDays;
       datesLongest =
@@ -125,6 +123,7 @@ class Calendar3D extends React.Component {
       streakLongest = "0";
       datesLongest = "-";
     }
+
     if (contribData.streak.current.id !== -1) {
       streakCurrent = contribData.streak.current.totalDays;
       datesCurrent =

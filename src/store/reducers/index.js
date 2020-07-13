@@ -31,3 +31,8 @@ const rootReducer = combineReducers({
 //#region > Exports
 export default rootReducer;
 //#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */

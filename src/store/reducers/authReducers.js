@@ -58,3 +58,8 @@ const authReducer = (state = INIT_STATE, action) => {
 //#region > Exports
 export default authReducer;
 //#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */

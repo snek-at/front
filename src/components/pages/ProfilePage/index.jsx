@@ -20,7 +20,6 @@ import {
 import { SoftwareEngineer } from "../../organisms/profiles";
 //> CSS
 import "./profile.scss";
-
 //#endregion
 
 //#region > Components
@@ -50,6 +49,7 @@ class ProfilePage extends React.Component {
     } else if (fetchedUser && !this.usernameMatchesFetchedUsername(username)) {
       return true;
     }
+
     return false;
   };
 

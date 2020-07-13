@@ -52,33 +52,11 @@ class Routes extends React.Component {
           path="/settings"
           component={(props) => <SettingsPage {...props} />}
         />
-        {/* Some debugging routes start*/}
         <Route
           render={function () {
             return <h1>Not Found</h1>;
           }}
         />
-        <Route
-          exact
-          path="/first"
-          render={function () {
-            return <h1>First Layer</h1>;
-          }}
-        />
-        <Route
-          exact
-          path="/first/second"
-          render={function () {
-            return <h1>Second Layer</h1>;
-          }}
-        />
-        <Route
-          path="/first/second/third"
-          render={function () {
-            return <h1>Third Layer</h1>;
-          }}
-        />
-        {/* Some debugging routes end*/}
       </Switch>
     );
   }

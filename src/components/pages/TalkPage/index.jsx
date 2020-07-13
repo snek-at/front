@@ -377,6 +377,7 @@ class TalkPage extends React.Component {
 }
 //#endregion
 
+//#region > Redux Mapping
 const mapStateToProps = (state) => ({
   selectedTalk: state.user.selectedTalk,
 });
@@ -384,6 +385,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return { getTalk: (uid, username) => dispatch(getTalkAction(uid, username)) };
 };
+//#endregion
 
 //#region > Exports
 /**
