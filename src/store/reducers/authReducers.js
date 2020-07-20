@@ -56,6 +56,7 @@ const authReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default authReducer;
 //#endregion
 

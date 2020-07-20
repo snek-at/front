@@ -2,13 +2,13 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// React PropTypes
+// Runtime type checking for React props and similar objects
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
 
-//> CSS
+//> Style sheet
 import "./pinned.scss";
 //#endregion
 
@@ -63,6 +63,7 @@ Pinned.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default Pinned;
 //#endregion
 

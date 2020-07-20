@@ -22,7 +22,7 @@ import {
 // Chart.js
 import { HorizontalBar, Line } from "react-chartjs-2";
 
-//> CSS
+//> Style sheet
 import "./company.scss";
 //> Data
 // Dummy data
@@ -672,6 +672,7 @@ class CompanyPage extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default CompanyPage;
 //#endregion
 

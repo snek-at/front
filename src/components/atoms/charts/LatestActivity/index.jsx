@@ -175,6 +175,7 @@ class LatestActivity extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default LatestActivity;
 //#endregion
 

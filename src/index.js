@@ -27,7 +27,7 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 // "Material Design for Bootstrap" is a great UI design framework
 import "mdbreact/dist/css/mdb.css";
 
-//> CSS
+//> Style sheet
 // Root SCSS file
 import "./index.scss";
 //> Components

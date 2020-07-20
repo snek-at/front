@@ -42,7 +42,7 @@ import {
 //> Components
 // Profile Picture Editor
 import { ProfilePictureModal } from "../../../components/molecules/modals";
-//> CSS
+//> Style sheet
 import "./settings.scss";
 //#endregion
 
@@ -580,6 +580,7 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.

@@ -9,7 +9,7 @@ import moment from "moment";
 // A JavaScript library for building isometric pixel objects
 import obelisk from "obelisk.js";
 
-//> CSS
+//> Style sheet
 import "./calendar3d.scss";
 //#endregion
 
@@ -385,6 +385,7 @@ class Calendar3D extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default Calendar3D;
 //#endregion
 

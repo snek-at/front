@@ -11,7 +11,7 @@ import { RegisterForm, LoginForm } from "../forms";
 //> Images
 import { ReactComponent as SvgSoftware } from "../../../assets/header/dev.svg";
 import { ReactComponent as SvgMedia } from "../../../assets/header/media.svg";
-//> CSS
+//> Style sheet
 import "./useractioncard.scss";
 //#endregion
 
@@ -109,6 +109,7 @@ class UserActionCard extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default UserActionCard;
 //#endregion
 

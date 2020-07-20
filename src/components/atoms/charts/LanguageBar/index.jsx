@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 
-//> CSS
+//> Style sheet
 import "./languages.scss";
 //#endregion
 
@@ -67,6 +67,7 @@ class LanguageBar extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default LanguageBar;
 //#endregion
 

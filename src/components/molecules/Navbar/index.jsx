@@ -4,7 +4,7 @@
 import React from "react";
 // DOM bindings for React Router
 import { Link, withRouter, NavLink } from "react-router-dom";
-// React PropTypes
+// Runtime type checking for React props and similar objects
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -35,7 +35,7 @@ import { logoutAction } from "../../../store/actions/authActions";
 import { SearchBar } from "../../atoms";
 //> Images
 import SNEKLogo from "../../../assets/navigation/logo.png";
-//> CSS
+//> Style sheet
 import "./navbar.scss";
 //#endregion
 
@@ -197,6 +197,7 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.

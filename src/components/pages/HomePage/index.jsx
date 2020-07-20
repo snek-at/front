@@ -26,7 +26,7 @@ import { connect } from "react-redux";
 //> Components
 import LatestActivity from "../../atoms/charts/LatestActivity";
 import { UserActionCard } from "../../molecules";
-//> CSS
+//> Style sheet
 import "./homepage.scss";
 //> Images
 import imageRanking from "../../../assets/body/ranking.png";
@@ -314,6 +314,7 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.

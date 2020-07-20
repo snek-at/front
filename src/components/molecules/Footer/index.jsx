@@ -16,7 +16,7 @@ import {
   MDBBtn,
 } from "mdbreact";
 
-//> CSS
+//> Style sheet
 import "./footer.scss";
 //> Images
 // SNEK Logo
@@ -254,6 +254,7 @@ class Footer extends React.PureComponent {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Got access to the history object’s properties and the closest
  * <Route>'s match.

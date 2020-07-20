@@ -11,7 +11,7 @@ import moment from "moment";
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBRow, MDBCol } from "mdbreact";
 
-//> CSS
+//> Style sheet
 import "./calendar2d.scss";
 //#endregion
 
@@ -234,6 +234,7 @@ class Calender2D extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default Calender2D;
 //#endregion
 

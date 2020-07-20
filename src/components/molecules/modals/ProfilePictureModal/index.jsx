@@ -16,7 +16,7 @@ import {
   MDBRow,
 } from "mdbreact";
 
-//> CSS
+//> Style sheet
 import "./profile.scss";
 //#endregion
 
@@ -140,6 +140,7 @@ class ProfilePictureModal extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default ProfilePictureModal;
 //#endregion
 

@@ -2,7 +2,7 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// React PropTypes
+// Runtime type checking for React props and similar objects
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -74,7 +74,7 @@ class ErrorBoundary extends React.Component {
         );
       }
     }
-    
+
     return this.props.children;
   }
 }
@@ -87,5 +87,6 @@ ErrorBoundary.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default ErrorBoundary;
 //#endregion

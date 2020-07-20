@@ -577,6 +577,7 @@ const deleteTalkAction = (talk) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export {
   registerAction,
   writeCacheAction,

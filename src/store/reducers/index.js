@@ -29,6 +29,7 @@ const rootReducer = combineReducers({
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default rootReducer;
 //#endregion
 

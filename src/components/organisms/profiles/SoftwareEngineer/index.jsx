@@ -33,6 +33,7 @@ class SoftwareEngineer extends React.Component {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default SoftwareEngineer;
 //#endregion
 

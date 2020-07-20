@@ -15,10 +15,6 @@ import LoadingBarContainer from "react-redux-loading-bar";
 // Functions to send data from the application to the store
 import { loginAction } from "./store/actions/authActions";
 //> Components
-/**
- * Footer: Global Footer
- * Navbar: Global navigation bar
- */
 import { Footer, Navbar } from "./components/molecules";
 // Starts the page on top when reloaded or redirected
 import { ScrollToTop } from "./components/atoms";
@@ -57,6 +53,7 @@ function App() {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Got access to the history object’s properties and the closest
  * <Route>'s match.

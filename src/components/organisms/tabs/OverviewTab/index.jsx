@@ -2,7 +2,7 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// React PropTypes
+// Runtime type checking for React props and similar objects
 import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 //> Actions
 // Functions to send data from the application to the store
 import { writeCacheAction } from "../../../../store/actions/userActions";
-//> CSS
+//> Style sheet
 import "./overviewtab.scss";
 //> Components
 import {
@@ -287,6 +287,7 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.

@@ -18,7 +18,7 @@ import {
 } from "../../../store/actions/userActions";
 //> Components
 import { SoftwareEngineer } from "../../organisms/profiles";
-//> CSS
+//> Style sheet
 import "./profile.scss";
 //#endregion
 

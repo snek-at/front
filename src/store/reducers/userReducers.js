@@ -154,6 +154,7 @@ const userReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default userReducer;
 //#endregion
 

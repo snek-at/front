@@ -79,6 +79,7 @@ const generalReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default generalReducer;
 //#endregion
 

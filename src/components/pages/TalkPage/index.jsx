@@ -28,7 +28,7 @@ import { connect } from "react-redux";
 //> Actions
 // Functions to send data from the application to the store
 import { getTalkAction } from "../../../store/actions/userActions";
-//> CSS
+//> Style sheet
 import "./talk.scss";
 //#endregion
 
@@ -388,6 +388,7 @@ const mapDispatchToProps = (dispatch) => {
 //#endregion
 
 //#region > Exports
+//> Default Component
 /**
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.

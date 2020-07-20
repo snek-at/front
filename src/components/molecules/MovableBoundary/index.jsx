@@ -2,13 +2,13 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// React PropTypes
+// Runtime type checking for React props and similar objects
 import PropTypes from "prop-types";
 //> MDB Sortable
 // MDB plugin for sortable item lists
 import MDBSortable from "mdb-react-sortable";
 
-//> CSS
+//> Style sheet
 import "./movableboundary.scss";
 //#endregion
 
@@ -157,6 +157,7 @@ MovableBoundary.propTypes = {
 //#endregion
 
 //#region > Exports
+//> Default Component
 export default MovableBoundary;
 //#endregion
 
