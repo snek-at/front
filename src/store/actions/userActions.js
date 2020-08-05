@@ -130,7 +130,7 @@ const readCacheAction = (username) => {
       const session = intel.snekclient.session;
 
       return session.tasks.user
-        .profile("/registration/" + username)
+        .profile(`user_${username}`)
         .then(async ({ data }) => {
           if (!data.profile) {
             dispatch({
