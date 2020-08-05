@@ -24,6 +24,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "serialize-error": "^7.0.1",
+    "snek-client": "file:snek-client-0.2.0-beta.tgz",
     "snek-intel": "^0.1.1",
     "tippy.js": "^6.2.3"
   },
