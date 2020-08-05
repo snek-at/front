@@ -14,7 +14,7 @@ const loginAction = (user) => {
       return session
         .begin(user)
         .then((whoami) => {
-          if (whoami?.username !== process.env.REACT_APP_ANONYMOUS_USER) {
+          if (!whoami?.anonymous) {
             dispatch({
               type: "LOGIN_SUCCESS",
               payload: {
