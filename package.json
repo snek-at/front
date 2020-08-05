@@ -12,7 +12,7 @@
     "mdb-react-sortable": "mdb-react-sortable-4.26.0.tgz",
     "node-sass": "^4.12.0",
     "obelisk.js": "^1.2.2",
-    "react-avatar-editor": "^11.0.9",
+    "react-avatar-editor": "^11.0.7",
     "react-chartjs-2": "^2.9.0",
     "react-dropzone": "^11.0.1",
     "react-redux": "^7.2.0",
