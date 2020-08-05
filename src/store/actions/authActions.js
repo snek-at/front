@@ -14,7 +14,7 @@ const loginAction = (user) => {
       return session
         .begin(user)
         .then((whoami) => {
-          if (!whoami?.anonymous) {
+          if (whoami?.anonymous === false) {
             dispatch({
               type: "LOGIN_SUCCESS",
               payload: {
