@@ -105,29 +105,18 @@ const getDataAction = () => {
  *
  * @description Retrieves a list of all users
  */
-const getAllPageUrlsAction = () => {
+const getUserSearchItems = () => {
   return async (dispatch, getState, { getIntel }) => {
     try {
       const intel = getIntel();
       const session = intel.snekclient.session;
 
       return await session.tasks.general
-        .allPageUrls()
+        .allUserPageUrls()
         .then((res) => {
-          let urls = [];
-
-          res.data.pages &&
-            res.data.pages.forEach((page) => {
-              if (page.urlPath.includes("registration/")) {
-                let url = page.urlPath.split("/")[2];
-
-                urls.push(url);
-              }
-            });
-
           dispatch({
             type: "GET_APP_PAGE_URLS_SUCCESS",
-            payload: { urls },
+            payload: { items: res.data.page.children },
           });
         })
         .catch((ex) =>
@@ -152,7 +141,7 @@ const getAllPageUrlsAction = () => {
 export {
   appendSourceObjectsAction,
   getDataAction,
-  getAllPageUrlsAction,
+  getUserSearchItems,
   fetchGitLabServersAction,
 };
 //#endregion

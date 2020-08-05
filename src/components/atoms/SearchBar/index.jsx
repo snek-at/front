@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getAllPageUrlsAction } from "../../../store/actions/generalActions";
+import { getUserSearchItems } from "../../../store/actions/generalActions";
 //> Style sheet
 import "./search.scss";
 //#endregion
@@ -35,15 +35,15 @@ class SearchBar extends React.Component {
   state = {
     loading: true,
     filter: "",
-    usernames: this.props.allRegisteredUsernames,
+    searchItems: this.props.allUserSearchItems,
   };
 
   componentDidMount() {
     if (this.state.loading) {
-      this.props.allUsernames().then(() => {
+      this.props.allsearchItems().then(() => {
         this.setState({
           loading: false,
-          usernames: this.props.allRegisteredUsernames,
+          searchItems: this.props.allUserSearchItems,
         });
       });
     }
@@ -83,10 +83,11 @@ class SearchBar extends React.Component {
       >
         <MDBSelectInput selected="Find a user" />
         <MDBSelectOptions search searchLabel="">
-          {!this.state.loading && this.state.usernames ? (
-            this.state.usernames.length > 0 && this.state.filter.length > 0 ? (
+          {!this.state.loading && this.state.searchItems ? (
+            this.state.searchItems.length > 0 && this.state.filter.length > 0 ? (
+
               fuzzysort
-                .go(this.state.filter, this.state.usernames)
+                .go(this.state.filter, this.state.searchItems, { key: "title" })
                 .map((element, i) => {
                   return (
                     <MDBSelectOption
@@ -99,8 +100,8 @@ class SearchBar extends React.Component {
                 })
             ) : null
           ) : (
-            <span>Loading</span>
-          )}
+              <span>Loading</span>
+            )}
         </MDBSelectOptions>
       </MDBSelect>
     );
@@ -110,12 +111,12 @@ class SearchBar extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  allRegisteredUsernames: state.general.allRegisteredUsernames,
+  allUserSearchItems: state.general.allUserSearchItems,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    allUsernames: () => dispatch(getAllPageUrlsAction()),
+    allsearchItems: () => dispatch(getUserSearchItems()),
   };
 };
 //#endregion

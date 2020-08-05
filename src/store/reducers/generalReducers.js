@@ -6,7 +6,7 @@ import { serializeError } from "serialize-error";
 
 //#region > Constant Variables
 const INIT_STATE = {
-  allRegisteredUsernames: null,
+  allUserSearchItems: null,
   allGitlabServers: [],
   generatedIntelData: null,
   generalError: null,
@@ -58,11 +58,11 @@ const generalReducer = (state = INIT_STATE, action) => {
         authErrorDetails: serializeError(action.payload.error),
       };
 
-    //> getAllPageUrlsAction
+    //> getUserSearchItems
     case "GET_APP_PAGE_URLS_SUCCESS":
       return {
         ...state,
-        allRegisteredUsernames: action.payload.urls,
+        allUserSearchItems: action.payload.items,
       };
 
     case "GET_APP_PAGE_URLS_ERROR":
