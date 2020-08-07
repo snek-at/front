@@ -60,6 +60,7 @@ class ProfileInfo extends React.Component {
 
   render() {
     const { fetchedUser } = this.props;
+
     return (
       <div className="social">
         <MDBView>
