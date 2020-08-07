@@ -41,13 +41,26 @@ class Calendar3D extends React.Component {
           loading: true,
           contrib: this.renderTopStats(),
           streak: this.renderBottomStats(),
+          year: this.props.year,
         },
         () => this.checkCache()
       );
+
+      this.checkCache();
     }
   };
 
   componentDidUpdate = () => {
+    if (this.props.year != this.state.year) {
+      this.setState({
+        width: this.myInput.current.offsetWidth,
+        loading: true,
+        contrib: this.renderTopStats(),
+        streak: this.renderBottomStats(),
+        year: this.props.year,
+      });
+    }
+
     this.checkCache();
   };
 
