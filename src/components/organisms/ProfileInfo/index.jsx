@@ -60,7 +60,7 @@ class ProfileInfo extends React.Component {
 
   render() {
     const { fetchedUser } = this.props;
-
+    console.log(fetchedUser.platformData.user);
     return (
       <div className="social">
         <MDBView>
@@ -72,14 +72,12 @@ class ProfileInfo extends React.Component {
         </MDBView>
         <div className="bg-elegant py-3 px-3">
           <h4 className="mb-0">
-            {fetchedUser &&
-              fetchedUser.platformData.user.firstName &&
-              fetchedUser.platformData.user.lastName && (
-                <>
-                  {fetchedUser.platformData.user.firstName + " "}
-                  {fetchedUser.platformData.user.lastName}
-                </>
-              )}
+            {fetchedUser && fetchedUser.platformData.user.firstName && (
+              <>{fetchedUser.platformData.user.firstName}</>
+            )}{" "}
+            {fetchedUser && fetchedUser.platformData.user.lastName && (
+              <>{fetchedUser.platformData.user.lastName}</>
+            )}
           </h4>
           {fetchedUser &&
             fetchedUser.platformData.user.settings &&
