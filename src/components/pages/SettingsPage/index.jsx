@@ -355,6 +355,7 @@ class SettingsPage extends React.Component {
                             onChange={this.handleTextChange}
                             value={this.state.email}
                             placeholder="Email"
+                            required
                           />
                         </MDBCol>
                       </MDBRow>
