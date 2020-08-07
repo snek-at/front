@@ -530,7 +530,7 @@ class SettingsPage extends React.Component {
                 </MDBTabContent>
               </MDBCol>
             </MDBRow>
-            {this.state.changeDetected && (
+            {this.state.changeDetected && this.state.email !== "" && (
               <MDBRow className="float-right">
                 <MDBBtn color="green" onClick={this.save}>
                   Save Changes
