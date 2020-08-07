@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 
 //> Components
 import { LanguageChart } from "../../atoms";
+//> Style Sheet
+import "./profileinfo.scss";
 //#endregion
 
 //#region > Components
