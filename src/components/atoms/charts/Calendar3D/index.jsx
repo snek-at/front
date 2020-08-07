@@ -51,7 +51,7 @@ class Calendar3D extends React.Component {
   };
 
   componentDidUpdate = () => {
-    if (this.props.year != this.state.year) {
+    if (this.props.year !== this.state.year) {
       this.setState({
         width: this.myInput.current.offsetWidth,
         loading: true,
