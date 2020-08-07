@@ -333,14 +333,21 @@ class ProfileInfo extends React.Component {
                   );
                 })}
               {this.state.limitLanguages &&
-                fetchedUser.platformData.statistic.languages.length > 3 && (
-                  <p
-                    className="small clickable blue-text d-inline"
-                    onClick={() => this.setState({ limitLanguages: false })}
-                  >
-                    Show more
-                  </p>
-                )}
+              fetchedUser.platformData.statistic.languages.length > 3 ? (
+                <p
+                  className="small clickable blue-text d-inline"
+                  onClick={() => this.setState({ limitLanguages: false })}
+                >
+                  Show more
+                </p>
+              ) : (
+                <p
+                  className="small clickable blue-text d-inline"
+                  onClick={() => this.setState({ limitLanguages: true })}
+                >
+                  Show less
+                </p>
+              )}
             </div>
           )}
         </div>
