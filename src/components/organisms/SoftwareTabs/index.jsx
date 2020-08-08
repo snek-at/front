@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 
 //> Components
 import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
+//> Style sheet
+import "./softwaretabs.scss";
 //#endregion
 
 //#region > Components

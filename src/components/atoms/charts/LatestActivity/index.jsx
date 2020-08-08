@@ -43,6 +43,25 @@ class LatestActivity extends React.Component {
   componentDidMount = () => {
     // Start of by rendering chart with current week
     this.calculateSources(undefined, undefined);
+
+    // Get hash of current data
+    this.setState({
+      currentHash: this.stringToHash(JSON.stringify(this.props)),
+    });
+  };
+
+  componentDidUpdate = () => {
+    // Get hash of current data
+    let currentHash = this.stringToHash(JSON.stringify(this.props));
+
+    if (this.state.currentHash !== currentHash) {
+      // Render the chart if the data has changed
+      this.calculateSources(undefined, undefined);
+
+      this.setState({
+        currentHash,
+      });
+    }
   };
 
   componentWillReceiveProps(nextProps) {
@@ -147,6 +166,21 @@ class LatestActivity extends React.Component {
         () => this.fillChart([0, 10, 5, 2, 5, 6, 0], [5, 2, 6, 1, 1, 1, 0])
       );
     }
+  };
+
+  stringToHash = (string) => {
+    let hash = 0;
+
+    if (string.length == 0) return hash;
+
+    for (let i = 0; i < string.length; i++) {
+      const char = string.charCodeAt(i);
+
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
+    }
+
+    return hash;
   };
 
   render() {

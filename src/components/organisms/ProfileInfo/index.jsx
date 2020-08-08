@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 
 //> Components
 import { LanguageChart } from "../../atoms";
+//> Style Sheet
+import "./profileinfo.scss";
 //#endregion
 
 //#region > Components
@@ -70,14 +72,12 @@ class ProfileInfo extends React.Component {
         </MDBView>
         <div className="bg-elegant py-3 px-3">
           <h4 className="mb-0">
-            {fetchedUser &&
-              fetchedUser.platformData.user.firstName &&
-              fetchedUser.platformData.user.lastName && (
-                <>
-                  {fetchedUser.platformData.user.firstName + " "}
-                  {fetchedUser.platformData.user.lastName}
-                </>
-              )}
+            {fetchedUser && fetchedUser.platformData.user.firstName && (
+              <>{fetchedUser.platformData.user.firstName}</>
+            )}{" "}
+            {fetchedUser && fetchedUser.platformData.user.lastName && (
+              <>{fetchedUser.platformData.user.lastName}</>
+            )}
           </h4>
           {fetchedUser &&
             fetchedUser.platformData.user.settings &&
@@ -331,14 +331,21 @@ class ProfileInfo extends React.Component {
                   );
                 })}
               {this.state.limitLanguages &&
-                fetchedUser.platformData.statistic.languages.length > 3 && (
-                  <p
-                    className="small clickable blue-text d-inline"
-                    onClick={() => this.setState({ limitLanguages: false })}
-                  >
-                    Show more
-                  </p>
-                )}
+              fetchedUser.platformData.statistic.languages.length > 3 ? (
+                <p
+                  className="small clickable blue-text d-inline"
+                  onClick={() => this.setState({ limitLanguages: false })}
+                >
+                  Show more
+                </p>
+              ) : (
+                <p
+                  className="small clickable blue-text d-inline"
+                  onClick={() => this.setState({ limitLanguages: true })}
+                >
+                  Show less
+                </p>
+              )}
             </div>
           )}
         </div>
