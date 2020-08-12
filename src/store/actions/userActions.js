@@ -130,7 +130,7 @@ const readCacheAction = (username) => {
       const session = intel.snekclient.session;
 
       return session.tasks.user
-        .profile(`user_${username}`)
+        .profile(username)
         .then(async ({ data }) => {
           if (!data.profile) {
             dispatch({
@@ -445,7 +445,7 @@ const getTalkAction = (uid, username) => {
       const session = intel.snekclient.session;
 
       return session.tasks.user
-        .profile("/registration/" + username)
+        .profile(username)
         .then(async ({ data }) => {
           if (data.profile) {
             let talks = JSON.parse(data.profile.platformData).talks;
