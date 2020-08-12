@@ -15,6 +15,7 @@ const loginAction = (user) => {
         .begin(user)
         .then((whoami) => {
           if (whoami?.anonymous === false) {
+          if (!whoami?.anonymous && whoami?.__typename === "SNEKUser") {
             dispatch({
               type: "LOGIN_SUCCESS",
               payload: {
@@ -23,11 +24,20 @@ const loginAction = (user) => {
                   "https://www.clipartmax.com/png/full/166-1669056_the-20-cooler-octocat-github-octocat.png",
               },
             });
-          } else {
+          } else if (whoami.anonymous) {
             dispatch({
               type: "LOGIN_ANON_SUCCESS",
               payload: {},
             });
+          } else {
+            dispatch({
+              type: "LOGIN_FAILED",
+              payload: {
+                errorCode: 619,
+                message: "Incorrect username or password",
+                error: null,
+              },
+            })
           }
         })
         .catch((ex) =>
