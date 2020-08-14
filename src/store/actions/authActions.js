@@ -14,7 +14,6 @@ const loginAction = (user) => {
       return session
         .begin(user)
         .then((whoami) => {
-          if (whoami?.anonymous === false) {
           if (!whoami?.anonymous && whoami?.__typename === "SNEKUser") {
             dispatch({
               type: "LOGIN_SUCCESS",
