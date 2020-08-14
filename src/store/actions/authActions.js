@@ -29,14 +29,7 @@ const loginAction = (user) => {
               payload: {},
             });
           } else {
-            dispatch({
-              type: "LOGIN_FAILED",
-              payload: {
-                errorCode: 619,
-                message: "Incorrect username or password",
-                error: null,
-              },
-            })
+            throw Error("Login failed")
           }
         })
         .catch((ex) =>
