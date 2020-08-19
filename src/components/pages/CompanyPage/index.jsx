@@ -2,172 +2,153 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+//> Redux
+// Allows React components to read data, update data and dispatch actions
+// from/to a Redux store.
+import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
   MDBContainer,
+  MDBListGroup,
+  MDBListGroupItem,
+  MDBIcon,
+  MDBInput,
   MDBRow,
+  MDBBadge,
   MDBCol,
   MDBCard,
   MDBCardBody,
   MDBCardFooter,
   MDBBtn,
-  MDBBadge,
   MDBProgress,
   MDBTooltip,
-  MDBIcon,
-  MDBTimeline,
-  MDBTimelineStep,
+  MDBTabContent,
+  MDBTabPane,
+  MDBNav,
+  MDBNavLink,
+  MDBNavItem,
+  MDBSpinner,
+  MDBModal,
+  MDBModalBody,
+  MDBAlert,
 } from "mdbreact";
-// Chart.js
-import { HorizontalBar, Line } from "react-chartjs-2";
 
-//> Style sheet
-import "./company.scss";
-//> Data
-// Dummy data
-import data from "./dummy/data.js";
-import platformData from "./dummy/chart.json";
+//> Actions
+// Functions to send data from the application to the store
+import { getPageByHandle } from "../../../../store/actions/pageActions";
+//> Components
+import {
+  PageOverview,
+  PageProjects,
+  PageUsers,
+  PageImprint,
+} from "../../organisms/tabs/enterprise";
+//> CSS
+import "./.scss";
+//> Images
+// Too be added
 //#endregion
 
-//#region > Constant Variables
-// Google Maps Url
-const GOOGLE_MAPS_BASE_URL = "https://www.google.at/maps/place/";
-// Configure tabs
-const TABS = [
-  "Overview",
-  "People",
-  "Talks",
-  "Locations",
-  "Platforms",
-  "Milestones",
-  "About",
+//#region > Config
+const TAB_ITEMS = [
+  {
+    name: "Overview",
+    icon: "play-circle",
+  },
+  {
+    name: "Projects",
+    icon: "dot-circle",
+  },
+  {
+    name: "Users",
+    icon: "user-circle",
+  },
+  {
+    name: "Imprint",
+    icon: "info-circle",
+  },
 ];
-
-// Line Contribution options
-const CONTRIB_OPTIONS = {
-  responsive: true,
-  legend: {
-    display: false,
-  },
-  elements: {
-    point: {
-      radius: 0,
-    },
-  },
-  scales: {
-    xAxes: [
-      {
-        ticks: {
-          autoSkip: false,
-          maxRotation: 0,
-          minRotation: 0,
-        },
-      },
-    ],
-  },
-};
 //#endregion
 
 //#region > Components
-/** @class This component displays the Company Page */
-class CompanyPage extends React.Component {
+/** @class This component displays pipelines */
+class Page extends React.Component {
   state = {
-    activeTab: 0,
-    dataHorizontal: {
-      labels: ["Austria", "Canada"],
-      datasets: [
-        {
-          label: "Employees per country",
-          data: [2, 1],
-          fill: false,
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-          ],
-          borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
-          borderWidth: 1,
-        },
-      ],
-    },
+    activeItem: localStorage.getItem(this.props.handle + "-tab")
+      ? parseInt(localStorage.getItem(this.props.handle + "-tab"))
+      : 0,
   };
 
   componentDidMount = () => {
-    this.setState(
-      {
-        contrib: platformData.statistic.current,
-      },
-      () => this.setContentLib(platformData.statistic.current)
-    );
+    // Retrieve Page
+    this.props.getPageByHandle(this.props.handle);
   };
 
-  setContentLib = (period) => {
-    let labels = [];
-    let data = [];
-
-    period.calendar.weeks.map((week, w) => {
-      week.days.map((day, d) => {
-        if (
-          (w === 0 && d === 0) ||
-          (w === period.calendar.weeks.length - 1 && d === week.days.length - 1)
-        ) {
-          labels.push(day.date);
-        } else {
-          labels.push("");
-        }
-        data.push(day.total);
+  componentDidUpdate = () => {
+    // Check if there are no current pipelines set
+    if (this.props.page && !this.state.page) {
+      this.setState({
+        page: this.props.page,
       });
-    });
+    }
 
+    if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
+      this.setState({
+        page: this.props.page,
+      });
+    }
+  };
+
+  // Toogle reauth
+  toggleModal = () => {
     this.setState({
-      contribLine: {
-        labels,
-        datasets: [
-          {
-            label: "Contributions",
-            fill: true,
-            lineTension: 0,
-            backgroundColor: "rgba(119, 189, 67, .3)",
-            borderColor: "rgb(119, 189, 67)",
-            borderCapStyle: "butt",
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: "miter",
-            data,
-          },
-        ],
-      },
+      reAuth: false,
     });
   };
 
-  /** @todo Remove breaks after returns */
+  // Toggle the visible tab
+  toggle = (e, tab) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (this.state.activeItem !== tab) {
+      this.setState(
+        {
+          activeItem: tab,
+        },
+        () => localStorage.setItem(this.props.handle + "-tab", tab)
+      );
+    }
+  };
+
   getGrowth = (growth) => {
     switch (growth) {
       case -2:
         return (
           <MDBIcon icon="angle-double-down" className="red-text clickable" />
         );
-        break;
       case -1:
         return <MDBIcon icon="angle-down" className="red-text clickable" />;
-        break;
       case 1:
         return <MDBIcon icon="angle-up" className="green-text clickable" />;
-        break;
       case 2:
         return (
           <MDBIcon icon="angle-double-up" className="green-text clickable" />
         );
-        break;
       default:
-        break;
+        return null;
     }
   };
 
   render() {
+    const { page } = this.state;
+
+    console.log("PAGE", page);
+
     return (
-      <div id="company">
-        <MDBContainer>
+      <MDBContainer id="company">
+        {page ? (
           <MDBRow>
             <MDBCol lg="12">
               <MDBCard>
@@ -175,22 +156,99 @@ class CompanyPage extends React.Component {
                   <div className="d-flex justify-content-space-between">
                     <div>
                       <p className="lead mb-1">
-                        <strong>Finish building your page</strong>
+                        <strong>You decide what you share.</strong>
                       </p>
-                      <p className="text-muted mb-2">
-                        You started strong. Finish editing your page to achieve
-                        a better ranking.
+                      <p className="text-muted small mb-2">
+                        Security is one of our highest priorities. No
+                        information you do not explicitly share, will leave your
+                        network.
                       </p>
                     </div>
                     <div>
-                      <MDBBtn color="indigo" outline>
+                      {/*<MDBBtn color="indigo" outline>
                         <MDBIcon icon="eye" />
                         View as public
+                      </MDBBtn>*/}
+                      <MDBBtn
+                        color="indigo"
+                        onClick={() => this.props.navigateTo("connectors")}
+                      >
+                        <MDBIcon icon="key" />
+                        Edit
                       </MDBBtn>
-                      <MDBBtn color="indigo">Start</MDBBtn>
                     </div>
                   </div>
-                  <MDBProgress value={70} className="my-2" />
+                  <div className="position-relative">
+                    <div className="mt-2">
+                      <p className="mb-0">Restrictions</p>
+                    </div>
+                    <MDBRow>
+                      <MDBCol
+                        lg="3"
+                        className={
+                          page.restrictionLevel !== 1 ? "disabled" : undefined
+                        }
+                      >
+                        <MDBProgress
+                          value={100}
+                          color="danger"
+                          className="my-2"
+                        />
+                        <p className="mb-0">Heavy</p>
+                        <p className="text-muted small mb-0">
+                          No information published.
+                        </p>
+                      </MDBCol>
+                      <MDBCol
+                        lg="3"
+                        className={
+                          page.restrictionLevel !== 2 ? "disabled" : undefined
+                        }
+                      >
+                        <MDBProgress
+                          value={100}
+                          color="warning"
+                          className="my-2"
+                        />
+                        <p className="mb-0">Moderate</p>
+                        <p className="text-muted small mb-0">
+                          Little information published.
+                        </p>
+                      </MDBCol>
+                      <MDBCol
+                        lg="3"
+                        className={
+                          page.restrictionLevel !== 3 ? "disabled" : undefined
+                        }
+                      >
+                        <MDBProgress
+                          value={100}
+                          color="info"
+                          className="my-2"
+                        />
+                        <p className="mb-0">Light</p>
+                        <p className="text-muted small mb-0">
+                          All non-confidential information published.
+                        </p>
+                      </MDBCol>
+                      <MDBCol
+                        lg="3"
+                        className={
+                          page.restrictionLevel !== 4 ? "disabled" : undefined
+                        }
+                      >
+                        <MDBProgress
+                          value={100}
+                          color="success"
+                          className="my-2"
+                        />
+                        <p className="mb-0">Open</p>
+                        <p className="text-muted small mb-0">
+                          All information published.
+                        </p>
+                      </MDBCol>
+                    </MDBRow>
+                  </div>
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
@@ -200,7 +258,7 @@ class CompanyPage extends React.Component {
                   <MDBRow className="d-flex align-items-center">
                     <MDBCol lg="2">
                       <img
-                        src="https://avatars1.githubusercontent.com/u/50574311?s=200"
+                        src="https://www.htl-villach.at/typo3conf/ext/htl_villach/Resources/Public/Images/htl_logo_box.svg"
                         alt="Company logo"
                         className="img-fluid"
                       />
@@ -209,77 +267,49 @@ class CompanyPage extends React.Component {
                       <div className="d-flex justify-content-space-between">
                         <div>
                           <p className="lead font-weight-bold mb-1">
-                            {data.company.name}
-                            {data.company.growth !== 0 && (
-                              <MDBTooltip
-                                domElement
-                                tag="span"
-                                material
-                                placement="top"
-                              >
-                                <span className="ml-2">
-                                  {this.getGrowth(data.company.growth)}
-                                </span>
-                                <span>Company growth</span>
-                              </MDBTooltip>
-                            )}
+                            {page.company.name}
                           </p>
-                          {data.company.verified && (
-                            <div className="verified-badge mb-1">
-                              <MDBBadge color="success">
-                                <MDBIcon icon="check-circle" />
-                                Verified
-                              </MDBBadge>
-                            </div>
-                          )}
-                          <p className="text-muted mb-1">
-                            {data.company.description}
+                          <p className="text-muted mb-3">
+                            {page.company.description}
                           </p>
                         </div>
                         <div className="d-flex">
-                          <a href={`mailto:${data.company.email}`}>
-                            <MDBBtn color="indigo" size="md">
-                              Contact
-                            </MDBBtn>
-                          </a>
-                          <MDBBtn color="green" size="md">
-                            Follow
+                          <MDBBtn
+                            color="green"
+                            size="md"
+                            onClick={() => this.setState({ reAuth: true })}
+                          >
+                            Publish
                           </MDBBtn>
                         </div>
                       </div>
                       <div>
-                        {data.company.isRecruiting && (
+                        {page.company.isRecruiting && (
                           <MDBBadge color="indigo">
                             <MDBIcon icon="users" />
                             Recruiting
                           </MDBBadge>
                         )}
-                        {data.company.employees >= 1 &&
-                          data.company.employees < 5 && (
+                        {page.company.employees >= 1 &&
+                          page.company.employees < 5 && (
                             <MDBBadge color="primary">1-5 Employees</MDBBadge>
                           )}
-                        {data.company.employees >= 5 &&
-                          data.company.employees < 20 && (
+                        {page.company.employees >= 5 &&
+                          page.company.employees < 20 && (
                             <MDBBadge color="primary">5-20 Employees</MDBBadge>
                           )}
-                        {data.company.employees >= 20 &&
-                          data.company.employees < 100 && (
+                        {page.company.employees >= 20 &&
+                          page.company.employees < 100 && (
                             <MDBBadge color="primary">
                               20-100 Employees
                             </MDBBadge>
                           )}
-                        {data.company.employees >= 100 && (
+                        {page.company.employees >= 100 && (
                           <MDBBadge color="primary">100+ Employees</MDBBadge>
                         )}
-                        {data.company.localRelevance && (
-                          <MDBBadge color="primary">
-                            <MDBIcon icon="map-marker" />
-                            Local relevance
-                          </MDBBadge>
-                        )}
-                        {data.company.isOpenSource && (
+                        {page.company.isOpenSource && (
                           <a
-                            href={data.company.references.github}
+                            href={page.company.openSourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -293,390 +323,154 @@ class CompanyPage extends React.Component {
                     </MDBCol>
                   </MDBRow>
                 </MDBCardBody>
-                <MDBCardFooter className="px-4 py-3">
-                  <div className="stats d-flex">
-                    {data.company.revenueGrowth && (
-                      <span className="d-inline-block mr-4">
-                        <MDBIcon
-                          icon="angle-double-up"
-                          className="green-text font-weight-bold"
-                        />{" "}
-                        <span className="font-weight-bold green-text">
-                          +{data.company.revenueGrowth.value}
-                          {data.company.revenueGrowth.unit}
-                        </span>{" "}
-                        revenue
-                        <br />
-                        <small className="text-muted">
-                          compared to {data.company.revenueGrowth.comparedTo}
-                        </small>
-                      </span>
-                    )}
-                    <span className="d-inline-block mr-4">
-                      <MDBIcon
-                        icon="building"
-                        className="blue-text font-weight-bold"
-                      />{" "}
-                      Sites
-                      <br />
-                      <small className="text-muted">
-                        {data.company.sites ? data.company.sites.length : 0}{" "}
-                        location
-                      </small>
-                    </span>
-                    <span className="d-inline-block mr-4">
-                      <MDBIcon
-                        icon="code"
-                        className="blue-text font-weight-bold"
-                      />{" "}
-                      Contributors
-                      <br />
-                      <small className="text-muted">
-                        {data.company.contributors && (
-                          <>
-                            {data.company.contributors.map((contrib, i) => {
-                              if (contrib.url) {
-                                return (
-                                  <a
-                                    key={i}
-                                    href={contrib.url}
-                                    target="_blank"
-                                    className="text-muted"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <MDBIcon
-                                      fab
-                                      icon={
-                                        contrib.platform
-                                          ? contrib.platform
-                                          : "question-circle"
-                                      }
-                                      className={i !== 0 ? "mr-1 ml-2" : "mr-1"}
-                                    />
-                                    {contrib.value ? contrib.value : 0}
-                                  </a>
-                                );
-                              } else {
-                                return (
-                                  <React.Fragment key={i}>
-                                    <MDBIcon
-                                      fab
-                                      icon={
-                                        contrib.platform
-                                          ? contrib.platform
-                                          : "question-circle"
-                                      }
-                                      className={i !== 0 ? "mr-1 ml-2" : "mr-1"}
-                                    />
-                                    {contrib.value ? contrib.value : 0}
-                                  </React.Fragment>
-                                );
-                              }
-                            })}
-                          </>
-                        )}
-                      </small>
-                    </span>
-                  </div>
-                </MDBCardFooter>
               </MDBCard>
             </MDBCol>
-            <MDBCol lg="3">
-              <MDBCard>
-                <MDBCardBody className="p-0 menu">
-                  {TABS.map((tab, i) => {
+            <MDBCol lg="12">
+              <MDBNav tabs className="d-flex justify-content-between">
+                <div className="d-flex">
+                  {TAB_ITEMS.map((tab, t) => {
                     return (
-                      <div
-                        key={i}
-                        className={
-                          this.state.activeTab === i ? "active" : undefined
-                        }
-                        onClick={() => this.setState({ activeTab: i })}
-                      >
-                        {tab}
-                      </div>
+                      <MDBNavItem key={t}>
+                        <MDBNavLink
+                          link
+                          to="#"
+                          active={this.state.activeItem === t}
+                          onClick={(e) => this.toggle(e, t)}
+                          role="tab"
+                        >
+                          <MDBIcon icon={tab.icon} />
+                          {tab.name}
+                        </MDBNavLink>
+                      </MDBNavItem>
                     );
                   })}
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-            <MDBCol lg="9">
-              <MDBCard>
-                <MDBCardBody>
-                  {this.state.activeTab === 0 && (
-                    <div>
-                      <h2 className="font-weight-bold">Overview</h2>
-                      <div className="mb-5">
-                        <Line
-                          data={this.state.contribLine}
-                          options={this.state.contribLine && CONTRIB_OPTIONS}
-                          height="130"
-                        />
-                      </div>
-                      <MDBTimeline>
-                        {data.milestones.map((milestone, i) => {
-                          return (
-                            <MDBTimelineStep
-                              key={i}
-                              icon={milestone.icon}
-                              color={milestone.color}
-                              inverted={i % 2 ? true : false}
-                            >
-                              <h4 className="font-weight-bold">
-                                {milestone.name}
-                              </h4>
-                              <p className="text-muted mt-2 mb-0">
-                                <MDBIcon icon="clock" aria-hidden="true" />{" "}
-                                {milestone.date}
-                              </p>
-                            </MDBTimelineStep>
-                          );
-                        })}
-                      </MDBTimeline>
-                    </div>
+                </div>
+                <div>
+                  {(this.state.activeItem === 0 ||
+                    this.state.activeItem === 1 ||
+                    this.state.activeItem === 2) && (
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search"
+                      onChange={(e) =>
+                        this.setState({ globalFilter: e.target.value })
+                      }
+                    />
                   )}
-                  {this.state.activeTab === 1 && (
-                    <div>
-                      <MDBRow>
-                        <MDBCol md="6">
-                          <p className="lead">
-                            {data.company.employees} employees
-                          </p>
-                        </MDBCol>
-                        <MDBCol md="6">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search for employees"
-                          />
-                        </MDBCol>
-                      </MDBRow>
-                      <div className="charts my-4">
-                        <HorizontalBar
-                          data={this.state.dataHorizontal}
-                          options={{
-                            responsive: true,
-                            scales: {
-                              xAxes: [
-                                {
-                                  stacked: true,
-                                  ticks: {
-                                    min: 0,
-                                    stepSize: 1,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          height="100"
-                        />
-                      </div>
-                      <MDBRow>
-                        {data.employees.map((employee, i) => {
-                          return (
-                            <MDBCol md="4" key={i}>
-                              <MDBCard>
-                                <MDBCardBody>
-                                  <p className="font-weight-bold mb-0 d-inline-block clickable blue-text">
-                                    {employee.full_name}
-                                  </p>
-                                  <p className="text-muted">
-                                    {employee.position}
-                                  </p>
-                                  {employee.joined && (
-                                    <p className="mb-0">
-                                      <small>Joined {employee.joined}</small>
-                                    </p>
-                                  )}
-                                </MDBCardBody>
-                                <MDBCardFooter className="p-0">
-                                  <MDBBtn
-                                    color="green"
-                                    outline
-                                    className="w-100 h-100 m-0"
-                                  >
-                                    Follow
-                                  </MDBBtn>
-                                </MDBCardFooter>
-                              </MDBCard>
-                            </MDBCol>
-                          );
-                        })}
-                      </MDBRow>
-                    </div>
-                  )}
-                  {this.state.activeTab === 2 && (
-                    <div>To be integrated together with talks tab</div>
-                  )}
-                  {this.state.activeTab === 3 && (
-                    <div>
-                      <MDBRow>
-                        <MDBCol md="6">
-                          <p className="lead">
-                            {data.company.sites.length}{" "}
-                            {data.company.sites.length > 1 ? "sites" : "site"}
-                          </p>
-                        </MDBCol>
-                        <MDBCol md="6">
-                          {data.company.sites.length > 1 && (
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Search for sites"
-                            />
-                          )}
-                        </MDBCol>
-                      </MDBRow>
-                      <MDBRow>
-                        {data.company.sites &&
-                          data.company.sites.map((site, i) => {
-                            return (
-                              <MDBCol md="5" key={i}>
-                                <MDBCard>
-                                  <MDBCardBody>
-                                    <div className="d-flex justify-content-space-between">
-                                      <p className="font-weight-bold mb-1">
-                                        {site.country}
-                                      </p>
-                                      <MDBBadge color="indigo">
-                                        Main site
-                                      </MDBBadge>
-                                    </div>
-                                    <p>
-                                      {site.address}
-                                      <br />
-                                      {site.zip}, {site.city}
-                                    </p>
-                                  </MDBCardBody>
-                                  <MDBCardFooter className="p-0">
-                                    <a
-                                      href={`${GOOGLE_MAPS_BASE_URL}${site.address},+${site.zip},+${site.city}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    >
-                                      <MDBBtn
-                                        color="white"
-                                        className="w-100 h-100 m-0"
-                                        size="lg"
-                                      >
-                                        <MDBIcon fab icon="google" />
-                                        Open on Google Maps
-                                      </MDBBtn>
-                                    </a>
-                                  </MDBCardFooter>
-                                </MDBCard>
-                              </MDBCol>
-                            );
-                          })}
-                      </MDBRow>
-                    </div>
-                  )}
-                  {this.state.activeTab === 4 && (
-                    <div>
-                      <MDBRow>
-                        {data.platforms.map((platform, i) => {
-                          return (
-                            <MDBCol md="4" key={i}>
-                              <a
-                                href={platform.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <MDBCard>
-                                  <MDBCardBody>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                      <MDBIcon
-                                        fab
-                                        icon={platform.name}
-                                        size="lg"
-                                      />
-                                      <p className="m-0 text-muted">
-                                        {platform.data.followers} followers
-                                        <br />
-                                        {platform.data.avgLikes} average likes
-                                        <br />
-                                        {(
-                                          (platform.data.avgLikes * 100) /
-                                          platform.data.followers
-                                        ).toFixed(2)}
-                                        % engagement
-                                      </p>
-                                    </div>
-                                  </MDBCardBody>
-                                </MDBCard>
-                              </a>
-                            </MDBCol>
-                          );
-                        })}
-                        <MDBCol md="4">
-                          <MDBBtn color="green" outline>
-                            <MDBIcon icon="plus-circle" />
-                            Add platform
-                          </MDBBtn>
-                        </MDBCol>
-                      </MDBRow>
-                    </div>
-                  )}
-                  {this.state.activeTab === 5 && <div>Milestone tab</div>}
-                  {this.state.activeTab === 6 && (
-                    <div>
-                      <p className="lead font-weight-bold">
-                        {data.company.name}
-                      </p>
-                      <p>
-                        {data.company.sites[0].address}
-                        <br />
-                        {data.company.sites[0].zip} {data.company.sites[0].city}
-                      </p>
-                      <p>
-                        <strong>VAT identification number</strong>
-                        <br />
-                        {data.company.vat ? (
-                          <>
-                            {data.company.vat.id}
-                            {data.company.vat.verified ? (
-                              <>
-                                {" "}
-                                <span className="verified-badge">
-                                  <MDBBadge>Verified</MDBBadge>
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                {" "}
-                                <span className="unverified-badge">
-                                  <MDBBadge>Not verified</MDBBadge>
-                                </span>
-                              </>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            <MDBBadge color="indigo" className="z-depth-0">
-                              Not eligible
-                            </MDBBadge>
-                          </>
-                        )}
-                      </p>
-                    </div>
-                  )}
-                </MDBCardBody>
-              </MDBCard>
+                </div>
+              </MDBNav>
+              <MDBTabContent
+                className="card"
+                activeItem={this.state.activeItem}
+              >
+                {this.state.activeItem === 0 && (
+                  <MDBTabPane tabId={0} role="tabpanel">
+                    <PageOverview
+                      filter={this.state.globalFilter}
+                      feed={page.company?.enterpriseContributionFeed}
+                      mergedFeed={
+                        page.company?.mergedEnterpriseContributionFeed
+                      }
+                    />
+                  </MDBTabPane>
+                )}
+                {this.state.activeItem === 1 && (
+                  <MDBTabPane tabId={1} role="tabpanel">
+                    <PageProjects
+                      filter={this.state.globalFilter}
+                      navigateTo={this.props.navigateTo}
+                    />
+                  </MDBTabPane>
+                )}
+                {this.state.activeItem === 2 && (
+                  <MDBTabPane tabId={2} role="tabpanel">
+                    <PageUsers
+                      filter={this.state.globalFilter}
+                      navigateTo={this.props.navigateTo}
+                    />
+                  </MDBTabPane>
+                )}
+                {this.state.activeItem === 3 && (
+                  <MDBTabPane tabId={3} role="tabpanel">
+                    <PageImprint />
+                  </MDBTabPane>
+                )}
+              </MDBTabContent>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
-      </div>
+        ) : (
+          <div className="flex-center">
+            <MDBSpinner />
+          </div>
+        )}
+        {this.state.reAuth && (
+          <MDBModal isOpen={true} toggle={this.toggleModal} size="sm">
+            <MDBModalBody>
+              <p>To continue, type an administrator password.</p>
+              {this.state.reAuthError && (
+                <MDBAlert color="danger">
+                  The password you have entered is wrong.
+                </MDBAlert>
+              )}
+              <input
+                type="password"
+                className="form-control"
+                value={this.state.password}
+                onChange={(e) => this.setState({ password: e.target.value })}
+              />
+              <MDBBtn
+                color="elegant"
+                size="md"
+                onClick={async () => {
+                  const result = await this.props.authenticate(
+                    this.state.password
+                  );
+
+                  if (result) {
+                    this.setState({ reAuth: false }, () =>
+                      this.props.publishPage(page.company.connectorHandle)
+                    );
+                  } else {
+                    this.setState({ reAuthError: true });
+                  }
+                }}
+              >
+                Authenticate
+              </MDBBtn>
+            </MDBModalBody>
+          </MDBModal>
+        )}
+      </MDBContainer>
     );
   }
 }
 //#endregion
 
+//#region > Redux Mapping
+const mapStateToProps = (state) => ({
+  page: state.pages.page,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPageByHandle: (handle) => dispatch(getPageByHandle(handle)),
+  };
+};
+//#endregion
+
 //#region > Exports
-//> Default Component
-export default CompanyPage;
+/**
+ * Provides its connected component with the pieces of the data it needs from
+ * the store, and the functions it can use to dispatch actions to the store.
+ *
+ * Got access to the history object’s properties and the closest
+ * <Route>'s match.
+ */
+export default connect(mapStateToProps, mapDispatchToProps)(Page);
 //#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019-2020 Simon Prast
+ * Copyright © 2020 Simon Prast
  */
