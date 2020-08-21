@@ -7,14 +7,12 @@
  */
 const getPageByHandle = (handle) => {
   return (dispatch, getState, { getIntel }) => {
-    const result = {
-      test: "asdf",
-    };
+    const result = require("../../components/pages/CompanyPage/dummy/data");
 
     dispatch({
       type: "GETPAGE_SUCCESS",
       payload: {
-        data: result,
+        data: result ? result.default.payload.data : null,
       },
     });
   };

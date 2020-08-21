@@ -12,7 +12,7 @@ const pageReducer = (state = INIT_STATE, action) => {
     case "GETPAGE_SUCCESS":
       return {
         ...state,
-        loggedUser: { ...action.payload, anonymous: false },
+        page: action.payload,
         authErrorDetails: null,
       };
     default:

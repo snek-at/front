@@ -75,9 +75,7 @@ const TAB_ITEMS = [
 /** @class This component displays pipelines */
 class Page extends React.Component {
   state = {
-    activeItem: localStorage.getItem(this.props.handle + "-tab")
-      ? parseInt(localStorage.getItem(this.props.handle + "-tab"))
-      : 0,
+    activeItem: 0,
   };
 
   componentDidMount = () => {
@@ -89,15 +87,15 @@ class Page extends React.Component {
     // Check if there are no current pipelines set
     if (this.props.page && !this.state.page) {
       this.setState({
-        page: this.props.page,
+        page: this.props.page.data,
       });
     }
 
-    if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
+    /*if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
       this.setState({
-        page: this.props.page,
+        page: this.props.page.data,
       });
-    }
+    }*/
   };
 
   // Toogle reauth
@@ -113,12 +111,9 @@ class Page extends React.Component {
     e.stopPropagation();
 
     if (this.state.activeItem !== tab) {
-      this.setState(
-        {
-          activeItem: tab,
-        },
-        () => localStorage.setItem(this.props.handle + "-tab", tab)
-      );
+      this.setState({
+        activeItem: tab,
+      });
     }
   };
 
