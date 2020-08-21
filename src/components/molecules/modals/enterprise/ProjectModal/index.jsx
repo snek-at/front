@@ -2,10 +2,6 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-//> Redux
-// Allows React components to read data, update data and dispatch actions
-// from/to a Redux store.
-import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -23,14 +19,8 @@ import {
 // Everything time related
 import moment from "moment";
 
-//> Actions
-// Functions to send data from the application to the store
-import {
-  getProjectById,
-  clearSelection,
-} from "../../../../store/actions/pageActions";
 //> Components
-import { AIBarChart, AILineChart } from "../../../atoms";
+import { AILineChart } from "../../../../atoms";
 //#endregion
 
 //#region > Components
@@ -193,17 +183,6 @@ class ProjectModal extends React.Component {
     );
   }
 }
-//#region > Redux Mapping
-const mapStateToProps = (state) => ({
-  project: state.pages.project,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getProjectById: (id) => dispatch(getProjectById(id)),
-    clearSelection: () => dispatch(clearSelection()),
-  };
-};
 //#endregion
 
 //#region > Exports
@@ -214,7 +193,7 @@ const mapDispatchToProps = (dispatch) => {
  * Got access to the history object’s properties and the closest
  * <Route>'s match.
  */
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectModal);
+export default ProjectModal;
 //#endregion
 
 /**

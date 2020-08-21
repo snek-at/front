@@ -27,7 +27,7 @@ import moment from "moment";
 
 //> Actions
 //> Components
-import { AIBarChart, AILineChart } from "../../../atoms";
+import { AIBarChart, AILineChart } from "../../../../atoms";
 //> CSS
 import "./pageoverview.scss";
 //> Images
