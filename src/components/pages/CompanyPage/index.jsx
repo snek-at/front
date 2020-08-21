@@ -36,7 +36,7 @@ import {
 
 //> Actions
 // Functions to send data from the application to the store
-import { getPageByHandle } from "../../../../store/actions/pageActions";
+import { getPageByHandle } from "../../../store/actions/pageActions";
 //> Components
 import {
   PageOverview,
@@ -45,7 +45,7 @@ import {
   PageImprint,
 } from "../../organisms/tabs/enterprise";
 //> CSS
-import "./.scss";
+import "./company.scss";
 //> Images
 // Too be added
 //#endregion
