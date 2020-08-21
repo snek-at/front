@@ -12,10 +12,20 @@ const getPageByHandle = (handle) => {
     };
 
     dispatch({
-      type: "LOGIN_SUCCESS",
+      type: "GETPAGE_SUCCESS",
       payload: {
         data: result,
       },
     });
   };
 };
+
+//#region > Exports
+//> Default Component
+export { getPageByHandle };
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */
