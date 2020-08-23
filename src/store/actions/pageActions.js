@@ -7,7 +7,7 @@
  */
 const getPageByHandle = (handle) => {
   return (dispatch, getState, { getIntel }) => {
-    const enterprise = require("../../components/pages/CompanyPage/dummy/data");
+    const enterprise = require("../../components/pages/CompanyPage/dummy/enterprise");
     const users = require("../../components/pages/CompanyPage/dummy/users");
     const projects = require("../../components/pages/CompanyPage/dummy/projects");
 
