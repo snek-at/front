@@ -29,11 +29,9 @@ class UserModal extends React.Component {
   state = { user: undefined };
 
   componentDidMount = () => {
-    this.props.getUserByHandle(this.props.handle);
-  };
-
-  componentWillUnmount = () => {
-    this.props.clearSelection();
+    this.setState({
+      user: this.props.user,
+    });
   };
 
   componentDidUpdate = () => {

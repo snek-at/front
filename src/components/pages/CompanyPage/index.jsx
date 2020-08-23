@@ -141,112 +141,13 @@ class Page extends React.Component {
 
     console.log("PAGE", page);
 
+    // Enterprise data
+    const enterprise = page && page.enterprise;
+
     return (
       <MDBContainer id="company">
         {page ? (
           <MDBRow>
-            <MDBCol lg="12">
-              <MDBCard>
-                <MDBCardBody>
-                  <div className="d-flex justify-content-space-between">
-                    <div>
-                      <p className="lead mb-1">
-                        <strong>You decide what you share.</strong>
-                      </p>
-                      <p className="text-muted small mb-2">
-                        Security is one of our highest priorities. No
-                        information you do not explicitly share, will leave your
-                        network.
-                      </p>
-                    </div>
-                    <div>
-                      {/*<MDBBtn color="indigo" outline>
-                        <MDBIcon icon="eye" />
-                        View as public
-                      </MDBBtn>*/}
-                      <MDBBtn
-                        color="indigo"
-                        onClick={() => this.props.navigateTo("connectors")}
-                      >
-                        <MDBIcon icon="key" />
-                        Edit
-                      </MDBBtn>
-                    </div>
-                  </div>
-                  <div className="position-relative">
-                    <div className="mt-2">
-                      <p className="mb-0">Restrictions</p>
-                    </div>
-                    <MDBRow>
-                      <MDBCol
-                        lg="3"
-                        className={
-                          page.restrictionLevel !== 1 ? "disabled" : undefined
-                        }
-                      >
-                        <MDBProgress
-                          value={100}
-                          color="danger"
-                          className="my-2"
-                        />
-                        <p className="mb-0">Heavy</p>
-                        <p className="text-muted small mb-0">
-                          No information published.
-                        </p>
-                      </MDBCol>
-                      <MDBCol
-                        lg="3"
-                        className={
-                          page.restrictionLevel !== 2 ? "disabled" : undefined
-                        }
-                      >
-                        <MDBProgress
-                          value={100}
-                          color="warning"
-                          className="my-2"
-                        />
-                        <p className="mb-0">Moderate</p>
-                        <p className="text-muted small mb-0">
-                          Little information published.
-                        </p>
-                      </MDBCol>
-                      <MDBCol
-                        lg="3"
-                        className={
-                          page.restrictionLevel !== 3 ? "disabled" : undefined
-                        }
-                      >
-                        <MDBProgress
-                          value={100}
-                          color="info"
-                          className="my-2"
-                        />
-                        <p className="mb-0">Light</p>
-                        <p className="text-muted small mb-0">
-                          All non-confidential information published.
-                        </p>
-                      </MDBCol>
-                      <MDBCol
-                        lg="3"
-                        className={
-                          page.restrictionLevel !== 4 ? "disabled" : undefined
-                        }
-                      >
-                        <MDBProgress
-                          value={100}
-                          color="success"
-                          className="my-2"
-                        />
-                        <p className="mb-0">Open</p>
-                        <p className="text-muted small mb-0">
-                          All information published.
-                        </p>
-                      </MDBCol>
-                    </MDBRow>
-                  </div>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
             <MDBCol lg="12">
               <MDBCard>
                 <MDBCardBody>
@@ -262,10 +163,10 @@ class Page extends React.Component {
                       <div className="d-flex justify-content-space-between">
                         <div>
                           <p className="lead font-weight-bold mb-1">
-                            {page.company.name}
+                            {enterprise.company.name}
                           </p>
                           <p className="text-muted mb-3">
-                            {page.company.description}
+                            {enterprise.company.description}
                           </p>
                         </div>
                         <div className="d-flex">
@@ -279,32 +180,32 @@ class Page extends React.Component {
                         </div>
                       </div>
                       <div>
-                        {page.company.isRecruiting && (
+                        {enterprise.company.isRecruiting && (
                           <MDBBadge color="indigo">
                             <MDBIcon icon="users" />
                             Recruiting
                           </MDBBadge>
                         )}
-                        {page.company.employees >= 1 &&
-                          page.company.employees < 5 && (
+                        {enterprise.company.employees >= 1 &&
+                          enterprise.company.employees < 5 && (
                             <MDBBadge color="primary">1-5 Employees</MDBBadge>
                           )}
-                        {page.company.employees >= 5 &&
-                          page.company.employees < 20 && (
+                        {enterprise.company.employees >= 5 &&
+                          enterprise.company.employees < 20 && (
                             <MDBBadge color="primary">5-20 Employees</MDBBadge>
                           )}
-                        {page.company.employees >= 20 &&
-                          page.company.employees < 100 && (
+                        {enterprise.company.employees >= 20 &&
+                          enterprise.company.employees < 100 && (
                             <MDBBadge color="primary">
                               20-100 Employees
                             </MDBBadge>
                           )}
-                        {page.company.employees >= 100 && (
+                        {enterprise.company.employees >= 100 && (
                           <MDBBadge color="primary">100+ Employees</MDBBadge>
                         )}
-                        {page.company.isOpenSource && (
+                        {enterprise.company.isOpenSource && (
                           <a
-                            href={page.company.openSourceUrl}
+                            href={enterprise.company.openSourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -363,9 +264,9 @@ class Page extends React.Component {
                   <MDBTabPane tabId={0} role="tabpanel">
                     <PageOverview
                       filter={this.state.globalFilter}
-                      feed={page.company?.enterpriseContributionFeed}
+                      feed={enterprise.company?.enterpriseContributionFeed}
                       mergedFeed={
-                        page.company?.mergedEnterpriseContributionFeed
+                        enterprise.company?.mergedEnterpriseContributionFeed
                       }
                     />
                   </MDBTabPane>
@@ -375,6 +276,7 @@ class Page extends React.Component {
                     <PageProjects
                       filter={this.state.globalFilter}
                       navigateTo={this.props.navigateTo}
+                      projects={page.projects}
                     />
                   </MDBTabPane>
                 )}
@@ -383,6 +285,7 @@ class Page extends React.Component {
                     <PageUsers
                       filter={this.state.globalFilter}
                       navigateTo={this.props.navigateTo}
+                      users={page.users}
                     />
                   </MDBTabPane>
                 )}
@@ -424,7 +327,9 @@ class Page extends React.Component {
 
                   if (result) {
                     this.setState({ reAuth: false }, () =>
-                      this.props.publishPage(page.company.connectorHandle)
+                      this.props.publishenterprise(
+                        enterprise.company.connectorHandle
+                      )
                     );
                   } else {
                     this.setState({ reAuthError: true });

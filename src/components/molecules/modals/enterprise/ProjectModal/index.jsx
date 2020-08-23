@@ -29,14 +29,12 @@ class ProjectModal extends React.Component {
   state = { project: undefined };
 
   componentDidMount = () => {
-    this.props.getProjectById(this.props.id);
+    this.setState({
+      project: this.props.project,
+    });
   };
 
-  componentWillUnmount = () => {
-    this.props.clearSelection();
-  };
-
-  componentDidUpdate = (prevState) => {
+  componentDidUpdate = () => {
     if (
       (this.props.project && !this.state.project) ||
       (this.state.project && this.state.project.id !== this.props.id)

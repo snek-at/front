@@ -35,7 +35,9 @@ class PageProjects extends React.Component {
   state = { projects: null, chartType: "line" };
 
   componentDidMount = () => {
-    this.props.getProjects();
+    this.setState({
+      projects: this.props.projects,
+    });
   };
 
   componentDidUpdate = (prevProps) => {
@@ -172,7 +174,7 @@ class PageProjects extends React.Component {
         {this.state.modal && this.state.project && this.props.projects && (
           <ProjectModal
             toggle={this.toggle}
-            projects={this.props.projects}
+            project={this.state.project}
             chart={this.state.project.mergedContributionFeed}
             id={this.state.project.id}
           />

@@ -7,12 +7,18 @@
  */
 const getPageByHandle = (handle) => {
   return (dispatch, getState, { getIntel }) => {
-    const result = require("../../components/pages/CompanyPage/dummy/data");
+    const enterprise = require("../../components/pages/CompanyPage/dummy/data");
+    const users = require("../../components/pages/CompanyPage/dummy/users");
+    const projects = require("../../components/pages/CompanyPage/dummy/projects");
 
     dispatch({
       type: "GETPAGE_SUCCESS",
       payload: {
-        data: result ? result.default.payload.data : null,
+        data: {
+          enterprise: enterprise ? enterprise.default.payload.data : null,
+          users: users ? users.default.payload.data : null,
+          projects: projects ? projects.default.payload.data : null,
+        },
       },
     });
   };

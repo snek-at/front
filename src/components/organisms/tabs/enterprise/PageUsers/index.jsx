@@ -35,7 +35,9 @@ class PageUsers extends React.Component {
   state = { users: null, modal: false, chartType: "line" };
 
   componentDidMount = () => {
-    this.props.getUsers();
+    this.setState({
+      users: this.props.users,
+    });
   };
 
   componentDidUpdate = (prevProps) => {
@@ -118,44 +120,54 @@ class PageUsers extends React.Component {
           {users ? (
             users.map((user, p) => {
               return (
-                <MDBListGroupItem
-                  className="d-flex justify-content-between align-items-center clickable"
-                  onClick={() =>
-                    this.setState({ modal: true, handle: user.username })
-                  }
-                  key={p}
-                >
-                  <div className="d-flex align-items-center">
-                    <MDBAvatar className="white mr-2">
-                      <img
-                        src={
-                          user.avatar
-                            ? user.avatar
-                            : "https://octodex.github.com/images/nyantocat.gif"
-                        }
-                        alt={user.name}
-                        className="rounded-circle img-fluid"
-                      />
-                    </MDBAvatar>
-                    <div className="d-inline">
-                      <p className="mb-0">{user.name}</p>
-                      <p className="small text-muted mb-0">{user.username}</p>
-                    </div>
-                  </div>
-                  <div className="canvas-container">
-                    {this.state.chartType === "line" ? (
-                      <AILineChart
-                        data={user.mergedContributionFeed}
-                        key={"project-chart-" + p}
-                      />
-                    ) : (
-                      <AIBarChart
-                        data={user.mergedCodetransition}
-                        key={"project-chart-bar-" + p}
-                      />
-                    )}
-                  </div>
-                </MDBListGroupItem>
+                <>
+                  {user ? (
+                    <MDBListGroupItem
+                      className="d-flex justify-content-between align-items-center clickable"
+                      onClick={() =>
+                        this.setState({
+                          modal: true,
+                          handle: user.username,
+                          user,
+                        })
+                      }
+                      key={p}
+                    >
+                      <div className="d-flex align-items-center">
+                        <MDBAvatar className="white mr-2">
+                          <img
+                            src={
+                              user.avatar
+                                ? user.avatar
+                                : "https://octodex.github.com/images/nyantocat.gif"
+                            }
+                            alt={user.name}
+                            className="rounded-circle img-fluid"
+                          />
+                        </MDBAvatar>
+                        <div className="d-inline">
+                          <p className="mb-0">{user.name}</p>
+                          <p className="small text-muted mb-0">
+                            {user.username}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="canvas-container">
+                        {this.state.chartType === "line" ? (
+                          <AILineChart
+                            data={user.mergedContributionFeed}
+                            key={"project-chart-" + p}
+                          />
+                        ) : (
+                          <AIBarChart
+                            data={user.mergedCodetransition}
+                            key={"project-chart-bar-" + p}
+                          />
+                        )}
+                      </div>
+                    </MDBListGroupItem>
+                  ) : null}
+                </>
               );
             })
           ) : (
@@ -168,6 +180,7 @@ class PageUsers extends React.Component {
           <UserModal
             toggle={this.toggle}
             users={this.props.users}
+            user={this.state.user}
             handle={this.state.handle}
           />
         )}
