@@ -132,7 +132,7 @@ const readCacheAction = (username) => {
       return session.tasks.user
         .profile(username)
         .then(async ({ data }) => {
-          if (!data.profile) {
+          if (!data.page) {
             dispatch({
               type: "READ_CACHE_FAILED",
               payload: {
@@ -143,13 +143,13 @@ const readCacheAction = (username) => {
             });
           } else {
             // Split profile to chunks
-            const profile = data.profile;
+            const profile = data.page;
             const sources = profile.sources
               ? JSON.parse(profile.sources)
               : null;
 
-            let platformData = profile.platformData
-              ? JSON.parse(profile.platformData)
+            let platformData = profile.person.cache
+              ? JSON.parse(profile.person.cache)
               : {};
 
             let user = platformData.user ? platformData.user : {};
@@ -198,22 +198,24 @@ const readCacheAction = (username) => {
                 };
               }
 
+              console.log(data)
+
               // Build fetchedUser object
               let fetchedUser = {
-                username: profile.username,
+                username: profile.personName,
                 platformData: {
                   ...platformData,
                   user,
                 },
                 sources,
-                verified: data.profile.verified,
+                verified: data.page.verified ? data.page.verified : true,
                 accessories: {
-                  badges: data.profile.bids
-                    ? JSON.parse(data.profile.bids)
-                    : null,
-                  themes: data.profile.tids
-                    ? JSON.parse(data.profile.tids)
-                    : null,
+                  badges: {
+                    bids: [data.page.bids]
+                  },
+                  themes: {
+                    tids: [data.page.tids]
+                  }
                 },
               };
 
@@ -233,10 +235,12 @@ const readCacheAction = (username) => {
             }
           }
         })
-        .catch((ex) =>
+        .catch((ex) => {
+          console.log(ex)
           dispatch({ type: "READ_CACHE_ERROR", payload: { error: ex } })
-        );
+        });
     } catch (ex) {
+      console.log(ex)
       dispatch({
         type: "READ_CACHE_ERROR",
         payload: {
@@ -375,7 +379,7 @@ const saveSettingsActions = (nextSettings) => {
           };
         }
 
-        session.tasks.user.cache(JSON.stringify(fetchedUser.platformData));
+        session.tasks.user.cache(fetchedUser.username, JSON.stringify(fetchedUser.platformData));
 
         dispatch({
           type: "SAVE_SETTING_SUCCESS",
@@ -447,8 +451,8 @@ const getTalkAction = (uid, username) => {
       return session.tasks.user
         .profile(username)
         .then(async ({ data }) => {
-          if (data.profile) {
-            let talks = JSON.parse(data.profile.platformData).talks;
+          if (data.page) {
+            let talks = JSON.parse(data.page.platformData).talks;
 
             talks = talks.filter((talk) => {
               return talk.uid === uid;
