@@ -17,6 +17,8 @@ import colourMaterial from "./Colour.js";
 import drawStats from "./dataCube.js";
 import animation from "./animations/FAST_WAVE_80_TO_100";
 
+import imageRanking from "../../../../assets/body/snek.png";
+
 //#region > Components
 /**
  * @class A three dimensional calendar which displays each days contributions,
@@ -93,7 +95,7 @@ class Calendar3D extends React.Component {
       function loopDaysOfWeek(item, index) {
         // Adding geometry and material to existing json data
         item.maxBoxHeight = 30 / helpState.contrib.maxCount * item.total;
-        var geometry = new THREE.BoxGeometry(0.25, 0.1, 0.2);
+        var geometry = new THREE.BoxGeometry(0.3, 0.1, 0.24);
         var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
 
         // Colouring of faces
@@ -101,8 +103,8 @@ class Calendar3D extends React.Component {
 
         // Adding cube for every day
         item.cube = new THREE.Mesh(geometry, material);
-        item.cube.position.x = 0.3 * firstLoopIndex;
-        item.cube.position.z = 0.25 * index;
+        item.cube.position.x = 0.36 * firstLoopIndex;
+        item.cube.position.z = 0.3 * index;
 
         scene.add(item.cube);
       }
@@ -116,7 +118,7 @@ class Calendar3D extends React.Component {
       var spriteTop = this.renderTopStats();
 
       //spriteTop.scale.set(1920 / this.state.width * 2 * textPer, 969 / 400 * 4 * textPer);
-      spriteTop.position.set(20.2, 13.5, 0);
+      spriteTop.position.set(23.2, 17, 0);
 
       scene.add(spriteTop);
 
@@ -124,14 +126,26 @@ class Calendar3D extends React.Component {
       var spriteBot = this.renderBottomStats();
 
       //spriteBot.scale.set(1920 / this.state.width * 2 * textPer, 969 / 400 * 4 * textPer);
-      spriteBot.position.set(0.1, -11.8, 0);
+      spriteBot.position.set(2, -14.5, 0);
 
       scene.add(spriteBot);
 
+      // Set Logo
+      var spriteMap = new THREE.TextureLoader().load(imageRanking);
+
+      var spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
+
+      var sprite = new THREE.Sprite(spriteMaterial);
+      sprite.position.set(21.7, 0.6, 0);
+      sprite.scale.set(0.2, 0.15, 1);
+
+      scene.add(sprite);
+
+
       // Set Camera Position and Rotation
-      camera.position.set(35, 29.5, 17);
-      camera.rotation.set(degreeToRad(-60), degreeToRad(40), degreeToRad(47.5));
-      camera.scale.set(7, 7);
+      camera.position.set(33, 30, 16);
+      camera.rotation.set(degreeToRad(-62.5), degreeToRad(35), degreeToRad(47.6));
+      camera.scale.set(8, 8);
 
       function degreeToRad(degree) {
         return degree / 180 * Math.PI;
