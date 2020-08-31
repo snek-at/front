@@ -8,8 +8,8 @@
     "fuzzysort": "^1.1.4",
     "gh-pages": "^3.1.0",
     "js-sha256": "^0.9.0",
-    "mdbreact": "mdbreact-4.26.1.tgz",
     "mdb-react-sortable": "mdb-react-sortable-4.26.0.tgz",
+    "mdbreact": "mdbreact-4.26.1.tgz",
     "node-sass": "^4.12.0",
     "obelisk.js": "^1.2.2",
     "react-avatar-editor": "^11.0.7",
@@ -20,12 +20,12 @@
     "react-router-dom": "^5.0.1",
     "react-text-loop": "^2.3.0",
     "react-typed": "^1.2.0",
-    "reactjs-oauth": "file:reactjs-oauth-0.1.0.tgz",
+    "reactjs-oauth": "^0.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "serialize-error": "^7.0.1",
-    "snek-client": "file:snek-client-0.2.0-beta.tgz",
-    "snek-intel": "^0.1.1",
+    "snek-client": "file:snek-client-0.2.0-rc.5.tgz",
+    "snek-intel": "file:snek-intel-0.2.0-beta.tgz",
     "tippy.js": "^6.2.3"
   },
   "repository": {
@@ -40,11 +40,12 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "renamer": "^1.0.0",
-    "rimraf": "^2.6.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "renamer": "^1.0.0",
+    "rimraf": "^2.6.2",
+    "three": "^0.120.1"
   },
   "browserslist": [
     ">0.2%",

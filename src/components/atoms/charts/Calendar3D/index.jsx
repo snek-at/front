@@ -5,13 +5,17 @@ import React from "react";
 //> Additional packages
 // Used to display the time in a readable format
 import moment from "moment";
-//> Obelisk
-// A JavaScript library for building isometric pixel objects
-import obelisk from "obelisk.js";
+//> THREE.js
+import * as THREE from "three";
 
 //> Style sheet
 import "./calendar3d.scss";
 //#endregion
+
+//> Javascirpt functions
+import colourMaterial from "./Colour.js";
+import drawStats from "./dataCube.js";
+import animation from "./animations/FAST_WAVE_80_TO_100";
 
 //#region > Components
 /**
@@ -22,11 +26,10 @@ class Calendar3D extends React.Component {
   constructor(props) {
     super(props);
 
-    // Create reference to HTML canvas
     this.myInput = React.createRef();
     this.state = {
       width: 0,
-      hue: 0,
+      hue: 0
     };
   }
 
@@ -39,17 +42,111 @@ class Calendar3D extends React.Component {
         {
           width: this.myInput.current.offsetWidth,
           loading: true,
-          contrib: this.renderTopStats(),
-          streak: this.renderBottomStats(),
-        },
-        () => this.checkCache()
+          contrib: this.calculateTopStats(),
+          streak: this.calculateBottomStats()
+        }
       );
-    }
-  };
+    };
+  }
 
   componentDidUpdate = () => {
-    this.checkCache();
-  };
+    if (this.state.previousState !== this.state.width) {
+      // Creating the scene
+      var scene = new THREE.Scene();
+
+      // Creating the camera
+      var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 1000);
+
+      // Creating the renderer, window size and positioning
+      var renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(this.state.width, 400);
+      renderer.setClearColor(0xffffff);
+
+      this.myInput.current.replaceChild(renderer.domElement, this.myInput.current.firstChild);
+
+      // Importing data
+      // Get contributions of the selected year
+      let contribData;
+
+      if (this.props.year) {
+        contribData = this.props.platformData.statistic.years.find(
+          (element) => element.year === this.props.year
+        );
+      } else {
+        contribData = this.props.platformData.statistic.current;
+      }
+
+      let contributions = contribData.calendar;
+
+      // Adding days to the 3D calender
+      var firstLoopIndex = 0;
+      var helpState = this.state;
+      contributions.weeks.forEach(loopWeeks);
+
+      // ForEach Loop for every week
+      function loopWeeks(item, index) {
+        item.days.forEach(loopDaysOfWeek);
+        firstLoopIndex++;
+      }
+
+      // ForEachLoop for every day within a week
+      function loopDaysOfWeek(item, index) {
+        // Adding geometry and material to existing json data
+        item.maxBoxHeight = 30 / helpState.contrib.maxCount * item.total;
+        var geometry = new THREE.BoxGeometry(0.25, 0.1, 0.2);
+        var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+
+        // Colouring of faces
+        colourMaterial.colourMaterialFaces(geometry.faces, "#fafafa");
+
+        // Adding cube for every day
+        item.cube = new THREE.Mesh(geometry, material);
+        item.cube.position.x = 0.3 * firstLoopIndex;
+        item.cube.position.z = 0.25 * index;
+
+        scene.add(item.cube);
+      }
+
+      // Calculate text percentage
+      var textPer = (this.state.width * 400) / 400000;
+      if (textPer > 1)
+        textPer = 1;
+
+      // Set Top Texts
+      var spriteTop = this.renderTopStats();
+
+      //spriteTop.scale.set(1920 / this.state.width * 2 * textPer, 969 / 400 * 4 * textPer);
+      spriteTop.position.set(20.2, 13.5, 0);
+
+      scene.add(spriteTop);
+
+      // Set Bottom Stats
+      var spriteBot = this.renderBottomStats();
+
+      //spriteBot.scale.set(1920 / this.state.width * 2 * textPer, 969 / 400 * 4 * textPer);
+      spriteBot.position.set(0.1, -11.8, 0);
+
+      scene.add(spriteBot);
+
+      // Set Camera Position and Rotation
+      camera.position.set(35, 29.5, 17);
+      camera.rotation.set(degreeToRad(-60), degreeToRad(40), degreeToRad(47.5));
+      camera.scale.set(7, 7);
+
+      function degreeToRad(degree) {
+        return degree / 180 * Math.PI;
+      }
+
+      // Rendering the scene
+      function animate() {
+        requestAnimationFrame(animate);
+        contributions.weeks.forEach(animation.loopWeeksRender);
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    }
+  }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
@@ -59,12 +156,11 @@ class Calendar3D extends React.Component {
     this.setState(
       {
         width: this.myInput.current.offsetWidth,
-      },
-      () => this.checkCache()
+      }
     );
   };
 
-  renderTopStats() {
+  calculateTopStats() {
     let countTotal, averageCount, datesTotal, maxCount, dateBest, contribData;
 
     if (this.props.year) {
@@ -102,7 +198,28 @@ class Calendar3D extends React.Component {
     };
   }
 
-  renderBottomStats() {
+  renderTopStats() {
+    return drawStats.drawDataCube({
+      "heading": { "text": "Contributions", "font": "Arial", "weight": "bold", "size": 330, "color": { r: 0, g: 0, b: 0, a: 1.0 }, "margin": { "l": 5, "t": 5, "r": 5, "b": 175 } },
+      "border": { "toDraw": true, "thickness": 1, "borderColor": { r: 235, g: 237, b: 240, a: 1.0 }, "fillColor": { r: 253, g: 253, b: 253, a: 1.0 }, "margin": { "l": 5, "t": 20, "r": 5, "b": 5 }, "padding": { "l": 175, "t": 0, "r": 0, "b": 0 }, "radius": 150 },
+      "texts": [[{ "text": this.state.contrib.countTotal, "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 150, "t": 45, "r": 5, "b": 100 } },
+      { "text": "Total", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 150, "t": 250, "r": 5, "b": 25 } },
+      { "text": this.state.contrib.datesTotal, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 150, "t": 140, "r": 5, "b": 5 } }],
+      [{ "text": this.state.contrib.maxCount, "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 175, "t": 45, "r": 5, "b": 15 } },
+      { "text": "Best day", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 175, "t": 250, "r": 5, "b": 25 } },
+      { "text": this.state.contrib.dateBest, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 175, "t": 140, "r": 5, "b": 5 } }]],
+      "footer": {
+        "drawFooter": true, "footerFont": "Arial", "footerFontSize": 270, "margin": { "l": 5, "t": 5, "r": 5, "b": 5 },
+        "footerText": [
+          { "text": "Average: ", "weight": "normal", "color": { r: 63, g: 63, b: 65, a: 1.0 } },
+          { "text": this.state.contrib.averageCount, "weight": "normal", "color": { r: 77, g: 190, b: 43, a: 1.0 } },
+          { "text": " / day", "weight": "normal", "color": { r: 63, g: 63, b: 65, a: 1.0 } }
+        ]
+      }
+    });
+  }
+
+  calculateBottomStats() {
     let streakLongest, datesLongest, streakCurrent, datesCurrent, contribData;
 
     if (this.props.year) {
@@ -143,173 +260,25 @@ class Calendar3D extends React.Component {
     };
   }
 
-  renderIsometrics = () => {
-    if (this.context) {
-      // Create a canvas 2D point for pixel view world
-      let point = new obelisk.Point(70, 70);
-      // Create view instance to nest everything
-      // Canvas could be either DOM or jQuery element
-      let pixelView = new obelisk.PixelView(this.context, point);
-
-      pixelView.clear();
-
-      // Get contributions of the selected year
-      let contribData;
-
-      if (this.props.year) {
-        contribData = this.props.platformData.statistic.years.find(
-          (element) => element.year === this.props.year
-        );
-      } else {
-        contribData = this.props.platformData.statistic.current;
-      }
-
-      let contributions = contribData.calendar;
-
-      // Define basic variables
-      let size = 2 * Math.round(this.state.width / 80 / 2);
-
-      if (size <= 8) {
-        size = 8;
-      }
-
-      const maxHight = 60;
-
-      let x = 0;
-      let y = 0;
-      let maxCount = 0; // Max number of contributions / day in the last year
-      let values = [];
-
-      contributions.weeks.map((week, wkey) => {
-        values[wkey] = [];
-
-        week.days.map((day, dkey) => {
-          // Get max number of contributions
-          if (day.total > maxCount) {
-            maxCount = day.total;
-          }
-          values[wkey][dkey] = day;
-        });
-      });
-
-      values.map((week, wi) => {
-        week.map((day, di) => {
-          // Normalize the values to achieve even distribution
-          let cubeHeight = 3;
-
-          if (maxCount > 0) {
-            cubeHeight += parseInt((maxHight / maxCount) * day.total);
-          }
-
-          // Offsets
-          let x = wi;
-          let y = di;
-
-          // Create cube dimension and color instance
-          let fill = day.color;
-          let color = new obelisk.CubeColor().getByHorizontalColor(
-            parseInt("0x" + fill.replace("#", ""))
-          );
-
-          // ANIMATION TOGGLE for @kleberbaum to play with
-          const animated = false;
-
-          if (animated) {
-            var animHeight = 3;
-
-            function draw() {
-              let dimension = new obelisk.CubeDimension(size, size, animHeight);
-              let p3d = new obelisk.Point3D(size * x, size * y, 0);
-              let cube = new obelisk.Cube(dimension, color, false);
-
-              // Render cube primitive into view
-              pixelView.renderObject(cube, p3d);
-              if (animHeight < cubeHeight) {
-                if (parseInt((maxHight / maxCount) * day.total) > 0) {
-                  animHeight += 1;
-                } else {
-                  animHeight = 1;
-                }
-              }
-              // Animations
-              requestAnimationFrame(draw);
-            }
-            draw();
-          } else {
-            let dimension = new obelisk.CubeDimension(size, size, cubeHeight);
-            let p3d = new obelisk.Point3D(size * x, size * y, 0);
-            let cube = new obelisk.Cube(dimension, color, false);
-
-            // Render cube primitive into view
-            pixelView.renderObject(cube, p3d);
-
-            this.cacheChart();
-          }
-        });
-      });
-
-      if (this.state.loading) {
-        this.setState({
-          loading: false,
-        });
-      }
-    }
-  };
-
-  cacheChart = async () => {
-    if (!localStorage.getItem("3dChart")) {
-      window.setTimeout(() => {
-        if (this.context) {
-          localStorage.setItem(
-            "3dChart",
-            JSON.stringify({
-              data: this.context.toDataURL(),
-              timestamp: new Date().getTime(),
-            })
-          );
-        }
-      }, 0);
-    }
-  };
-
-  checkCache = () => {
-    const cache = localStorage.getItem("3dChart");
-
-    if (cache) {
-      const cacheObject = JSON.parse(cache);
-
-      if (cacheObject.timestamp > new Date().getTime() - 3600000) {
-        window.setTimeout(() => this.renderIsometrics(), 0);
-      } else {
-        window.setTimeout(() => this.renderIsometrics(), 0);
-      }
-    } else {
-      window.setTimeout(() => this.renderIsometrics(), 0);
-    }
-  };
-
-  renderCache = () => {
-    const data = localStorage.getItem("3dChart");
-    const dataObject = JSON.parse(data);
-    const context = this.context.getContext("2d");
-
-    let img = new Image();
-
-    img.src = dataObject.data;
-
-    if (context !== null) {
-      img.onload = () => {
-        context.drawImage(img, 0, 0);
-      };
-    }
-  };
+  renderBottomStats() {
+    return drawStats.drawDataCube({
+      "heading": { "text": "Streaks", "font": "Arial", "weight": "bold", "size": 330, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 5, "t": 5, "r": 5, "b": 175 } },
+      "border": { "toDraw": true, "thickness": 1, "borderColor": { r: 235, g: 237, b: 240, a: 1.0 }, "fillColor": { r: 253, g: 253, b: 253, a: 1.0 }, "margin": { "l": 5, "t": 20, "r": 5, "b": 5 }, "padding": { "l": 175, "t": 0, "r": 0, "b": 0 }, "radius": 150 },
+      "texts": [[{ "text": this.state.streak.streakLongest + " d", "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 150, "t": 45, "r": 5, "b": 100 } },
+      { "text": "Longest", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 150, "t": 250, "r": 5, "b": 25 } },
+      { "text": this.state.streak.datesLongest, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 150, "t": 140, "r": 5, "b": 5 } }],
+      [{ "text": this.state.streak.streakCurrent + " d", "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 175, "t": 45, "r": 5, "b": 100 } },
+      { "text": "Current", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 175, "t": 255, "r": 5, "b": 25 } },
+      { "text": this.state.streak.datesCurrent, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 175, "t": 140, "r": 5, "b": 5 } }]]
+    });
+  }
 
   render() {
     return (
       <div id="calendar3d">
-        {this.state.width > 500 && (
+        {/*this.state.width > 500 && (
           <>
-            <div className="top-stats">
+            {<div className="top-stats">
               <p className="font-weight-bold mb-1">Contributions</p>
               <div className="stats d-flex justify-content-between border">
                 <div className="item">
@@ -338,38 +307,38 @@ class Calendar3D extends React.Component {
                 </span>{" "}
                 / day
               </p>
-            </div>
-            <div className="bottom-stats">
-              <p className="font-weight-bold mb-1">Streaks</p>
-              <div className="stats d-flex justify-content-between border">
-                <div className="item">
-                  <p className="green-text lead font-weight-bold">
-                    {this.state.streak.streakLongest}{" "}
-                    <span className="days">
-                      {this.state.streak.streakLongest === 1 ? "day" : "days"}
-                    </span>
-                  </p>
-                  <p className="small font-weight-bold">Longest</p>
-                  <p className="text-muted small">
-                    {this.state.streak.datesLongest}
-                  </p>
+            </div>}{
+              <div className="bottom-stats">
+                <p className="font-weight-bold mb-1">Streaks</p>
+                <div className="stats d-flex justify-content-between border">
+                  <div className="item">
+                    <p className="green-text lead font-weight-bold">
+                      {this.state.streak.streakLongest}{" "}
+                      <span className="days">
+                        {this.state.streak.streakLongest === 1 ? "day" : "days"}
+                      </span>
+                    </p>
+                    <p className="small font-weight-bold">Longest</p>
+                    <p className="text-muted small">
+                      {this.state.streak.datesLongest}
+                    </p>
+                  </div>
+                  <div className="item">
+                    <p className="green-text lead font-weight-bold">
+                      {this.state.streak.streakCurrent}{" "}
+                      <span className="days">
+                        {this.state.streak.streakCurrent === 1 ? "day" : "days"}
+                      </span>
+                    </p>
+                    <p className="small font-weight-bold">Current</p>
+                    <p className="text-muted small">
+                      {this.state.streak.datesCurrent}
+                    </p>
+                  </div>
                 </div>
-                <div className="item">
-                  <p className="green-text lead font-weight-bold">
-                    {this.state.streak.streakCurrent}{" "}
-                    <span className="days">
-                      {this.state.streak.streakCurrent === 1 ? "day" : "days"}
-                    </span>
-                  </p>
-                  <p className="small font-weight-bold">Current</p>
-                  <p className="text-muted small">
-                    {this.state.streak.datesCurrent}
-                  </p>
-                </div>
-              </div>
-            </div>
+              </div>}
           </>
-        )}
+            )*/}
         <div ref={this.myInput}>
           <canvas
             ref={(c) => (this.context = c)}
@@ -377,7 +346,6 @@ class Calendar3D extends React.Component {
             height="400"
           ></canvas>
         </div>
-        {this.state.cache && <img src={this.state.cache} alt="" />}
       </div>
     );
   }
