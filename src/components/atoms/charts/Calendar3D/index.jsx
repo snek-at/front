@@ -18,6 +18,13 @@ import drawStats from "./dataCube.js";
 import animation from "./animations/FAST_WAVE_80_TO_100";
 
 import imageRanking from "../../../../assets/body/snek.png";
+import CCapture from "./ccapture.js/src/CCapture.js";
+
+import download from 'downloadjs';
+import WebMWriter from 'webm-writer';
+import GIF from "gif.js.optimized";
+
+import oldGif from "../../../../assets/body/old_3D_cal_GIF.gif";
 
 //#region > Components
 /**
@@ -64,7 +71,8 @@ class Calendar3D extends React.Component {
       renderer.setSize(this.state.width, 400);
       renderer.setClearColor(0xffffff);
 
-      this.myInput.current.replaceChild(renderer.domElement, this.myInput.current.firstChild);
+      var imgTag = this.myInput.current.firstChild;
+      imgTag.src = oldGif;
 
       // Importing data
       // Get contributions of the selected year
@@ -151,11 +159,36 @@ class Calendar3D extends React.Component {
         return degree / 180 * Math.PI;
       }
 
+      // Set up gif renderer
+      function expose() {
+        Object.assign(window, {
+          WebMWriter,
+          download,
+          GIF
+        })
+      }
+      expose();
+
+      var rendered = false;
+      var capturer = new CCapture({ format: 'gif', workersPath: '/worker/' });
+
+      capturer.start();
+
       // Rendering the scene
       function animate() {
         requestAnimationFrame(animate);
         contributions.weeks.forEach(animation.loopWeeksRender);
         renderer.render(scene, camera);
+        if (!rendered) {
+          capturer.capture(renderer.domElement);
+          if (animation.finished) {
+            rendered = true;
+            capturer.stop();
+            capturer.save(function (blob) {
+              imgTag.src = window.URL.createObjectURL(blob);
+            });
+          }
+        }
       }
 
       animate();
@@ -354,11 +387,7 @@ class Calendar3D extends React.Component {
           </>
             )*/}
         <div ref={this.myInput}>
-          <canvas
-            ref={(c) => (this.context = c)}
-            width={this.state.width}
-            height="400"
-          ></canvas>
+          <img></img>
         </div>
       </div>
     );

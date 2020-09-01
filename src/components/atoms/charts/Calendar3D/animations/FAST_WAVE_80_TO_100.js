@@ -4,12 +4,16 @@ import color from "../Colour.js";
 let runs = 0;
 let animation = function () { };
 
+animation.finished = false;
+
 // ForEachLoop for every week
 animation.loopWeeksRender = function (item, index) {
     if ((runs / 25) >= index) {
         item.days.forEach(loopDaysOfWeekRender);
     }
     runs++;
+    if (runs == 2500)
+        animation.finished = true;
 }
 
 export default animation;
