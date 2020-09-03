@@ -20,8 +20,8 @@ import animation from "./animations/FAST_WAVE_80_TO_100";
 import imageRanking from "../../../../assets/body/snek.png";
 import CCapture from "./ccapture.js/src/CCapture.js";
 
-import download from 'downloadjs';
-import WebMWriter from 'webm-writer';
+import download from "downloadjs";
+import WebMWriter from "webm-writer";
 import GIF from "gif.js.optimized";
 
 import oldGif from "../../../../assets/body/old_3D_cal_GIF.gif";
@@ -38,7 +38,7 @@ class Calendar3D extends React.Component {
     this.myInput = React.createRef();
     this.state = {
       width: 0,
-      hue: 0
+      hue: 0,
     };
   }
 
@@ -47,16 +47,14 @@ class Calendar3D extends React.Component {
       // Add resize listener
       window.addEventListener("resize", this.updateDimensions);
 
-      this.setState(
-        {
-          width: this.myInput.current.offsetWidth,
-          loading: true,
-          contrib: this.calculateTopStats(),
-          streak: this.calculateBottomStats()
-        }
-      );
-    };
-  }
+      this.setState({
+        width: this.myInput.current.offsetWidth,
+        loading: true,
+        contrib: this.calculateTopStats(),
+        streak: this.calculateBottomStats(),
+      });
+    }
+  };
 
   componentDidUpdate = () => {
     if (this.state.previousState !== this.state.width) {
@@ -102,9 +100,11 @@ class Calendar3D extends React.Component {
       // ForEachLoop for every day within a week
       function loopDaysOfWeek(item, index) {
         // Adding geometry and material to existing json data
-        item.maxBoxHeight = 30 / helpState.contrib.maxCount * item.total;
+        item.maxBoxHeight = (30 / helpState.contrib.maxCount) * item.total + 1;
         var geometry = new THREE.BoxGeometry(0.3, 0.1, 0.24);
-        var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+        var material = new THREE.MeshBasicMaterial({
+          vertexColors: THREE.FaceColors,
+        });
 
         // Colouring of faces
         colourMaterial.colourMaterialFaces(geometry.faces, "#fafafa");
@@ -119,8 +119,7 @@ class Calendar3D extends React.Component {
 
       // Calculate text percentage
       var textPer = (this.state.width * 400) / 400000;
-      if (textPer > 1)
-        textPer = 1;
+      if (textPer > 1) textPer = 1;
 
       // Set Top Texts
       var spriteTop = this.renderTopStats();
@@ -149,14 +148,17 @@ class Calendar3D extends React.Component {
 
       scene.add(sprite);
 
-
       // Set Camera Position and Rotation
       camera.position.set(33, 30, 16);
-      camera.rotation.set(degreeToRad(-62.5), degreeToRad(35), degreeToRad(47.6));
+      camera.rotation.set(
+        degreeToRad(-62.5),
+        degreeToRad(35),
+        degreeToRad(47.6)
+      );
       camera.scale.set(8, 8);
 
       function degreeToRad(degree) {
-        return degree / 180 * Math.PI;
+        return (degree / 180) * Math.PI;
       }
 
       // Set up gif renderer
@@ -164,13 +166,13 @@ class Calendar3D extends React.Component {
         Object.assign(window, {
           WebMWriter,
           download,
-          GIF
-        })
+          GIF,
+        });
       }
       expose();
 
       var rendered = false;
-      var capturer = new CCapture({ format: 'gif', workersPath: '/worker/' });
+      var capturer = new CCapture({ format: "gif", workersPath: "/worker/" });
 
       capturer.start();
 
@@ -193,18 +195,16 @@ class Calendar3D extends React.Component {
 
       animate();
     }
-  }
+  };
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   }
 
   updateDimensions = () => {
-    this.setState(
-      {
-        width: this.myInput.current.offsetWidth,
-      }
-    );
+    this.setState({
+      width: this.myInput.current.offsetWidth,
+    });
   };
 
   calculateTopStats() {
@@ -247,22 +247,98 @@ class Calendar3D extends React.Component {
 
   renderTopStats() {
     return drawStats.drawDataCube({
-      "heading": { "text": "Contributions", "font": "Arial", "weight": "bold", "size": 330, "color": { r: 0, g: 0, b: 0, a: 1.0 }, "margin": { "l": 5, "t": 5, "r": 5, "b": 175 } },
-      "border": { "toDraw": true, "thickness": 1, "borderColor": { r: 235, g: 237, b: 240, a: 1.0 }, "fillColor": { r: 253, g: 253, b: 253, a: 1.0 }, "margin": { "l": 5, "t": 20, "r": 5, "b": 5 }, "padding": { "l": 175, "t": 0, "r": 0, "b": 0 }, "radius": 150 },
-      "texts": [[{ "text": this.state.contrib.countTotal, "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 150, "t": 45, "r": 5, "b": 100 } },
-      { "text": "Total", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 150, "t": 250, "r": 5, "b": 25 } },
-      { "text": this.state.contrib.datesTotal, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 150, "t": 140, "r": 5, "b": 5 } }],
-      [{ "text": this.state.contrib.maxCount, "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 175, "t": 45, "r": 5, "b": 15 } },
-      { "text": "Best day", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 175, "t": 250, "r": 5, "b": 25 } },
-      { "text": this.state.contrib.dateBest, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 175, "t": 140, "r": 5, "b": 5 } }]],
-      "footer": {
-        "drawFooter": true, "footerFont": "Arial", "footerFontSize": 270, "margin": { "l": 5, "t": 5, "r": 5, "b": 5 },
-        "footerText": [
-          { "text": "Average: ", "weight": "normal", "color": { r: 63, g: 63, b: 65, a: 1.0 } },
-          { "text": this.state.contrib.averageCount, "weight": "normal", "color": { r: 77, g: 190, b: 43, a: 1.0 } },
-          { "text": " / day", "weight": "normal", "color": { r: 63, g: 63, b: 65, a: 1.0 } }
-        ]
-      }
+      heading: {
+        text: "Contributions",
+        font: "Arial",
+        weight: "bold",
+        size: 330,
+        color: { r: 0, g: 0, b: 0, a: 1.0 },
+        margin: { l: 5, t: 5, r: 5, b: 175 },
+      },
+      border: {
+        toDraw: true,
+        thickness: 1,
+        borderColor: { r: 235, g: 237, b: 240, a: 1.0 },
+        fillColor: { r: 253, g: 253, b: 253, a: 1.0 },
+        margin: { l: 5, t: 20, r: 5, b: 5 },
+        padding: { l: 175, t: 0, r: 0, b: 0 },
+        radius: 150,
+      },
+      texts: [
+        [
+          {
+            text: this.state.contrib.countTotal,
+            font: "Arial",
+            weight: "bold",
+            size: 480,
+            color: { r: 77, g: 190, b: 43, a: 1.0 },
+            margin: { l: 150, t: 45, r: 5, b: 100 },
+          },
+          {
+            text: "Total",
+            font: "Arial",
+            weight: "bold",
+            size: 250,
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+            margin: { l: 150, t: 250, r: 5, b: 25 },
+          },
+          {
+            text: this.state.contrib.datesTotal,
+            font: "Arial",
+            size: 250,
+            color: { r: 154, g: 154, b: 154, a: 1.0 },
+            margin: { l: 150, t: 140, r: 5, b: 5 },
+          },
+        ],
+        [
+          {
+            text: this.state.contrib.maxCount,
+            font: "Arial",
+            weight: "bold",
+            size: 480,
+            color: { r: 77, g: 190, b: 43, a: 1.0 },
+            margin: { l: 175, t: 45, r: 5, b: 15 },
+          },
+          {
+            text: "Best day",
+            font: "Arial",
+            weight: "bold",
+            size: 250,
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+            margin: { l: 175, t: 250, r: 5, b: 25 },
+          },
+          {
+            text: this.state.contrib.dateBest,
+            font: "Arial",
+            size: 250,
+            color: { r: 154, g: 154, b: 154, a: 1.0 },
+            margin: { l: 175, t: 140, r: 5, b: 5 },
+          },
+        ],
+      ],
+      footer: {
+        drawFooter: true,
+        footerFont: "Arial",
+        footerFontSize: 270,
+        margin: { l: 5, t: 5, r: 5, b: 5 },
+        footerText: [
+          {
+            text: "Average: ",
+            weight: "normal",
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+          },
+          {
+            text: this.state.contrib.averageCount,
+            weight: "normal",
+            color: { r: 77, g: 190, b: 43, a: 1.0 },
+          },
+          {
+            text: " / day",
+            weight: "normal",
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+          },
+        ],
+      },
     });
   }
 
@@ -309,14 +385,75 @@ class Calendar3D extends React.Component {
 
   renderBottomStats() {
     return drawStats.drawDataCube({
-      "heading": { "text": "Streaks", "font": "Arial", "weight": "bold", "size": 330, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 5, "t": 5, "r": 5, "b": 175 } },
-      "border": { "toDraw": true, "thickness": 1, "borderColor": { r: 235, g: 237, b: 240, a: 1.0 }, "fillColor": { r: 253, g: 253, b: 253, a: 1.0 }, "margin": { "l": 5, "t": 20, "r": 5, "b": 5 }, "padding": { "l": 175, "t": 0, "r": 0, "b": 0 }, "radius": 150 },
-      "texts": [[{ "text": this.state.streak.streakLongest + " d", "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 150, "t": 45, "r": 5, "b": 100 } },
-      { "text": "Longest", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 150, "t": 250, "r": 5, "b": 25 } },
-      { "text": this.state.streak.datesLongest, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 150, "t": 140, "r": 5, "b": 5 } }],
-      [{ "text": this.state.streak.streakCurrent + " d", "font": "Arial", "weight": "bold", "size": 480, "color": { r: 77, g: 190, b: 43, a: 1.0 }, "margin": { "l": 175, "t": 45, "r": 5, "b": 100 } },
-      { "text": "Current", "font": "Arial", "weight": "bold", "size": 250, "color": { r: 63, g: 63, b: 65, a: 1.0 }, "margin": { "l": 175, "t": 255, "r": 5, "b": 25 } },
-      { "text": this.state.streak.datesCurrent, "font": "Arial", "size": 250, "color": { r: 154, g: 154, b: 154, a: 1.0 }, "margin": { "l": 175, "t": 140, "r": 5, "b": 5 } }]]
+      heading: {
+        text: "Streaks",
+        font: "Arial",
+        weight: "bold",
+        size: 330,
+        color: { r: 63, g: 63, b: 65, a: 1.0 },
+        margin: { l: 5, t: 5, r: 5, b: 175 },
+      },
+      border: {
+        toDraw: true,
+        thickness: 1,
+        borderColor: { r: 235, g: 237, b: 240, a: 1.0 },
+        fillColor: { r: 253, g: 253, b: 253, a: 1.0 },
+        margin: { l: 5, t: 20, r: 5, b: 5 },
+        padding: { l: 175, t: 0, r: 0, b: 0 },
+        radius: 150,
+      },
+      texts: [
+        [
+          {
+            text: this.state.streak.streakLongest + " d",
+            font: "Arial",
+            weight: "bold",
+            size: 480,
+            color: { r: 77, g: 190, b: 43, a: 1.0 },
+            margin: { l: 150, t: 45, r: 5, b: 100 },
+          },
+          {
+            text: "Longest",
+            font: "Arial",
+            weight: "bold",
+            size: 250,
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+            margin: { l: 150, t: 250, r: 5, b: 25 },
+          },
+          {
+            text: this.state.streak.datesLongest,
+            font: "Arial",
+            size: 250,
+            color: { r: 154, g: 154, b: 154, a: 1.0 },
+            margin: { l: 150, t: 140, r: 5, b: 5 },
+          },
+        ],
+        [
+          {
+            text: this.state.streak.streakCurrent + " d",
+            font: "Arial",
+            weight: "bold",
+            size: 480,
+            color: { r: 77, g: 190, b: 43, a: 1.0 },
+            margin: { l: 175, t: 45, r: 5, b: 100 },
+          },
+          {
+            text: "Current",
+            font: "Arial",
+            weight: "bold",
+            size: 250,
+            color: { r: 63, g: 63, b: 65, a: 1.0 },
+            margin: { l: 175, t: 255, r: 5, b: 25 },
+          },
+          {
+            text: this.state.streak.datesCurrent,
+            font: "Arial",
+            size: 250,
+            color: { r: 154, g: 154, b: 154, a: 1.0 },
+            margin: { l: 175, t: 140, r: 5, b: 5 },
+          },
+        ],
+      ],
     });
   }
 
