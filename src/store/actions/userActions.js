@@ -198,8 +198,6 @@ const readCacheAction = (username) => {
                 };
               }
 
-              console.log(data)
-
               // Build fetchedUser object
               let fetchedUser = {
                 username: profile.personName,
@@ -236,11 +234,9 @@ const readCacheAction = (username) => {
           }
         })
         .catch((ex) => {
-          console.log(ex)
           dispatch({ type: "READ_CACHE_ERROR", payload: { error: ex } })
         });
     } catch (ex) {
-      console.log(ex)
       dispatch({
         type: "READ_CACHE_ERROR",
         payload: {
