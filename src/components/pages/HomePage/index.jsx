@@ -269,6 +269,7 @@ class HomePage extends React.Component {
               </MDBRow>
             </MDBContainer>
           </section>
+          <Sponsors />
           <section className="py-5">
             <MDBContainer>
               <MDBRow className="align-items-center">
