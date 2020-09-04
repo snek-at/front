@@ -1,0 +1,22 @@
+#sponsors {
+  background: #e7e7e7;
+
+  img {
+    max-height: 80px;
+  }
+
+  .btn-underlined-green {
+    background: white;
+    transition: border-bottom 0.2s ease;
+    border-bottom: 3px solid rgba(76, 175, 80, 0.1);
+
+    &:hover {
+      border-bottom: 3px solid rgba(76, 175, 80, 0.3);
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */
