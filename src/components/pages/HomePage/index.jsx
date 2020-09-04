@@ -26,6 +26,8 @@ import { connect } from "react-redux";
 //> Components
 import LatestActivity from "../../atoms/charts/LatestActivity";
 import { UserActionCard } from "../../molecules";
+// Sections
+import { Sponsors } from "../../organisms/sections";
 //> Style sheet
 import "./homepage.scss";
 //> Images
