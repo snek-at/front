@@ -33,16 +33,6 @@
     color: white;
     background: transparentize($color: black, $amount: 0.3);
   }
-
-  .fa-times {
-    &.text-muted {
-      transition: color 0.1s ease;
-
-      &:hover {
-        color: red !important;
-      }
-    }
-  }
 }
 
 /**
