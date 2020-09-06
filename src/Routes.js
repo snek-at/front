@@ -12,6 +12,7 @@ import {
   CompanyPage,
   TalkPage,
   SettingsPage,
+  TempPage,
 } from "./components/pages";
 //#endregion
 
@@ -36,6 +37,11 @@ class Routes extends React.Component {
           exact
           path="/t/:username/:uid"
           component={(props) => <TalkPage {...props} />}
+        />
+        <Route
+          exact
+          path="/temp"
+          component={(props) => <TempPage {...props} />}
         />
         <Route
           exact
