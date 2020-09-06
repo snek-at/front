@@ -4,12 +4,20 @@
 import TalkUploadModal from "./TalkUploadModal";
 import ProfilePictureModal from "./ProfilePictureModal";
 import ImageModal from "./ImageModal";
+import VideoModal from "./VideoModal";
+import AddVideoModal from "./AddVideoModal";
 //#endregion
 
 //#region > Exports
 //> Components
 // Export the components for easy access from parent components
-export { TalkUploadModal, ProfilePictureModal, ImageModal };
+export {
+  TalkUploadModal,
+  ProfilePictureModal,
+  ImageModal,
+  VideoModal,
+  AddVideoModal,
+};
 //#endregion
 
 /**

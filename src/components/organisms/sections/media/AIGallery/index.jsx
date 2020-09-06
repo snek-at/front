@@ -60,7 +60,7 @@ const DUMMY = [
 //#endregion
 
 //#region > Components
-class ProfilePage extends React.Component {
+class AIGallery extends React.Component {
   state = { modalPicture: false };
 
   componentDidMount = () => {};
@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch) => {
  * <Route>'s match.
  */
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+  connect(mapStateToProps, mapDispatchToProps)(AIGallery)
 );
 //#endregion
 

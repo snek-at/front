@@ -26,9 +26,9 @@ import {
 //#endregion
 
 //#region > Components
-class ImageModal extends React.Component {
+class VideoModal extends React.Component {
   render() {
-    const { selectedPicture } = this.props;
+    const { selectedVideoId } = this.props;
 
     return (
       <>
@@ -39,34 +39,16 @@ class ImageModal extends React.Component {
           centered
           animation="left"
         >
-          <MDBModalBody className="p-2 text-center">
-            <MDBRow>
-              <MDBCol lg="8">
-                <MDBView>
-                  <img
-                    src={selectedPicture.img.url}
-                    alt={selectedPicture.img.alt}
-                    className="img-fluid"
-                  />
-                  <MDBMask />
-                </MDBView>
-              </MDBCol>
-              <MDBCol lg="4">
-                <div className="d-block d-sm-flex justify-content-between pr-3">
-                  <span className="text-muted small">
-                    by {selectedPicture.data.artist}
-                  </span>
-                  <MDBIcon
-                    icon="times"
-                    className="text-muted clickable"
-                    onClick={this.props.toggle}
-                  />
-                </div>
-                <div className="text-left mt-3">
-                  <p className="lead">{selectedPicture.data.title}</p>
-                </div>
-              </MDBCol>
-            </MDBRow>
+          <MDBModalBody className="p-0 text-center">
+            <div className="embed-responsive embed-responsive-16by9">
+              <iframe
+                className="embed-responsive-item"
+                src={"//www.youtube.com/embed/" + selectedVideoId}
+                frameBorder="0"
+                title="YouTube Video"
+                allowFullScreen
+              ></iframe>
+            </div>
           </MDBModalBody>
         </MDBModal>
       </>
@@ -93,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
  * Got access to the history object’s properties and the closest
  * <Route>'s match.
  */
-export default connect(mapStateToProps, mapDispatchToProps)(ImageModal);
+export default connect(mapStateToProps, mapDispatchToProps)(VideoModal);
 //#endregion
 
 /**
