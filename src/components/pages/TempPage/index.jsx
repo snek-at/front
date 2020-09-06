@@ -13,7 +13,11 @@ import { connect } from "react-redux";
 import { MDBContainer } from "mdbreact";
 
 //> Components
-import { AIGallery, AIVideoGallery } from "../../organisms/sections/media";
+import {
+  AIGallery,
+  AIVideoGallery,
+  AISongGallery,
+} from "../../organisms/sections/media";
 //#endregion
 
 //#region > Components
@@ -29,6 +33,7 @@ class TempPage extends React.Component {
       <MDBContainer id="media">
         <AIGallery />
         <AIVideoGallery />
+        <AISongGallery />
       </MDBContainer>
     );
   }
