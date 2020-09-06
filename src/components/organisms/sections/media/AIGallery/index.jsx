@@ -29,7 +29,10 @@ import {
 } from "mdbreact";
 
 //> Components
-import { ImageModal } from "../../../../molecules/modals";
+import {
+  ImageModal,
+  InstagramSelectorModal,
+} from "../../../../molecules/modals";
 //> Style
 import "./aigallery.scss";
 //#endregion
@@ -43,7 +46,6 @@ const DUMMY = [
     },
     data: {
       title: "Dummy",
-      artist: "Christian Aichner",
     },
   },
   {
@@ -53,7 +55,6 @@ const DUMMY = [
     },
     data: {
       title: "Dummy 2",
-      artist: "Christian Aichner",
     },
   },
 ];
@@ -63,54 +64,93 @@ const DUMMY = [
 class AIGallery extends React.Component {
   state = { modalPicture: false };
 
-  componentDidMount = () => {};
-
-  toggle = () => {
+  componentDidMount = () => {
     this.setState({
-      modalPicture: !this.state.modalPicture,
+      images: DUMMY,
+    });
+  };
+
+  toggle = (modal) => {
+    this.setState({
+      [modal]: !this.state[modal],
       selectedPicture: undefined,
     });
+  };
+
+  save = (urlList) => {
+    const res = urlList.selection.map((url) => {
+      return {
+        img: {
+          url,
+        },
+      };
+    });
+
+    this.setState({
+      images: [...this.state.images, ...res],
+      modalSelectPictures: false,
+    });
+  };
+
+  removeImage = (url) => {
+    // TODO
   };
 
   render() {
     const { loggedUser } = this.props;
 
     return (
-      <>
-        <MDBRow className="py-5" id="gallery">
-          {DUMMY.map((picture, i) => {
-            return (
-              <MDBCol lg="4">
-                <MDBCard>
-                  <MDBCardBody>
-                    <MDBView>
-                      <img
-                        src={picture.img.url}
-                        alt={picture.img.alt}
-                        className="img-fluid"
-                      />
-                      <MDBMask
-                        onClick={() =>
-                          this.setState({
-                            modalPicture: true,
-                            selectedPicture: picture,
-                          })
-                        }
-                      />
-                    </MDBView>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
-            );
-          })}
+      <div className="py-5">
+        <div className="mb-4 text-right">
+          <MDBBtn
+            color="green"
+            onClick={() => this.setState({ modalSelectPictures: true })}
+          >
+            Select images
+          </MDBBtn>
+        </div>
+        <MDBRow id="gallery">
+          {this.state.images &&
+            this.state.images.map((picture, i) => {
+              console.log("YE", picture);
+              return (
+                <MDBCol lg="4" key={"picture-" + i}>
+                  <MDBCard>
+                    <MDBCardBody>
+                      <MDBView>
+                        <img
+                          src={picture.img.url}
+                          alt={picture.img.alt}
+                          className="img-fluid"
+                        />
+                        <MDBMask
+                          onClick={() =>
+                            this.setState({
+                              modalPicture: true,
+                              selectedPicture: picture,
+                            })
+                          }
+                        />
+                      </MDBView>
+                    </MDBCardBody>
+                  </MDBCard>
+                </MDBCol>
+              );
+            })}
         </MDBRow>
         {this.state.modalPicture && this.state.selectedPicture && (
           <ImageModal
-            toggle={this.toggle}
+            toggle={() => this.toggle("modalPicture")}
             selectedPicture={this.state.selectedPicture}
           />
         )}
-      </>
+        {this.state.modalSelectPictures && (
+          <InstagramSelectorModal
+            toggle={() => this.toggle("modalSelectPictures")}
+            save={this.save}
+          />
+        )}
+      </div>
     );
   }
 }
@@ -122,7 +162,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return null;
+  return {};
 };
 //#endregion
 

@@ -104,7 +104,6 @@ class AddVideoModal extends React.Component {
                 Add
               </MDBBtn>
             </div>
-
             <div className="text-left">
               <p className="mb-0 small text-muted">Enter YouTube link</p>
               <input
@@ -139,7 +138,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return null;
+  return {};
 };
 //#endregion
 

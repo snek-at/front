@@ -6,6 +6,7 @@ import ProfilePictureModal from "./ProfilePictureModal";
 import ImageModal from "./ImageModal";
 import VideoModal from "./VideoModal";
 import AddVideoModal from "./AddVideoModal";
+import InstagramSelectorModal from "./InstagramSelectorModal";
 //#endregion
 
 //#region > Exports
@@ -17,6 +18,7 @@ export {
   ImageModal,
   VideoModal,
   AddVideoModal,
+  InstagramSelectorModal,
 };
 //#endregion
 

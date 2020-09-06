@@ -92,7 +92,7 @@ class AIVideoGallery extends React.Component {
           {this.state.videos &&
             this.state.videos.map((video, i) => {
               return (
-                <MDBCol lg="4" className="mb-3">
+                <MDBCol lg="4" className="mb-3" key={"video-" + i}>
                   <MDBCard>
                     <MDBCardBody>
                       <MDBView>
@@ -172,7 +172,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return null;
+  return {};
 };
 //#endregion
 

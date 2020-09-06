@@ -53,18 +53,24 @@ class ImageModal extends React.Component {
               </MDBCol>
               <MDBCol lg="4">
                 <div className="d-block d-sm-flex justify-content-between pr-3">
-                  <span className="text-muted small">
-                    by {selectedPicture.data.artist}
-                  </span>
+                  {selectedPicture.data ? (
+                    <span className="text-muted small">
+                      by {selectedPicture.data.artist}
+                    </span>
+                  ) : (
+                    <div />
+                  )}
                   <MDBIcon
                     icon="times"
-                    className="text-muted clickable"
+                    className="text-muted clickable p-1"
                     onClick={this.props.toggle}
                   />
                 </div>
-                <div className="text-left mt-3">
-                  <p className="lead">{selectedPicture.data.title}</p>
-                </div>
+                {selectedPicture.data && (
+                  <div className="text-left mt-3">
+                    <p className="lead">{selectedPicture.data.title}</p>
+                  </div>
+                )}
               </MDBCol>
             </MDBRow>
           </MDBModalBody>
