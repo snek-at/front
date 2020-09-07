@@ -30,7 +30,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { logoutAction } from "../../../store/actions/authActions";
+import { logoutAction } from "../../../store/actions/userActions";
 //> SearchBar
 import { SearchBar } from "../../atoms";
 //> Images
