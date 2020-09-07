@@ -168,7 +168,7 @@ class AIVideoGallery extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  //loggedUser: state.auth.loggedUser,
 });
 
 const mapDispatchToProps = (dispatch) => {
