@@ -69,6 +69,16 @@ const userReducer = (state = INIT_STATE, action) => {
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };
+    case Action.USER_PERSON_SIGNUP_REQUEST:
+      return state;
+    case Action.USER_PERSON_SIGNUP_SUCCESS:
+      return { ...state };
+    case Action.USER_PERSON_SIGNUP_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
 
     default:
       return state;

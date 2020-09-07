@@ -101,6 +101,58 @@ const getPerson = (personName) => {
     }
   };
 };
+
+/**
+ * Register new person/user
+ */
+const register = (
+  username,
+  firstName,
+  lastName,
+  email,
+  password,
+  redemptionCode
+) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.USER_PERSON_SIGNUP_REQUEST });
+
+      const registration = await INTEL_SNEK.person.register({
+        formValues: {
+          username,
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password,
+          redemption_code: redemptionCode,
+        },
+      });
+
+      if (registration.result === "ok") {
+        dispatch({ type: Action.USER_PERSON_SIGNUP_SUCCESS });
+
+        dispatch(loginAction({ username, password }));
+      } else {
+        dispatch({
+          type: Action.USER_PERSON_SIGNUP_FAILURE,
+          payload: {
+            errorCode: 601,
+            message: `Registration failed`,
+          },
+        });
+      }
+    } catch (ex) {
+      dispatch({
+        type: Action.USER_PERSON_SIGNUP_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Registration error`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
 //#endregion
 
 //#region > Exports
