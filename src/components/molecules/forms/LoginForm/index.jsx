@@ -190,7 +190,7 @@ class LoginForm extends React.Component {
             }
             value={this.state.login_password}
           />
-          <MDBBtn color="green" outline className="mb-0" type="submit">
+          <MDBBtn color="green" className="mb-0" type="submit">
             Login
             <MDBIcon icon="angle-right" className="pl-1" />
           </MDBBtn>

@@ -44,64 +44,25 @@ class UserActionCard extends React.Component {
       <div className="text-center" id="useractionscard">
         {activeItem === 0 && (
           <>
-            <MDBBtn color="green" outline onClick={() => this.setActiveItem(1)}>
+            <MDBBtn color="green" onClick={() => this.setActiveItem(1)}>
+              <MDBIcon icon="sign-in-alt" />
               Login to SNEK
             </MDBBtn>
             <div className="w-100">
-              <div className="splitter my-4">
+              <div className="splitter mt-3 mb-2">
                 <span className="or">
                   <span className="or-text">or</span>
                 </span>
               </div>
             </div>
-            <h2 className="mb-0">Choose your snek</h2>
-            <p className="text-muted mb-3">What is your main profession?</p>
-            <MDBRow>
-              <MDBCol md="6">
-                <div
-                  className="selectType"
-                  onClick={() => this.setActiveItem(2)}
-                >
-                  <p className="lead">Software Engineer</p>
-                  <SvgSoftware />
-                </div>
-              </MDBCol>
-              <MDBCol md="6">
-                <div
-                  className="selectType"
-                  onClick={() => this.setActiveItem(3)}
-                >
-                  <p className="lead">Media Engineer</p>
-                  <SvgMedia />
-                </div>
-              </MDBCol>
-            </MDBRow>
+            <p className="mb-0 lead">Sign up</p>
+            <p className="text-muted mb-3 small">
+              Join the biggest network for engineers today!
+            </p>
+            <RegisterForm />
           </>
         )}
         {activeItem === 1 && <LoginForm goTo={this.goTo} />}
-        {activeItem === 2 && <RegisterForm goTo={this.goTo} />}
-        {activeItem === 3 && (
-          <>
-            <div className="text-left mb-4">
-              <small
-                className="text-muted clickable"
-                onClick={() => this.goTo(0)}
-              >
-                <MDBIcon icon="angle-left" className="mr-1" />
-                Back
-              </small>
-            </div>
-            <MDBAlert color="info">
-              <p className="mb-2">
-                <MDBIcon icon="question" className="mr-2" />
-                Media Engineer profiles are not yet supported
-              </p>
-              <MDBBtn color="white" onClick={() => this.goTo(2)}>
-                Create Software Engineer profile
-              </MDBBtn>
-            </MDBAlert>
-          </>
-        )}
       </div>
     );
   }
