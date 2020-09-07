@@ -12,14 +12,14 @@ import INTEL_SNEK from "snek-intel/lib/utils/snek";
 const getPerson = (personName) => {
   return async (dispatch, getState, {}) => {
     try {
-      dispatch({ type: Action.PERSON_GET_REQUEST });
+      dispatch({ type: Action.PERSON_FETCH_REQUEST });
 
       const person = await INTEL_SNEK.person.get({ personName });
 
-      dispatch({ type: Action.PERSON_GET_SUCCESS, payload: person });
+      dispatch({ type: Action.PERSON_FETCH_SUCCESS, payload: person });
     } catch (ex) {
       dispatch({
-        type: Action.PERSON_GET_FAILURE,
+        type: Action.PERSON_FETCH_FAILURE,
         payload: {
           errorCode: 601,
           message: `Getting person (${personName}) failed`,
@@ -36,16 +36,19 @@ const getPerson = (personName) => {
 const getPersonsBrief = () => {
   return async (dispatch, getState, {}) => {
     try {
-      dispatch({ type: Action.PERSONS_BRIEF_GET_REQUEST });
+      dispatch({ type: Action.PERSON_PERSONS_BRIEF_FETCH_REQUEST });
 
       const persons = await INTEL_SNEK.person.allBrief();
 
       console.log(persons);
 
-      dispatch({ type: Action.PERSONS_BRIEF_GET_SUCCESS, payload: persons });
+      dispatch({
+        type: Action.PERSON_PERSONS_BRIEF_FETCH_SUCCESS,
+        payload: persons,
+      });
     } catch (ex) {
       dispatch({
-        type: Action.PERSONS_BRIEF_GET_FAILURE,
+        type: Action.PERSON_PERSONS_BRIEF_FETCH_FAILURE,
         payload: {
           errorCode: 601,
           message: "Getting all person in a brief form failed",

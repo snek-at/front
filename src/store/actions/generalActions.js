@@ -12,17 +12,17 @@ import INTEL_SNEK from "snek-intel/lib/utils/snek";
 const getGitlabServers = () => {
   return async (dispatch, getState, {}) => {
     try {
-      dispatch({ type: Action.GENERAL_GITLAB_SERVER_GET_REQUEST });
+      dispatch({ type: Action.GENERAL_GITLAB_SERVER_FETCH_REQUEST });
 
       const servers = await INTEL_SNEK.general.getGitlabServer();
 
       dispatch({
-        type: Action.GENERAL_GITLAB_SERVER_GET_SUCCESS,
+        type: Action.GENERAL_GITLAB_SERVER_FETCH_SUCCESS,
         payload: servers,
       });
     } catch (ex) {
       dispatch({
-        type: Action.GENERAL_GITLAB_SERVER_GET_FAILURE,
+        type: Action.GENERAL_GITLAB_SERVER_FETCH_FAILURE,
         payload: {
           errorCode: 601,
           message: `Getting person (${personName}) failed`,

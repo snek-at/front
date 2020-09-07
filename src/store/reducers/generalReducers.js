@@ -18,14 +18,14 @@ const INIT_STATE = {
 const generalReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     //> Get all gitlab server
-    case Action.GENERAL_GITLAB_SERVER_GET_REQUEST:
+    case Action.GENERAL_GITLAB_SERVER_FETCH_REQUEST:
       return state;
-    case Action.GENERAL_GITLAB_SERVER_GET_FAILURE:
+    case Action.GENERAL_GITLAB_SERVER_FETCH_FAILURE:
       return {
         ...state,
         gitlabServer: action.payload,
       };
-    case Action.GENERAL_GITLAB_SERVER_GET_SUCCESS:
+    case Action.GENERAL_GITLAB_SERVER_FETCH_SUCCESS:
       return {
         ...state,
         gitlabServer: undefined,

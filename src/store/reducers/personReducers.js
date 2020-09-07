@@ -19,16 +19,16 @@ const INIT_STATE = {
 const userReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     //> Get
-    case Action.PERSON_GET_REQUEST:
+    case Action.PERSON_FETCH_REQUEST:
       return state;
-    case Action.PERSON_GET_SUCCESS:
+    case Action.PERSON_FETCH_SUCCESS:
       return {
         ...state,
         fetchedPerson: {
           ...action.payload,
         },
       };
-    case Action.PERSON_GET_FAILURE:
+    case Action.PERSON_FETCH_FAILURE:
       return {
         ...state,
         fetchedPerson: undefined,
@@ -36,14 +36,14 @@ const userReducer = (state = INIT_STATE, action) => {
         errorDetails: serializeError(action.payload.error),
       };
     //> Get all brief
-    case Action.PERSONS_BRIEF_GET_REQUEST:
+    case Action.PERSON_PERSONS_BRIEF_FETCH_REQUEST:
       return state;
-    case Action.PERSONS_BRIEF_GET_SUCCESS:
+    case Action.PERSON_PERSONS_BRIEF_FETCH_SUCCESS:
       return {
         ...state,
         allPersonBrief: action.payload,
       };
-    case Action.PERSONS_BRIEF_GET_FAILURE:
+    case Action.PERSON_PERSONS_BRIEF_FETCH_FAILURE:
       return {
         ...state,
         allPersonBrief: undefined,

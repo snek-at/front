@@ -45,9 +45,9 @@ const userReducer = (state = INIT_STATE, action) => {
         errorDetails: serializeError(action.payload.error),
       };
     //> Person
-    case Action.USER_PERSON_GET_REQUEST:
+    case Action.USER_PERSON_FETCH_REQUEST:
       return state;
-    case Action.USER_PERSON_GET_SUCCESS:
+    case Action.USER_PERSON_FETCH_SUCCESS:
       return {
         ...state,
         user: {
@@ -57,7 +57,7 @@ const userReducer = (state = INIT_STATE, action) => {
           },
         },
       };
-    case Action.USER_PERSON_GET_FAILURE:
+    case Action.USER_PERSON_FETCH_FAILURE:
       return {
         ...state,
         user: {
