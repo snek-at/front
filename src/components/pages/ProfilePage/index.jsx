@@ -11,11 +11,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-// import {
-//   readCacheAction,
-//   updateCacheAction,
-//   saveSettingsActions,
-// } from "../../../store/actions/userActions";
+import { getPerson } from "../../../store/actions/personActions";
 //> Components
 import { SoftwareEngineer } from "../../organisms/profiles";
 //> Style sheet
@@ -35,63 +31,17 @@ class ProfilePage extends React.Component {
     this.props.saveSettings(state);
   };
 
-  /**
-   * Check for refetch for a specific username.
-   *
-   * @param {string} username The username associated with a profile page
-   * @returns {boolean} True if a refetch is required otherwise False
-   */
-  refetchRequired = (username) => {
-    const fetchedUser = this.props.fetchedUser;
-
-    if (!fetchedUser) {
-      return true;
-    } else if (fetchedUser && !this.usernameMatchesFetchedUsername(username)) {
-      return true;
-    }
-
-    return false;
-  };
-
-  /**
-   * Check if the provided username matches with the current fetched user.
-   *
-   * @param {string} username The username associated with a profile page
-   * @returns {boolean} True if the usernames matches otherwise False
-   */
-  usernameMatchesFetchedUsername = (username) => {
-    return username === this.props.fetchedUser?.username;
-  };
-
   componentDidMount = () => {
     this._isMounted = true;
-
-    const { match, loggedUser, fetchedUser } = this.props;
+    const { match } = this.props;
     const username = match?.params?.username;
 
     if (username) {
-      if (this.refetchRequired(username)) {
-        this.props.readCache(username);
-      }
+      this.props.getPerson(username);
     }
   };
 
-  componentDidUpdate() {
-    const { loggedUser, fetchedUser } = this.props;
-
-    if (!this.props.cachingDone) {
-      if (
-        !loggedUser.anonymous &&
-        loggedUser.username === fetchedUser?.username
-      ) {
-        this.props.updateCache(fetchedUser).then(() => {
-          if (this._isMounted) {
-            this.props.readCache(loggedUser.username);
-          }
-        });
-      }
-    }
-  }
+  componentDidUpdate() {}
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -131,16 +81,13 @@ class ProfilePage extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
-  cachingDone: state.user.cachingDone,
+  loggedUser: state.user.user,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSettings: (nextSettings) => dispatch(nextSettings),
-    readCache: (username) => dispatch(username),
-    updateCache: (fetchedUser) => dispatch(fetchedUser),
+    getPerson: (personName) => dispatch(getPerson(personName)),
   };
 };
 //#endregion
