@@ -47,7 +47,7 @@ class VideoModal extends React.Component {
                 frameBorder="0"
                 title="YouTube Video"
                 allowFullScreen
-              ></iframe>
+              />
             </div>
           </MDBModalBody>
         </MDBModal>
