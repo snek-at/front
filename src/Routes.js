@@ -8,11 +8,11 @@ import { Route, Switch } from "react-router-dom";
 //> Components
 import {
   HomePage,
-  //   ProfilePage,
-  //   CompanyPage,
+  ProfilePage,
+  CompanyPage,
   //   TalkPage,
   //   SettingsPage,
-  //   TempPage,
+  TempPage,
 } from "./components/pages";
 //#endregion
 
@@ -23,7 +23,7 @@ class Routes extends React.Component {
     return (
       <Switch>
         <Route exact path="/" component={(props) => <HomePage {...props} />} />
-        {/* <Route
+        <Route
           exact
           path="/u/:username"
           component={(props) => <ProfilePage {...props} />}
@@ -35,13 +35,13 @@ class Routes extends React.Component {
         />
         <Route
           exact
-          path="/t/:username/:uid"
-          component={(props) => <TalkPage {...props} />}
-        />
-        <Route
-          exact
           path="/temp"
           component={(props) => <TempPage {...props} />}
+        />
+        {/* <Route
+          exact
+          path="/t/:username/:uid"
+          component={(props) => <TalkPage {...props} />}
         />
         <Route
           exact

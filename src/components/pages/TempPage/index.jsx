@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBContainer } from "mdbreact";
+import { MDBContainer, MDBBtn } from "mdbreact";
 
 //> Components
 import {
@@ -18,19 +18,26 @@ import {
   AIVideoGallery,
   AISongGallery,
 } from "../../organisms/sections/media";
+import { ConnectModal } from "../../molecules/modals";
 //#endregion
 
 //#region > Components
 class TempPage extends React.Component {
-  state = {};
+  state = { connect: true };
 
   componentDidMount = () => {};
 
-  render() {
-    const { loggedUser } = this.props;
+  toggleConnect = () => {
+    this.setState({
+      connect: !this.state.connect,
+    });
+  };
 
+  render() {
     return (
       <MDBContainer id="media">
+        {this.state.connect && <ConnectModal toggle={this.toggleConnect} />}
+
         <AIGallery />
         <AIVideoGallery />
         <AISongGallery />
@@ -38,16 +45,6 @@ class TempPage extends React.Component {
     );
   }
 }
-//#endregion
-
-//#region > Redux Mapping
-const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
 //#endregion
 
 //#region > Exports
@@ -58,9 +55,7 @@ const mapDispatchToProps = (dispatch) => {
  * Got access to the history object’s properties and the closest
  * <Route>'s match.
  */
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TempPage)
-);
+export default TempPage;
 //#endregion
 
 /**

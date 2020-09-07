@@ -8,6 +8,7 @@ import VideoModal from "./VideoModal";
 import AddVideoModal from "./AddVideoModal";
 import InstagramSelectorModal from "./InstagramSelectorModal";
 import AddSongModal from "./AddSongModal";
+import ConnectModal from "./ConnectModal";
 //#endregion
 
 //#region > Exports
@@ -21,6 +22,7 @@ export {
   AddVideoModal,
   InstagramSelectorModal,
   AddSongModal,
+  ConnectModal,
 };
 //#endregion
 
