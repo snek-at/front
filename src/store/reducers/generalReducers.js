@@ -8,6 +8,8 @@ import * as Action from "../types";
 
 //#region > Constant Variables
 const INIT_STATE = {
+  fetchedPerson: undefined,
+  allPersonBrief: undefined,
   gitlabServer: undefined,
   error: undefined,
   errorDetails: undefined,
@@ -29,6 +31,38 @@ const generalReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         gitlabServer: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Get person
+    case Action.GENERAL_PERSON_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_PERSON_FETCH_SUCCESS:
+      return {
+        ...state,
+        fetchedPerson: {
+          ...action.payload,
+        },
+      };
+    case Action.GENERAL_PERSON_FETCH_FAILURE:
+      return {
+        ...state,
+        fetchedPerson: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Get all persons brief
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_SUCCESS:
+      return {
+        ...state,
+        allPersonBrief: action.payload,
+      };
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_FAILURE:
+      return {
+        ...state,
+        allPersonBrief: undefined,
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };

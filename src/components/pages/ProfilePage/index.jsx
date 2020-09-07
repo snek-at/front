@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getPerson } from "../../../store/actions/personActions";
+import { getPerson } from "../../../store/actions/generalActions";
 //> Components
 import { SoftwareEngineer } from "../../organisms/profiles";
 //> Style sheet
@@ -82,7 +82,7 @@ class ProfilePage extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.user,
-  fetchedPerson: state.person.fetchedPerson,
+  fetchedPerson: state.general.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -33,6 +33,58 @@ const getGitlabServers = () => {
   };
 };
 
+/**
+ * Get all person in a brief form
+ */
+const getPersonsBrief = () => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.GENERAL_PERSONS_BRIEF_FETCH_REQUEST });
+
+      const persons = await INTEL_SNEK.person.allBrief();
+
+      console.log(persons);
+
+      dispatch({
+        type: Action.GENERAL_PERSONS_BRIEF_FETCH_SUCCESS,
+        payload: persons,
+      });
+    } catch (ex) {
+      dispatch({
+        type: Action.GENERAL_PERSONS_BRIEF_FETCH_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: "Getting all person in a brief form failed",
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
+/**
+ * Get person page for a logged user
+ */
+const getPerson = (personName) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.GENERAL_PERSON_FETCH_REQUEST });
+
+      const person = await INTEL_SNEK.person.get({ personName });
+
+      dispatch({ type: Action.GENERAL_PERSON_FETCH_SUCCESS, payload: person });
+    } catch (ex) {
+      dispatch({
+        type: Action.GENERAL_PERSON_FETCH_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Getting person (${personName}) failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
 //#endregion
 
-export { getGitlabServers };
+export { getGitlabServers, getPersonsBrief, getPerson };

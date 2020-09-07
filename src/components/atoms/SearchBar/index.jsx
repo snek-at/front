@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getPersonsBrief } from "../../../store/actions/personActions";
+import { getPersonsBrief } from "../../../store/actions/generalActions";
 //> Style sheet
 import "./search.scss";
 //#endregion
@@ -113,7 +113,7 @@ class SearchBar extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  allUserSearchItems: state.person.allPersonBrief,
+  allUserSearchItems: state.general.allPersonBrief,
 });
 
 const mapDispatchToProps = (dispatch) => {
