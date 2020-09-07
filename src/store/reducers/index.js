@@ -9,6 +9,8 @@ import { loadingBarReducer } from "react-redux-loading-bar";
 //> Reducers
 // User
 import userReducer from "./userReducers";
+// Person
+import personReducer from "./personReducer";
 //#endregion
 
 //#region > Config
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   loadingBar: loadingBarReducer,
   // User data
   user: userReducer,
+  // Person data
+  person: personReducer,
 });
 //#endregion
 
