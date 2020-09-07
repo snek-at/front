@@ -140,7 +140,8 @@ class RegisterForm extends React.Component {
 
     return (
       <>
-        <form>
+        <form className="text-left">
+          <span className="text-muted small">Username</span>
           <input
             type="text"
             className={
@@ -148,51 +149,51 @@ class RegisterForm extends React.Component {
                 ? "form-control error mb-2"
                 : "form-control mb-2"
             }
-            placeholder="Username"
             name="username"
             onChange={(e) => this.handleChange(e, 5)}
             value={this.state.username}
           />
-          <MDBRow>
+          <MDBRow className="mb-2">
             <MDBCol md="6">
+              <span className="text-muted small">Firstname</span>
               <input
                 type="text"
                 className={
                   this.testForError(3) ? "form-control error" : "form-control"
                 }
-                placeholder="Firstname"
                 name="firstname"
                 onChange={(e) => this.handleChange(e, 3)}
                 value={this.state.firstname}
               />
             </MDBCol>
             <MDBCol md="6">
+              <span className="text-muted small">Lastname</span>
               <input
                 type="text"
                 className={
                   this.testForError(4) ? "form-control error" : "form-control"
                 }
-                placeholder="Lastname"
                 name="lastname"
                 onChange={(e) => this.handleChange(e, 4)}
                 value={this.state.lastname}
               />
             </MDBCol>
           </MDBRow>
+          <span className="text-muted small">E-Mail</span>
           <input
             type="email"
             className={
               this.testForError(5)
-                ? "form-control my-2 error"
-                : "form-control my-2"
+                ? "form-control mb-2 error"
+                : "form-control mb-2"
             }
-            placeholder="E-Mail"
             name="email"
             onChange={(e) => this.handleChange(e, 5)}
             value={this.state.email}
           />
           <MDBRow>
             <MDBCol md="6">
+              <span className="text-muted small">Password</span>
               <input
                 type="password"
                 className={
@@ -200,13 +201,13 @@ class RegisterForm extends React.Component {
                     ? "form-control error"
                     : "form-control"
                 }
-                placeholder="Password"
                 name="password1"
                 onChange={(e) => this.handleChange(e, [7, 1])}
                 value={this.state.password1}
               />
             </MDBCol>
             <MDBCol md="6">
+              <span className="text-muted small">Confirm password</span>
               <input
                 type="password"
                 className={
@@ -214,7 +215,6 @@ class RegisterForm extends React.Component {
                     ? "form-control error"
                     : "form-control"
                 }
-                placeholder="Confirm password"
                 name="password2"
                 onChange={(e) => this.handleChange(e, [8, 1])}
                 value={this.state.password2}
@@ -246,7 +246,7 @@ class RegisterForm extends React.Component {
             type="text"
             id="materialFormRegisterConfirmEx40"
             name="code"
-            placeholder="Promo code"
+            placeholder="XXXX-XXXX-XXXX"
             label="Promotional code"
           />
         )}
