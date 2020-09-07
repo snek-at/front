@@ -1,0 +1,27 @@
+#selectorModal {
+  .selected {
+    .mask {
+      background: transparentize($color: green, $amount: 0.6) !important;
+    }
+  }
+
+  .view {
+    max-height: 150px;
+    overflow: hidden;
+
+    .mask {
+      background: transparentize($color: white, $amount: 1);
+      transition: background 0.1s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: transparentize($color: white, $amount: 0.9);
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */

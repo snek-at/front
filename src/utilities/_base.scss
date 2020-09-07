@@ -54,11 +54,8 @@
   }
 
   &.btn-green {
-    background-color: transparentize(
-      $color: $snekGreen,
-      $amount: 0.4
-    ) !important;
-    border: 2px $snekGreen solid;
+    background-color: $snekGreen !important;
+    border-radius: 2rem;
 
     &:hover {
       background-color: transparentize(
