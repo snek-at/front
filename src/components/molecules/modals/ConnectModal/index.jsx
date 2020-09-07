@@ -25,14 +25,47 @@ import {
   MDBSelectOption,
   MDBSelectOptions,
 } from "mdbreact";
+
+//> Actions
+// Functions to send data from the application to the store
+//import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
 //#endregion
 
 //#region > Components
 class ConnectModal extends React.Component {
   state = { youtubeLink: "", modalGitLab: false };
 
+  componentDidMount = () => {
+    this.getGitLabServers();
+  };
+
+  getGitLabServers = async () => {
+    // Check if GitLab Servers have already been set
+    if (this.state.gitlab_servers === undefined) {
+      // Retrieve GitLab servers
+      /*this.props.fetchGitLabServers().then(() => {
+        this.setState({
+          gitlab_servers: this.props.gitlabServers,
+        });
+      });*/
+    }
+  };
+
+  // Activate or deactivate GitLab modal
   toggle = () => {
     this.setState({ modalGitLab: !this.state.modalGitLab });
+  };
+
+  addGitLab = () => {
+    // Do stuff
+  };
+
+  addGitHub = () => {
+    // Do stuff
+  };
+
+  addInstagram = () => {
+    // Do stuff
   };
 
   render() {
@@ -61,6 +94,7 @@ class ConnectModal extends React.Component {
                     social="git"
                     size="lg"
                     className="d-block mx-auto w-100"
+                    onClick={() => this.addGitHub()}
                   >
                     <MDBIcon fab icon="github" />
                     Connect GitHub
@@ -78,6 +112,7 @@ class ConnectModal extends React.Component {
                     social="ins"
                     size="lg"
                     className="d-block mx-auto w-100"
+                    onClick={() => this.addInstagram()}
                   >
                     <MDBIcon fab icon="instagram" />
                     Connect Instagram
@@ -167,11 +202,13 @@ class ConnectModal extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  //loggedUser: state.auth.loggedUser,
+  //gitlabServers: state.general.allGitlabServers,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    //fetchGitLabServers: () => dispatch(fetchGitLabServersAction())
+  };
 };
 //#endregion
 
