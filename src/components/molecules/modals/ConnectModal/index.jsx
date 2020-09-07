@@ -57,7 +57,15 @@ class ConnectModal extends React.Component {
   };
 
   addGitLab = () => {
-    // Do stuff
+    // Deactivate GitLab modal
+    this.setState(
+      {
+        modalGitLab: false,
+      },
+      () => {
+        // Do stuff
+      }
+    );
   };
 
   addGitHub = () => {
