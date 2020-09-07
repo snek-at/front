@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { loginAction } from "../../../../store/actions/authActions";
+import { loginAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
