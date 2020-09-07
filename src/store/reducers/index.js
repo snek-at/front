@@ -7,10 +7,6 @@ import { combineReducers } from "redux";
 import { loadingBarReducer } from "react-redux-loading-bar";
 
 //> Reducers
-// Authentication
-import authReducer from "./authReducers";
-// General
-import generalReducer from "./generalReducers";
 // User
 import userReducer from "./userReducers";
 //#endregion
@@ -19,10 +15,6 @@ import userReducer from "./userReducers";
 const rootReducer = combineReducers({
   // Loading bar
   loadingBar: loadingBarReducer,
-  // User authentication
-  auth: authReducer,
-  // General data
-  general: generalReducer,
   // User data
   user: userReducer,
 });
