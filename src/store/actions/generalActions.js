@@ -25,7 +25,7 @@ const getGitlabServers = () => {
         type: Action.GENERAL_GITLAB_SERVER_FETCH_FAILURE,
         payload: {
           errorCode: 601,
-          message: `Getting person (${personName}) failed`,
+          message: `Getting gitlab server failed`,
           error: ex,
         },
       });
@@ -35,4 +35,4 @@ const getGitlabServers = () => {
 
 //#endregion
 
-export { getPerson, getPersonsBrief };
+export { getGitlabServers };
