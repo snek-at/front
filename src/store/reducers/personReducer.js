@@ -9,6 +9,7 @@ import * as Action from "../types";
 //#region > Constant Variables
 const INIT_STATE = {
   fetchedPerson: undefined,
+  allPersonBrief: undefined,
   error: undefined,
   errorDetails: undefined,
 };
@@ -22,13 +23,30 @@ const userReducer = (state = INIT_STATE, action) => {
       return state;
     case Action.PERSON_GET_SUCCESS:
       return {
+        ...state,
         fetchedPerson: {
           ...action.payload,
         },
       };
     case Action.PERSON_GET_FAILURE:
       return {
+        ...state,
         fetchedPerson: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Get all brief
+    case Action.PERSONS_BRIEF_GET_REQUEST:
+      return state;
+    case Action.PERSONS_BRIEF_GET_SUCCESS:
+      return {
+        ...state,
+        allPersonBrief: action.payload,
+      };
+    case Action.PERSONS_BRIEF_GET_FAILURE:
+      return {
+        ...state,
+        allPersonBrief: undefined,
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };

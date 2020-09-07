@@ -40,7 +40,7 @@ function App() {
       </header>
       <ScrollToTop>
         <div className="flyout">
-          {/* <Navbar /> */}
+          <Navbar />
           <main>
             <Routes />
           </main>
