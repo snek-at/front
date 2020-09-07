@@ -23,7 +23,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { deleteTalkAction } from "../../../../store/actions/userActions";
+// import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> Style sheet
 import "./talkstab.scss";
 //> Modules
@@ -220,7 +220,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { deleteTalk: (talk) => dispatch(deleteTalkAction(talk)) };
+  return { deleteTalk: (talk) => dispatch(talk) };
 };
 //#endregion
 

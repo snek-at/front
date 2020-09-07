@@ -35,10 +35,10 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import {
-  readCacheAction,
-  saveSettingsActions,
-} from "../../../store/actions/userActions";
+// import {
+//   readCacheAction,
+//   saveSettingsActions,
+// } from "../../../store/actions/userActions";
 //> Components
 // Profile Picture Editor
 import { ProfilePictureModal } from "../../../components/molecules/modals";
@@ -574,8 +574,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSettings: (nextSettings) => dispatch(saveSettingsActions(nextSettings)),
-    readCache: (username) => dispatch(readCacheAction(username)),
+    saveSettings: (nextSettings) => dispatch(nextSettings),
+    readCache: (username) => dispatch(username),
   };
 };
 //#endregion

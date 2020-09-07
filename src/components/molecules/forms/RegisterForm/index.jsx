@@ -38,9 +38,9 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { registerAction } from "../../../../store/actions/userActions";
-import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
-import { loginAction } from "../../../../store/actions/authActions";
+// import { registerAction } from "../../../../store/actions/userActions";
+// import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
+// import { loginAction } from "../../../../store/actions/authActions";
 //#endregion
 
 //#region > Components
@@ -280,9 +280,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (registrationData) => dispatch(registerAction(registrationData)),
-    login: (user) => dispatch(loginAction(user)),
-    fetchGitLabServers: () => dispatch(fetchGitLabServersAction()),
+    register: (registrationData) => dispatch((registrationData)),
+    login: (user) => dispatch((user)),
+    fetchGitLabServers: () => dispatch(),
   };
 };
 //#endregion

@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { writeCacheAction } from "../../../../store/actions/userActions";
+// import { writeCacheAction } from "../../../../store/actions/userActions";
 //> Style sheet
 import "./overviewtab.scss";
 //> Components
@@ -281,7 +281,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    writeCache: (platformData) => dispatch(writeCacheAction(platformData)),
+    writeCache: (platformData) => dispatch(platformData),
   };
 };
 //#endregion

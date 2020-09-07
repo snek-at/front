@@ -20,7 +20,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { uploadTalkAction } from "../../../../store/actions/userActions";
+// import { uploadTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -160,7 +160,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { uploadTalk: (file) => dispatch(uploadTalkAction(file)) };
+  return { uploadTalk: (file) => dispatch(file) };
 };
 //#endregion
 

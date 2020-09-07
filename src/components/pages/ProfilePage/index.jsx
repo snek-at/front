@@ -11,11 +11,11 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import {
-  readCacheAction,
-  updateCacheAction,
-  saveSettingsActions,
-} from "../../../store/actions/userActions";
+// import {
+//   readCacheAction,
+//   updateCacheAction,
+//   saveSettingsActions,
+// } from "../../../store/actions/userActions";
 //> Components
 import { SoftwareEngineer } from "../../organisms/profiles";
 //> Style sheet
@@ -138,9 +138,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSettings: (nextSettings) => dispatch(saveSettingsActions(nextSettings)),
-    readCache: (username) => dispatch(readCacheAction(username)),
-    updateCache: (fetchedUser) => dispatch(updateCacheAction(fetchedUser)),
+    saveSettings: (nextSettings) => dispatch(nextSettings),
+    readCache: (username) => dispatch(username),
+    updateCache: (fetchedUser) => dispatch(fetchedUser),
   };
 };
 //#endregion

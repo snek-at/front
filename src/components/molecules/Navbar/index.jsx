@@ -186,7 +186,7 @@ Navbar.propTypes = {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: { ...state.auth.loggedUser, ...state.user.loggedUser },
+  loggedUser: { ...state.user.user },
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -27,7 +27,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getTalkAction } from "../../../store/actions/userActions";
+// import { getTalkAction } from "../../../store/actions/userActions";
 //> Style sheet
 import "./talk.scss";
 //#endregion
@@ -383,7 +383,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { getTalk: (uid, username) => dispatch(getTalkAction(uid, username)) };
+  return { getTalk: (uid, username) => dispatch((uid, username)) };
 };
 //#endregion
 
