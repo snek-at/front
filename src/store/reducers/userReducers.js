@@ -79,6 +79,17 @@ const userReducer = (state = INIT_STATE, action) => {
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };
+    //> User Exists Check
+    case Action.USER_EXISTS_CHECK_REQUEST:
+      return state;
+    case Action.USER_EXISTS_CHECK_SUCCESS:
+      return { ...state };
+    case Action.USER_EXISTS_CHECK_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
 
     default:
       return state;

@@ -153,10 +153,36 @@ const register = (
     }
   };
 };
+
+/**
+ * Check if there is already a registered user with the provided username
+ */
+const isValidUsername = async (username) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.USER_EXISTS_CHECK_REQUEST });
+
+      const exists = await INTEL_SNEK.general.checkUserExists(username);
+
+      dispatch({ type: Action.USER_EXISTS_CHECK_SUCCESS });
+
+      return exists;
+    } catch (ex) {
+      dispatch({
+        type: Action.USER_EXISTS_CHECK_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Cannot check if there is already a user with '${username}' as name`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
 //#endregion
 
 //#region > Exports
-export { loginAction, logoutAction, getPerson, register };
+export { loginAction, logoutAction, getPerson, register, isValidUsername };
 //#endregion
 
 /**
