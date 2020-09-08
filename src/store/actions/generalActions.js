@@ -5,7 +5,7 @@ import * as Action from "../types";
 import INTEL_SNEK from "snek-intel/lib/utils/snek";
 //#endregion
 
-//#region > Person Actions
+//#region > Actions
 /**
  * Get all gitlab servers for registration
  */
