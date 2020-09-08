@@ -30,7 +30,8 @@ const personReducer = (state = INIT_STATE, action) => {
       Action.PERSON_FOLLOW_REQUEST |
       Action.PERSON_UNFOLLOW_REQUEST |
       Action.PERSON_LIKE_REQUEST |
-      Action.PERSON_UNLIKE_REQUEST:
+      Action.PERSON_UNLIKE_REQUEST |
+      Action.PERSON_ACHIEVEMENT_REDEEM_REQUEST:
       return state;
     case Action.PERSON_SETTINGS_UPDATE_SUCCESS |
       Action.PERSON_META_LINK_ADD_SUCCESS |
@@ -44,7 +45,8 @@ const personReducer = (state = INIT_STATE, action) => {
       Action.PERSON_FOLLOW_SUCCESS |
       Action.PERSON_UNFOLLOW_SUCCESS |
       Action.PERSON_LIKE_SUCCESS |
-      Action.PERSON_UNLIKE_SUCCESS:
+      Action.PERSON_UNLIKE_SUCCESS |
+      Action.PERSON_ACHIEVEMENT_REDEEM_SUCCESS:
       return {
         ...state,
       };
@@ -60,7 +62,8 @@ const personReducer = (state = INIT_STATE, action) => {
       Action.PERSON_FOLLOW_FAILURE |
       Action.PERSON_UNFOLLOW_FAILURE |
       Action.PERSON_LIKE_FAILURE |
-      Action.PERSON_UNLIKE_FAILURE:
+      Action.PERSON_UNLIKE_FAILURE |
+      Action.PERSON_ACHIEVEMENT_REDEEM_FAILURE:
       return {
         ...state,
         error: action.payload,

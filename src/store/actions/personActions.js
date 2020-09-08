@@ -435,6 +435,50 @@ const unlike = (receiverPersonName) => {
   };
 };
 
+/**
+ * Redeem a achievement with sequence
+ */
+const redeemAchievement = (sequence) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.PERSON_ACHIEVEMENT_REDEEM_REQUEST });
+
+      const state = getState();
+      const personName = extractNameFromPersonSlug(state.user.person.slug);
+
+      const res = await INTEL_SNEK.achievements.redeem({
+        personName,
+        sequence,
+      });
+
+      if (res.ok) {
+        dispatch({
+          type: Action.PERSON_ACHIEVEMENT_REDEEM_SUCCESS,
+          payload: achievements,
+        });
+      } else {
+        dispatch({
+          type: Action.PERSON_ACHIEVEMENT_REDEEM_FAILURE,
+          payload: {
+            errorCode: 601,
+            message: `Redeeming achievement failed. Good try but try again`,
+            error: ex,
+          },
+        });
+      }
+    } catch (ex) {
+      dispatch({
+        type: Action.PERSON_ACHIEVEMENT_REDEEM_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Redeeming achievement failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
 //#endregion
 //#region > Exports
 export {
@@ -451,5 +495,6 @@ export {
   unfollow,
   like,
   unlike,
+  redeemAchievement,
 };
 //#endregion
