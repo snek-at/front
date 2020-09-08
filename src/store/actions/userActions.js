@@ -156,7 +156,7 @@ const register = (
 //#endregion
 
 //#region > Exports
-export { loginAction, logoutAction, getPerson };
+export { loginAction, logoutAction, getPerson, register };
 //#endregion
 
 /**
