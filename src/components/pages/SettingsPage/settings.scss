@@ -1,0 +1,92 @@
+#settings {
+  padding: 2%;
+
+  .tab-content {
+    padding: 0;
+    text-align: left;
+
+    .font-weight-bold {
+      margin-bottom: 0.4rem;
+      padding-bottom: 0;
+      border-bottom: 3px #77bd43 solid;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+  }
+
+  .nav-item {
+    padding: 0;
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+
+    .profile {
+      padding-left: 2%;
+      padding-bottom: 5%;
+
+      .font-weight-bold {
+        margin-bottom: -3%;
+      }
+    }
+  }
+
+  .pills-primary .nav-link {
+    background-color: darken(#fff, 2%) !important;
+    border-color: #77bd43;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: #212529;
+    text-align: left;
+    box-shadow: none;
+
+    i {
+      padding-left: 0.5rem;
+    }
+
+    &:hover {
+      background-color: darken(#fff, 5%) !important;
+    }
+
+    &.active {
+      background-color: darken(#fff, 10%) !important;
+      border-left: 5px #77bd43 solid;
+    }
+  }
+
+  .form-check-input[type="checkbox"].filled-in:checked + label::after,
+  label.btn input[type="checkbox"].filled-in:checked + label::after {
+    background-color: #77bd43;
+    border: 2px solid #77bd43;
+  }
+
+  .personal-data {
+    .form-check {
+      padding-left: 0 !important;
+      margin-top: 0.4rem;
+    }
+  }
+
+  .avatar {
+    height: 150px;
+    width: 150px;
+    background: white;
+  }
+}
+
+#notification {
+  background-color: rgba($color: #77bd43, $alpha: 0.5);
+  color: black;
+
+  .message {
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */

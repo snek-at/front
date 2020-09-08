@@ -1,0 +1,77 @@
+#calendar3d {
+  position: relative;
+  width: 100%;
+  padding: 0 1rem;
+  min-height: 350px;
+
+  canvas {
+    width: 80%;
+    display: block;
+    margin: auto;
+  }
+
+  .top-stats {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 2rem 2rem 0 0;
+
+    .stats {
+      padding: 0 0.5rem 0.2rem 0.5rem;
+      border-radius: 0.5rem;
+
+      p {
+        margin-bottom: 0;
+
+        &.lead {
+          font-size: 1.5rem;
+        }
+
+        &.text-muted {
+          font-size: 0.7rem;
+        }
+      }
+
+      .item {
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  .bottom-stats {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0 0 2rem 2rem;
+
+    .stats {
+      padding: 0 0.5rem 0.2rem 0.5rem;
+      border-radius: 0.5rem;
+
+      p {
+        margin-bottom: 0;
+
+        &.lead {
+          font-size: 1.5rem;
+        }
+
+        &.text-muted {
+          font-size: 0.7rem;
+        }
+
+        .days {
+          font-size: 1rem;
+        }
+      }
+
+      .item {
+        padding: 0.5rem;
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */

@@ -1,3 +1,6 @@
+// Import variables
+@import "./variables";
+
 .flyout {
   display: flex;
   flex-direction: column;
@@ -5,55 +8,218 @@
   justify-content: space-between;
 }
 
+//> SNEK Design
+// Buttons
+.btn {
+  box-shadow: none;
+  border-radius: 0.4rem;
+  text-transform: initial;
+
+  i {
+    margin-right: 0.3rem;
+  }
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:visited {
+    box-shadow: none;
+  }
+
+  //> Button types
+  // Button green
+  &.btn-outline-green {
+    background-color: transparentize(
+      $color: $snekGreen,
+      $amount: 0.9
+    ) !important;
+    border: 2px $snekGreen solid;
+    color: darken($snekGreen, 10%);
+
+    &:hover {
+      background-color: transparentize(
+        $color: $snekGreen,
+        $amount: 0.8
+      ) !important;
+    }
+  }
+
+  &.btn-green {
+    background-color: transparentize(
+      $color: $snekGreen,
+      $amount: 0.4
+    ) !important;
+    border: 2px $snekGreen solid;
+
+    &:hover {
+      background-color: transparentize(
+        $color: $snekGreen,
+        $amount: 0.3
+      ) !important;
+    }
+  }
+
+  &.btn-outline-primary {
+    background-color: transparentize($color: $blue, $amount: 0.9) !important;
+    border: 2px $blue solid;
+    color: darken($blue, 10%);
+
+    &:hover {
+      background-color: transparentize($color: $blue, $amount: 0.8) !important;
+    }
+  }
+
+  // Button WhatsApp
+  &.btn-wa {
+    background-color: #25d366 !important;
+    color: white !important;
+  }
+}
+
+//> Cards
+.card {
+  box-shadow: none;
+  border-radius: 0;
+}
+
 // Custom colors
 .snek-dark {
   background-color: $snekDark !important;
+
   &.darken-1 {
     background-color: darken($snekDark, 5%) !important;
   }
+
   &.darken-2 {
     background-color: darken($snekDark, 10%) !important;
   }
+
   &.darken-3 {
     background-color: darken($snekDark, 15%) !important;
   }
+
   &.lighten-1 {
     background-color: lighten($snekDark, 10%) !important;
   }
+
   &.lighten-2 {
     background-color: lighten($snekDark, 20%) !important;
   }
+
   &.lighten-3 {
     background-color: lighten($snekDark, 30%) !important;
   }
 }
-.snek-blue {
-  background-color: $snekBlue !important;
-  &.darken-1 {
-    background-color: darken($snekBlue, 10%) !important;
+
+.pink-text {
+  color: #ea4aaa !important;
+}
+
+// Defaults
+.justify-content-space-between {
+  justify-content: space-between;
+  align-items: end;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.align-self-center {
+  align-self: center !important;
+}
+
+.clickable {
+  cursor: pointer !important;
+}
+
+.splitter {
+  overflow: hidden;
+}
+
+.or {
+  position: relative !important;
+  padding-bottom: var(--spacing-rule-text-vertical, 16px) !important;
+  padding-top: var(--spacing-rule-text-vertical, 16px) !important;
+  padding-left: var(--spacing-rule-text-horizontal, 16px) !important;
+  padding-right: var(--spacing-rule-text-horizontal, 16px) !important;
+}
+
+.or-text {
+  overflow-wrap: break-word !important;
+  margin: 0 !important;
+
+  &::before {
+    border-bottom-width: var(--border-rule-border-width, 1px) !important;
+    border-bottom-color: #e4e4e4 !important;
+    content: "" !important;
+    position: absolute !important;
+    border-bottom-style: solid !important;
+    top: 50% !important;
+    right: 100% !important;
+    width: 5000px !important;
   }
-  &.darken-2 {
-    background-color: darken($snekBlue, 20%) !important;
-  }
-  &.darken-3 {
-    background-color: darken($snekBlue, 30%) !important;
-  }
-  &.lighten-1 {
-    background-color: lighten($snekBlue, 10%) !important;
-  }
-  &.lighten-2 {
-    background-color: lighten($snekBlue, 20%) !important;
-  }
-  &.lighten-3 {
-    background-color: lighten($snekBlue, 30%) !important;
+
+  &::after {
+    border-bottom-width: var(--border-rule-border-width, 1px) !important;
+    border-bottom-color: #e4e4e4 !important;
+    content: "" !important;
+    position: absolute !important;
+    border-bottom-style: solid !important;
+    top: 50% !important;
+    left: 100% !important;
+    width: 5000px !important;
   }
 }
 
-.blue-text {
-  color: $snekBlue !important;
+// Google icon
+.fa-google {
+  background: conic-gradient(
+      from -45deg,
+      #ea4335 110deg,
+      $blue 90deg 180deg,
+      #34a853 180deg 270deg,
+      #fbbc05 270deg
+    )
+    73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+// Caching loading progress bar
+.caching-loader {
+  position: fixed;
+  z-index: 999;
+  margin: 0;
+  height: 5px;
+  border-radius: 0;
+
+  .indeterminate {
+    background-color: $snekGreen;
+  }
+}
+
+// Loading bar
+.loading {
+  z-index: 99999;
+  height: 3px;
+  width: auto;
+  position: fixed;
+  background-color: #4285f4;
 }
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © Simon Prast
+ * Copyright © 2019-2020 Simon Prast
  */

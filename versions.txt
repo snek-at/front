@@ -1,0 +1,27 @@
++-- fuzzysort@1.1.4
++-- gh-pages@3.1.0
++-- js-sha256@0.9.0
++-- UNMET DEPENDENCY mdb-react-sortable@mdb-react-sortable-4.26.0.tgz
++-- mdbreact@4.26.1
++-- node-sass@4.14.1
++-- obelisk.js@1.2.2
++-- react@16.13.1
++-- react-avatar-editor@11.0.9
++-- react-chartjs-2@2.9.0
++-- react-dom@16.13.1
++-- react-dropzone@11.0.1
++-- react-redux@7.2.0
++-- react-redux-loading-bar@4.6.0
++-- react-router-dom@5.2.0
++-- react-scripts@3.4.1
++-- react-text-loop@2.3.0
++-- react-typed@1.2.0
++-- reactjs-oauth@0.1.0
++-- redux@4.0.5
++-- redux-thunk@2.3.0
++-- renamer@1.1.4
++-- rimraf@2.7.1
++-- serialize-error@7.0.1
++-- snek-intel@0.1.2
+`-- tippy.js@6.2.3
+

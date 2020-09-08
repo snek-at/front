@@ -1,14 +1,19 @@
 //#region > Imports
 //> Pages
 // Import all components to export them for easy access from parent components
-//import Page from "./Page";
+import CompanyPage from "./CompanyPage";
+import HomePage from "./HomePage";
+import ProfilePage from "./ProfilePage";
+import TalkPage from "./TalkPage";
+import SettingsPage from "./SettingsPage";
 //#endregion
 
 //#region > Exports
-//export { Page };
+//> Pages
+export { CompanyPage, HomePage, ProfilePage, TalkPage, SettingsPage };
 //#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © Simon Prast
+ * Copyright © 2019-2020 Simon Prast
  */

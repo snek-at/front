@@ -1,0 +1,23 @@
+.pinned-item {
+  .pinned-header {
+    width: 100%;
+    padding: 0.1rem;
+
+    .card {
+      border: 1px #e1e4e8 solid;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      border-radius: 0.3rem;
+    }
+
+    .card-body {
+      border: none !important;
+      padding: 0.3rem;
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Simon Prast
+ */
