@@ -28,11 +28,11 @@ class Sponsors extends React.PureComponent {
       <div id="sponsors">
         <MDBContainer className="py-5 text-center text-dark">
           <h2 className="gidole h1-responsive font-weight-bold">
-            Many companies are already convinced
+            Special thanks to our sponsors
           </h2>
           <p className="lead">
-            Become a <strong>sponsor</strong> and support us in the further
-            development of our <strong>open source</strong> social network.
+            Without the help and support of our <strong>sponsors</strong> the development of
+            our <strong>open source</strong> social network SNEK would hardly be possible.
           </p>
           <MDBRow className="flex-center">
             {data.map((item, i) => {
