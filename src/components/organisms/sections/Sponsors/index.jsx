@@ -31,8 +31,8 @@ class Sponsors extends React.PureComponent {
             Special thanks to our sponsors
           </h2>
           <p className="lead">
-            Without the help and support of our <strong>sponsor</strong> the development of
-            our <strong>sponsor</strong> social network SNEK would hardly be possible.
+            Without the help and support of our <strong>sponsors</strong> the development of
+            our <strong>open source</strong> social network SNEK would hardly be possible.
           </p>
           <MDBRow className="flex-center">
             {data.map((item, i) => {
