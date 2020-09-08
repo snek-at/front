@@ -85,6 +85,33 @@ const getPerson = (personName) => {
     }
   };
 };
+
+/**
+ * Get all achievements with collectors
+ */
+const getAchievements = () => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.GENERAL_ACHIEVEMENTS_FETCH_REQUEST });
+
+      const achievements = await INTEL_SNEK.achievements.all();
+
+      dispatch({
+        type: Action.GENERAL_ACHIEVEMENTS_FETCH_SUCCESS,
+        payload: achievements,
+      });
+    } catch (ex) {
+      dispatch({
+        type: Action.GENERAL_ACHIEVEMENTS_FETCH_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Getting achievements failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
 //#endregion
 
-export { getGitlabServers, getPersonsBrief, getPerson };
+export { getGitlabServers, getPersonsBrief, getPerson, getAchievements };

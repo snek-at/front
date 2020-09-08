@@ -11,6 +11,7 @@ const INIT_STATE = {
   fetchedPerson: undefined,
   allPersonBrief: undefined,
   gitlabServer: undefined,
+  achievements: undefined,
   error: undefined,
   errorDetails: undefined,
 };
@@ -63,6 +64,21 @@ const generalReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         allPersonBrief: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Achievements
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_SUCCESS:
+      return {
+        ...state,
+        achievements: action.payload,
+      };
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_FAILURE:
+      return {
+        ...state,
+        achievements: undefined,
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };
