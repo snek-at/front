@@ -68,8 +68,10 @@ class TalkTab extends React.Component {
   render() {
     const { loggedUser, fetchedPerson, talkList } = this.props;
 
-    if (talkList) {
-      talkList.map((talk) => {
+    const talks = JSON.parse(JSON.stringify(talkList));
+
+    if (talks) {
+      talks.map((talk) => {
         talk.social = {
           likes: 17,
           date: new Date().toLocaleDateString("en-US", {
