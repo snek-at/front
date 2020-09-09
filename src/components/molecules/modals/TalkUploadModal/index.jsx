@@ -58,12 +58,10 @@ class TalkUploadModal extends React.Component {
   uploadToAnonfiles = async (file) => {
     const res = await anonfiles.uploadFile(file);
 
-    console.log(res);
-
     this.props.uploadTalk(
       res.name,
       "",
-      res.displayUrl,
+      "https://docs.google.com/viewer?embedded=true&url=" + res.displayUrl,
       res.downloadUrl,
       res.path,
       res.html_url

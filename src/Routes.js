@@ -11,7 +11,7 @@ import {
   PersonPage,
   CompanyPage,
   //   TalkPage,
-  //   SettingsPage,
+  SettingsPage,
   TempPage,
 } from "./components/pages";
 //#endregion
@@ -53,11 +53,12 @@ class Routes extends React.Component {
             };
           }}
         />
+        */}
         <Route
           exact
           path="/settings"
           component={(props) => <SettingsPage {...props} />}
-        /> */}
+        />
         <Route
           render={function () {
             return <h1>Not Found</h1>;
