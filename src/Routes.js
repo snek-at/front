@@ -8,7 +8,7 @@ import { Route, Switch } from "react-router-dom";
 //> Components
 import {
   HomePage,
-  ProfilePage,
+  PersonPage,
   CompanyPage,
   //   TalkPage,
   //   SettingsPage,
@@ -26,7 +26,7 @@ class Routes extends React.Component {
         <Route
           exact
           path="/u/:username"
-          component={(props) => <ProfilePage {...props} />}
+          component={(props) => <PersonPage {...props} />}
         />
         <Route
           exact

@@ -4,6 +4,9 @@
 import React from "react";
 // DOM bindings for React Router
 import { withRouter } from "react-router-dom";
+//> MDB
+// "Material Design for Bootstrap" is a great UI design framework
+import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
@@ -13,18 +16,16 @@ import { connect } from "react-redux";
 // Functions to send data from the application to the store
 import { getPerson } from "../../../store/actions/generalActions";
 //> Components
-import { SoftwareEngineer } from "../../organisms/profiles";
+import { PersonInfoCard, PersonTabs } from "../../organisms";
 //> Style sheet
-import "./profile.scss";
+import "./person.scss";
 //#endregion
 
 //#region > Components
 /**
- * @class This component adds the Profile page and distinguishes
- *        between software and media technology accounts and
- *        loads the components accordingly.
+ * @todo Add description
  */
-class ProfilePage extends React.Component {
+class PersonPage extends React.Component {
   state = {};
 
   saveSettings = (state) => {
@@ -33,6 +34,7 @@ class ProfilePage extends React.Component {
 
   componentDidMount = () => {
     this._isMounted = true;
+
     const { match } = this.props;
     const username = match?.params?.username;
 
@@ -53,9 +55,9 @@ class ProfilePage extends React.Component {
   };
 
   render() {
-    const { fetchedUser } = this.props;
+    const { fetchedPerson } = this.props;
 
-    if (!fetchedUser) {
+    if (!fetchedPerson) {
       return (
         <div className="text-center my-5 py-5">
           <div className="spinner-grow text-success" role="status">
@@ -63,13 +65,22 @@ class ProfilePage extends React.Component {
           </div>
         </div>
       );
-    } else if (fetchedUser) {
+    } else if (fetchedPerson) {
       //#TSID11
       //console.dir("PROFILE PAGE RENDER SUCCESS", this.props.fetchedUser);
 
       return (
         <div id="profile">
-          <SoftwareEngineer />
+          <MDBContainer className="py-5">
+            <MDBRow>
+              <MDBCol lg="3">
+                <PersonInfoCard />
+              </MDBCol>
+              <MDBCol lg="9">
+                <PersonTabs />
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
         </div>
       );
     } else {
@@ -101,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
  * <Route>'s match.
  */
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+  connect(mapStateToProps, mapDispatchToProps)(PersonPage)
 );
 //#endregion
 

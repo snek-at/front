@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Runtime type checking for React props and similar objects
+import PropTypes from "prop-types";
 //> React Router bindings to DOM
 import { withRouter, Link } from "react-router-dom";
 //> MDB
@@ -32,7 +34,7 @@ import { TalkUploadModal } from "../../../molecules/modals";
 
 //#region > Components
 /** @class A component which lists all talks */
-class Talks extends React.Component {
+class TalkTab extends React.Component {
   state = {
     showUpload: false,
     loading: true,
@@ -50,16 +52,15 @@ class Talks extends React.Component {
     let iframe;
 
     if (talk.interval.loaded === false) {
-      if (document.getElementById(talk.uid)) {
-        iframe = document.getElementById(talk.uid);
+      if (document.getElementById(talk.id)) {
+        iframe = document.getElementById(talk.id);
         iframe.src = talk.displayUrl;
       }
     }
   };
 
   render() {
-    const { loggedUser, fetchedUser } = this.props;
-    const talkList = fetchedUser?.platformData?.talks;
+    const { loggedUser, fetchedPerson, talkList } = this.props;
 
     if (talkList) {
       talkList.map((talk) => {
@@ -87,7 +88,7 @@ class Talks extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {loggedUser.username === fetchedUser.username && (
+          {loggedUser.username === fetchedPerson.username && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -109,12 +110,12 @@ class Talks extends React.Component {
                     <MDBCardHeader className="lead mb-1">
                       <MDBRow>
                         <MDBCol md="11">
-                          {talk.name.length > 25
-                            ? talk.name.substring(0, 25) + "..."
-                            : talk.name}
+                          {talk.title.length > 25
+                            ? talk.title.substring(0, 25) + "..."
+                            : talk.title}
                         </MDBCol>
                         <MDBCol md="1">
-                          {loggedUser.username === fetchedUser.username && (
+                          {loggedUser.username === fetchedPerson.username && (
                             <small onClick={() => this.props.deleteTalk(talk)}>
                               <MDBIcon
                                 icon="trash-alt"
@@ -127,10 +128,7 @@ class Talks extends React.Component {
                     </MDBCardHeader>
                     <Link
                       to={
-                        "/t/" +
-                        this.props.match.params.username +
-                        "/" +
-                        talk.uid
+                        "/t/" + this.props.match.params.username + "/" + talk.id
                       }
                       params={{}}
                       rel="noopener noreferrer"
@@ -139,7 +137,7 @@ class Talks extends React.Component {
                         <div className="thumbnail-container">
                           <div className="thumbnail">
                             <iframe
-                              id={talk.uid}
+                              id={talk.id}
                               src={talk.displayUrl}
                               onLoad={() => {
                                 clearInterval(talk.interval.timeoutId);
@@ -215,12 +213,18 @@ class Talks extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
+  loggedUser: state.user.user,
+  fetchedPerson: state.general.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return { deleteTalk: (talk) => dispatch(talk) };
+};
+//#endregion
+
+//#region > PropTypes
+TalkTab.propTypes = {
+  talkList: PropTypes.array.isRequired,
 };
 //#endregion
 
@@ -233,7 +237,9 @@ const mapDispatchToProps = (dispatch) => {
  * Got access to the history object’s properties and the closest
  * <Route>'s match.
  */
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Talks));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TalkTab)
+);
 //#endregion
 
 /**
