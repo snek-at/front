@@ -5,6 +5,10 @@ import * as Action from "../types";
 import INTEL_SNEK from "snek-intel/lib/utils/snek";
 //#endregion
 
+//#region > Utils
+const extractNameFromPersonSlug = (personSlug) => personSlug.split("-")[1];
+//#endregion
+
 //#region > Actions
 /**
  * Get a specific talk
@@ -61,91 +65,17 @@ const getTalks = () => {
 };
 
 /**
- * Add a talk
- */
-const addTalk = (
-  talkOptions = {
-    title,
-    description,
-    displayUrl,
-    downloadUrl,
-    path,
-    url,
-  }
-) => {
-  return async (dispatch, getState, {}) => {
-    try {
-      dispatch({ type: Action.TALK_ADD_REQUEST });
-
-      let personName;
-
-      try {
-        personName = extractNameFromPersonSlug(state.user.person.slug);
-      } catch {
-        throw new Error("Something went wrong");
-      }
-
-      const talk = await INTEL_SNEK.talk.addTalk({ personName, talkOptions });
-
-      dispatch({
-        type: Action.TALK_ADD_SUCCESS,
-        payload: talk,
-      });
-
-      return talk;
-    } catch (ex) {
-      dispatch({
-        type: Action.TALK_ADD_FAILURE,
-        payload: {
-          errorCode: 601,
-          message: `Adding talk failed`,
-          error: ex,
-        },
-      });
-    }
-  };
-};
-
-/**
- * Delete a talk
- */
-const deleteTalk = (id) => {
-  return async (dispatch, getState, {}) => {
-    try {
-      dispatch({ type: Action.TALK_DELETE_REQUEST });
-
-      const remainingTalks = await INTEL_SNEK.talk.deleteTalk({ talkId: id });
-
-      dispatch({
-        type: Action.TALK_DELETE_SUCCESS,
-      });
-
-      return remainingTalks;
-    } catch (ex) {
-      dispatch({
-        type: Action.TALK_DELETE_FAILURE,
-        payload: {
-          errorCode: 601,
-          message: `Deleting talk failed`,
-          error: ex,
-        },
-      });
-    }
-  };
-};
-
-/**
  * Delete a talk
  */
 const updateTalk = (
   id,
   nextTalk = {
-    title,
-    description,
-    displayUrl,
-    downloadUrl,
-    path,
-    url,
+    title: undefined,
+    description: undefined,
+    displayUrl: undefined,
+    downloadUrl: undefined,
+    path: undefined,
+    url: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
@@ -159,12 +89,13 @@ const updateTalk = (
 
       dispatch({
         type: Action.TALK_UPDATE_SUCCESS,
+        payload: updatedTalk,
       });
 
       return updatedTalk;
     } catch (ex) {
       dispatch({
-        type: Action.TALK_DELETE_FAILURE,
+        type: Action.TALK_UPDATE_FAILURE,
         payload: {
           errorCode: 601,
           message: `Updating talk failed`,
@@ -180,19 +111,21 @@ const updateTalk = (
  */
 const addTalkComment = (
   commentOptions = {
-    talkId,
-    text,
-    replyToId,
+    talkId: undefined,
+    text: undefined,
+    replyToId: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.TALK_COMMENT_ADD_REQUEST });
 
+      const state = getState();
+
       let personName;
 
       try {
-        personName = extractNameFromPersonSlug(state.user.person.slug);
+        personName = extractNameFromPersonSlug(state.user.user.person.slug);
       } catch {
         throw new Error("Something went wrong");
       }
@@ -235,6 +168,7 @@ const deleteTalkComment = (id) => {
 
       dispatch({
         type: Action.TALK_COMMENT_DELETE_SUCCESS,
+        payload: remainingComments,
       });
 
       return remainingComments;
@@ -254,10 +188,10 @@ const deleteTalkComment = (id) => {
 /**
  * Delete a talk
  */
-const updateTalk = (
+const updateTalkComment = (
   id,
   nextComment = {
-    text,
+    text: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
@@ -271,6 +205,7 @@ const updateTalk = (
 
       dispatch({
         type: Action.TALK_COMMENT_UPDATE_SUCCESS,
+        payload: updatedComment,
       });
 
       return updatedComment;
@@ -288,4 +223,11 @@ const updateTalk = (
 };
 //#endregion
 
-export { getTalk, getTalks, addTalk, deleteTalk, updateTalk };
+export {
+  getTalk,
+  getTalks,
+  updateTalk,
+  addTalkComment,
+  deleteTalkComment,
+  updateTalkComment,
+};

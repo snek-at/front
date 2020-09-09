@@ -71,7 +71,7 @@ class TalkPage extends React.Component {
     if (talk.interval.loaded === false) {
       if (document.getElementById(talk.uid)) {
         iframe = document.getElementById(talk.uid);
-        iframe.src = talk.displayUrl;
+        iframe.src = talk.html_url;
       }
     }
   };
@@ -104,7 +104,7 @@ class TalkPage extends React.Component {
                   <MDBCard>
                     <MDBCardBody>
                       <iframe
-                        src={talk.displayUrl}
+                        src={talk.html_url}
                         id={talk.uid}
                         width="100%"
                         height="620px"

@@ -13,24 +13,48 @@ const extractNameFromPersonSlug = (personSlug) => personSlug.split("-")[1];
 /**
  * Get person page for a logged user
  */
+const getPerson = (personName) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.PERSON_FETCH_REQUEST });
+
+      const person = await INTEL_SNEK.person.get({ personName });
+
+      dispatch({ type: Action.PERSON_FETCH_SUCCESS, payload: person });
+    } catch (ex) {
+      dispatch({
+        type: Action.PERSON_FETCH_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Getting person (${personName}) failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
+/**
+ * Get person page for a logged user
+ */
 const updateSettings = (
   nextSettings = {
-    avatarImage,
-    bio,
-    display2dCalendar,
-    display3dCalendar,
-    displayEmail,
-    displayProgrammingLanguages,
-    displayRanking,
-    displayWorkplace,
-    email,
-    firstName,
-    lastName,
-    location,
-    movablePool,
-    status,
-    websiteUrl,
-    workplace,
+    avatarImage: undefined,
+    bio: undefined,
+    display2dCalendar: undefined,
+    display3dCalendar: undefined,
+    displayEmail: undefined,
+    displayProgrammingLanguages: undefined,
+    displayRanking: undefined,
+    displayWorkplace: undefined,
+    email: undefined,
+    firstName: undefined,
+    lastName: undefined,
+    location: undefined,
+    movablePool: undefined,
+    status: undefined,
+    websiteUrl: undefined,
+    workplace: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
@@ -38,7 +62,7 @@ const updateSettings = (
       dispatch({ type: Action.PERSON_SETTINGS_UPDATE_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const person = await INTEL_SNEK.person.updateSettings({
         personName,
@@ -66,11 +90,11 @@ const updateSettings = (
 
 const addMetaLink = (
   linkOptions = {
-    url,
-    linkType,
-    location,
-    imgurDeleteHash,
-    description,
+    url: undefined,
+    linkType: undefined,
+    location: undefined,
+    imgurDeleteHash: undefined,
+    description: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
@@ -78,7 +102,7 @@ const addMetaLink = (
       dispatch({ type: Action.PERSON_META_LINK_ADD_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const link = await INTEL_SNEK.person.addMetaLink({
         personName,
@@ -130,7 +154,7 @@ const getProfiles = () => {
       dispatch({ type: Action.PERSON_PROFILES_FETCH_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const profiles = await INTEL_SNEK.person.profiles({
         personName,
@@ -153,13 +177,20 @@ const getProfiles = () => {
   };
 };
 
-const addProfile = (source = { url, type, authorization, username }) => {
+const addProfile = (
+  source = {
+    url: undefined,
+    type: undefined,
+    authorization: undefined,
+    username: undefined,
+  }
+) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILE_ADD_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const profile = await INTEL_SNEK.person.addProfile({
         personName,
@@ -211,22 +242,22 @@ const deleteProfile = (id) => {
 const updateProfile = (
   id,
   nextProfile = {
-    avatarImage,
-    bio,
-    display2dCalendar,
-    display3dCalendar,
-    displayEmail,
-    displayProgrammingLanguages,
-    displayRanking,
-    displayWorkplace,
-    email,
-    firstName,
-    lastName,
-    location,
-    movablePool,
-    status,
-    websiteUrl,
-    workplace,
+    avatarImage: undefined,
+    bio: undefined,
+    display2dCalendar: undefined,
+    display3dCalendar: undefined,
+    displayEmail: undefined,
+    displayProgrammingLanguages: undefined,
+    displayRanking: undefined,
+    displayWorkplace: undefined,
+    email: undefined,
+    firstName: undefined,
+    lastName: undefined,
+    location: undefined,
+    movablePool: undefined,
+    status: undefined,
+    websiteUrl: undefined,
+    workplace: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
@@ -263,7 +294,7 @@ const getInstagramPosts = (id) => {
       dispatch({ type: Action.PERSON_INSTAGRAM_POSTS_FETCH_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const posts = await INTEL_SNEK.person.getInstagramPosts({
         personName,
@@ -292,7 +323,7 @@ const processProfiles = () => {
       dispatch({ type: Action.PERSON_PROFILES_PROCESS_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const posts = await INTEL_SNEK.person.processProfiles({
         personName,
@@ -321,7 +352,7 @@ const follow = (receiverPersonName) => {
       dispatch({ type: Action.PERSON_FOLLOW_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const res = await INTEL_SNEK.social.follow({
         invoker: personName,
@@ -351,7 +382,7 @@ const unfollow = (receiverPersonName) => {
       dispatch({ type: Action.PERSON_UNFOLLOW_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const res = await INTEL_SNEK.social.unfollow({
         invoker: personName,
@@ -381,7 +412,7 @@ const like = (receiverPersonName) => {
       dispatch({ type: Action.PERSON_LIKE_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const res = await INTEL_SNEK.social.follow({
         invoker: personName,
@@ -411,7 +442,7 @@ const unlike = (receiverPersonName) => {
       dispatch({ type: Action.PERSON_UNLIKE_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const res = await INTEL_SNEK.social.unfollow({
         invoker: personName,
@@ -444,7 +475,7 @@ const redeemAchievement = (sequence) => {
       dispatch({ type: Action.PERSON_ACHIEVEMENT_REDEEM_REQUEST });
 
       const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.person.slug);
+      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const res = await INTEL_SNEK.achievements.redeem({
         personName,
@@ -454,7 +485,7 @@ const redeemAchievement = (sequence) => {
       if (res.ok) {
         dispatch({
           type: Action.PERSON_ACHIEVEMENT_REDEEM_SUCCESS,
-          payload: achievements,
+          payload: res,
         });
       } else {
         dispatch({
@@ -462,7 +493,6 @@ const redeemAchievement = (sequence) => {
           payload: {
             errorCode: 601,
             message: `Redeeming achievement failed. Good try but try again`,
-            error: ex,
           },
         });
       }
@@ -479,9 +509,89 @@ const redeemAchievement = (sequence) => {
   };
 };
 
+/**
+ * Add a talk
+ */
+const addTalk = (
+  talkOptions = {
+    title: undefined,
+    description: undefined,
+    displayUrl: undefined,
+    downloadUrl: undefined,
+    path: undefined,
+    url: undefined,
+  }
+) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.PERSON_TALK_ADD_REQUEST });
+
+      const state = getState();
+
+      let personName;
+
+      console.log(state);
+
+      try {
+        personName = extractNameFromPersonSlug(state.user.user.person.slug);
+      } catch {
+        throw new Error("Something went wrong");
+      }
+
+      const talk = await INTEL_SNEK.talk.addTalk({ personName, talkOptions });
+
+      dispatch({
+        type: Action.PERSON_TALK_ADD_SUCCESS,
+        payload: talk,
+      });
+
+      return talk;
+    } catch (ex) {
+      dispatch({
+        type: Action.PERSON_TALK_ADD_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Adding talk failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
+/**
+ * Delete a talk
+ */
+const deleteTalk = (id) => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.PERSON_TALK_DELETE_REQUEST });
+
+      console.log("DELETING", id);
+
+      const remainingTalks = await INTEL_SNEK.talk.deleteTalk({ talkId: id });
+
+      dispatch({
+        type: Action.PERSON_TALK_DELETE_SUCCESS,
+        payload: remainingTalks,
+      });
+    } catch (ex) {
+      dispatch({
+        type: Action.PERSON_TALK_DELETE_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Deleting talk failed`,
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
 //#endregion
 //#region > Exports
 export {
+  getPerson,
   updateSettings,
   addMetaLink,
   deleteMetaLink,
@@ -496,5 +606,7 @@ export {
   like,
   unlike,
   redeemAchievement,
+  addTalk,
+  deleteTalk,
 };
 //#endregion

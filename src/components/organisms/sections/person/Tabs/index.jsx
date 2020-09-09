@@ -32,7 +32,7 @@ class SoftwareTabs extends React.Component {
   isSameOrigin = () => {
     const { fetchedPerson, loggedUser } = this.props;
 
-    return fetchedPerson.username === loggedUser.username;
+    return fetchedPerson.slug === loggedUser.person.slug;
   };
 
   render() {
@@ -133,7 +133,7 @@ class SoftwareTabs extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.user,
-  fetchedPerson: state.general.fetchedPerson,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {

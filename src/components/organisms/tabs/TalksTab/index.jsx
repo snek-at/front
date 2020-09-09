@@ -22,12 +22,18 @@ import {
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
+//> Additional
+// Used to display the time in a readable format
+import moment from "moment";
 
 //> Actions
 // Functions to send data from the application to the store
 // import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> Style sheet
 import "./talkstab.scss";
+//> Actions
+// Functions to send data from the application to the store
+import { deleteTalk } from "../../../../store/actions/personActions";
 //> Modules
 import { TalkUploadModal } from "../../../molecules/modals";
 //#endregion
@@ -88,7 +94,7 @@ class TalkTab extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {loggedUser.username === fetchedPerson.username && (
+          {loggedUser.person.slug === fetchedPerson.slug && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -110,13 +116,15 @@ class TalkTab extends React.Component {
                     <MDBCardHeader className="lead mb-1">
                       <MDBRow>
                         <MDBCol md="11">
-                          {talk.title.length > 25
-                            ? talk.title.substring(0, 25) + "..."
+                          {talk.title?.length > 25
+                            ? talk.title?.substring(0, 25) + "..."
                             : talk.title}
                         </MDBCol>
                         <MDBCol md="1">
-                          {loggedUser.username === fetchedPerson.username && (
-                            <small onClick={() => this.props.deleteTalk(talk)}>
+                          {loggedUser.person.slug === fetchedPerson.slug && (
+                            <small
+                              onClick={() => this.props.deleteTalk(talk.id)}
+                            >
                               <MDBIcon
                                 icon="trash-alt"
                                 className="black-text font-weight-bold"
@@ -163,7 +171,8 @@ class TalkTab extends React.Component {
                           likes
                           <br />
                           <small className="text-muted">
-                            published on {talk.social.date}
+                            published on{" "}
+                            {moment(talk.createdAt).format("DD.MM.YYYY")}
                           </small>
                         </span>
                       )}
@@ -188,9 +197,6 @@ class TalkTab extends React.Component {
                             src={talk.repository?.avatarUrl}
                             alt={talk.repository?.name}
                           />
-                          <small>
-                            Owned by {talk.repository?.owner.username}
-                          </small>
                         </div>
                       </a>
                     </MDBCardFooter>
@@ -214,11 +220,11 @@ class TalkTab extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.user,
-  fetchedPerson: state.general.fetchedPerson,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { deleteTalk: (talk) => dispatch(talk) };
+  return { deleteTalk: (id) => dispatch(deleteTalk(id)) };
 };
 //#endregion
 

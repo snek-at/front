@@ -258,7 +258,7 @@ class InfoCard extends React.Component {
                 </>
               ) : (
                 <small>
-                  {fetchedPerson.username} hasn't joined an organisation yet.
+                  {fetchedPerson.title} hasn't joined an organisation yet.
                 </small>
               )}
             </div>
@@ -326,7 +326,7 @@ class InfoCard extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  fetchedPerson: state.general.fetchedPerson,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
