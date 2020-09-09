@@ -65,7 +65,7 @@ class Navbar extends React.Component {
 
   render() {
     const { location, loggedUser } = this.props;
-    const avatarUrl = loggedUser.person?.avatarImage?.src;
+    const avatarUrl = loggedUser?.person?.avatarImage?.src;
 
     return (
       <MDBNavbar color="light" light expand="md">

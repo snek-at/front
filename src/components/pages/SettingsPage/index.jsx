@@ -83,7 +83,7 @@ class SettingsPage extends React.Component {
       });
     }
 
-    if (loggedUser.person && !this.state.person) {
+    if (loggedUser?.person && !this.state.person) {
       const {
         avatarImage,
         bio,
@@ -100,7 +100,7 @@ class SettingsPage extends React.Component {
         status,
         websiteUrl,
         workplace,
-      } = loggedUser.person;
+      } = loggedUser?.person;
 
       this.setState({
         person: {
@@ -164,7 +164,7 @@ class SettingsPage extends React.Component {
 
   checkIfChanged = () => {
     if (
-      JSON.stringify(this.props.loggedUser.person) !==
+      JSON.stringify(this.props.loggedUser?.person) !==
       JSON.stringify(this.state.person)
     ) {
       return true;
@@ -477,7 +477,7 @@ class SettingsPage extends React.Component {
                               <MDBSelectOption value="">
                                 Default
                               </MDBSelectOption>
-                              {loggedUser.person.tids.map((tid, i) => {
+                              {loggedUser?.person?.tids.map((tid, i) => {
                                 let name = "Unnamed";
                                 switch (tid) {
                                   case "9d88bda4657dcf17581ee91dfe6ab2a3":

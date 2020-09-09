@@ -94,7 +94,7 @@ class TalkTab extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {loggedUser.person.slug === fetchedPerson.slug && (
+          {loggedUser?.person?.slug === fetchedPerson.slug && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -121,7 +121,7 @@ class TalkTab extends React.Component {
                             : talk.title}
                         </MDBCol>
                         <MDBCol md="1">
-                          {loggedUser.person.slug === fetchedPerson.slug && (
+                          {loggedUser?.person?.slug === fetchedPerson.slug && (
                             <small
                               onClick={() => this.props.deleteTalk(talk.id)}
                             >

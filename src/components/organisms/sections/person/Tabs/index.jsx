@@ -32,7 +32,7 @@ class SoftwareTabs extends React.Component {
   isSameOrigin = () => {
     const { fetchedPerson, loggedUser } = this.props;
 
-    return fetchedPerson.slug === loggedUser.person.slug;
+    return fetchedPerson.slug === loggedUser?.person?.slug;
   };
 
   render() {
