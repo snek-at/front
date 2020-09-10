@@ -13,6 +13,8 @@ import authReducer from "./authReducers";
 import generalReducer from "./generalReducers";
 // User
 import userReducer from "./userReducers";
+// Page
+import pageReducer from "./pageReducers";
 //#endregion
 
 //#region > Config
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
   general: generalReducer,
   // User data
   user: userReducer,
+  // Page
+  pages: pageReducer,
 });
 //#endregion
 
