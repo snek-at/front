@@ -331,10 +331,14 @@ class InfoCard extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   fetchedPerson: state.person.fetchedPerson,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    follow: (personToFollow) => dispatch(follow(personToFollow)),
+    unfollow: (personToUnfollow) => dispatch(unfollow(personToUnfollow)),
+  };
 };
 //#endregion
 
