@@ -43,7 +43,24 @@ class InfoCard extends React.Component {
     fetchedPerson: null,
   };
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    const { fetchedPerson } = this.props;
+
+    this.setState({
+      fetchedPerson: fetchedPerson,
+    });
+  };
+
+  componentDidUpdate = () => {
+    const { fetchedPerson } = this.props;
+
+    if (fetchedPerson !== this.state.fetchedPerson) {
+      this.setState({
+        fetchedPerson: fetchedPerson,
+      });
+    }
+  };
+
   follow = (personToFollow) => {
     if (!this.props.loggedUser?.anonymous) {
       this.props.follow(personToFollow).then(() => {
