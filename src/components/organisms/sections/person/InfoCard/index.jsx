@@ -121,6 +121,19 @@ class InfoCard extends React.Component {
 
     return false;
   };
+
+  handleModalClose = () => {
+    if (this.state.showToContinue) {
+      this.setState({
+        showToContinue: false,
+      });
+    } else if (this.state.showFollow) {
+      this.setState({
+        showFollow: false,
+      });
+    }
+  };
+
   render() {
     const { fetchedPerson } = this.props;
 
