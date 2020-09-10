@@ -97,13 +97,7 @@ class SoftwareTabs extends React.Component {
           })}
         </ul>
         <div className="p-3 content">
-          {activeTab === 0 && (
-            // <OverviewTab
-            //   platformData={fetchedUser && fetchedUser.platformData}
-            //   sameOrigin={this.isSameOrigin()}
-            // />
-            <h1></h1>
-          )}
+          {activeTab === 0 && <OverviewTab sameOrigin={this.isSameOrigin()} />}
           {activeTab === 1 && (
             <ProjectTab
               repoList={
