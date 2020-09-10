@@ -8,7 +8,7 @@ import * as Action from "../types";
 
 //#region > Constant Variables
 const INIT_STATE = {
-  enterprise: {
+  page: {
     general: undefined,
     projects: undefined,
     users: undefined,
@@ -19,7 +19,7 @@ const INIT_STATE = {
 //#endregion
 
 //#region > Reducers
-const generalReducer = (state = INIT_STATE, action) => {
+const enterpriseReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     //> General Enterprise
     case Action.ENTERPRISE_GENERAL_FETCH_REQUEST:
@@ -27,16 +27,16 @@ const generalReducer = (state = INIT_STATE, action) => {
     case Action.ENTERPRISE_GENERAL_FETCH_SUCCESS:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           general: action.payload,
         },
       };
     case Action.ENTERPRISE_GENERAL_FETCH_FAILURE:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           general: undefined,
         },
         error: action.payload,
@@ -48,16 +48,16 @@ const generalReducer = (state = INIT_STATE, action) => {
     case Action.ENTERPRISE_PROJECTS_FETCH_SUCCESS:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           projects: action.payload,
         },
       };
     case Action.ENTERPRISE_PROJECTS_FETCH_FAILURE:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           projects: undefined,
         },
         error: action.payload,
@@ -69,16 +69,16 @@ const generalReducer = (state = INIT_STATE, action) => {
     case Action.ENTERPRISE_USERS_FETCH_SUCCESS:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           users: action.payload,
         },
       };
     case Action.ENTERPRISE_USERS_FETCH_FAILURE:
       return {
         ...state,
-        enterprise: {
-          ...state.enterprise,
+        page: {
+          ...state.page,
           users: undefined,
         },
         error: action.payload,
@@ -92,5 +92,5 @@ const generalReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
-export default generalReducer;
+export default enterpriseReducer;
 //#endregion

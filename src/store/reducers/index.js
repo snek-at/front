@@ -15,6 +15,8 @@ import personReducers from "./personReducers";
 import generalReducers from "./generalReducers";
 // Talk
 import talkReducer from "./talkReducers";
+// Enterprise
+import enterpriseReducer from "./enterpriseReducers";
 
 //#endregion
 
@@ -30,6 +32,8 @@ const rootReducer = combineReducers({
   general: generalReducers,
   // Talk data
   talk: talkReducer,
+  // Enterprise data
+  enterprise: enterpriseReducer,
 });
 //#endregion
 
