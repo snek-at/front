@@ -70,7 +70,7 @@ const getAchievements = () => {
     try {
       dispatch({ type: Action.GENERAL_ACHIEVEMENTS_FETCH_REQUEST });
 
-      const achievements = await INTEL_SNEK.achievements.all();
+      const achievements = await INTEL_SNEK.achievement.all();
 
       dispatch({
         type: Action.GENERAL_ACHIEVEMENTS_FETCH_SUCCESS,

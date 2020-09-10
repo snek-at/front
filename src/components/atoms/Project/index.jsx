@@ -43,10 +43,10 @@ class Project extends React.Component {
               </small>
             </div>
             <div className="pt-3">
-              {repo.languages.length > 0 && (
+              {repo.languages?.length > 0 && (
                 <LanguageChart languages={repo.languages} />
               )}
-              {repo.languages.length > 0 && (
+              {repo.languages?.length > 0 && (
                 <small className="text-left text-muted">
                   <MDBIcon
                     icon="square"

@@ -27,6 +27,7 @@ import {
   ErrorBoundary,
 } from "../../../atoms";
 import { MovableBoundary } from "../../../molecules";
+import { updateSettings } from "../../../../store/actions/personActions";
 //#endregion
 
 //#region > Constant Variables
@@ -61,7 +62,7 @@ const pinned = [
 /** @class This component implements the overview tab */
 class OverviewTab extends React.Component {
   state = {
-    selectedYear: undefined,
+    selectedYearIndex: undefined,
     edit: false,
   };
 
@@ -75,24 +76,39 @@ class OverviewTab extends React.Component {
     });
   };
 
-  handleEditClick = (platformData) => {
+  handleEditClick = (movablePool) => {
     if (this.state.edit) {
-      this.props.writeCache(platformData);
+      console.log(movablePool);
+
+      this.props.saveSettings({ movablePool: JSON.stringify(movablePool) });
     }
 
     this.setState({ edit: !this.state.edit });
   };
 
   render() {
-    const { fetchedUser, sameOrigin } = this.props;
-    const platformData = fetchedUser.platformData;
+    const { fetchedPerson, sameOrigin } = this.props;
 
-    // Create empty pool if there isn't already one
-    if (!fetchedUser.platformData.user.movablePool) {
-      fetchedUser.platformData.user.movablePool = {};
-    }
+    // // Create empty pool if there isn't already one
+    // if (!fetchedUser.platformData.user.movablePool) {
+    //   fetchedUser.platformData.user.movablePool = {};
+    // }
 
-    const movablePool = fetchedUser.platformData.user.movablePool;
+    const {
+      currentStatistic,
+      yearsStatistic,
+      languages,
+    } = fetchedPerson.person;
+
+    const {
+      displayProgrammingLanguages,
+      display2dCalendar,
+      display3dCalendar,
+    } = fetchedPerson;
+
+    console.log(display2dCalendar, display3dCalendar);
+
+    let platformData = "";
 
     return (
       <>
@@ -103,7 +119,7 @@ class OverviewTab extends React.Component {
               <MDBBtn
                 color={this.state.edit ? "success" : "green"}
                 size="md"
-                onClick={() => this.handleEditClick(platformData)}
+                onClick={() => this.handleEditClick(fetchedPerson.movablePool)}
               >
                 {this.state.edit ? (
                   <span>
@@ -117,14 +133,14 @@ class OverviewTab extends React.Component {
             </div>
           )}
           <MovableBoundary
-            pool={movablePool}
+            pool={fetchedPerson.movablePool}
             uid="overview"
             edit={this.state.edit}
             items={[
               <>
-                {platformData && (
+                {languages && (
                   <MDBRow className="text-center text-md-left mb-4">
-                    {platformData.statistic.languages.map((language, i) => {
+                    {languages?.map((language, i) => {
                       if (i < 6) {
                         return (
                           <MDBCol md="4" key={i}>
@@ -163,80 +179,80 @@ class OverviewTab extends React.Component {
                 )}
               </>,
               <>
-                {platformData &&
-                  (platformData.user.settings.show3DDiagram ||
-                    platformData.user.settings.show2DDiagram) && (
-                    <div className="text-right year-select">
-                      {platformData.statistic.years.map((year, i) => {
-                        return (
-                          <MDBBtn
-                            color="white"
-                            key={i}
-                            size="md"
-                            className={
-                              year.year === this.state.selectedYear
-                                ? "selected"
-                                : undefined
-                            }
-                            onClick={() =>
-                              this.setState({ selectedYear: year.year })
-                            }
-                          >
-                            {year.year}
-                          </MDBBtn>
-                        );
-                      })}
-                      <MDBBtn
-                        color="white"
-                        size="md"
-                        className={
-                          this.state.selectedYear === undefined
-                            ? "selected"
-                            : undefined
-                        }
-                        onClick={() =>
-                          this.setState({ selectedYear: undefined })
-                        }
-                      >
-                        Current
-                      </MDBBtn>
-                    </div>
-                  )}
+                {(display3dCalendar || display3dCalendar) && (
+                  <div className="text-right year-select">
+                    {yearsStatistic.map((year, i) => {
+                      return (
+                        <MDBBtn
+                          color="white"
+                          key={i}
+                          size="md"
+                          className={
+                            i === this.state.selectedYearIndex
+                              ? "selected"
+                              : undefined
+                          }
+                          onClick={() =>
+                            this.setState({ selectedYearIndex: i })
+                          }
+                        >
+                          {this.state.selectedYearIndex}
+                        </MDBBtn>
+                      );
+                    })}
+                    <MDBBtn
+                      color="white"
+                      size="md"
+                      className={
+                        this.state.selectedYearIndex === undefined
+                          ? "selected"
+                          : undefined
+                      }
+                      onClick={() =>
+                        this.setState({ selectedYearIndex: undefined })
+                      }
+                    >
+                      Current
+                    </MDBBtn>
+                  </div>
+                )}
               </>,
               <>
-                {platformData && platformData.user.settings.show3DDiagram && (
+                {display3dCalendar && (
                   <Calendar3D
-                    platformData={platformData}
-                    year={this.state.selectedYear}
+                    currentStatistic={currentStatistic}
+                    yearsStatistic={yearsStatistic}
+                    year={this.state.selectedYearIndex}
                   />
                 )}
               </>,
               <>
-                {platformData && platformData.user.settings.show2DDiagram && (
+                {display2dCalendar && (
                   <Calendar2D
-                    platformData={platformData}
-                    year={this.state.selectedYear}
+                    currentStatistic={currentStatistic}
+                    yearsStatistic={yearsStatistic}
+                    year={this.state.selectedYearIndex}
                     selectDay={this.selectDay}
                   />
                 )}
               </>,
               <div className="interchange-charts">
                 <MovableBoundary
-                  pool={movablePool}
+                  pool={fetchedPerson.movablePool}
                   uid="contribtype"
                   edit={this.state.edit}
                   items={[
                     <>
                       <p className="lead">Contribution Types</p>
-                      {platformData &&
-                        !platformData.user.settings.showContribDiagram && (
-                          <div className="mt-5">
-                            <ContribRadar
-                              statistic={platformData.statistic}
-                              year={this.state.selectedYear}
-                            />
-                          </div>
-                        )}
+                      {true && (
+                        <div className="mt-5">
+                          <ContribRadar
+                            currentStatistic={currentStatistic}
+                            yearsStatistic={yearsStatistic}
+                            year={this.state.selectedYearIndex}
+                          />
+                        </div>
+                      )}
                     </>,
                     <>
                       <p className="lead">
@@ -249,8 +265,9 @@ class OverviewTab extends React.Component {
                       </p>
                       <p className="text-muted mb-0">Weekly overview</p>
                       <LatestActivity
-                        statistic={platformData.statistic}
-                        year={this.state.selectedYear}
+                        currentStatistic={currentStatistic}
+                        yearsStatistic={yearsStatistic}
+                        year={this.state.selectedYearIndex}
                         activity={this.state.activity}
                       />
                     </>,
@@ -268,20 +285,14 @@ class OverviewTab extends React.Component {
 }
 //#endregion
 
-//#region > PropTypes
-OverviewTab.propTypes = {
-  platformData: PropTypes.object.isRequired,
-};
-//#endregion
-
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  fetchedUser: state.user.fetchedUser,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    writeCache: (platformData) => dispatch(platformData),
+    saveSettings: (nextSettings) => dispatch(updateSettings(nextSettings)),
   };
 };
 //#endregion

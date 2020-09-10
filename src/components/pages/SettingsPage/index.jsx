@@ -27,6 +27,8 @@ import {
   MDBMask,
   MDBSelectInput,
   MDBBtn,
+  MDBListGroup,
+  MDBListGroupItem,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
@@ -65,12 +67,9 @@ class SettingsPage extends React.Component {
     activeItem: 0,
     tabItems: [
       { name: "Profile", icon: "" },
+      { name: "Connections", icon: "" },
       { name: "Customization", icon: "" },
       { name: "Account", icon: "" },
-      { name: "Connections", icon: "" },
-      { name: "Blocked users", icon: "" },
-      { name: "Billing", icon: "" },
-      { name: "Security", icon: "" },
     ],
   };
 
@@ -103,6 +102,7 @@ class SettingsPage extends React.Component {
         status,
         websiteUrl,
         workplace,
+        profiles,
       } = loggedUser?.person;
 
       this.setState({
@@ -123,6 +123,7 @@ class SettingsPage extends React.Component {
           status,
           websiteUrl,
           workplace,
+          profiles,
         },
       });
     }
@@ -179,6 +180,19 @@ class SettingsPage extends React.Component {
       });
     }
   };
+
+  renderProfileTypeSwitch(param) {
+    switch (param) {
+      case "GITHUB":
+        return "github";
+      case "GITLAB":
+        return "gitlab";
+      case "INSTAGRAM":
+        return "instagram";
+      default:
+        return "";
+    }
+  }
 
   render() {
     const { loggedUser } = this.props;
@@ -247,7 +261,7 @@ class SettingsPage extends React.Component {
               <MDBCol md="8">
                 <MDBTabContent activeItem={activeItem}>
                   <MDBTabPane tabId={0}>
-                    <h2>Profile</h2>
+                    <h5>Profile</h5>
                     <Dropzone onDrop={this.onDrop} accept="image/*">
                       {({ getRootProps, getInputProps }) => (
                         <div {...getRootProps()} className="avatar">
@@ -455,6 +469,87 @@ class SettingsPage extends React.Component {
                     </MDBRow>
                   </MDBTabPane>
                   <MDBTabPane tabId={1}>
+                    <h5>Connections</h5>
+                    <MDBListGroup>
+                      {person.profiles?.map((profile, p) => {
+                        return (
+                          <MDBListGroupItem
+                            className="d-flex justify-content-between align-items-center clickable"
+                            // onClick={
+                            //   // this.setState({
+                            //   //   modal: true,
+                            //   //   selectedGitLab: gitlab,
+                            //   //   authorizedUser: gitlab.username,
+                            //   // })
+                            // }
+                            key={p}
+                          >
+                            <div>
+                              <td>
+                                <a
+                                  href={profile.sourceUrl}
+                                  target="_blank"
+                                  className="mr-3"
+                                >
+                                  <MDBIcon
+                                    fab
+                                    icon={this.renderProfileTypeSwitch(
+                                      profile.sourceType
+                                    )}
+                                    li
+                                    size="4x"
+                                  />
+                                </a>
+                              </td>
+                              <code>
+                                {profile.username ? profile.username : null}
+                              </code>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center">
+                              <div className="small d-inline-block text-center px-2">
+                                <span className="text-muted">Type</span>
+                                <span className="d-block">
+                                  {profile.sourceType}
+                                </span>
+                              </div>
+                              <div className="small d-inline-block text-center ml-2">
+                                <span className="text-muted">Expired</span>
+                                <span className="d-block">
+                                  <MDBIcon
+                                    icon="circle"
+                                    size="lg"
+                                    className={
+                                      profile.active
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }
+                                  />
+                                </span>
+                              </div>
+                              <div className="small d-inline-block text-center ml-2">
+                                <span className="text-muted">Active</span>
+                                <span className="d-block">
+                                  <MDBIcon
+                                    icon="circle"
+                                    size="lg"
+                                    className={
+                                      profile.active
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </MDBListGroupItem>
+                        );
+                      })}
+                    </MDBListGroup>
+                    <div class="text-right">
+                      <MDBBtn color="green">Add</MDBBtn>
+                    </div>
+                  </MDBTabPane>
+                  <MDBTabPane tabId={2}>
                     <h5>Customization</h5>
                     <div className="personal-data">
                       <p className="font-weight-bold">Choose your theme</p>
@@ -494,8 +589,23 @@ class SettingsPage extends React.Component {
                       </MDBRow>
                     </div>
                   </MDBTabPane>
-                  <MDBTabPane tabId={2}>
-                    <h5>Panel 3</h5>
+                  <MDBTabPane tabId={3}>
+                    <h5>Account</h5>
+                    <div className="personal-data">
+                      <p className="font-weight-bold">Username</p>
+                      <MDBRow>
+                        <MDBCol md="6">
+                          <input
+                            type="text"
+                            name="firstName"
+                            className="form-control"
+                            // onChange={this.handleChange}
+                            value={loggedUser.username}
+                            // placeholder="Firstname"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                    </div>
                   </MDBTabPane>
                 </MDBTabContent>
               </MDBCol>

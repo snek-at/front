@@ -154,13 +154,10 @@ const deleteMetaLink = (id) => {
   };
 };
 
-const getProfiles = () => {
+const getProfiles = (personName) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILES_FETCH_REQUEST });
-
-      const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
       const profiles = await INTEL_SNEK.person.profiles({
         personName,
@@ -170,6 +167,8 @@ const getProfiles = () => {
         type: Action.PERSON_PROFILES_FETCH_SUCCESS,
         payload: profiles,
       });
+
+      return profiles;
     } catch (ex) {
       dispatch({
         type: Action.PERSON_PROFILES_FETCH_FAILURE,
@@ -483,7 +482,7 @@ const redeemAchievement = (sequence) => {
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      const res = await INTEL_SNEK.achievements.redeem({
+      const res = await INTEL_SNEK.achievement.redeem({
         personName,
         sequence,
       });
@@ -536,8 +535,6 @@ const addTalk = (
 
       let personName;
 
-      console.log(state);
-
       try {
         personName = extractNameFromPersonSlug(state.user.user.person.slug);
       } catch {
@@ -572,8 +569,6 @@ const deleteTalk = (id) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_TALK_DELETE_REQUEST });
-
-      console.log("DELETING", id);
 
       const remainingTalks = await INTEL_SNEK.talk.deleteTalk({ talkId: id });
 

@@ -117,19 +117,18 @@ class LatestActivity extends React.Component {
   };
 
   calculateSources = (year, activity) => {
-    const { statistic } = this.props;
+    const { yearsStatistic, currentStatistic } = this.props;
 
-    if (statistic) {
+    if (yearsStatistic && currentStatistic) {
       // Real data
       let contribData, week, lastWeek, lastWeekValues;
 
-      if (!year) {
-        contribData = statistic.current;
+      if (year) {
+        contribData = yearsStatistic[year];
       } else {
-        contribData = statistic.years.find((element) => element.year === year);
+        contribData = currentStatistic;
       }
-
-      const weeks = contribData.calendar.weeks;
+      const weeks = JSON.parse(contribData.calendarData).weeks;
 
       if (!activity) {
         week = weeks[weeks.length - 1];
