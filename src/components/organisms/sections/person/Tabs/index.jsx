@@ -48,8 +48,8 @@ class SoftwareTabs extends React.Component {
       {
         title: "Projects",
         visible: true,
-        pill: fetchedPerson?.person?.repositories
-          ? fetchedPerson?.person?.repositories.length
+        pill: fetchedPerson?.person?.projects
+          ? fetchedPerson?.person?.projects.length
           : "0",
         notification: false,
       },
@@ -107,8 +107,8 @@ class SoftwareTabs extends React.Component {
           {activeTab === 1 && (
             <ProjectTab
               repoList={
-                fetchedPerson?.person.repositories
-                  ? fetchedPerson.person.repositories
+                fetchedPerson?.person.projects
+                  ? fetchedPerson.person.projects
                   : []
               }
             />

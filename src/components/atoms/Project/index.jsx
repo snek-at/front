@@ -35,18 +35,18 @@ class Project extends React.Component {
               />
               <small>
                 @
-                {repo.owner.username ? (
-                  repo.owner.username
+                {repo.owner.name ? (
+                  repo.owner.name
                 ) : (
                   <span className="text-muted">unknown</span>
                 )}
               </small>
             </div>
             <div className="pt-3">
-              {repo.languages.length > 0 && (
+              {repo.languages?.length > 0 && (
                 <LanguageChart languages={repo.languages} />
               )}
-              {repo.languages.length > 0 && (
+              {repo.languages?.length > 0 && (
                 <small className="text-left text-muted">
                   <MDBIcon
                     icon="square"
