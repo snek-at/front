@@ -27,6 +27,7 @@ import {
   ErrorBoundary,
 } from "../../../atoms";
 import { MovableBoundary } from "../../../molecules";
+import { updateSettings } from "../../../../store/actions/personActions";
 //#endregion
 
 //#region > Constant Variables
@@ -75,13 +76,15 @@ class OverviewTab extends React.Component {
     });
   };
 
-  // handleEditClick = (platformData) => {
-  //   if (this.state.edit) {
-  //     this.props.writeCache(platformData);
-  //   }
+  handleEditClick = (movablePool) => {
+    if (this.state.edit) {
+      console.log(movablePool);
 
-  //   this.setState({ edit: !this.state.edit });
-  // };
+      this.props.saveSettings({ movablePool: JSON.stringify(movablePool) });
+    }
+
+    this.setState({ edit: !this.state.edit });
+  };
 
   render() {
     const { fetchedPerson, sameOrigin } = this.props;
@@ -91,7 +94,6 @@ class OverviewTab extends React.Component {
     //   fetchedUser.platformData.user.movablePool = {};
     // }
 
-    const movablePool = {};
     const {
       currentStatistic,
       yearsStatistic,
@@ -117,7 +119,7 @@ class OverviewTab extends React.Component {
               <MDBBtn
                 color={this.state.edit ? "success" : "green"}
                 size="md"
-                // onClick={() => this.handleEditClick(platformData)}
+                onClick={() => this.handleEditClick(fetchedPerson.movablePool)}
               >
                 {this.state.edit ? (
                   <span>
@@ -131,7 +133,7 @@ class OverviewTab extends React.Component {
             </div>
           )}
           <MovableBoundary
-            pool={movablePool}
+            pool={fetchedPerson.movablePool}
             uid="overview"
             edit={this.state.edit}
             items={[
@@ -236,7 +238,7 @@ class OverviewTab extends React.Component {
               </>,
               <div className="interchange-charts">
                 <MovableBoundary
-                  pool={movablePool}
+                  pool={fetchedPerson.movablePool}
                   uid="contribtype"
                   edit={this.state.edit}
                   items={[
@@ -290,7 +292,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    writeCache: (platformData) => dispatch(platformData),
+    saveSettings: (nextSettings) => dispatch(updateSettings(nextSettings)),
   };
 };
 //#endregion

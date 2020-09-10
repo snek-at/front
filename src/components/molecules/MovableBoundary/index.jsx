@@ -62,8 +62,6 @@ class MovableBoundary extends React.Component {
       });
 
       indexArray = baseIndexArray;
-    } else {
-      indexArray = JSON.parse(indexArray);
     }
 
     this.setState({ indexArray });
