@@ -262,20 +262,20 @@ class InfoCard extends React.Component {
               )}
             </div>
           )}
-          {fetchedPerson.person.statistic?.languages?.length > 0 && (
+          {fetchedPerson.person.languages?.length > 0 && (
             <div className="px-1">
               <hr />
               <p>Top languages</p>
               <LanguageChart
-                languages={fetchedPerson.person.statistic.languages}
+                languages={fetchedPerson.person.languages}
                 height={10}
               />
-              {fetchedPerson.person.statistic.languages
+              {fetchedPerson.person.languages
                 .slice(
                   0,
                   this.state.limitLanguages
                     ? 3
-                    : fetchedPerson.person.statistic.languages.length - 1
+                    : fetchedPerson.person.languages.length - 1
                 )
                 .map((language, i) => {
                   return (
@@ -299,7 +299,7 @@ class InfoCard extends React.Component {
                   );
                 })}
               {this.state.limitLanguages &&
-              fetchedPerson.person.statistic.languages.length > 3 ? (
+              fetchedPerson.person.languages.length > 3 ? (
                 <p
                   className="small clickable blue-text d-inline"
                   onClick={() => this.setState({ limitLanguages: false })}
