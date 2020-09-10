@@ -35,7 +35,13 @@ import "./infocard.scss";
 //#region > Components
 /** @class This component displays personal information and status of a user */
 class InfoCard extends React.Component {
-  state = { limitLanguages: true };
+  state = {
+    limitLanguages: true,
+    showToContinue: false,
+    showFollow: false,
+    followType: "",
+    fetchedPerson: null,
+  };
 
   componentDidMount = () => {};
 
