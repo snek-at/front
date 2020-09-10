@@ -243,9 +243,9 @@ class OverviewTab extends React.Component {
                   edit={this.state.edit}
                   items={[
                     <>
-                      <p className="lead">Contribution Types</p>
                       {true && currentStatistic && yearsStatistic && (
                         <div className="mt-5">
+                          <p className="lead">Contribution Types</p>
                           <ContribRadar
                             currentStatistic={currentStatistic}
                             yearsStatistic={yearsStatistic}
@@ -255,21 +255,25 @@ class OverviewTab extends React.Component {
                       )}
                     </>,
                     <>
-                      <p className="lead">
-                        Activity
-                        <MDBIcon
-                          icon="angle-double-up"
-                          className="green-text ml-2"
-                          size="md"
-                        />
-                      </p>
-                      <p className="text-muted mb-0">Weekly overview</p>
-                      <LatestActivity
-                        currentStatistic={currentStatistic}
-                        yearsStatistic={yearsStatistic}
-                        year={this.state.selectedYearIndex}
-                        activity={this.state.activity}
-                      />
+                      {currentStatistic && yearsStatistic && (
+                        <div>
+                          <p className="lead">
+                            Activity
+                            <MDBIcon
+                              icon="angle-double-up"
+                              className="green-text ml-2"
+                              size="md"
+                            />
+                          </p>
+                          <p className="text-muted mb-0">Weekly overview</p>
+                          <LatestActivity
+                            currentStatistic={currentStatistic}
+                            yearsStatistic={yearsStatistic}
+                            year={this.state.selectedYearIndex}
+                            activity={this.state.activity}
+                          />
+                        </div>
+                      )}
                     </>,
                   ]}
                   movementAxis="x"
