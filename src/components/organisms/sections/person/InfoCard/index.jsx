@@ -65,6 +65,28 @@ class InfoCard extends React.Component {
     }
   };
 
+  unfollow = (personToUnfollow) => {
+    if (!this.props.loggedUser?.anonymous) {
+      this.props.unfollow(personToUnfollow).then(() => {
+        let fetchedPerson = this.state.fetchedPerson;
+        let followedBy = [];
+
+        const { loggedUser } = this.props;
+
+        for (let count in fetchedPerson.followedBy) {
+          if (fetchedPerson.followedBy[count].slug !== loggedUser.person.slug) {
+            followedBy.push(fetchedPerson.followedBy[count]);
+          }
+        }
+
+        fetchedPerson.followedBy = followedBy;
+
+        this.setState({ fetchedPerson });
+      });
+    } else {
+      this.setState({ showToContinue: true });
+    }
+  };
   render() {
     const { fetchedPerson } = this.props;
 
