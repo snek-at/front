@@ -14,6 +14,8 @@ import {
   MDBPopoverHeader,
   MDBIcon,
   MDBTooltip,
+  MDBRow,
+  MDBCol,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
