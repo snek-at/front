@@ -55,20 +55,10 @@ class PersonPage extends React.Component {
   };
 
   render() {
-    const { fetchedPerson } = this.props;
+    const { fetchedPerson, match } = this.props;
+    const username = match?.params?.username;
 
-    if (!fetchedPerson) {
-      return (
-        <div className="text-center my-5 py-5">
-          <div className="spinner-grow text-success" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    } else if (fetchedPerson) {
-      //#TSID11
-      //console.dir("PROFILE PAGE RENDER SUCCESS", this.props.fetchedUser);
-
+    if (fetchedPerson?.slug.split("-")[1] === username) {
       return (
         <div id="profile">
           <MDBContainer className="py-5">
@@ -84,7 +74,13 @@ class PersonPage extends React.Component {
         </div>
       );
     } else {
-      return <p>Usecase not mapped</p>;
+      return (
+        <div className="text-center my-5 py-5">
+          <div className="spinner-grow text-success" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
     }
   }
 }
