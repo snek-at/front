@@ -110,8 +110,8 @@ class TalkTab extends React.Component {
           )}
         </MDBRow>
         <MDBRow className="talks-list">
-          {talkList &&
-            talkList.map((talk, i) => {
+          {talks &&
+            talks.map((talk, i) => {
               return (
                 <MDBCol md="6" key={i} className="mt-3">
                   <MDBCard>
@@ -151,7 +151,7 @@ class TalkTab extends React.Component {
                               src={talk.displayUrl}
                               onLoad={() => {
                                 clearInterval(talk.interval.timeoutId);
-                                talkList[i].interval.loaded = true;
+                                talks[i].interval.loaded = true;
                               }}
                               frameBorder="0"
                             />
