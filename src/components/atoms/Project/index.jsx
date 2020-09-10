@@ -35,8 +35,8 @@ class Project extends React.Component {
               />
               <small>
                 @
-                {repo.owner.name ? (
-                  repo.owner.name
+                {repo.owner.username ? (
+                  repo.owner.username
                 ) : (
                   <span className="text-muted">unknown</span>
                 )}
