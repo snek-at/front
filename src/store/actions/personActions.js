@@ -483,7 +483,7 @@ const redeemAchievement = (sequence) => {
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      const res = await INTEL_SNEK.achievements.redeem({
+      const res = await INTEL_SNEK.achievement.redeem({
         personName,
         sequence,
       });
