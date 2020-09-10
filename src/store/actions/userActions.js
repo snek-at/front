@@ -1,4 +1,8 @@
 //#region > Imports
+//> Additional
+// SHA hashing algorithm
+import { sha256 } from "js-sha256";
+
 //> Action Types
 import * as Action from "../types";
 //> Intel
@@ -17,10 +21,14 @@ const loginAction = (user) => {
     try {
       dispatch({ type: Action.USER_LOGIN_REQUEST });
 
+      if (user?.password) {
+        user.password = sha256(user.password);
+      }
+
       const whoami = await CLIENT_SNEK.session.begin(user);
 
       if (!whoami?.anonymous && whoami?.__typename === "SNEKUser") {
-        dispatch({
+        await dispatch({
           type: Action.USER_LOGIN_SUCCESS,
           payload: {
             username: whoami.username,
@@ -28,7 +36,7 @@ const loginAction = (user) => {
           },
         });
 
-        dispatch(getPerson(whoami.username));
+        await dispatch(getPerson(whoami.username));
       } else if (whoami.anonymous) {
         dispatch({
           type: Action.USER_LOGIN_SUCCESS,
@@ -123,15 +131,14 @@ const register = (
           first_name: firstName,
           last_name: lastName,
           email,
-          password,
+          password: sha256(password),
           redemption_code: redemptionCode,
         },
       });
+      console.log(registration);
 
-      if (registration.result === "ok") {
+      if (registration.result === "OK") {
         dispatch({ type: Action.USER_PERSON_SIGNUP_SUCCESS });
-
-        dispatch(loginAction({ username, password }));
       } else {
         dispatch({
           type: Action.USER_PERSON_SIGNUP_FAILURE,
@@ -157,16 +164,16 @@ const register = (
 /**
  * Check if there is already a registered user with the provided username
  */
-const isValidUsername = async (username) => {
+const isValidUsername = (username) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.USER_EXISTS_CHECK_REQUEST });
 
-      const exists = await INTEL_SNEK.general.checkUserExists(username);
+      const exists = await INTEL_SNEK.general.checkUserExists({ username });
 
       dispatch({ type: Action.USER_EXISTS_CHECK_SUCCESS });
 
-      return exists;
+      return !exists;
     } catch (ex) {
       dispatch({
         type: Action.USER_EXISTS_CHECK_FAILURE,

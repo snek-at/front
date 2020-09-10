@@ -29,18 +29,17 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdbreact";
-//> OAuth
-import GitHubOAuth from "reactjs-oauth";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
-
 //> Actions
 // Functions to send data from the application to the store
-// import { registerAction } from "../../../../store/actions/userActions";
-// import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
-// import { loginAction } from "../../../../store/actions/authActions";
+import {
+  register,
+  isValidUsername,
+  loginAction,
+} from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -51,12 +50,15 @@ import { connect } from "react-redux";
 class RegisterForm extends React.Component {
   state = {
     loading: false,
+    errors: [],
+    username: "",
     firstname: "",
     lastname: "",
     email: "",
     password1: "",
     password2: "",
-    promoCode: true,
+    redemptionCodeValue: "",
+    redemptionCode: true,
   };
 
   testForError = (id) => {
@@ -112,6 +114,25 @@ class RegisterForm extends React.Component {
     );
   };
 
+  handleCodeChange = (e) => {
+    let code = e.target.value;
+
+    if (code.length <= 14) {
+      if (code.length === 4 || code.length === 9) {
+        code = code + "-";
+      }
+
+      this.setState(
+        {
+          redemptionCodeValue: code.toUpperCase(),
+        },
+        () => this.removeError(9)
+      );
+    } else {
+      return false;
+    }
+  };
+
   removeError = (id) => {
     // Preset errors to local variable
     let errors = this.state.errors;
@@ -135,6 +156,110 @@ class RegisterForm extends React.Component {
     }
   };
 
+  handleSubmit = async () => {
+    const {
+      username,
+      firstname,
+      lastname,
+      email,
+      password1,
+      password2,
+      redemptionCodeValue,
+      redemptionCode,
+    } = this.state;
+    let errors = [];
+
+    // Check if passwords match
+    if (password1 !== "" && password2 !== "" && password1 !== password2) {
+      errors.push({
+        code: 1,
+        msg: "Your passwords do not match.",
+        weight: 10,
+      });
+    }
+
+    if (firstname === "") {
+      errors.push({
+        code: 3,
+        msg: "Please enter your first name.",
+        weight: 8,
+      });
+    }
+
+    if (lastname === "") {
+      errors.push({
+        code: 4,
+        msg: "Please enter your last name.",
+        weight: 8,
+      });
+    }
+
+    if (email === "") {
+      errors.push({
+        code: 5,
+        msg: "Please enter your email.",
+        weight: 9,
+      });
+    }
+
+    const isUsernameTaken = !(await this.props.isValidUsername(username));
+
+    if (username === "" || (username && isUsernameTaken)) {
+      errors.push({
+        code: 6,
+        msg: "Please enter a valid username.",
+        weight: 10,
+      });
+    }
+
+    if (password1 === "") {
+      errors.push({
+        code: 7,
+        msg: "Please enter a password.",
+        weight: 10,
+      });
+    }
+
+    if (password2 === "") {
+      errors.push({
+        code: 8,
+        msg: "Please repeat your password.",
+        weight: 10,
+      });
+    }
+
+    if (redemptionCodeValue === "" && redemptionCode) {
+      errors.push({
+        code: 9,
+        msg: "Please enter your promo code or contact us to receive one.",
+        weight: 5,
+      });
+    }
+
+    if (errors.length === 0) {
+      this.setState(
+        {
+          loading: true,
+        },
+        async () => {
+          console.log("start register");
+          await this.props.register(
+            username,
+            firstname,
+            lastname,
+            email,
+            password1,
+            redemptionCodeValue ? redemptionCodeValue : "none"
+          );
+
+          await this.props.login(username, password1);
+        }
+      );
+    } else {
+      this.setState({ errors });
+    }
+  };
+
   render() {
     const { goTo } = this.props;
 
@@ -145,12 +270,12 @@ class RegisterForm extends React.Component {
           <input
             type="text"
             className={
-              this.testForError(5)
+              this.testForError(6)
                 ? "form-control error mb-2"
                 : "form-control mb-2"
             }
             name="username"
-            onChange={(e) => this.handleChange(e, 5)}
+            onChange={(e) => this.handleChange(e, 6)}
             value={this.state.username}
           />
           <MDBRow className="mb-2">
@@ -225,18 +350,20 @@ class RegisterForm extends React.Component {
         <div className="text-left mt-2">
           <small
             className="blue-text clickable text-md"
-            onClick={() => this.setState({ promoCode: !this.state.promoCode })}
+            onClick={() =>
+              this.setState({ redemptionCode: !this.state.redemptionCode })
+            }
           >
-            {!this.state.promoCode
+            {!this.state.redemptionCode
               ? "I have a promo code"
               : "I don't have a promo code"}
           </small>
         </div>
-        {this.state.promoCode && (
+        {this.state.redemptionCode && (
           <input
-            value={this.state.code}
+            value={this.state.redemptionCodeValue}
             className={
-              this.testForError([9, 1])
+              this.testForError(9)
                 ? "form-control mb-3 error"
                 : "form-control mb-3"
             }
@@ -274,17 +401,28 @@ RegisterForm.propTypes = {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  registrationHistory: state.user.registrationHistory,
-  gitlabServers: state.general.allGitlabServers,
+  test: "",
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (registrationData) => dispatch((registrationData)),
-    login: (user) => dispatch((user)),
-    fetchGitLabServers: () => dispatch(),
+    register: (
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+      redemptionCode
+    ) =>
+      dispatch(
+        register(username, firstName, lastName, email, password, redemptionCode)
+      ),
+    login: (username, password) =>
+      dispatch(loginAction({ username, password })),
+    isValidUsername: (username) => dispatch(isValidUsername(username)),
   };
 };
+
 //#endregion
 
 //#region > Exports
