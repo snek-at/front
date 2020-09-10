@@ -225,10 +225,10 @@ class OverviewTab extends React.Component {
                 )}
               </>,
               <>
-                {display2dCalendar &
-                (
+                {display2dCalendar && (
                   <Calendar2D
-                    platformData={platformData}
+                    currentStatistic={currentStatistic}
+                    yearsStatistic={yearsStatistic}
                     year={this.state.selectedYearIndex}
                     selectDay={this.selectDay}
                   />
@@ -242,15 +242,15 @@ class OverviewTab extends React.Component {
                   items={[
                     <>
                       <p className="lead">Contribution Types</p>
-                      {platformData &&
-                        !platformData.user.settings.showContribDiagram && (
-                          <div className="mt-5">
-                            <ContribRadar
-                              statistic={platformData.statistic}
-                              year={this.state.selectedYearIndex}
-                            />
-                          </div>
-                        )}
+                      {true && (
+                        <div className="mt-5">
+                          <ContribRadar
+                            currentStatistic={currentStatistic}
+                            yearsStatistic={yearsStatistic}
+                            year={this.state.selectedYearIndex}
+                          />
+                        </div>
+                      )}
                     </>,
                     <>
                       <p className="lead">
@@ -263,7 +263,8 @@ class OverviewTab extends React.Component {
                       </p>
                       <p className="text-muted mb-0">Weekly overview</p>
                       <LatestActivity
-                        statistic={platformData.statistic}
+                        currentStatistic={currentStatistic}
+                        yearsStatistic={yearsStatistic}
                         year={this.state.selectedYearIndex}
                         activity={this.state.activity}
                       />

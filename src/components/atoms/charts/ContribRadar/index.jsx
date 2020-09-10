@@ -103,47 +103,39 @@ class ContribRadar extends React.Component {
     }
   };
 
-  calculateSources = (nextPropsYear) => {
-    const { statistic } = this.props;
+  calculateSources = (nextPropsYearIndex) => {
+    const { yearsStatistic, currentStatistic } = this.props;
 
     let totalReviews = 0;
     let totalIssues = 0;
     let totalRequests = 0;
     let totalCommits = 0;
     let totalSources = 1;
-    let year;
+    let contribData;
     let results = [];
 
-    if (nextPropsYear === null) {
-      year = this.props.year;
+    if (nextPropsYearIndex) {
+      contribData = yearsStatistic[nextPropsYearIndex];
     } else {
-      year = nextPropsYear;
+      contribData = currentStatistic;
     }
 
-    if (year) {
-      let selectedYear = statistic.years.find(
-        (element) => element.year === year
-      );
+    let contributionDetails = JSON.parse(contribData.contributionTypeData);
 
-      totalIssues = selectedYear.contributions.issue.share;
-      totalRequests = selectedYear.contributions.pullRequest.share;
-      totalCommits = selectedYear.contributions.commit.share;
-      totalReviews = selectedYear.contributions.pullRequestReview.share;
-    } else {
-      let contributions = statistic.current.contributions;
-
-      totalIssues = contributions.issue.share;
-      totalRequests = contributions.pullRequest.share;
-      totalCommits = contributions.commit.share;
-      totalReviews = contributions.pullRequestReview.share;
-    }
+    totalIssues = contributionDetails.issue.share;
+    totalRequests = contributionDetails.pullRequest.share;
+    totalCommits = contributionDetails.commit.share;
+    totalReviews = contributionDetails.pullRequestReview.share;
 
     let values = [totalReviews, totalIssues, totalRequests, totalCommits];
 
     // Check if the values are valid
     if (values.includes(undefined)) {
+      console.log("UNDEFINED");
       this.fillChart(null);
     } else {
+      console.log("NOT UNDEFINED");
+
       results.push({
         label: "GitHub",
         backgroundColor: "rgba(123, 201, 111,.4)",
