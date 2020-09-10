@@ -471,7 +471,6 @@ class SettingsPage extends React.Component {
                   <MDBTabPane tabId={1}>
                     <h5>Connections</h5>
                     <MDBListGroup>
-                      {console.log(person)}
                       {person.profiles?.map((profile, p) => {
                         return (
                           <MDBListGroupItem

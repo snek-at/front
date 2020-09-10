@@ -36,7 +36,6 @@ class InfoCard extends React.Component {
   render() {
     const { fetchedPerson } = this.props;
 
-    console.log(fetchedPerson);
     return (
       <div className="social">
         <MDBView>

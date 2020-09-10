@@ -158,7 +158,7 @@ const getProfiles = (personName) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILES_FETCH_REQUEST });
-      
+
       const profiles = await INTEL_SNEK.person.profiles({
         personName,
       });
@@ -535,8 +535,6 @@ const addTalk = (
 
       let personName;
 
-      console.log(state);
-
       try {
         personName = extractNameFromPersonSlug(state.user.user.person.slug);
       } catch {
@@ -571,8 +569,6 @@ const deleteTalk = (id) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_TALK_DELETE_REQUEST });
-
-      console.log("DELETING", id);
 
       const remainingTalks = await INTEL_SNEK.talk.deleteTalk({ talkId: id });
 

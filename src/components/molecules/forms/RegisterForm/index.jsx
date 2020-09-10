@@ -242,7 +242,6 @@ class RegisterForm extends React.Component {
           loading: true,
         },
         async () => {
-          console.log("start register");
           await this.props.register(
             username,
             firstname,
