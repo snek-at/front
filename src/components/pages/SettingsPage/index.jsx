@@ -472,7 +472,7 @@ class SettingsPage extends React.Component {
                               <MDBSelectOption value="">
                                 Default
                               </MDBSelectOption>
-                              {loggedUser?.person?.tids.map((tid, i) => {
+                              {loggedUser?.person?.tids?.map((tid, i) => {
                                 let name = "Unnamed";
                                 switch (tid) {
                                   case "9d88bda4657dcf17581ee91dfe6ab2a3":
