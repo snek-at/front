@@ -154,14 +154,11 @@ const deleteMetaLink = (id) => {
   };
 };
 
-const getProfiles = () => {
+const getProfiles = (personName) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILES_FETCH_REQUEST });
-
-      const state = getState();
-      const personName = extractNameFromPersonSlug(state.user.user.person.slug);
-
+      
       const profiles = await INTEL_SNEK.person.profiles({
         personName,
       });
@@ -170,6 +167,8 @@ const getProfiles = () => {
         type: Action.PERSON_PROFILES_FETCH_SUCCESS,
         payload: profiles,
       });
+
+      return profiles;
     } catch (ex) {
       dispatch({
         type: Action.PERSON_PROFILES_FETCH_FAILURE,

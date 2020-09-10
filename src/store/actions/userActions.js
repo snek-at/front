@@ -7,6 +7,9 @@ import { sha256 } from "js-sha256";
 import * as Action from "../types";
 //> Intel
 import INTEL_SNEK from "snek-intel/lib/utils/snek";
+//> Actions
+// Functions to send data from the application to the store
+import { getProfiles } from "./personActions";
 //#endregion
 
 //#region > User Actions
@@ -95,6 +98,8 @@ const getPerson = (personName) => {
       dispatch({ type: Action.USER_PERSON_FETCH_REQUEST });
 
       const person = await INTEL_SNEK.person.get({ personName });
+
+      person.profiles = await dispatch(getProfiles(personName));
 
       dispatch({ type: Action.USER_PERSON_FETCH_SUCCESS, payload: person });
     } catch (ex) {
