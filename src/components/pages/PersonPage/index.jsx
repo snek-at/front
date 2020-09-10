@@ -14,7 +14,11 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getPerson } from "../../../store/actions/personActions";
+import {
+  getPerson,
+  processProfiles,
+} from "../../../store/actions/personActions";
+import { getPerson as getUserPerson } from "../../../store/actions/userActions";
 //> Components
 import { PersonInfoCard, PersonTabs } from "../../organisms";
 //> Style sheet
@@ -26,7 +30,9 @@ import "./person.scss";
  * @todo Add description
  */
 class PersonPage extends React.Component {
-  state = {};
+  state = {
+    cachingDone: false,
+  };
 
   saveSettings = (state) => {
     this.props.saveSettings(state);
@@ -43,7 +49,24 @@ class PersonPage extends React.Component {
     }
   };
 
-  componentDidUpdate() {}
+  componentDidUpdate = async () => {
+    const { fetchedPerson, loggedUser } = this.props;
+
+    if (
+      !this.state.cachingDone &&
+      fetchedPerson &&
+      loggedUser?.person &&
+      fetchedPerson.slug === loggedUser.person.slug
+    ) {
+      await this.props.processProfiles();
+
+      if (this._isMounted) {
+        this.setState({ cachingDone: true }, () =>
+          this.props.getPerson(loggedUser.person.slug.split("-")[1])
+        );
+      }
+    }
+  };
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -94,6 +117,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    processProfiles: () => dispatch(processProfiles()),
+    getUserPerson: (personName) => dispatch(getUserPerson(personName)),
     getPerson: (personName) => dispatch(getPerson(personName)),
   };
 };
