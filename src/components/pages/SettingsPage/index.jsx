@@ -144,12 +144,13 @@ class SettingsPage extends React.Component {
   };
 
   handleChange = (name, value) => {
-    value =
-      name?.target?.type === "checkbox"
-        ? name.target.checked
-        : name.target.value;
-
-    name = name?.target?.name ? name.target.name : name;
+    if (name.target) {
+      value =
+        name?.target?.type === "checkbox"
+          ? name?.target?.checked
+          : name?.target?.value;
+      name = name?.target?.name ? name?.target?.name : name;
+    }
 
     this.setState({
       person: {
