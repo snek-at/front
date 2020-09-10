@@ -512,7 +512,10 @@ class SettingsPage extends React.Component {
                   color="green"
                   onClick={() => {
                     this.setState({ showNotification: true });
-                    this.props.saveSettings(this.state.person);
+                    this.props.saveSettings({
+                      ...this.state.person,
+                      avatarImage: this.state.avatarFile,
+                    });
                   }}
                 >
                   Save Changes
