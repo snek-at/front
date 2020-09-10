@@ -139,6 +139,7 @@ class InfoCard extends React.Component {
 
     console.log(fetchedPerson);
     return (
+      <>
       <div className="social">
         <MDBView>
           <img
@@ -420,6 +421,20 @@ class InfoCard extends React.Component {
           )}
         </div>
       </div>
+        {this.state.showToContinue && (
+          <ToContinueModal {...this.props} closeModal={this.handleModalClose} />
+        )}
+        {this.state.showFollow && (
+          <FollowModal
+            closeModal={this.handleModalClose}
+            fetchedPerson={this.state.fetchedPerson}
+            followType={this.state.followType}
+            follow={this.props.follow}
+            unfollow={this.props.unfollow}
+            loggedUser={this.props.loggedUser}
+          />
+        )}
+      </>
     );
   }
 }
