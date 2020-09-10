@@ -17,6 +17,9 @@ import {
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
+import { addTalk } from "../../../../store/actions/personActions";
+//> Intel
+import { anonfiles } from "snek-intel/lib/utils/upload";
 
 //> Actions
 // Functions to send data from the application to the store
@@ -40,23 +43,29 @@ class TalkUploadModal extends React.Component {
         loading: true,
       });
 
-      this.props
-        .uploadTalk(files[0], {
-          avatarUrl: fetchedUser.platformData.user.avatarUrl,
-          owner: {
-            username: loggedUser.username,
-          },
-        })
-        .then(() => {
-          this.setState({
-            loading: false,
-          });
-
-          this.props.closeModal();
+      this.uploadToAnonfiles(files[0]).then(() => {
+        this.setState({
+          loading: false,
         });
+
+        this.props.closeModal();
+      });
     } else {
       this.setState({ error: ["Only PDF files can be uploaded!"] });
     }
+  };
+
+  uploadToAnonfiles = async (file) => {
+    const res = await anonfiles.uploadFile(file);
+
+    this.props.uploadTalk(
+      res.name,
+      "",
+      "https://docs.google.com/viewer?embedded=true&url=" + res.displayUrl,
+      res.downloadUrl,
+      res.path,
+      res.html_url
+    );
   };
 
   render() {
@@ -160,7 +169,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { uploadTalk: (file) => dispatch(file) };
+  return {
+    uploadTalk: (title, description, displayUrl, downloadUrl, path, url) =>
+      dispatch(
+        addTalk({ title, description, displayUrl, downloadUrl, path, url })
+      ),
+  };
 };
 //#endregion
 

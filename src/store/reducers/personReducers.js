@@ -8,6 +8,7 @@ import * as Action from "../types";
 
 //#region > Constant Variables
 const INIT_STATE = {
+  fetchedPerson: undefined,
   error: undefined,
   errorDetails: undefined,
 };
@@ -31,7 +32,9 @@ const personReducer = (state = INIT_STATE, action) => {
       Action.PERSON_UNFOLLOW_REQUEST |
       Action.PERSON_LIKE_REQUEST |
       Action.PERSON_UNLIKE_REQUEST |
-      Action.PERSON_ACHIEVEMENT_REDEEM_REQUEST:
+      Action.PERSON_ACHIEVEMENT_REDEEM_REQUEST |
+      Action.PERSON_TALK_ADD_REQUEST |
+      Action.PERSON_TALK_DELETE_REQUEST:
       return state;
     case Action.PERSON_SETTINGS_UPDATE_SUCCESS |
       Action.PERSON_META_LINK_ADD_SUCCESS |
@@ -69,7 +72,58 @@ const personReducer = (state = INIT_STATE, action) => {
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };
-
+    //> Get person
+    case Action.PERSON_FETCH_REQUEST:
+      return state;
+    case Action.PERSON_FETCH_SUCCESS:
+      return {
+        ...state,
+        fetchedPerson: {
+          ...action.payload,
+        },
+      };
+    case Action.PERSON_FETCH_FAILURE:
+      return {
+        ...state,
+        fetchedPerson: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Add talk to person
+    case Action.PERSON_TALK_ADD_REQUEST:
+      return state;
+    case Action.PERSON_TALK_ADD_SUCCESS:
+      return {
+        ...state,
+        fetchedPerson: {
+          ...state.fetchedPerson,
+          talks: [...state.fetchedPerson.talks, action.payload],
+        },
+      };
+    case Action.PERSON_TALK_ADD_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Add talk to person
+    case Action.PERSON_TALK_DELETE_REQUEST:
+      return state;
+    case Action.PERSON_TALK_DELETE_SUCCESS:
+      console.log(action.payload);
+      return {
+        ...state,
+        fetchedPerson: {
+          ...state.fetchedPerson,
+          talks: [...action.payload],
+        },
+      };
+    case Action.PERSON_TALK_DELETE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
     default:
       return state;
   }

@@ -36,8 +36,10 @@ const userReducer = (state = INIT_STATE, action) => {
     //> Logout
     case Action.USER_LOGOUT_REQUEST:
       return state;
-    case Action.USER_LOGIN_SUCCESS:
-      return INIT_STATE;
+    case Action.USER_LOGOUT_SUCCESS:
+      return {
+        user: { anonymous: true, username: undefined, person: undefined },
+      };
     case Action.USER_LOGOUT_FAILURE:
       return {
         user: INIT_STATE.user,

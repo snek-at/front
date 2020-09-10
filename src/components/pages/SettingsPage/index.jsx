@@ -44,6 +44,9 @@ import { connect } from "react-redux";
 import { ProfilePictureModal } from "../../../components/molecules/modals";
 //> Style sheet
 import "./settings.scss";
+//> Actions
+// Functions to send data from the application to the store
+import { updateSettings } from "../../../store/actions/personActions";
 //#endregion
 
 //#region > Components
@@ -54,10 +57,11 @@ import "./settings.scss";
 class SettingsPage extends React.Component {
   state = {
     loading: true,
-    changeDetected: false,
+    person: null,
     showProfilePicture: false,
     showNotification: false,
-    file: undefined,
+    showSaveButton: false,
+    avatarFile: undefined,
     activeItem: 0,
     tabItems: [
       { name: "Profile", icon: "" },
@@ -70,20 +74,9 @@ class SettingsPage extends React.Component {
     ],
   };
 
-  // triggers every time the settings menu tab is pressed
-  componentDidMount = () => {
+  handleLoading = () => {
     const { loggedUser } = this.props;
 
-    if (!loggedUser.anonymous) {
-      this.props.readCache(loggedUser.username);
-    }
-  };
-
-  // important for direct url access
-  componentDidUpdate = () => {
-    const { loggedUser, fetchedUser } = this.props;
-
-    // redirect to root if the loggedUser is anonymous
     if (loggedUser.anonymous) {
       this.props.history.push({
         pathname: "/",
@@ -93,123 +86,90 @@ class SettingsPage extends React.Component {
       });
     }
 
-    if (!fetchedUser && !loggedUser.anonymous) {
-      this.props.readCache(loggedUser.username);
-    }
-
-    if (fetchedUser && this.state.loading) {
-      const platformData = this.props.fetchedUser?.platformData;
-      const data = platformData.user;
-      const enterData = {
-        avatar_url: data.avatarUrl ? data.avatarUrl : "",
-        first_name: data.firstName ? data.firstName : "",
-        last_name: data.lastName ? data.lastName : "",
-        email: data.email ? data.email : "",
-        showEmailPublic: data.settings.showEmailPublic,
-        company: data.company ? data.company : "",
-        showCompanyPublic: data.settings.showCompanyPublic,
-        website: data.websiteUrl ? data.websiteUrl : "",
-        location: data.location ? data.location : "",
-        showLocalRanking: data.settings.showLocalRanking,
-        showTopLanguages: data.settings.showTopLanguages,
-        show3DDiagram: data.settings.show3DDiagram,
-        show2DDiagram: data.settings.show2DDiagram,
-        activeTheme: data.settings.activeTheme
-          ? data.settings.activeTheme
-          : null,
-      };
-
-      const dataString = this.stringToHash(JSON.stringify(enterData));
+    if (loggedUser?.person && this.state.loading) {
+      const {
+        avatarImage,
+        bio,
+        display2dCalendar,
+        display3dCalendar,
+        displayEmail,
+        displayProgrammingLanguages,
+        displayRanking,
+        displayWorkplace,
+        email,
+        firstName,
+        lastName,
+        location,
+        status,
+        websiteUrl,
+        workplace,
+      } = loggedUser?.person;
 
       this.setState({
-        ...enterData,
-        checksum: dataString,
         loading: false,
+        person: {
+          avatarImage,
+          bio,
+          display2dCalendar,
+          display3dCalendar,
+          displayEmail,
+          displayProgrammingLanguages,
+          displayRanking,
+          displayWorkplace,
+          email,
+          firstName,
+          lastName,
+          location,
+          status,
+          websiteUrl,
+          workplace,
+        },
       });
     }
   };
 
-  stringToHash = (string) => {
-    let hash = 0;
-
-    if (string.length == 0) return hash;
-
-    for (let i = 0; i < string.length; i++) {
-      let char = string.charCodeAt(i);
-
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash;
-    }
-
-    return hash;
+  // triggers every time the settings menu tab is pressed
+  componentDidMount = () => {
+    this.handleLoading();
   };
 
-  handleSelectChange = (val) => {
-    this.setState(
-      {
-        activeTheme: val[0],
-      },
-      () => this.getChange()
-    );
+  // important for direct url access
+  componentDidUpdate = () => {
+    this.handleLoading();
   };
 
-  handleCheckChange = (e) => {
-    this.setState(
-      {
-        [e.target.name]: e.target.checked,
-      },
-      () => this.getChange()
-    );
-  };
-
-  handleTextChange = (e) => {
-    this.setState(
-      {
-        [e.target.name]: e.target.value,
-      },
-      () => this.getChange()
-    );
-  };
-
-  getChange = () => {
-    let currentData = {
-      avatar_url: this.state.avatar_url,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      email: this.state.email,
-      showEmailPublic: this.state.showEmailPublic,
-      company: this.state.company,
-      showCompanyPublic: this.state.showCompanyPublic,
-      website: this.state.website,
-      location: this.state.location,
-      showLocalRanking: this.state.showLocalRanking,
-      showTopLanguages: this.state.showTopLanguages,
-      show3DDiagram: this.state.show3DDiagram,
-      show2DDiagram: this.state.show2DDiagram,
-      activeTheme: this.state.activeTheme ? this.state.activeTheme : null,
-    };
-
-    // Get hash of current data
-    let currentHash = this.stringToHash(JSON.stringify(currentData));
-
-    if (this.state.changeDetected) {
-      if (this.state.checksum === currentHash) {
-        this.setState({
-          changeDetected: false,
-        });
-      }
-    } else {
-      if (this.state.checksum !== currentHash) {
-        this.setState({
-          changeDetected: true,
-        });
-      }
+  onDrop = async (files) => {
+    if (files.length > 0) {
+      this.setState({
+        avatarFile: files[0],
+        showProfilePicture: true,
+      });
     }
   };
 
-  save = () => {
-    this.props.saveSettings(this.state);
-    this.setState({ showNotification: true });
+  handleChange = (name, value) => {
+    if (name.target) {
+      value =
+        name?.target?.type === "checkbox"
+          ? name?.target?.checked
+          : name?.target?.value;
+      name = name?.target?.name ? name?.target?.name : name;
+    }
+
+    this.setState({
+      showSaveButton: true,
+      person: {
+        ...this.state.person,
+        [name]:
+          typeof this.state.person[name] === "object"
+            ? { ...this.state.person[name], ...value }
+            : value,
+      },
+    });
+  };
+
+  setAvatarUrl = (imageSrc) => {
+    this.handleChange("avatarImage", { src: imageSrc });
   };
 
   handleProfilePictureModal = () => {
@@ -220,24 +180,11 @@ class SettingsPage extends React.Component {
     }
   };
 
-  onDrop = async (files) => {
-    if (files.length > 0) {
-      this.setState({
-        file: files[0],
-        showProfilePicture: true,
-      });
-    }
-  };
-
-  setAvatarUrl = (avatar_url) => {
-    this.setState({ avatar_url }, () => this.getChange());
-  };
-
   render() {
-    const { fetchedUser, loggedUser } = this.props;
-    const { activeItem } = this.state;
+    const { loggedUser } = this.props;
+    const { person, activeItem } = this.state;
 
-    if (fetchedUser && this.state.avatar_url) {
+    if (person) {
       return (
         <>
           {this.state.showNotification && (
@@ -260,7 +207,7 @@ class SettingsPage extends React.Component {
                     <MDBRow className="profile">
                       <MDBCol md="3">
                         <img
-                          src={this.state.avatar_url}
+                          src={person.avatarImage?.src}
                           className="img-fluid"
                         />
                       </MDBCol>
@@ -307,7 +254,7 @@ class SettingsPage extends React.Component {
                           <MDBView>
                             <input {...getInputProps()} />
                             <img
-                              src={this.state.avatar_url}
+                              src={person.avatarImage?.src}
                               className="img-fluid"
                             />
                             <MDBMask className="flex-center">
@@ -327,20 +274,20 @@ class SettingsPage extends React.Component {
                         <MDBCol md="6">
                           <input
                             type="text"
-                            name="first_name"
+                            name="firstName"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.first_name}
+                            onChange={this.handleChange}
+                            value={person.firstName}
                             placeholder="Firstname"
                           />
                         </MDBCol>
                         <MDBCol md="6">
                           <input
                             type="text"
-                            name="last_name"
+                            name="lastName"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.last_name}
+                            onChange={this.handleChange}
+                            value={person.lastName}
                             placeholder="Lastname"
                           />
                         </MDBCol>
@@ -352,8 +299,8 @@ class SettingsPage extends React.Component {
                             type="email"
                             name="email"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.email}
+                            onChange={this.handleChange}
+                            value={person.email}
                             placeholder="Email"
                             required
                           />
@@ -364,9 +311,9 @@ class SettingsPage extends React.Component {
                         filled
                         type="checkbox"
                         id="checkbox0"
-                        name="showEmailPublic"
-                        onChange={this.handleCheckChange}
-                        checked={this.state.showEmailPublic}
+                        name="displayEmail"
+                        onChange={this.handleChange}
+                        checked={person.displayEmail}
                         containerClass="mr-5"
                       />
                       <p className="font-weight-bold">Your workplace</p>
@@ -374,40 +321,66 @@ class SettingsPage extends React.Component {
                         <MDBCol md="12">
                           <input
                             type="text"
-                            name="company"
+                            name="workplace"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.company}
+                            onChange={this.handleChange}
+                            value={person.workplace}
                             placeholder="Company"
                           />
                         </MDBCol>
                       </MDBRow>
-                      <small className="d-block">
-                        You can @mention your company anywhere on SNEK
-                      </small>
                       <MDBInput
-                        label={<p>Display company on profile</p>}
+                        label={<p>Display workplace on profile</p>}
                         filled
                         type="checkbox"
                         id="checkbox1"
-                        name="showCompanyPublic"
-                        onChange={this.handleCheckChange}
-                        checked={this.state.showCompanyPublic}
+                        name="displayWorkplace"
+                        onChange={this.handleChange}
+                        checked={person.displayWorkplace}
                         containerClass="mr-5"
                       />
-                      <p className="font-weight-bold">Website</p>
+                      <p className="font-weight-bold">Status</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <input
+                            type="text"
+                            name="status"
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={person.status}
+                            placeholder="I'm on vacation!"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                      <p className="font-weight-bold">Bio</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <textarea
+                            type="text"
+                            name="bio"
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={person.bio}
+                            placeholder="Describe yourself"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                      {/* <small className="d-block">
+                        You can @mention your company anywhere on SNEK
+                      </small> */}
+                      {/* <p className="font-weight-bold">Website</p>
                       <MDBRow>
                         <MDBCol md="12">
                           <input
                             type="text"
                             name="website"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.website}
+                            onChange={this.handleChange}
+                            value={person.displayWebsite}
                             placeholder="Website URL"
                           />
                         </MDBCol>
-                      </MDBRow>
+                      </MDBRow> */}
                       <p className="font-weight-bold">Location</p>
                       <MDBRow>
                         <MDBCol md="12">
@@ -415,8 +388,8 @@ class SettingsPage extends React.Component {
                             type="text"
                             name="location"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.location}
+                            onChange={this.handleChange}
+                            value={person.location}
                             placeholder="City, Country"
                           />
                         </MDBCol>
@@ -433,10 +406,10 @@ class SettingsPage extends React.Component {
                           label={<p>Show local ranking</p>}
                           filled
                           type="checkbox"
-                          id="checkbox3"
-                          name="showLocalRanking"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.showLocalRanking}
+                          id="checkbox2"
+                          name="displayRanking"
+                          onChange={this.handleChange}
+                          checked={person.displayRanking}
                           containerClass="mr-5"
                         />
                       </MDBCol>
@@ -445,10 +418,10 @@ class SettingsPage extends React.Component {
                           label={<p>Show top programming languages</p>}
                           filled
                           type="checkbox"
-                          id="checkbox4"
-                          name="showTopLanguages"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.showTopLanguages}
+                          id="checkbox3"
+                          name="displayProgrammingLanguages"
+                          onChange={this.handleChange}
+                          checked={person.displayProgrammingLanguages}
                           containerClass="mr-5"
                         />
                       </MDBCol>
@@ -460,10 +433,10 @@ class SettingsPage extends React.Component {
                           label={<p>Show 3D work activity diagram</p>}
                           filled
                           type="checkbox"
-                          id="checkbox5"
-                          name="show3DDiagram"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.show3DDiagram}
+                          id="checkbox4"
+                          name="display3dCalendar"
+                          onChange={this.handleChange}
+                          checked={person.display3dCalendar}
                           containerClass="mr-5"
                         />
                       </MDBCol>
@@ -472,10 +445,10 @@ class SettingsPage extends React.Component {
                           label={<p>Show 2D work activity diagram</p>}
                           filled
                           type="checkbox"
-                          id="checkbox6"
-                          name="show2DDiagram"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.show2DDiagram}
+                          id="checkbox5"
+                          name="display2dCalendar"
+                          onChange={this.handleChange}
+                          checked={person.display2dCalendar}
                           containerClass="mr-5"
                         />
                       </MDBCol>
@@ -499,25 +472,22 @@ class SettingsPage extends React.Component {
                               <MDBSelectOption value="">
                                 Default
                               </MDBSelectOption>
-                              {fetchedUser?.accessories?.themes &&
-                                fetchedUser.accessories.themes.tids.map(
-                                  (tid, i) => {
-                                    let name = "Unnamed";
-                                    switch (tid) {
-                                      case "9d88bda4657dcf17581ee91dfe6ab2a3":
-                                        name = "Alpha";
-                                        break;
-                                      default:
-                                        name = "Unnamed";
-                                    }
-                                    name += " Theme";
-                                    return (
-                                      <MDBSelectOption key={i} value={tid}>
-                                        {tid}
-                                      </MDBSelectOption>
-                                    );
-                                  }
-                                )}
+                              {loggedUser?.person?.tids.map((tid, i) => {
+                                let name = "Unnamed";
+                                switch (tid) {
+                                  case "9d88bda4657dcf17581ee91dfe6ab2a3":
+                                    name = "Alpha";
+                                    break;
+                                  default:
+                                    name = "Unnamed";
+                                }
+                                name += " Theme";
+                                return (
+                                  <MDBSelectOption key={i} value={tid}>
+                                    {tid}
+                                  </MDBSelectOption>
+                                );
+                              })}
                             </MDBSelectOptions>
                           </MDBSelect>
                         </MDBCol>
@@ -530,9 +500,25 @@ class SettingsPage extends React.Component {
                 </MDBTabContent>
               </MDBCol>
             </MDBRow>
-            {this.state.changeDetected && this.state.email !== "" && (
+            {this.state.showSaveButton && this.state.person.email !== "" && (
               <MDBRow className="float-right">
-                <MDBBtn color="green" onClick={this.save}>
+                <MDBBtn
+                  color="green"
+                  onClick={() => {
+                    this.props
+                      .saveSettings({
+                        ...this.state.person,
+                        avatarImage: this.state.avatarFile,
+                      })
+                      .then(() => {
+                        this.setState({
+                          loading: true,
+                          showNotification: true,
+                          showSaveButton: false,
+                        });
+                      });
+                  }}
+                >
                   Save Changes
                 </MDBBtn>
               </MDBRow>
@@ -542,25 +528,20 @@ class SettingsPage extends React.Component {
             <ProfilePictureModal
               {...this.props}
               setAvatarUrl={this.setAvatarUrl}
-              file={this.state.file}
+              file={this.state.avatarFile}
               handleProfilePictureModal={this.handleProfilePictureModal}
             />
           )}
         </>
       );
     } else {
-      if (!loggedUser) {
-        //>TODO The active component has to be set to the login component
-        window.open("/", "_self");
-      } else {
-        return (
-          <div className="text-center my-5 py-5">
-            <div className="spinner-grow text-success" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
+      return (
+        <div className="text-center my-5 py-5">
+          <div className="spinner-grow text-success" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
-        );
-      }
+        </div>
+      );
     }
   }
 }
@@ -568,14 +549,12 @@ class SettingsPage extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSettings: (nextSettings) => dispatch(nextSettings),
-    readCache: (username) => dispatch(username),
+    saveSettings: (nextSettings) => dispatch(updateSettings(nextSettings)),
   };
 };
 //#endregion

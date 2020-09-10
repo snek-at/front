@@ -8,10 +8,10 @@ import { Route, Switch } from "react-router-dom";
 //> Components
 import {
   HomePage,
-  ProfilePage,
+  PersonPage,
   CompanyPage,
   //   TalkPage,
-  //   SettingsPage,
+  SettingsPage,
   TempPage,
 } from "./components/pages";
 //#endregion
@@ -26,7 +26,7 @@ class Routes extends React.Component {
         <Route
           exact
           path="/u/:username"
-          component={(props) => <ProfilePage {...props} />}
+          component={(props) => <PersonPage {...props} />}
         />
         <Route
           exact
@@ -53,11 +53,12 @@ class Routes extends React.Component {
             };
           }}
         />
+        */}
         <Route
           exact
           path="/settings"
           component={(props) => <SettingsPage {...props} />}
-        /> */}
+        />
         <Route
           render={function () {
             return <h1>Not Found</h1>;
