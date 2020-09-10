@@ -218,7 +218,7 @@ class OverviewTab extends React.Component {
                 )}
               </>,
               <>
-                {display3dCalendar && (
+                {display3dCalendar && currentStatistic && yearsStatistic && (
                   <Calendar3D
                     currentStatistic={currentStatistic}
                     yearsStatistic={yearsStatistic}
@@ -227,7 +227,7 @@ class OverviewTab extends React.Component {
                 )}
               </>,
               <>
-                {display2dCalendar && (
+                {display2dCalendar && currentStatistic && yearsStatistic && (
                   <Calendar2D
                     currentStatistic={currentStatistic}
                     yearsStatistic={yearsStatistic}
@@ -244,7 +244,7 @@ class OverviewTab extends React.Component {
                   items={[
                     <>
                       <p className="lead">Contribution Types</p>
-                      {true && (
+                      {true && currentStatistic && yearsStatistic && (
                         <div className="mt-5">
                           <ContribRadar
                             currentStatistic={currentStatistic}
