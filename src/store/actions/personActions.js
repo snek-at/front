@@ -3,6 +3,10 @@
 import * as Action from "../types";
 //> Intel
 import INTEL_SNEK from "snek-intel/lib/utils/snek";
+
+//> Actions
+// Functions to send data from the application to the store
+import { getPerson as getUserPerson } from "./userActions";
 //#endregion
 
 //#region > Utils
@@ -75,6 +79,8 @@ const updateSettings = (
         type: Action.PERSON_SETTINGS_UPDATE_SUCCESS,
         payload: person,
       });
+
+      await dispatch(getUserPerson(personName));
     } catch (ex) {
       dispatch({
         type: Action.PERSON_SETTINGS_UPDATE_FAILURE,
