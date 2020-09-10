@@ -44,6 +44,8 @@ import { connect } from "react-redux";
 import { ProfilePictureModal } from "../../../components/molecules/modals";
 //> Style sheet
 import "./settings.scss";
+//> Actions
+// Functions to send data from the application to the store
 import { updateSettings } from "../../../store/actions/personActions";
 //#endregion
 
@@ -58,6 +60,7 @@ class SettingsPage extends React.Component {
     person: null,
     showProfilePicture: false,
     showNotification: false,
+    showSaveButton: false,
     avatarFile: undefined,
     activeItem: 0,
     tabItems: [
@@ -83,7 +86,7 @@ class SettingsPage extends React.Component {
       });
     }
 
-    if (loggedUser?.person && !this.state.person) {
+    if (loggedUser?.person && this.state.loading) {
       const {
         avatarImage,
         bio,
@@ -103,6 +106,7 @@ class SettingsPage extends React.Component {
       } = loggedUser?.person;
 
       this.setState({
+        loading: false,
         person: {
           avatarImage,
           bio,
@@ -153,6 +157,7 @@ class SettingsPage extends React.Component {
     }
 
     this.setState({
+      showSaveButton: true,
       person: {
         ...this.state.person,
         [name]:
@@ -161,17 +166,6 @@ class SettingsPage extends React.Component {
             : value,
       },
     });
-  };
-
-  checkIfChanged = () => {
-    if (
-      JSON.stringify(this.props.loggedUser?.person) !==
-      JSON.stringify(this.state.person)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   setAvatarUrl = (imageSrc) => {
@@ -506,16 +500,23 @@ class SettingsPage extends React.Component {
                 </MDBTabContent>
               </MDBCol>
             </MDBRow>
-            {this.checkIfChanged() && this.state.person.email !== "" && (
+            {this.state.showSaveButton && this.state.person.email !== "" && (
               <MDBRow className="float-right">
                 <MDBBtn
                   color="green"
                   onClick={() => {
-                    this.setState({ showNotification: true });
-                    this.props.saveSettings({
-                      ...this.state.person,
-                      avatarImage: this.state.avatarFile,
-                    });
+                    this.props
+                      .saveSettings({
+                        ...this.state.person,
+                        avatarImage: this.state.avatarFile,
+                      })
+                      .then(() => {
+                        this.setState({
+                          loading: true,
+                          showNotification: true,
+                          showSaveButton: false,
+                        });
+                      });
                   }}
                 >
                   Save Changes
