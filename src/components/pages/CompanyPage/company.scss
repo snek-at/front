@@ -1,6 +1,5 @@
 #company {
   padding: 4rem 0;
-  background: darken(white, 3%);
 
   .timeline {
     padding: 0;
@@ -9,8 +8,54 @@
     margin: 0;
   }
 
+  .col-lg-3 {
+    &.disabled {
+      p,
+      .text-muted {
+        color: lightgrey !important;
+      }
+
+      .bg-success {
+        background: transparentize($color: #00c851, $amount: 0.8) !important;
+      }
+
+      .bg-info {
+        background: transparentize($color: #33b5e5, $amount: 0.8) !important;
+      }
+
+      .bg-warning {
+        background: transparentize($color: #fb3, $amount: 0.8) !important;
+      }
+
+      .bg-danger {
+        background: transparentize($color: #ff3547, $amount: 0.8) !important;
+      }
+    }
+  }
+
+  .md-tabs {
+    background: #212529;
+    box-shadow: none;
+
+    .nav-item {
+      i {
+        margin-right: 0.3rem;
+      }
+
+      .nav-link.active {
+        background-color: black !important;
+      }
+    }
+
+    input {
+      display: inline-block;
+      width: auto;
+    }
+  }
+
   .card {
     border: 1px lightgray solid;
+    border-radius: 0.4rem;
     margin-bottom: 2rem;
 
     .badge {
@@ -65,5 +110,5 @@
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019-2020 Simon Prast
+ * Copyright © 2020 Simon Prast
  */

@@ -13,6 +13,9 @@ package-lock.json
 # Production
 /build
 
+# Dummy Data folders
+dummy
+
 # Keys
 .env
 .env.local
