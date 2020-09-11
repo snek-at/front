@@ -139,6 +139,7 @@ class Navbar extends React.Component {
                           Settings
                         </Link>
                         <Link
+                          to=""
                           onClick={this.props.logout}
                           className="dropdown-item"
                         >
