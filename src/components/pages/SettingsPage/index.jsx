@@ -224,7 +224,7 @@ class SettingsPage extends React.Component {
             <div id="notification">
               <MDBContainer>
                 <MDBRow className="message">
-                  Changes were saved successfully —{" "}
+                  Changes were saved successfully —{"  "}
                   <Link to={"/u/" + loggedUser.username}>
                     View your profile
                   </Link>
@@ -290,7 +290,7 @@ class SettingsPage extends React.Component {
                               src={person.avatarImage?.src}
                               className="img-fluid"
                             />
-                            <MDBMask className="flex-center">
+                            <MDBMask className="flex-center clickable">
                               <MDBIcon
                                 icon="camera"
                                 size="2x"
