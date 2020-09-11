@@ -524,6 +524,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     follow: (personToFollow) => dispatch(follow(personToFollow)),
     unfollow: (personToUnfollow) => dispatch(unfollow(personToUnfollow)),
+    like: (personToLike) => dispatch(like(personToLike)),
+    unlike: (personToUnlike) => dispatch(unlike(personToUnlike)),
   };
 };
 //#endregion
