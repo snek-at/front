@@ -11,6 +11,7 @@ import AddSongModal from "./AddSongModal";
 import ConnectModal from "./ConnectModal";
 import ToContinueModal from "./ToContinueModal";
 import FollowModal from "./FollowModal";
+import LikesModal from "./LikesModal";
 //#endregion
 
 //#region > Exports
@@ -27,6 +28,7 @@ export {
   ConnectModal,
   ToContinueModal,
   FollowModal,
+  LikesModal,
 };
 //#endregion
 
