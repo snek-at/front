@@ -78,9 +78,10 @@ class ProjectModal extends React.Component {
                   <p className="lead font-weight-bold mt-3">Contributors</p>
                   <div className="activity">
                     <MDBCard className="border">
-                      <MDBListGroup>
-                        {project.contributors &&
-                          project.contributors.map((contributor, i) => {
+                      {project.contributors &&
+                      project.contributors.length > 0 ? (
+                        <MDBListGroup>
+                          {project.contributors.map((contributor, i) => {
                             return (
                               <MDBListGroupItem key={"project-contrib-" + i}>
                                 <p className="mb-0">{contributor.name}</p>
@@ -97,56 +98,77 @@ class ProjectModal extends React.Component {
                               </MDBListGroupItem>
                             );
                           })}
-                      </MDBListGroup>
+                        </MDBListGroup>
+                      ) : (
+                        <div className="text-center p-3">
+                          <span className="d-block small text-muted">
+                            No contributors yet.
+                          </span>
+                        </div>
+                      )}
                     </MDBCard>
                   </div>
                 </MDBCol>
                 <MDBCol lg="8" className="activity">
                   <p className="lead font-weight-bold">Activity</p>
                   <div className="text-right">
-                    {this.props.chart &&
-                      this.props.chart.years.map((year, y) => {
-                        return (
-                          <p
-                            className={
-                              this.state.selectedYearIndex === y
-                                ? "blue-text clickable mx-2 d-inline-block"
-                                : "text-muted clickable mx-2 d-inline-block"
-                            }
-                            onClick={() =>
-                              this.setState({ selectedYearIndex: y })
-                            }
-                          >
-                            {moment(year.endDate).format("YYYY")}
-                          </p>
-                        );
-                      })}
-                    <p
-                      className={
-                        this.state.selectedYearIndex === undefined
-                          ? "blue-text clickable mx-2 d-inline-block"
-                          : "text-muted clickable mx-2 d-inline-block"
-                      }
-                      onClick={() =>
-                        this.setState({ selectedYearIndex: undefined })
-                      }
-                    >
-                      Current
-                    </p>
+                    {this.props.chart && this.props.chart.years.length > 0 ? (
+                      <>
+                        {this.props.chart.years.map((year, y) => {
+                          return (
+                            <p
+                              className={
+                                this.state.selectedYearIndex === y
+                                  ? "blue-text clickable mx-2 d-inline-block"
+                                  : "text-muted clickable mx-2 d-inline-block"
+                              }
+                              onClick={() =>
+                                this.setState({ selectedYearIndex: y })
+                              }
+                            >
+                              {moment(year.endDate).format("YYYY")}
+                            </p>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <div className="text-center p-3">
+                        <span className="d-block small text-muted">
+                          No statistics yet.
+                        </span>
+                      </div>
+                    )}
+                    {this.props.chart && this.props.chart.years.length > 0 && (
+                      <p
+                        className={
+                          this.state.selectedYearIndex === undefined
+                            ? "blue-text clickable mx-2 d-inline-block"
+                            : "text-muted clickable mx-2 d-inline-block"
+                        }
+                        onClick={() =>
+                          this.setState({ selectedYearIndex: undefined })
+                        }
+                      >
+                        Current
+                      </p>
+                    )}
                   </div>
-                  <div className="canvas-container-modal">
-                    <AILineChart
-                      data={this.props.chart}
-                      year={this.state.selectedYearIndex}
-                      key="overview-chart"
-                    />
-                  </div>
+                  {this.props.chart && this.props.chart.years.length > 0 && (
+                    <div className="canvas-container-modal">
+                      <AILineChart
+                        data={this.props.chart}
+                        year={this.state.selectedYearIndex}
+                        key="overview-chart"
+                      />
+                    </div>
+                  )}
                   <p className="lead font-weight-bold mt-3">History</p>
                   <MDBCard className="border">
                     <MDBCardBody>
-                      <MDBListGroup>
-                        {project.contributionFeed &&
-                          project.contributionFeed.map((contrib, i) => {
+                      {project.contributionFeed &&
+                      project.contributionFeed.length > 0 ? (
+                        <MDBListGroup>
+                          {project.contributionFeed.map((contrib, i) => {
                             return (
                               <MDBListGroupItem key={"project-contrib-" + i}>
                                 <p className="mb-0">{contrib.message}</p>
@@ -165,7 +187,14 @@ class ProjectModal extends React.Component {
                               </MDBListGroupItem>
                             );
                           })}
-                      </MDBListGroup>
+                        </MDBListGroup>
+                      ) : (
+                        <div className="text-center p-3">
+                          <span className="d-block small text-muted">
+                            No history yet.
+                          </span>
+                        </div>
+                      )}
                     </MDBCardBody>
                   </MDBCard>
                 </MDBCol>

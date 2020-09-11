@@ -84,28 +84,33 @@ class Page extends React.Component {
   };
 
   componentDidMount = () => {
-    // Retrieve Page
-    // this.props.getGeneral("schettn");
-    const { match } = this.props;
-    const enterpriseName = match?.params?.name;
+    const enterpriseName = this.getUrl();
 
     if (enterpriseName) {
-      this.props.getGeneral(enterpriseName);
+      this.setState(
+        {
+          enterpriseName,
+        },
+        () => this.props.getGeneral(enterpriseName)
+      );
     }
   };
 
-  componentDidUpdate = () => {
-    // Check if there are no current pipelines set
-    // if (this.props.page && !this.state.page) {
-    //   this.setState({/
-    //     page: this.props.page.data,
-    //   });
-    // }
-    /*if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
-      this.setState({
-        page: this.props.page.data,
-      });
-    }*/
+  componentDidUpdate = (prevProps) => {
+    const enterpriseName = this.getUrl();
+
+    if (prevProps.general !== this.props.general && !this.props.error) {
+      this.props.getProjects(enterpriseName);
+      this.props.getUsers(enterpriseName);
+    }
+  };
+
+  // Get enterprise name from URL
+  getUrl = () => {
+    const { match } = this.props;
+    const enterpriseName = match?.params?.name;
+
+    return enterpriseName ? enterpriseName : false;
   };
 
   // Toogle reauth
