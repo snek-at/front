@@ -280,6 +280,7 @@ class Page extends React.Component {
                       filter={this.state.globalFilter}
                       feed={general.enterpriseContributionFeed}
                       mergedFeed={general.mergedEnterpriseContributionFeed}
+                      codestats={general.enterpriseCodelanguageStatistic}
                     />
                   </MDBTabPane>
                 )}

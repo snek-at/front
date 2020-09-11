@@ -83,7 +83,7 @@ class PageOverview extends React.Component {
 
   render() {
     const { feed } = this.state;
-    const { mergedFeed } = this.props;
+    const { mergedFeed, codestats } = this.props;
 
     return (
       <MDBRow id="pageoverview">
@@ -113,6 +113,65 @@ class PageOverview extends React.Component {
                       </p>
                     </div>
                   </div>
+                </MDBCardBody>
+              </MDBCard>
+            )}
+            {codestats && (
+              <MDBCard className="border">
+                <MDBCardBody>
+                  {codestats && codestats.length > 0 ? (
+                    <div>
+                      {codestats.map((language, i) => {
+                        return (
+                          <small
+                            className={
+                              codestats.length === i + 1
+                                ? "text-left text-muted d-block py-1"
+                                : "text-left text-muted d-block py-1 border-bottom"
+                            }
+                            key={i}
+                          >
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                <MDBIcon
+                                  icon="square"
+                                  className="pr-1"
+                                  style={{
+                                    color: language.color,
+                                  }}
+                                />
+                                <span>{language.name}</span>
+                              </div>
+                              <span className="small text-right">
+                                <span className="d-block">
+                                  {language.insertions}
+                                  <MDBIcon
+                                    icon="plus"
+                                    size="sm"
+                                    className="text-success pl-1"
+                                  />
+                                </span>
+                                <span className="d-block">
+                                  {language.deletions}
+                                  <MDBIcon
+                                    icon="minus"
+                                    size="sm"
+                                    className="text-danger pl-1"
+                                  />
+                                </span>
+                              </span>
+                            </div>
+                          </small>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center p-3">
+                      <span className="d-block small text-muted">
+                        No information yet.
+                      </span>
+                    </div>
+                  )}
                 </MDBCardBody>
               </MDBCard>
             )}
