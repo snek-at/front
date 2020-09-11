@@ -419,7 +419,7 @@ const like = (receiverPersonName) => {
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      const res = await INTEL_SNEK.social.follow({
+      const res = await INTEL_SNEK.social.like({
         invoker: personName,
         receiver: receiverPersonName,
       });
@@ -449,7 +449,7 @@ const unlike = (receiverPersonName) => {
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      const res = await INTEL_SNEK.social.unfollow({
+      const res = await INTEL_SNEK.social.unlike({
         invoker: personName,
         receiver: receiverPersonName,
       });

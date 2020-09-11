@@ -46,20 +46,24 @@ class FollowModal extends React.Component {
   };
 
   follow = (personToFollow) => {
-    this.props.follow(personToFollow).then(() => {
-      let loggedUser = this.props.loggedUser;
-      let follows = [];
+    if (!this.props.loggedUser?.anonymous) {
+      this.props.follow(personToFollow).then(() => {
+        let loggedUser = this.props.loggedUser;
+        let follows = [];
 
-      for (let count in loggedUser.person.follows) {
-        follows.push(loggedUser.person.follows[count]);
-      }
+        for (let count in loggedUser.person.follows) {
+          follows.push(loggedUser.person.follows[count]);
+        }
 
-      follows.push({ slug: "p-" + personToFollow });
+        follows.push({ slug: "p-" + personToFollow });
 
-      loggedUser.person.follows = follows;
-      console.log("1");
-      this.setState({ loggedUser });
-    });
+        loggedUser.person.follows = follows;
+
+        this.setState({ loggedUser });
+      });
+    } else {
+      this.props.toContinue();
+    }
   };
 
   unfollow = (personToUnfollow) => {
@@ -74,7 +78,7 @@ class FollowModal extends React.Component {
       }
 
       loggedUser.person.follows = follows;
-      console.log("1");
+
       this.setState({ loggedUser });
     });
   };
