@@ -175,6 +175,25 @@ class InfoCard extends React.Component {
       this.setState({ showToContinue: true });
     }
   };
+
+  isLiker = () => {
+    if (!this.props.loggedUser?.anonymous) {
+      const loggedUser = this.props.loggedUser.username;
+      const likerList = this.state.fetchedPerson?.likedBy;
+
+      for (let count in likerList) {
+        let liker = likerList[count];
+
+        if (liker.slug.substring(2) === loggedUser) {
+          console.log("1");
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   handleModalClose = () => {
     if (this.state.showToContinue) {
       this.setState({
