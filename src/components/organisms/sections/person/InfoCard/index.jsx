@@ -119,7 +119,7 @@ class InfoCard extends React.Component {
     if (!this.props.loggedUser?.anonymous) {
       const loggedUser = this.props.loggedUser.username;
       const followerList = this.state.fetchedPerson?.followedBy;
-      console.log(followerList);
+
       for (let count in followerList) {
         let follower = followerList[count];
 
@@ -274,6 +274,14 @@ class InfoCard extends React.Component {
                 Following
               </MDBCol>
             </MDBRow>
+            <div className="likes">
+              <MDBRow>
+                <MDBCol onClick={() => this.setState({ showLikes: true })}>
+                  <strong>{this.state.fetchedPerson?.likedBy.length} </strong>
+                  Likes
+                </MDBCol>
+              </MDBRow>
+            </div>
             <div className="badges">
               {fetchedPerson?.bids && (
                 <>
@@ -303,34 +311,52 @@ class InfoCard extends React.Component {
               </div>
             )}
           </div>
-          <div className="py-3 follow text-center">
-            {this.isFollower() ? (
-              <MDBBtn
-                color="green"
-                outline
-                size="md"
-                onClick={() => this.unfollow(fetchedPerson.slug.substring(2))}
-              >
-                <MDBIcon icon="minus-circle" className="mr-2" />
-                Unfollow
-              </MDBBtn>
-            ) : (
-              <MDBBtn
-                color="green"
-                outline
-                size="md"
-                onClick={() => this.follow(fetchedPerson.slug.substring(2))}
-              >
-                <MDBIcon icon="plus-circle" className="mr-2" />
-                Follow
-              </MDBBtn>
-            )}
-
-            <MDBBtn color="primary" outline size="md">
-              <MDBIcon icon="angle-up" className="mr-2" />
-              Upvote
-            </MDBBtn>
-          </div>
+          {loggedUser.person?.slug !== fetchedPerson.slug && (
+            <div className="py-3 social text-center">
+              {this.isFollower() ? (
+                <MDBBtn
+                  color="green"
+                  outline
+                  size="md"
+                  onClick={() => this.unfollow(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="minus-circle" className="mr-2" />
+                  Unfollow
+                </MDBBtn>
+              ) : (
+                <MDBBtn
+                  color="green"
+                  outline
+                  size="md"
+                  onClick={() => this.follow(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="plus-circle" className="mr-2" />
+                  Follow
+                </MDBBtn>
+              )}
+              {this.isLiker() ? (
+                <MDBBtn
+                  color="primary"
+                  outline
+                  size="md"
+                  onClick={() => this.unlike(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="angle-down" className="mr-2" />
+                  Unlike
+                </MDBBtn>
+              ) : (
+                <MDBBtn
+                  color="primary"
+                  outline
+                  size="md"
+                  onClick={() => this.like(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="angle-up" className="mr-2" />
+                  Like
+                </MDBBtn>
+              )}
+            </div>
+          )}
           <div className="bg-light py-3 px-2">
             <p>Connected accounts</p>
             <div className="connected mt-2 text-muted">
