@@ -24,10 +24,19 @@ import { connect } from "react-redux";
 
 //> Components
 import { LanguageChart } from "../../../../atoms";
-import { ToContinueModal, FollowModal } from "../../../../molecules/modals";
+import {
+  ToContinueModal,
+  FollowModal,
+  LikesModal,
+} from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
-import { follow, unfollow } from "../../../../../store/actions/personActions";
+import {
+  follow,
+  unfollow,
+  like,
+  unlike,
+} from "../../../../../store/actions/personActions";
 //> Style Sheet
 import "./infocard.scss";
 //#endregion
