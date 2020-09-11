@@ -72,7 +72,7 @@ const getUsers = (enterpriseName) => {
     try {
       dispatch({ type: Action.ENTERPRISE_USERS_FETCH_REQUEST });
 
-      const projects = await INTEL_SNEK_E.general.getEnterprisePageProjectsContent(
+      const projects = await INTEL_SNEK_E.general.getEnterprisePageUsersContent(
         { slug: `e-${enterpriseName}` }
       );
 
