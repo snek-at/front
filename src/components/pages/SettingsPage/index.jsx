@@ -29,6 +29,7 @@ import {
   MDBBtn,
   MDBListGroup,
   MDBListGroupItem,
+  MDBBadge,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
@@ -91,6 +92,11 @@ class SettingsPage extends React.Component {
         bio,
         display2dCalendar,
         display3dCalendar,
+        displayContributionTypes,
+        displayWeekActivity,
+        displayImageGallery,
+        displayVideoGallery,
+        displayMusicGallery,
         displayEmail,
         displayProgrammingLanguages,
         displayRanking,
@@ -112,6 +118,11 @@ class SettingsPage extends React.Component {
           bio,
           display2dCalendar,
           display3dCalendar,
+          displayContributionTypes,
+          displayWeekActivity,
+          displayImageGallery,
+          displayVideoGallery,
+          displayMusicGallery,
           displayEmail,
           displayProgrammingLanguages,
           displayRanking,
@@ -193,6 +204,14 @@ class SettingsPage extends React.Component {
         return "";
     }
   }
+
+  checkProfileTypeExists = (sourceType) => {
+    return this.state.person.profiles.some(
+      (e) => e.sourceType === sourceType && e.isActive
+    )
+      ? true
+      : false;
+  };
 
   render() {
     const { loggedUser } = this.props;
@@ -414,59 +433,6 @@ class SettingsPage extends React.Component {
                       </small>
                     </div>
                     <hr />
-                    <MDBRow>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show local ranking</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox2"
-                          name="displayRanking"
-                          onChange={this.handleChange}
-                          checked={person.displayRanking}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show top programming languages</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox3"
-                          name="displayProgrammingLanguages"
-                          onChange={this.handleChange}
-                          checked={person.displayProgrammingLanguages}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <hr />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show 3D work activity diagram</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox4"
-                          name="display3dCalendar"
-                          onChange={this.handleChange}
-                          checked={person.display3dCalendar}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show 2D work activity diagram</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox5"
-                          name="display2dCalendar"
-                          onChange={this.handleChange}
-                          checked={person.display2dCalendar}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                    </MDBRow>
                   </MDBTabPane>
                   <MDBTabPane tabId={1}>
                     <h5>Connections</h5>
@@ -585,6 +551,189 @@ class SettingsPage extends React.Component {
                               })}
                             </MDBSelectOptions>
                           </MDBSelect>
+                        </MDBCol>
+                      </MDBRow>
+                      <p className="font-weight-bold">Display settings</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show local ranking</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox2"
+                            name="displayRanking"
+                            onChange={this.handleChange}
+                            checked={person.displayRanking}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show music gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox3"
+                            name="displayMusicGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayMusicGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <hr />
+                        </MDBCol>
+
+                        {!this.checkProfileTypeExists("GITHUB") &&
+                          !this.checkProfileTypeExists("GITLAB") && (
+                            <MDBBadge pill color="info">
+                              <i class="fas fa-question-circle"></i> Looks like
+                              no profiles are present. You can add one
+                              <a href={""}> here!</a>
+                            </MDBBadge>
+                          )}
+
+                        <span class="badge badge-info pill"></span>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show top programming languages</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox4"
+                            name="displayProgrammingLanguages"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayProgrammingLanguages
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show 3D work activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox5"
+                            name="display3dCalendar"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.display3dCalendar
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show 2D work activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox6"
+                            name="display2dCalendar"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.display2dCalendar
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show contribution type diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox7"
+                            name="displayContributionTypes"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayContributionTypes
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show week activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox8"
+                            name="displayWeekActivity"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayWeekActivity
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <hr />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show image gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox9"
+                            name="displayImageGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayImageGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show video gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox10"
+                            name="displayVideoGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayVideoGallery}
+                            containerClass="mr-5"
+                          />
                         </MDBCol>
                       </MDBRow>
                     </div>
