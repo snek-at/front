@@ -24,10 +24,19 @@ import { connect } from "react-redux";
 
 //> Components
 import { LanguageChart } from "../../../../atoms";
-import { ToContinueModal, FollowModal } from "../../../../molecules/modals";
+import {
+  ToContinueModal,
+  FollowModal,
+  LikesModal,
+} from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
-import { follow, unfollow } from "../../../../../store/actions/personActions";
+import {
+  follow,
+  unfollow,
+  like,
+  unlike,
+} from "../../../../../store/actions/personActions";
 //> Style Sheet
 import "./infocard.scss";
 //#endregion
@@ -39,6 +48,7 @@ class InfoCard extends React.Component {
     limitLanguages: true,
     showToContinue: false,
     showFollow: false,
+    showLikes: false,
     followType: "",
     fetchedPerson: null,
   };
@@ -109,11 +119,73 @@ class InfoCard extends React.Component {
     if (!this.props.loggedUser?.anonymous) {
       const loggedUser = this.props.loggedUser.username;
       const followerList = this.state.fetchedPerson?.followedBy;
-      console.log(followerList);
+
       for (let count in followerList) {
         let follower = followerList[count];
 
         if (follower.slug.substring(2) === loggedUser) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  like = (personToLike) => {
+    if (!this.props.loggedUser?.anonymous) {
+      this.props.like(personToLike).then(() => {
+        let fetchedPerson = this.state.fetchedPerson;
+        let likedBy = [];
+
+        for (let count in fetchedPerson.likedBy) {
+          likedBy.push(fetchedPerson.likedBy[count]);
+        }
+
+        likedBy.push(this.props.loggedUser.person);
+
+        fetchedPerson.likedBy = likedBy;
+
+        this.setState({ fetchedPerson });
+      });
+    } else {
+      this.setState({ showToContinue: true });
+    }
+  };
+
+  unlike = (personToUnlike) => {
+    if (!this.props.loggedUser?.anonymous) {
+      this.props.unlike(personToUnlike).then(() => {
+        let fetchedPerson = this.state.fetchedPerson;
+        let likedBy = [];
+
+        const { loggedUser } = this.props;
+
+        for (let count in fetchedPerson.likedBy) {
+          if (fetchedPerson.likedBy[count].slug !== loggedUser.person.slug) {
+            likedBy.push(fetchedPerson.likedBy[count]);
+          }
+        }
+
+        fetchedPerson.likedBy = likedBy;
+
+        this.setState({ fetchedPerson });
+      });
+    } else {
+      this.setState({ showToContinue: true });
+    }
+  };
+
+  isLiker = () => {
+    if (!this.props.loggedUser?.anonymous) {
+      const loggedUser = this.props.loggedUser.username;
+      const likerList = this.state.fetchedPerson?.likedBy;
+
+      for (let count in likerList) {
+        let liker = likerList[count];
+
+        if (liker.slug.substring(2) === loggedUser) {
+          console.log("1");
           return true;
         }
       }
@@ -131,7 +203,19 @@ class InfoCard extends React.Component {
       this.setState({
         showFollow: false,
       });
+    } else if (this.state.showLikes) {
+      this.setState({
+        showLikes: false,
+      });
     }
+  };
+
+  toContinue = () => {
+    this.handleModalClose();
+
+    this.setState({
+      showToContinue: true,
+    });
   };
 
   render() {
@@ -190,6 +274,14 @@ class InfoCard extends React.Component {
                 Following
               </MDBCol>
             </MDBRow>
+            <div className="likes">
+              <MDBRow>
+                <MDBCol onClick={() => this.setState({ showLikes: true })}>
+                  <strong>{this.state.fetchedPerson?.likedBy.length} </strong>
+                  Likes
+                </MDBCol>
+              </MDBRow>
+            </div>
             <div className="badges">
               {fetchedPerson?.bids && (
                 <>
@@ -219,34 +311,52 @@ class InfoCard extends React.Component {
               </div>
             )}
           </div>
-          <div className="py-3 follow text-center">
-            {this.isFollower() ? (
-              <MDBBtn
-                color="green"
-                outline
-                size="md"
-                onClick={() => this.unfollow(fetchedPerson.slug.substring(2))}
-              >
-                <MDBIcon icon="minus-circle" className="mr-2" />
-                Unfollow
-              </MDBBtn>
-            ) : (
-              <MDBBtn
-                color="green"
-                outline
-                size="md"
-                onClick={() => this.follow(fetchedPerson.slug.substring(2))}
-              >
-                <MDBIcon icon="plus-circle" className="mr-2" />
-                Follow
-              </MDBBtn>
-            )}
-
-            <MDBBtn color="primary" outline size="md">
-              <MDBIcon icon="angle-up" className="mr-2" />
-              Upvote
-            </MDBBtn>
-          </div>
+          {loggedUser.person?.slug !== fetchedPerson.slug && (
+            <div className="py-3 social text-center">
+              {this.isFollower() ? (
+                <MDBBtn
+                  color="green"
+                  outline
+                  size="md"
+                  onClick={() => this.unfollow(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="minus-circle" className="mr-2" />
+                  Unfollow
+                </MDBBtn>
+              ) : (
+                <MDBBtn
+                  color="green"
+                  outline
+                  size="md"
+                  onClick={() => this.follow(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="plus-circle" className="mr-2" />
+                  Follow
+                </MDBBtn>
+              )}
+              {this.isLiker() ? (
+                <MDBBtn
+                  color="primary"
+                  outline
+                  size="md"
+                  onClick={() => this.unlike(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="angle-down" className="mr-2" />
+                  Unlike
+                </MDBBtn>
+              ) : (
+                <MDBBtn
+                  color="primary"
+                  outline
+                  size="md"
+                  onClick={() => this.like(fetchedPerson.slug.substring(2))}
+                >
+                  <MDBIcon icon="angle-up" className="mr-2" />
+                  Like
+                </MDBBtn>
+              )}
+            </div>
+          )}
           <div className="bg-light py-3 px-2">
             <p>Connected accounts</p>
             <div className="connected mt-2 text-muted">
@@ -473,6 +583,17 @@ class InfoCard extends React.Component {
             follow={this.props.follow}
             unfollow={this.props.unfollow}
             loggedUser={this.props.loggedUser}
+            toContinue={this.toContinue}
+          />
+        )}
+        {this.state.showLikes && (
+          <LikesModal
+            closeModal={this.handleModalClose}
+            fetchedPerson={this.state.fetchedPerson}
+            follow={this.props.follow}
+            unfollow={this.props.unfollow}
+            loggedUser={this.props.loggedUser}
+            toContinue={this.toContinue}
           />
         )}
       </>
@@ -491,6 +612,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     follow: (personToFollow) => dispatch(follow(personToFollow)),
     unfollow: (personToUnfollow) => dispatch(unfollow(personToUnfollow)),
+    like: (personToLike) => dispatch(like(personToLike)),
+    unlike: (personToUnlike) => dispatch(unlike(personToUnlike)),
   };
 };
 //#endregion

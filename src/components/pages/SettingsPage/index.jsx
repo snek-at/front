@@ -254,7 +254,7 @@ class SettingsPage extends React.Component {
                   </MDBNavItem>
                   {this.state.tabItems.map((tab, i) => {
                     return (
-                      <MDBNavItem key={i}>
+                      <MDBNavItem key={i} className="clickable">
                         <span
                           className={
                             activeItem === i ? "nav-link active" : "nav-link"
