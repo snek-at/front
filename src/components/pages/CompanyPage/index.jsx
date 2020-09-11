@@ -194,32 +194,38 @@ class Page extends React.Component {
                         </div>
                       </div>
                       <div>
-                        {/* {general.company.isRecruiting && (
-                          <MDBBadge color="indigo">
-                            <MDBIcon icon="users" />
-                            Recruiting
-                          </MDBBadge>
+                        {general.recruitingUrl && (
+                          <a
+                            href={general.recruitingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <MDBBadge color="indigo">
+                              <MDBIcon icon="users" />
+                              Recruiting
+                            </MDBBadge>
+                          </a>
                         )}
-                        {enterprise.company.employees >= 1 &&
-                          enterprise.company.employees < 5 && (
+                        {general.employeeCount >= 1 &&
+                          general.employeeCount < 5 && (
                             <MDBBadge color="primary">1-5 Employees</MDBBadge>
                           )}
-                        {enterprise.company.employees >= 5 &&
-                          enterprise.company.employees < 20 && (
+                        {general.employeeCount >= 5 &&
+                          general.employeeCount < 20 && (
                             <MDBBadge color="primary">5-20 Employees</MDBBadge>
                           )}
-                        {enterprise.company.employees >= 20 &&
-                          enterprise.company.employees < 100 && (
+                        {general.employeeCount >= 20 &&
+                          general.employeeCount < 100 && (
                             <MDBBadge color="primary">
                               20-100 Employees
                             </MDBBadge>
                           )}
-                        {enterprise.company.employees >= 100 && (
+                        {general.employeeCount >= 100 && (
                           <MDBBadge color="primary">100+ Employees</MDBBadge>
                         )}
-                        {enterprise.company.isOpenSource && (
+                        {general.opensourceUrl && (
                           <a
-                            href={enterprise.company.openSourceUrl}
+                            href={general.opensourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -228,7 +234,7 @@ class Page extends React.Component {
                               Open source
                             </MDBBadge>
                           </a>
-                        )} */}
+                        )}
                       </div>
                     </MDBCol>
                   </MDBRow>
@@ -278,8 +284,9 @@ class Page extends React.Component {
                   <MDBTabPane tabId={0} role="tabpanel">
                     <PageOverview
                       filter={this.state.globalFilter}
-                      feed={general.enterpriseContributionFeed}
-                      mergedFeed={general.mergedEnterpriseContributionFeed}
+                      mergedFeed={
+                        general.mergedEnterpriseCodetransitionStatistic
+                      }
                       codestats={general.enterpriseCodelanguageStatistic}
                     />
                   </MDBTabPane>
