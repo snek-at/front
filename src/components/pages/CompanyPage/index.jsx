@@ -312,7 +312,7 @@ class Page extends React.Component {
                 )}
                 {this.state.activeItem === 3 && (
                   <MDBTabPane tabId={3} role="tabpanel">
-                    <PageImprint />
+                    <PageImprint page={general} />
                   </MDBTabPane>
                 )}
               </MDBTabContent>
