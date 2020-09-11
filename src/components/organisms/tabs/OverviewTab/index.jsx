@@ -104,6 +104,11 @@ class OverviewTab extends React.Component {
       displayProgrammingLanguages,
       display2dCalendar,
       display3dCalendar,
+      displayContributionTypes,
+      displayWeekActivity,
+      displayImageGallery,
+      displayVideoGallery,
+      displayMusicGallery,
     } = fetchedPerson;
 
     console.log(display2dCalendar, display3dCalendar);
@@ -138,7 +143,7 @@ class OverviewTab extends React.Component {
             edit={this.state.edit}
             items={[
               <>
-                {languages && (
+                {languages && displayProgrammingLanguages && (
                   <MDBRow className="text-center text-md-left mb-4">
                     {languages?.map((language, i) => {
                       if (i < 6) {
@@ -243,33 +248,42 @@ class OverviewTab extends React.Component {
                   edit={this.state.edit}
                   items={[
                     <>
-                      <p className="lead">Contribution Types</p>
-                      {true && currentStatistic && yearsStatistic && (
-                        <div className="mt-5">
-                          <ContribRadar
-                            currentStatistic={currentStatistic}
-                            yearsStatistic={yearsStatistic}
-                            year={this.state.selectedYearIndex}
-                          />
-                        </div>
-                      )}
+                      {true &&
+                        currentStatistic &&
+                        yearsStatistic &&
+                        displayContributionTypes && (
+                          <div className="mt-5">
+                            <p className="lead">Contribution Types</p>
+                            <ContribRadar
+                              currentStatistic={currentStatistic}
+                              yearsStatistic={yearsStatistic}
+                              year={this.state.selectedYearIndex}
+                            />
+                          </div>
+                        )}
                     </>,
                     <>
-                      <p className="lead">
-                        Activity
-                        <MDBIcon
-                          icon="angle-double-up"
-                          className="green-text ml-2"
-                          size="md"
-                        />
-                      </p>
-                      <p className="text-muted mb-0">Weekly overview</p>
-                      <LatestActivity
-                        currentStatistic={currentStatistic}
-                        yearsStatistic={yearsStatistic}
-                        year={this.state.selectedYearIndex}
-                        activity={this.state.activity}
-                      />
+                      {currentStatistic &&
+                        yearsStatistic &&
+                        displayWeekActivity && (
+                          <div>
+                            <p className="lead">
+                              Activity
+                              <MDBIcon
+                                icon="angle-double-up"
+                                className="green-text ml-2"
+                                size="md"
+                              />
+                            </p>
+                            <p className="text-muted mb-0">Weekly overview</p>
+                            <LatestActivity
+                              currentStatistic={currentStatistic}
+                              yearsStatistic={yearsStatistic}
+                              year={this.state.selectedYearIndex}
+                              activity={this.state.activity}
+                            />
+                          </div>
+                        )}
                     </>,
                   ]}
                   movementAxis="x"
