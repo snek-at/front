@@ -48,6 +48,7 @@ class InfoCard extends React.Component {
     limitLanguages: true,
     showToContinue: false,
     showFollow: false,
+    showLikes: false,
     followType: "",
     fetchedPerson: null,
   };
@@ -140,7 +141,19 @@ class InfoCard extends React.Component {
       this.setState({
         showFollow: false,
       });
+    } else if (this.state.showLikes) {
+      this.setState({
+        showLikes: false,
+      });
     }
+  };
+
+  toContinue = () => {
+    this.handleModalClose();
+
+    this.setState({
+      showToContinue: true,
+    });
   };
 
   render() {
@@ -482,6 +495,17 @@ class InfoCard extends React.Component {
             follow={this.props.follow}
             unfollow={this.props.unfollow}
             loggedUser={this.props.loggedUser}
+            toContinue={this.toContinue}
+          />
+        )}
+        {this.state.showLikes && (
+          <LikesModal
+            closeModal={this.handleModalClose}
+            fetchedPerson={this.state.fetchedPerson}
+            follow={this.props.follow}
+            unfollow={this.props.unfollow}
+            loggedUser={this.props.loggedUser}
+            toContinue={this.toContinue}
           />
         )}
       </>
