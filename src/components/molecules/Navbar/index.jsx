@@ -83,7 +83,7 @@ class Navbar extends React.Component {
             </MDBSmoothScroll>
           ) : (
             <>
-              {!loggedUser.anonymous ? (
+              {loggedUser.anonymous === false ? (
                 <Link to={"/u/" + loggedUser?.username}>
                   <MDBNavbarBrand className="flex-center">
                     <img
@@ -116,7 +116,7 @@ class Navbar extends React.Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {!loggedUser.anonymous ? (
+              {loggedUser.anonymous === false ? (
                 <>
                   <Link to={"/u/" + loggedUser.username}>
                     <MDBBtn color="white">

@@ -29,7 +29,7 @@ const userReducer = (state = INIT_STATE, action) => {
       };
     case Action.USER_LOGIN_FAILURE:
       return {
-        user: INIT_STATE.user,
+        user: { anonymous: null, username: null, person: null },
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
       };
