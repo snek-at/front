@@ -90,32 +90,6 @@ class PageOverview extends React.Component {
         <MDBCol lg="3">
           <div className="mt-3">
             <p className="lead font-weight-bold mb-1">Contributions</p>
-            {feed && (
-              <MDBCard className="mt-2">
-                <MDBCardBody>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <p className="text-muted small mb-0">Total</p>
-                      <p className="mb-0">
-                        <span className="lead font-weight-bold">
-                          {feed.length}
-                        </span>{" "}
-                        <span className="small">commits</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted small mb-0">Average</p>
-                      <p className="mb-0">
-                        <span className="lead font-weight-bold">
-                          {feed.length > 0 ? (365 / feed.length).toFixed(2) : 0}
-                        </span>{" "}
-                        <span className="small">/ day</span>
-                      </p>
-                    </div>
-                  </div>
-                </MDBCardBody>
-              </MDBCard>
-            )}
             {codestats && (
               <MDBCard className="border">
                 <MDBCardBody>
@@ -196,7 +170,7 @@ class PageOverview extends React.Component {
                     </p>
                   );
                 })}
-              {mergedFeed && mergedFeed.length > 0 && (
+              {mergedFeed && mergedFeed.years.length > 0 && (
                 <p
                   className={
                     this.state.selectedYearIndex === undefined
@@ -211,9 +185,9 @@ class PageOverview extends React.Component {
                 </p>
               )}
             </div>
-            {mergedFeed && mergedFeed.length > 0 ? (
+            {mergedFeed && mergedFeed.years.length > 0 ? (
               <div className="canvas-container">
-                <AILineChart
+                <AIBarChart
                   data={mergedFeed}
                   year={this.state.selectedYearIndex}
                   size={50}
