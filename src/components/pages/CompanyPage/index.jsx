@@ -147,7 +147,15 @@ class Page extends React.Component {
   };
 
   render() {
-    const { general, users, projects } = this.props;
+    const { error, general, users, projects } = this.props;
+
+    console.error(error);
+    console.log("GENERAL");
+    console.log(general);
+    console.log("USERS");
+    console.log(users);
+    console.log("PROJECTS");
+    console.log(projects);
 
     // console.log("PAGE", page);
 
@@ -305,11 +313,24 @@ class Page extends React.Component {
             </MDBCol>
           </MDBRow>
         ) : (
-          <div className="text-center my-5 py-5">
-            <div className="spinner-grow text-success" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          </div>
+          <>
+            {error ? (
+              <div className="text-center">
+                <MDBIcon
+                  icon="times-circle"
+                  size="3x"
+                  className="text-danger"
+                />
+                <span className="d-block mt-3 lead">{error.message}</span>
+              </div>
+            ) : (
+              <div className="text-center my-5 py-5">
+                <div className="spinner-grow text-success" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </MDBContainer>
     );
@@ -322,13 +343,14 @@ const mapStateToProps = (state) => ({
   general: state.enterprise.page.general,
   projects: state.enterprise.page.projects,
   users: state.enterprise.page.users,
+  error: state.enterprise.error,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getGeneral: (handle) => dispatch(getGeneral(handle)),
-    // getProjects: (handle) => dispatch(getProjects(handle)),
-    // getUsers: (handle) => dispatch(getUsers(handle)),
+    getProjects: (handle) => dispatch(getProjects(handle)),
+    getUsers: (handle) => dispatch(getUsers(handle)),
   };
 };
 //#endregion

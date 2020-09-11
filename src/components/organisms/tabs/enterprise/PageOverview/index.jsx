@@ -89,9 +89,9 @@ class PageOverview extends React.Component {
       <MDBRow id="pageoverview">
         <MDBCol lg="3">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Contributions</p>
+            <p className="lead font-weight-bold mb-1">Contributions</p>
             {feed && (
-              <MDBCard className="mt-4">
+              <MDBCard className="mt-2">
                 <MDBCardBody>
                   <div className="d-flex justify-content-between">
                     <div>
@@ -107,7 +107,7 @@ class PageOverview extends React.Component {
                       <p className="text-muted small mb-0">Average</p>
                       <p className="mb-0">
                         <span className="lead font-weight-bold">
-                          {(365 / feed.length).toFixed(2)}
+                          {feed.length > 0 ? (365 / feed.length).toFixed(2) : 0}
                         </span>{" "}
                         <span className="small">/ day</span>
                       </p>
@@ -120,7 +120,7 @@ class PageOverview extends React.Component {
         </MDBCol>
         <MDBCol lg="5">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Statistics</p>
+            <p className="lead font-weight-bold mb-1">Statistics</p>
             <div className="text-right">
               {mergedFeed &&
                 mergedFeed.years.map((year, y) => {
@@ -137,40 +137,44 @@ class PageOverview extends React.Component {
                     </p>
                   );
                 })}
-              <p
-                className={
-                  this.state.selectedYearIndex === undefined
-                    ? "blue-text clickable mx-2 d-inline-block"
-                    : "text-muted clickable mx-2 d-inline-block"
-                }
-                onClick={() => this.setState({ selectedYearIndex: undefined })}
-              >
-                Current
-              </p>
+              {mergedFeed && mergedFeed.length > 0 && (
+                <p
+                  className={
+                    this.state.selectedYearIndex === undefined
+                      ? "blue-text clickable mx-2 d-inline-block"
+                      : "text-muted clickable mx-2 d-inline-block"
+                  }
+                  onClick={() =>
+                    this.setState({ selectedYearIndex: undefined })
+                  }
+                >
+                  Current
+                </p>
+              )}
             </div>
-            <div className="canvas-container">
-              <AILineChart
-                data={mergedFeed}
-                year={this.state.selectedYearIndex}
-                size={50}
-                key="overview-chart"
-              />
-            </div>
+            {mergedFeed && mergedFeed.length > 0 ? (
+              <div className="canvas-container">
+                <AILineChart
+                  data={mergedFeed}
+                  year={this.state.selectedYearIndex}
+                  size={50}
+                  key="overview-chart"
+                />
+              </div>
+            ) : (
+              <p className="text-muted small">No statistics available yet.</p>
+            )}
           </div>
         </MDBCol>
         <MDBCol lg="4">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Activity</p>
-            <p className="text-muted small">
-              <MDBIcon icon="question-circle" className="mr-2" />
-              History of all projects in your page.
-            </p>
+            <p className="lead font-weight-bold mb-1">Activity</p>
           </div>
           {this.props.filter && (
             <p className="blue-text">{feed.length} matches found.</p>
           )}
           <MDBListGroup>
-            {feed ? (
+            {feed && feed.length > 0 ? (
               <>
                 {feed.reverse().map((activity, a) => {
                   return (
@@ -290,7 +294,7 @@ class PageOverview extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  activities: state.pages.activities,
+  activities: state.enterprise.page.general.activities,
 });
 //#endregion
 
