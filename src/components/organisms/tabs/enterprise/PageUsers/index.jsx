@@ -19,6 +19,8 @@ import {
 //> Additional
 // Everything time related
 import moment from "moment";
+// Fake data generator
+import faker from "faker";
 
 //> Components
 import { UserModal } from "../../../../molecules/modals/enterprise";
@@ -119,6 +121,22 @@ class PageUsers extends React.Component {
         <MDBListGroup>
           {users ? (
             users.map((user, p) => {
+              const seed = parseInt(user.hash ? user.hash : user.username, 36);
+
+              faker.seed(seed);
+              user.anonym = true;
+
+              if (user.anonym) {
+                if (!user.hash) {
+                  user.hash = user.username;
+                }
+
+                user.username = faker.internet.userName();
+
+                user.avatar = faker.internet.avatar();
+                user.name = faker.name.findName();
+              }
+
               return (
                 <>
                   {user ? (
@@ -146,7 +164,12 @@ class PageUsers extends React.Component {
                           />
                         </MDBAvatar>
                         <div className="d-inline">
-                          <p className="mb-0">{user.name}</p>
+                          <p className="mb-0">
+                            <small>
+                              <span class="badge badge-success">Anonym</span>
+                            </small>
+                            {user.name}
+                          </p>
                           <p className="small text-muted mb-0">
                             {user.username}
                           </p>
