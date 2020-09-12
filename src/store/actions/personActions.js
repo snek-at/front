@@ -184,7 +184,7 @@ const getProfiles = (personName) => {
 
 const addProfile = (
   source = {
-    url: undefined,
+    URL: undefined,
     type: undefined,
     authorization: undefined,
     username: undefined,
@@ -199,9 +199,7 @@ const addProfile = (
 
       const profile = await INTEL_SNEK.person.addProfile({
         personName,
-        source: {
-          ...source,
-        },
+        source,
       });
 
       dispatch({ type: Action.PERSON_PROFILE_ADD_SUCCESS, payload: profile });
@@ -232,6 +230,7 @@ const deleteProfile = (id) => {
         payload: profiles,
       });
     } catch (ex) {
+      console.log("FAIL", Action.PERSON_META_LINK_DELETE_FAILURE);
       dispatch({
         type: Action.PERSON_META_LINK_DELETE_FAILURE,
         payload: {
@@ -247,27 +246,18 @@ const deleteProfile = (id) => {
 const updateProfile = (
   id,
   nextProfile = {
-    avatarImage: undefined,
-    bio: undefined,
-    display2dCalendar: undefined,
-    display3dCalendar: undefined,
-    displayEmail: undefined,
-    displayProgrammingLanguages: undefined,
-    displayRanking: undefined,
-    displayWorkplace: undefined,
-    email: undefined,
-    firstName: undefined,
-    lastName: undefined,
-    location: undefined,
-    movablePool: undefined,
-    status: undefined,
-    websiteUrl: undefined,
-    workplace: undefined,
+    URL: undefined,
+    type: undefined,
+    authorization: undefined,
+    username: undefined,
+    isActive: undefined,
   }
 ) => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILE_UPDATE_REQUEST });
+
+      console.log(nextProfile, id);
 
       const profile = await INTEL_SNEK.person.updateProfile({
         profileId: id,

@@ -42,7 +42,7 @@ class Routes extends React.Component {
           exact
           path="/t/:username/:uid"
           component={(props) => <TalkPage {...props} />}
-        />
+        />*/}
         <Route
           exact
           path="/redirect"
@@ -53,7 +53,6 @@ class Routes extends React.Component {
             };
           }}
         />
-        */}
         <Route
           exact
           path="/settings"

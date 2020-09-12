@@ -30,6 +30,8 @@ import {
   MDBListGroup,
   MDBListGroupItem,
   MDBBadge,
+  MDBAlert,
+  MDBProgress,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
@@ -44,12 +46,20 @@ import { connect } from "react-redux";
 // } from "../../../store/actions/userActions";
 //> Components
 // Profile Picture Editor
-import { ProfilePictureModal } from "../../../components/molecules/modals";
+import {
+  ProfilePictureModal,
+  ConnectModal,
+} from "../../../components/molecules/modals";
 //> Style sheet
 import "./settings.scss";
 //> Actions
 // Functions to send data from the application to the store
-import { updateSettings } from "../../../store/actions/personActions";
+import {
+  updateSettings,
+  deleteProfile,
+  updateProfile,
+} from "../../../store/actions/personActions";
+import { getPerson as getUserPerson } from "../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -77,6 +87,8 @@ class SettingsPage extends React.Component {
   handleLoading = () => {
     const { loggedUser } = this.props;
 
+    console.log("HANDLE LOADING");
+
     if (loggedUser.anonymous) {
       this.props.history.push({
         pathname: "/",
@@ -86,7 +98,7 @@ class SettingsPage extends React.Component {
       });
     }
 
-    if (loggedUser?.person && this.state.loading) {
+    if (loggedUser?.person) {
       const {
         avatarImage,
         bio,
@@ -111,32 +123,58 @@ class SettingsPage extends React.Component {
         profiles,
       } = loggedUser?.person;
 
-      this.setState({
-        loading: false,
-        person: {
-          avatarImage,
-          bio,
-          display2dCalendar,
-          display3dCalendar,
-          displayContributionTypes,
-          displayWeekActivity,
-          displayImageGallery,
-          displayVideoGallery,
-          displayMusicGallery,
-          displayEmail,
-          displayProgrammingLanguages,
-          displayRanking,
-          displayWorkplace,
-          email,
-          firstName,
-          lastName,
-          location,
-          status,
-          websiteUrl,
-          workplace,
-          profiles,
-        },
-      });
+      const person = {
+        avatarImage,
+        bio,
+        display2dCalendar,
+        display3dCalendar,
+        displayContributionTypes,
+        displayWeekActivity,
+        displayImageGallery,
+        displayVideoGallery,
+        displayMusicGallery,
+        displayEmail,
+        displayProgrammingLanguages,
+        displayRanking,
+        displayWorkplace,
+        email,
+        firstName,
+        lastName,
+        location,
+        status,
+        websiteUrl,
+        workplace,
+        profiles,
+      };
+
+      if (JSON.stringify(this.state.person) !== JSON.stringify(person)) {
+        this.setState({
+          loading: false,
+          person: {
+            avatarImage,
+            bio,
+            display2dCalendar,
+            display3dCalendar,
+            displayContributionTypes,
+            displayWeekActivity,
+            displayImageGallery,
+            displayVideoGallery,
+            displayMusicGallery,
+            displayEmail,
+            displayProgrammingLanguages,
+            displayRanking,
+            displayWorkplace,
+            email,
+            firstName,
+            lastName,
+            location,
+            status,
+            websiteUrl,
+            workplace,
+            profiles,
+          },
+        });
+      }
     }
   };
 
@@ -148,6 +186,28 @@ class SettingsPage extends React.Component {
   // important for direct url access
   componentDidUpdate = () => {
     this.handleLoading();
+  };
+
+  refetch = () => {
+    const { loggedUser } = this.props;
+
+    if (loggedUser.anonymous) {
+      this.props.history.push({
+        pathname: "/",
+        state: {
+          actionCard: 1,
+        },
+      });
+    }
+
+    if (loggedUser.person) {
+      this.setState(
+        {
+          loading: true,
+        },
+        () => this.props.getUserPerson(loggedUser.person.slug.split("-")[1])
+      );
+    }
   };
 
   onDrop = async (files) => {
@@ -213,9 +273,17 @@ class SettingsPage extends React.Component {
       : false;
   };
 
+  toggle = (modal) => {
+    this.setState({
+      [modal]: !this.state[modal],
+    });
+  };
+
   render() {
     const { loggedUser } = this.props;
     const { person, activeItem } = this.state;
+
+    console.log("STATE", this.state);
 
     if (person) {
       return (
@@ -435,12 +503,22 @@ class SettingsPage extends React.Component {
                     <hr />
                   </MDBTabPane>
                   <MDBTabPane tabId={1}>
-                    <h5>Connections</h5>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <h5 className="mb-0">Connections</h5>
+                      <div>
+                        <ConnectModal
+                          refetch={this.refetch}
+                          disabled={this.state.loading}
+                        />
+                      </div>
+                    </div>
+                    {this.state.loading && <MDBProgress material preloader />}
                     <MDBListGroup>
                       {person.profiles?.map((profile, p) => {
+                        console.log("PROFILE", profile);
                         return (
                           <MDBListGroupItem
-                            className="d-flex justify-content-between align-items-center clickable"
+                            className="d-flex justify-content-between align-items-center clickable py-0 pr-0 pl-2"
                             // onClick={
                             //   // this.setState({
                             //   //   modal: true,
@@ -450,46 +528,38 @@ class SettingsPage extends React.Component {
                             // }
                             key={p}
                           >
-                            <div>
-                              <td>
-                                <a
-                                  href={profile.sourceUrl}
-                                  target="_blank"
-                                  className="mr-3"
-                                >
-                                  <MDBIcon
-                                    fab
-                                    icon={this.renderProfileTypeSwitch(
-                                      profile.sourceType
-                                    )}
-                                    li
-                                    size="4x"
-                                  />
-                                </a>
-                              </td>
+                            <div className="d-flex align-items-center">
+                              <a
+                                href={profile.sourceUrl}
+                                target="_blank"
+                                className="mr-2 text-dark"
+                              >
+                                <MDBIcon
+                                  fab
+                                  icon={this.renderProfileTypeSwitch(
+                                    profile.sourceType
+                                  )}
+                                  size="2x"
+                                />
+                              </a>
                               <code>
                                 {profile.username ? profile.username : null}
                               </code>
+                              {profile.isAccessTokenExpired && (
+                                <MDBBadge
+                                  pill
+                                  color="danger"
+                                  className="z-depth-0 ml-2"
+                                >
+                                  Expired
+                                </MDBBadge>
+                              )}
                             </div>
                             <div className="d-flex align-items-center justify-content-center">
-                              <div className="small d-inline-block text-center px-2">
+                              <div className="small d-inline-block text-right px-2">
                                 <span className="text-muted">Type</span>
                                 <span className="d-block">
                                   {profile.sourceType}
-                                </span>
-                              </div>
-                              <div className="small d-inline-block text-center ml-2">
-                                <span className="text-muted">Expired</span>
-                                <span className="d-block">
-                                  <MDBIcon
-                                    icon="circle"
-                                    size="lg"
-                                    className={
-                                      profile.active
-                                        ? "text-success"
-                                        : "text-danger"
-                                    }
-                                  />
                                 </span>
                               </div>
                               <div className="small d-inline-block text-center ml-2">
@@ -499,21 +569,67 @@ class SettingsPage extends React.Component {
                                     icon="circle"
                                     size="lg"
                                     className={
-                                      profile.active
+                                      profile.isActive &&
+                                      !profile.isAccessTokenExpired
                                         ? "text-success"
                                         : "text-danger"
                                     }
                                   />
                                 </span>
                               </div>
+                              {profile.isActive ? (
+                                <div className="bg-warning h-100 ml-3">
+                                  <MDBIcon
+                                    icon="pause"
+                                    className="text-white p-3"
+                                    onClick={() =>
+                                      this.props
+                                        .updateProfile(profile.id, {
+                                          URL: profile.sourceUrl,
+                                          type: profile.sourceType,
+                                          authorization: profile.accessToken,
+                                          username: profile.username,
+                                          isActive: false,
+                                        })
+                                        .then(() => this.refetch())
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div className="bg-success h-100 ml-3">
+                                  <MDBIcon
+                                    icon="play"
+                                    className="text-white p-3"
+                                    onClick={() =>
+                                      this.props
+                                        .updateProfile(profile.id, {
+                                          URL: profile.sourceUrl,
+                                          type: profile.sourceType,
+                                          authorization: profile.accessToken,
+                                          username: profile.username,
+                                          isActive: true,
+                                        })
+                                        .then(() => this.refetch())
+                                    }
+                                  />
+                                </div>
+                              )}
+                              <div className="bg-danger h-100">
+                                <MDBIcon
+                                  icon="trash"
+                                  className="text-white p-3"
+                                  onClick={() =>
+                                    this.props
+                                      .deleteProfile(profile.id)
+                                      .then(() => this.refetch())
+                                  }
+                                />
+                              </div>
                             </div>
                           </MDBListGroupItem>
                         );
                       })}
                     </MDBListGroup>
-                    <div class="text-right">
-                      <MDBBtn color="green">Add</MDBBtn>
-                    </div>
                   </MDBTabPane>
                   <MDBTabPane tabId={2}>
                     <h5>Customization</h5>
@@ -582,16 +698,19 @@ class SettingsPage extends React.Component {
                         <MDBCol md="12">
                           <hr />
                         </MDBCol>
-
                         {!this.checkProfileTypeExists("GITHUB") &&
                           !this.checkProfileTypeExists("GITLAB") && (
-                            <MDBBadge pill color="info">
-                              <i class="fas fa-question-circle"></i> Looks like
-                              no profiles are present. You can add one
-                              <a href={""}> here!</a>
-                            </MDBBadge>
+                            <MDBAlert color="info">
+                              <MDBIcon icon="question-circle" /> Looks like no
+                              profiles are present. You can add one{" "}
+                              <span
+                                className="blue-text clickable"
+                                onClick={() => this.setState({ activeItem: 1 })}
+                              >
+                                here!
+                              </span>
+                            </MDBAlert>
                           )}
-
                         <span class="badge badge-info pill"></span>
                         <MDBCol md="12">
                           <MDBInput
@@ -809,11 +928,16 @@ class SettingsPage extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.user,
+  person: state.person,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     saveSettings: (nextSettings) => dispatch(updateSettings(nextSettings)),
+    deleteProfile: (id) => dispatch(deleteProfile(id)),
+    updateProfile: (id, nextProfile) =>
+      dispatch(updateProfile(id, nextProfile)),
+    getUserPerson: (user) => dispatch(getUserPerson(user)),
   };
 };
 //#endregion

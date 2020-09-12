@@ -28,26 +28,28 @@ import {
 
 //> Actions
 // Functions to send data from the application to the store
-//import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
+import { addProfile } from "../../../../store/actions/personActions";
+import { getGitlabServers } from "../../../../store/actions/generalActions";
+//> OAuth
+import { GitHubOAuth, InstagramOAuth } from "reactjs-oauth";
+//> Style
+import "./connectmodal.scss";
 //#endregion
 
 //#region > Components
 class ConnectModal extends React.Component {
-  state = { youtubeLink: "", modalGitLab: false };
+  state = { sourceList: [], gitlab_server: undefined };
 
   componentDidMount = () => {
-    this.getGitLabServers();
+    this.props.getGitlabServers();
   };
 
-  getGitLabServers = async () => {
-    // Check if GitLab Servers have already been set
-    if (this.state.gitlab_servers === undefined) {
-      // Retrieve GitLab servers
-      /*this.props.fetchGitLabServers().then(() => {
-        this.setState({
-          gitlab_servers: this.props.gitlabServers,
-        });
-      });*/
+  componentDidUpdate = () => {
+    console.log("SERVER", this.props.gitlabServer);
+    if (!this.state.gitlab_servers && this.props.gitlabServer) {
+      this.setState({
+        gitlab_servers: this.props.gitlabServer,
+      });
     }
   };
 
@@ -68,79 +70,123 @@ class ConnectModal extends React.Component {
     );
   };
 
-  addGitHub = () => {
-    // Do stuff
+  oauthGitHubSuccess = (response) => {
+    this.setState(
+      {
+        loadingGitHub: true,
+      },
+      async () => {
+        console.log(response);
+        this.props
+          .addProfile({
+            URL: "https://api.github.com/graphql",
+            type: "GITHUB",
+            authorization: response.accessToken,
+            username: response.username,
+          })
+          .then(() => this.props.refetch());
+      }
+    );
   };
 
-  addInstagram = () => {
-    // Do stuff
+  oauthGitHubFailure = (response) => {
+    //#ERROR
+    console.error(response);
+  };
+
+  oauthInstagramSuccess = (response) => {
+    this.setState(
+      {
+        loadingInstagram: true,
+      },
+      async () => {
+        console.log(response);
+        this.props
+          .addProfile({
+            URL: "https://graph.instagram.com",
+            type: "INSTAGRAM",
+            authorization: response.accessToken,
+            username: response.username,
+          })
+          .then(() => this.props.refetch());
+      }
+    );
+  };
+
+  oauthInstagramFailure = (response) => {
+    //#ERROR
+    console.error(response);
   };
 
   render() {
     const { selectedVideoId } = this.props;
 
+    console.log(this.state);
+    console.log(this.props);
+
     return (
       <>
-        <MDBModal
-          isOpen={this.state.modalGitLab ? false : true}
-          toggle={this.props.toggle}
-          size="md"
-          centered
-          animation="left"
-        >
-          <MDBModalBody className="p-3 text-center">
-            <div className="d-flex justify-content-between align-items-center">
-              <p className="lead mb-0">Connect your profiles</p>
-              <MDBBtn color="green" onClick={this.props.toggle}>
-                Done
+        <div className="text-center" id="connectmodal">
+          {this.props.disabled ? (
+            <>
+              <MDBBtn social="git" disabled>
+                <MDBIcon fab icon="github" size="lg" />
               </MDBBtn>
-            </div>
-            <div className="pt-4 text-center">
-              <MDBRow className="justify-content-center">
-                <MDBCol lg="7">
-                  <MDBBtn
-                    social="git"
-                    size="lg"
-                    className="d-block mx-auto w-100"
-                    onClick={() => this.addGitHub()}
-                  >
-                    <MDBIcon fab icon="github" />
-                    Connect GitHub
-                  </MDBBtn>
-                  <MDBBtn
-                    color="orange"
-                    size="lg"
-                    className="d-block mx-auto w-100"
-                    onClick={this.toggle}
-                  >
-                    <MDBIcon fab icon="gitlab" />
-                    Connect GitLab
-                  </MDBBtn>
-                  <MDBBtn
-                    social="ins"
-                    size="lg"
-                    className="d-block mx-auto w-100"
-                    onClick={() => this.addInstagram()}
-                  >
-                    <MDBIcon fab icon="instagram" />
-                    Connect Instagram
-                  </MDBBtn>
-                </MDBCol>
-              </MDBRow>
-            </div>
-            {this.state.youtubeId && (
-              <div className="embed-responsive embed-responsive-16by9 mt-3">
-                <iframe
-                  className="embed-responsive-item"
-                  title="YouTube Video"
-                  src={"//www.youtube.com/embed/" + this.state.youtubeId}
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            )}
-          </MDBModalBody>
-        </MDBModal>
+              <MDBBtn social="ins" disabled>
+                <MDBIcon fab icon="instagram" size="lg" />
+              </MDBBtn>
+              <MDBBtn color="orange" disabled>
+                <MDBIcon fab icon="gitlab" size="lg" />
+              </MDBBtn>
+            </>
+          ) : (
+            <>
+              {!process.env.NODE_ENV ||
+              process.env.NODE_ENV === "development" ? (
+                <GitHubOAuth
+                  authorizationUrl="https://github.com/login/oauth/authorize"
+                  clientId="1440dd4c1d1c4c0fa124"
+                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
+                  redirectUri="http://localhost:3000/redirect"
+                  onSuccess={this.oauthGitHubSuccess}
+                  onFailure={this.oauthGitHubFailure}
+                />
+              ) : (
+                <GitHubOAuth
+                  authorizationUrl="https://github.com/login/oauth/authorize"
+                  clientId="2148629809594d57c113"
+                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
+                  redirectUri="https://snek.at/redirect"
+                  onSuccess={this.oauthGitHubSuccess}
+                  onFailure={this.oauthGitHubFailure}
+                />
+              )}
+              {!process.env.NODE_ENV ||
+              process.env.NODE_ENV === "development" ? (
+                <InstagramOAuth
+                  authorizationUrl="https://api.instagram.com/oauth/authorize"
+                  clientId="291591375471783"
+                  clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                  redirectUri="https://localhost:3000/redirect"
+                  onSuccess={this.oauthInstagramSuccess}
+                  onFailure={this.oauthInstagramFailure}
+                />
+              ) : (
+                <InstagramOAuth
+                  authorizationUrl="https://api.instagram.com/oauth/authorize"
+                  clientId="291591375471783"
+                  clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                  redirectUri="https://snek.at/redirect"
+                  onSuccess={this.oauthInstagramSuccess}
+                  onFailure={this.oauthInstagramFailure}
+                />
+              )}
+              <MDBBtn color="orange" onClick={this.toggle}>
+                <MDBIcon fab icon="gitlab" size="lg" />
+              </MDBBtn>
+            </>
+          )}
+        </div>
         {this.state.modalGitLab && (
           <MDBModal
             className="text-white"
@@ -210,12 +256,13 @@ class ConnectModal extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  //gitlabServers: state.general.allGitlabServers,
+  gitlabServer: state.general.gitlabServer,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //fetchGitLabServers: () => dispatch(fetchGitLabServersAction())
+    addProfile: (source) => dispatch(addProfile(source)),
+    getGitlabServers: () => dispatch(getGitlabServers()),
   };
 };
 //#endregion
