@@ -65,7 +65,19 @@ class ConnectModal extends React.Component {
         modalGitLab: false,
       },
       () => {
-        // Do stuff
+        const gitlab = {
+          server: this.state.gitlab_server,
+          username: this.state.gitlab_username,
+        };
+
+        this.props
+          .addProfile({
+            URL: gitlab.server,
+            type: "GITLAB",
+            authorization: undefined,
+            username: gitlab.username,
+          })
+          .then(() => this.props.refetch());
       }
     );
   };
@@ -116,6 +128,12 @@ class ConnectModal extends React.Component {
   oauthInstagramFailure = (response) => {
     //#ERROR
     console.error(response);
+  };
+
+  handleSelectChange = (e) => {
+    this.setState({
+      gitlab_server: e[0],
+    });
   };
 
   render() {
