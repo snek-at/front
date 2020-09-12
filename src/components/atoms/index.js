@@ -15,7 +15,6 @@ import LanguageChart from "./charts/LanguageBar";
 import AIBarChart from "./charts/AIBarChart";
 import AILineChart from "./charts/AILineChart";
 import AIContribCalendar from "./charts/AIContribCalendar";
-import AILanguageChart from "./charts/AILanguageChart";
 //> General
 import SearchBar from "./SearchBar";
 import ErrorBoundary from "./ErrorBoundary";
@@ -38,7 +37,6 @@ export {
   AIBarChart,
   AILineChart,
   AIContribCalendar,
-  AILanguageChart,
   /* General */
   SearchBar,
   ErrorBoundary,

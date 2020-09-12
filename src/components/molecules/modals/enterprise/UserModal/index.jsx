@@ -20,7 +20,7 @@ import {
 import moment from "moment";
 
 //> Components
-import { AIContribCalendar, AILanguageChart } from "../../../../atoms";
+import { AIContribCalendar } from "../../../../atoms";
 //#endregion
 
 //#region > Components
