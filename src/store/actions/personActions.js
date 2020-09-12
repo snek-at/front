@@ -309,6 +309,8 @@ const getInstagramPosts = (id) => {
         type: Action.PERSON_INSTAGRAM_POSTS_FETCH_SUCCESS,
         payload: posts,
       });
+
+      return posts;
     } catch (ex) {
       dispatch({
         type: Action.PERSON_INSTAGRAM_POSTS_FETCH_FAILURE,
