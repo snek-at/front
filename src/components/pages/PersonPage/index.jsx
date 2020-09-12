@@ -50,13 +50,14 @@ class PersonPage extends React.Component {
   };
 
   componentDidUpdate = async () => {
-    const { fetchedPerson, loggedUser } = this.props;
+    const { fetchedPerson, loggedUser, profilesProcessed } = this.props;
 
     if (
       !this.state.cachingDone &&
       fetchedPerson &&
       loggedUser?.person &&
-      fetchedPerson.slug === loggedUser.person.slug
+      fetchedPerson.slug === loggedUser.person.slug &&
+      !profilesProcessed
     ) {
       await this.props.processProfiles();
 
@@ -113,6 +114,7 @@ class PersonPage extends React.Component {
 const mapStateToProps = (state) => ({
   loggedUser: state.user.user,
   fetchedPerson: state.person.fetchedPerson,
+  profilesProcessed: state.person.profilesProcessed,
 });
 
 const mapDispatchToProps = (dispatch) => {

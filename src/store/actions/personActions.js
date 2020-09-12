@@ -326,9 +326,16 @@ const processProfiles = () => {
         personName,
       });
 
+      await dispatch({
+        type: Action.PERSON_PROFILES_PROCESS_SUCCESS,
+        payload: true,
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+
       dispatch({
         type: Action.PERSON_PROFILES_PROCESS_SUCCESS,
-        payload: posts,
+        payload: false,
       });
     } catch (ex) {
       dispatch({

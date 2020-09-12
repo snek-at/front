@@ -9,6 +9,7 @@ import * as Action from "../types";
 //#region > Constant Variables
 const INIT_STATE = {
   fetchedPerson: undefined,
+  profilesProcessed: false,
   error: undefined,
   errorDetails: undefined,
 };
@@ -44,7 +45,6 @@ const personReducer = (state = INIT_STATE, action) => {
       Action.PERSON_PROFILE_DELETE_SUCCESS |
       Action.PERSON_PROFILE_UPDATE_SUCCESS |
       Action.PERSON_INSTAGRAM_POSTS_FETCH_SUCCESS |
-      Action.PERSON_PROFILES_PROCESS_SUCCESS |
       Action.PERSON_FOLLOW_SUCCESS |
       Action.PERSON_UNFOLLOW_SUCCESS |
       Action.PERSON_LIKE_SUCCESS |
@@ -71,6 +71,12 @@ const personReducer = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
         errorDetails: serializeError(action.payload.error),
+      };
+    //> Profile processing
+    case Action.PERSON_PROFILES_PROCESS_SUCCESS:
+      return {
+        ...state,
+        profilesProcessed: action.payload,
       };
     //> Get person
     case Action.PERSON_FETCH_REQUEST:
