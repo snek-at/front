@@ -307,7 +307,6 @@ class InfoCard extends React.Component {
                     }}
                   />
                 )}
-                <small className="px-1">{fetchedPerson.status}</small>
               </div>
             )}
           </div>
