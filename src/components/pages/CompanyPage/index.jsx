@@ -177,8 +177,12 @@ class Page extends React.Component {
                   <MDBRow className="d-flex align-items-center">
                     <MDBCol lg="2">
                       <img
-                        src="https://www.htl-villach.at/typo3conf/ext/htl_villach/Resources/Public/Images/htl_logo_box.svg"
-                        alt="Company logo"
+                        src={
+                          general?.avatarImage?.src
+                            ? general.avatarImage.src
+                            : ""
+                        }
+                        alt="No logo"
                         className="img-fluid"
                       />
                     </MDBCol>
