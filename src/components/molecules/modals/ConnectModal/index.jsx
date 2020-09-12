@@ -256,7 +256,13 @@ class ConnectModal extends React.Component {
               </MDBSelect>
             </MDBModalBody>
             <MDBModalFooter className="justify-content-center">
-              <MDBBtn color="orange" onClick={this.addGitLab}>
+              <MDBBtn
+                color="orange"
+                onClick={this.addGitLab}
+                disabled={
+                  !this.state.gitlab_username || !this.state.gitlab_servers
+                }
+              >
                 <MDBIcon icon="plus-circle" className="mr-2" />
                 Add
               </MDBBtn>
