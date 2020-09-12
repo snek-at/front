@@ -186,7 +186,7 @@ class OverviewTab extends React.Component {
               <>
                 {(display3dCalendar || display3dCalendar) && (
                   <div className="text-right year-select">
-                    {[...yearsStatistic].reverse().map((year, i) => {
+                    {yearsStatistic.map((year, i) => {
                       return (
                         <MDBBtn
                           color="white"
