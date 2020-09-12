@@ -66,7 +66,7 @@ class Calender2D extends React.Component {
       // Get contribution data
       let contribData;
 
-      if (year) {
+      if (year !== undefined) {
         contribData = yearsStatistic[year];
       } else {
         contribData = currentStatistic;
@@ -95,7 +95,7 @@ class Calender2D extends React.Component {
     // Get current month
     let current;
 
-    if (this.props.year) {
+    if (this.props.year !== undefined) {
       current = 0;
     } else {
       current = new Date().getMonth();

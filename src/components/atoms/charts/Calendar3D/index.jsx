@@ -81,8 +81,7 @@ class Calendar3D extends React.Component {
 
   renderTopStats() {
     let countTotal, averageCount, datesTotal, maxCount, dateBest, contribData;
-
-    if (this.props.year) {
+    if (this.props.year !== undefined) {
       contribData = this.props.yearsStatistic[this.props.year];
     } else {
       contribData = this.props.currentStatistic;
@@ -90,7 +89,7 @@ class Calendar3D extends React.Component {
 
     let contributionCalendar = JSON.parse(contribData.calendarData);
     let contributionDetails = JSON.parse(contribData.contributionTypeData);
-    let busiestDay = JSON.parse(JSON.stringify(contribData.busiestDay));
+    let busiestDay = contribData.busiestDay;
 
     countTotal = contributionDetails.total;
     averageCount = Math.round((countTotal / 365 + Number.EPSILON) * 100) / 100;
@@ -101,8 +100,7 @@ class Calendar3D extends React.Component {
       moment(contributionCalendar.endDate).format("MMM D");
 
     /* Busiest day */
-    maxCount = contribData.busiestDay.total;
-    console.log(busiestDay);
+    maxCount = busiestDay.total;
     dateBest = moment(contribData.busiestDay.date);
     dateBest = dateBest.isValid() ? dateBest.format("MMM DD") : "-";
 
@@ -118,13 +116,16 @@ class Calendar3D extends React.Component {
   renderBottomStats() {
     let streakLongest, datesLongest, streakCurrent, datesCurrent, contribData;
 
-    if (this.props.year) {
+    if (this.props.year !== undefined) {
       contribData = this.props.yearsStatistic[this.props.year];
     } else {
       contribData = this.props.currentStatistic;
     }
 
-    if (contribData.longestStreak) {
+    if (
+      contribData.longestStreak &&
+      contribData.longestStreak.totalDays !== null
+    ) {
       streakLongest = contribData.longestStreak.totalDays;
       datesLongest =
         moment(contribData.longestStreak.startDate).format("MMM D") +
@@ -135,7 +136,11 @@ class Calendar3D extends React.Component {
       datesLongest = "-";
     }
 
-    if (contribData.currentStreak) {
+    console.log(contribData);
+    if (
+      contribData.currentStreak &&
+      contribData.currentStreak.totalDays != null
+    ) {
       streakCurrent = contribData.currentStreak.totalDays;
       datesCurrent =
         moment(contribData.currentStreak.startDate).format("MMM D") +
@@ -166,8 +171,8 @@ class Calendar3D extends React.Component {
 
       // Get contributions of the selected year
       let contribData;
-      console.log(this.props.yearsStatistic, this.props.year);
-      if (this.props.year) {
+
+      if (this.props.year !== undefined) {
         contribData = this.props.yearsStatistic[this.props.year];
       } else {
         contribData = this.props.currentStatistic;
