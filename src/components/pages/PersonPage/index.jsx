@@ -21,6 +21,7 @@ import {
 import { getPerson as getUserPerson } from "../../../store/actions/userActions";
 //> Components
 import { PersonInfoCard, PersonTabs } from "../../organisms";
+import { ConnectModal } from "../../molecules/modals";
 //> Style sheet
 import "./person.scss";
 //#endregion
@@ -32,6 +33,7 @@ import "./person.scss";
 class PersonPage extends React.Component {
   state = {
     cachingDone: false,
+    showConnectModal: true,
   };
 
   saveSettings = (state) => {
@@ -79,7 +81,7 @@ class PersonPage extends React.Component {
   };
 
   render() {
-    const { fetchedPerson, match } = this.props;
+    const { fetchedPerson, match, loggedUser } = this.props;
     const username = match?.params?.username;
 
     if (fetchedPerson?.slug.split("-")[1] === username) {
@@ -95,6 +97,15 @@ class PersonPage extends React.Component {
               </MDBCol>
             </MDBRow>
           </MDBContainer>
+          {fetchedPerson &&
+            fetchedPerson.profiles.length > 0 &&
+            this.state.showConnectModal &&
+            !localStorage.getItem("connect_modal") && (
+              <ConnectModal
+                isModal
+                toggle={() => this.setState({ showConnectModal: false })}
+              />
+            )}
         </div>
       );
     } else {

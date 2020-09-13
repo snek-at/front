@@ -139,72 +139,163 @@ class ConnectModal extends React.Component {
   render() {
     const { selectedVideoId } = this.props;
 
-    console.log(this.state);
-    console.log(this.props);
+    console.log("RAAAAAAAAAAAAAAAAAAAAAAAAA");
 
     return (
       <>
-        <div className="text-center" id="connectmodal">
-          {this.props.disabled ? (
-            <>
-              <MDBBtn social="git" disabled>
-                <MDBIcon fab icon="github" size="lg" />
-              </MDBBtn>
-              <MDBBtn social="ins" disabled>
-                <MDBIcon fab icon="instagram" size="lg" />
-              </MDBBtn>
-              <MDBBtn color="orange" disabled>
-                <MDBIcon fab icon="gitlab" size="lg" />
-              </MDBBtn>
-            </>
-          ) : (
-            <>
-              {!process.env.NODE_ENV ||
-              process.env.NODE_ENV === "development" ? (
-                <GitHubOAuth
-                  authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="1440dd4c1d1c4c0fa124"
-                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
-                  redirectUri="http://localhost:3000/redirect"
-                  onSuccess={this.oauthGitHubSuccess}
-                  onFailure={this.oauthGitHubFailure}
-                />
-              ) : (
-                <GitHubOAuth
-                  authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="2148629809594d57c113"
-                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
-                  redirectUri="https://snek.at/redirect"
-                  onSuccess={this.oauthGitHubSuccess}
-                  onFailure={this.oauthGitHubFailure}
-                />
-              )}
-              {!process.env.NODE_ENV ||
-              process.env.NODE_ENV === "development" ? (
-                <InstagramOAuth
-                  authorizationUrl="https://api.instagram.com/oauth/authorize"
-                  clientId="291591375471783"
-                  clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
-                  redirectUri="https://localhost:3000/redirect"
-                  onSuccess={this.oauthInstagramSuccess}
-                  onFailure={this.oauthInstagramFailure}
-                />
-              ) : (
-                <InstagramOAuth
-                  authorizationUrl="https://api.instagram.com/oauth/authorize"
-                  clientId="291591375471783"
-                  clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
-                  redirectUri="https://snek.at/redirect"
-                  onSuccess={this.oauthInstagramSuccess}
-                  onFailure={this.oauthInstagramFailure}
-                />
-              )}
-              <MDBBtn color="orange" onClick={this.toggle}>
-                <MDBIcon fab icon="gitlab" size="lg" />
-              </MDBBtn>
-            </>
-          )}
-        </div>
+        {this.props.isModal ? (
+          <MDBModal
+            size="md"
+            backdrop={true}
+            isOpen={true}
+            toggle={this.props.toggle}
+            centered
+            animation="left"
+          >
+            <MDBModalBody>
+              <div className="text-center" id="connectmodal">
+                <div className="text-right small text-muted">
+                  <span
+                    onClick={() => {
+                      localStorage.setItem("connect_modal", true);
+                      this.props.toggle();
+                    }}
+                    className="clickable"
+                  >
+                    Later
+                  </span>
+                </div>
+                <p className="lead font-weight-bold mb-0">Connect your work</p>
+                <p className="text-muted small">
+                  You can add GitHub, Instagram and GitLab to share parts of
+                  your work.
+                </p>
+                {this.props.disabled ? (
+                  <>
+                    <MDBBtn social="git" disabled>
+                      <MDBIcon fab icon="github" size="lg" />
+                    </MDBBtn>
+                    <MDBBtn social="ins" disabled>
+                      <MDBIcon fab icon="instagram" size="lg" />
+                    </MDBBtn>
+                    <MDBBtn color="orange" disabled>
+                      <MDBIcon fab icon="gitlab" size="lg" />
+                    </MDBBtn>
+                  </>
+                ) : (
+                  <>
+                    {!process.env.NODE_ENV ||
+                    process.env.NODE_ENV === "development" ? (
+                      <GitHubOAuth
+                        authorizationUrl="https://github.com/login/oauth/authorize"
+                        clientId="1440dd4c1d1c4c0fa124"
+                        clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
+                        redirectUri="http://localhost:3000/redirect"
+                        onSuccess={this.oauthGitHubSuccess}
+                        onFailure={this.oauthGitHubFailure}
+                      />
+                    ) : (
+                      <GitHubOAuth
+                        authorizationUrl="https://github.com/login/oauth/authorize"
+                        clientId="2148629809594d57c113"
+                        clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
+                        redirectUri="https://snek.at/redirect"
+                        onSuccess={this.oauthGitHubSuccess}
+                        onFailure={this.oauthGitHubFailure}
+                      />
+                    )}
+                    {!process.env.NODE_ENV ||
+                    process.env.NODE_ENV === "development" ? (
+                      <InstagramOAuth
+                        authorizationUrl="https://api.instagram.com/oauth/authorize"
+                        clientId="291591375471783"
+                        clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                        redirectUri="https://localhost:3000/redirect"
+                        onSuccess={this.oauthInstagramSuccess}
+                        onFailure={this.oauthInstagramFailure}
+                      />
+                    ) : (
+                      <InstagramOAuth
+                        authorizationUrl="https://api.instagram.com/oauth/authorize"
+                        clientId="291591375471783"
+                        clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                        redirectUri="https://snek.at/redirect"
+                        onSuccess={this.oauthInstagramSuccess}
+                        onFailure={this.oauthInstagramFailure}
+                      />
+                    )}
+                    <MDBBtn color="orange" onClick={this.toggle}>
+                      <MDBIcon fab icon="gitlab" size="lg" />
+                    </MDBBtn>
+                  </>
+                )}
+                <p className="mt-3">SNEK's no fun without those connections!</p>
+              </div>
+            </MDBModalBody>
+          </MDBModal>
+        ) : (
+          <div className="text-center" id="connectmodal">
+            {this.props.disabled ? (
+              <>
+                <MDBBtn social="git" disabled>
+                  <MDBIcon fab icon="github" size="lg" />
+                </MDBBtn>
+                <MDBBtn social="ins" disabled>
+                  <MDBIcon fab icon="instagram" size="lg" />
+                </MDBBtn>
+                <MDBBtn color="orange" disabled>
+                  <MDBIcon fab icon="gitlab" size="lg" />
+                </MDBBtn>
+              </>
+            ) : (
+              <>
+                {!process.env.NODE_ENV ||
+                process.env.NODE_ENV === "development" ? (
+                  <GitHubOAuth
+                    authorizationUrl="https://github.com/login/oauth/authorize"
+                    clientId="1440dd4c1d1c4c0fa124"
+                    clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
+                    redirectUri="http://localhost:3000/redirect"
+                    onSuccess={this.oauthGitHubSuccess}
+                    onFailure={this.oauthGitHubFailure}
+                  />
+                ) : (
+                  <GitHubOAuth
+                    authorizationUrl="https://github.com/login/oauth/authorize"
+                    clientId="2148629809594d57c113"
+                    clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
+                    redirectUri="https://snek.at/redirect"
+                    onSuccess={this.oauthGitHubSuccess}
+                    onFailure={this.oauthGitHubFailure}
+                  />
+                )}
+                {!process.env.NODE_ENV ||
+                process.env.NODE_ENV === "development" ? (
+                  <InstagramOAuth
+                    authorizationUrl="https://api.instagram.com/oauth/authorize"
+                    clientId="291591375471783"
+                    clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                    redirectUri="https://localhost:3000/redirect"
+                    onSuccess={this.oauthInstagramSuccess}
+                    onFailure={this.oauthInstagramFailure}
+                  />
+                ) : (
+                  <InstagramOAuth
+                    authorizationUrl="https://api.instagram.com/oauth/authorize"
+                    clientId="291591375471783"
+                    clientSecret="d4e65f2dd4c72c3123cfbd84c19e7bee"
+                    redirectUri="https://snek.at/redirect"
+                    onSuccess={this.oauthInstagramSuccess}
+                    onFailure={this.oauthInstagramFailure}
+                  />
+                )}
+                <MDBBtn color="orange" onClick={this.toggle}>
+                  <MDBIcon fab icon="gitlab" size="lg" />
+                </MDBBtn>
+              </>
+            )}
+          </div>
+        )}
         {this.state.modalGitLab && (
           <MDBModal
             className="text-white"
