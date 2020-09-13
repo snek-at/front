@@ -32,7 +32,10 @@ import {
 import { VideoModal, AddVideoModal } from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
-import { addMetaLink } from "../../../../../store/actions/personActions";
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aivideogallery.scss";
 //#endregion
@@ -126,6 +129,26 @@ class AIVideoGallery extends React.Component {
                               className="text-danger"
                             />
                           </div>
+                          {sameOrigin && video.id && (
+                            <div className="text-right video-preview py-1 px-2">
+                              <MDBBtn
+                                color="danger"
+                                size="sm"
+                                onClick={() => {
+                                  this.setState(
+                                    {
+                                      videos: this.state.videos.filter(
+                                        (video) => video.id !== video.id
+                                      ),
+                                    },
+                                    () => this.props.deleteMetaLink(video.id)
+                                  );
+                                }}
+                              >
+                                <MDBIcon icon="trash" className="m-0" />
+                              </MDBBtn>
+                            </div>
+                          )}
                           <div className="position-absolute w-100 video-preview d-none">
                             <MDBRow>
                               <MDBCol lg="4">
@@ -188,7 +211,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 
