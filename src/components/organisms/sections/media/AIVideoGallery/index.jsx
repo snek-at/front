@@ -71,23 +71,26 @@ class AIVideoGallery extends React.Component {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  addVideo = (state) => {
-    const video = {
+  addVideo = async (state) => {
+    let video = {
       linkType: "YOUTUBE",
       url: state.youtubeLink,
     };
 
-    this.setState(
-      {
-        modalAddVideo: false,
-        videos: [...this.state.videos, video],
-      },
-      () =>
-        this.props.addMetaLink({
-          url: video.url,
-          linkType: video.linkType,
-        })
-    );
+    const rtn = await this.props.addMetaLink({
+      url: video.url,
+      linkType: video.linkType,
+    });
+
+    video = {
+      ...video,
+      id: rtn.id,
+    };
+
+    this.setState({
+      modalAddVideo: false,
+      videos: [...this.state.videos, video],
+    });
   };
 
   render() {
