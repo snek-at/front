@@ -98,7 +98,7 @@ class PersonPage extends React.Component {
             </MDBRow>
           </MDBContainer>
           {fetchedPerson &&
-            fetchedPerson.profiles.length > 0 &&
+            fetchedPerson.profiles.length === 0 &&
             this.state.showConnectModal &&
             !localStorage.getItem("connect_modal") && (
               <ConnectModal
