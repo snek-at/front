@@ -120,6 +120,8 @@ const addMetaLink = (
       });
 
       dispatch({ type: Action.PERSON_META_LINK_ADD_SUCCESS, payload: link });
+
+      return link;
     } catch (ex) {
       dispatch({
         type: Action.PERSON_META_LINK_ADD_FAILURE,
@@ -129,6 +131,8 @@ const addMetaLink = (
           error: ex,
         },
       });
+
+      return false;
     }
   };
 };
