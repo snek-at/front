@@ -19,7 +19,6 @@ import {
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
-import { addTalk } from "../../../../store/actions/personActions";
 //> Intel
 import { anonfiles } from "snek-intel/lib/utils/upload";
 import IMGUR_PROVIDER from "snek-intel/lib/utils/imgur";
