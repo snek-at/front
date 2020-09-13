@@ -26,15 +26,11 @@ import { connect } from "react-redux";
 // Used to display the time in a readable format
 import moment from "moment";
 
-//> Actions
-// Functions to send data from the application to the store
-// import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> Style sheet
 import "./talkstab.scss";
 //> Actions
 // Functions to send data from the application to the store
 import { addTalk, deleteTalk } from "../../../../store/actions/personActions";
-//> Modules
 import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
