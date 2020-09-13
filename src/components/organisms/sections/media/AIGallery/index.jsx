@@ -70,6 +70,10 @@ class AIGallery extends React.Component {
     });
   };
 
+  componentDidUpdate = () => {
+    console.log("AAAAAAAAAAAAAAA", this.props.loggedUser);
+  };
+
   toggle = (modal) => {
     this.setState({
       [modal]: !this.state[modal],
@@ -100,7 +104,7 @@ class AIGallery extends React.Component {
     const { loggedUser } = this.props;
 
     return (
-      <div className="py-5">
+      <div className="py-5" id="gallery">
         <div className="mb-4 text-right">
           <MDBBtn
             color="green"
@@ -109,7 +113,7 @@ class AIGallery extends React.Component {
             Select images
           </MDBBtn>
         </div>
-        <MDBRow id="gallery">
+        <MDBRow>
           {this.state.images &&
             this.state.images.map((picture, i) => {
               console.log("YE", picture);
@@ -147,6 +151,12 @@ class AIGallery extends React.Component {
         {this.state.modalSelectPictures && (
           <InstagramSelectorModal
             toggle={() => this.toggle("modalSelectPictures")}
+            profile={
+              loggedUser.person &&
+              loggedUser.person.profiles.filter(
+                (profile) => profile.sourceType === "INSTAGRAM"
+              )
+            }
             save={this.save}
           />
         )}
@@ -158,7 +168,7 @@ class AIGallery extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  //loggedUser: state.auth.loggedUser,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {

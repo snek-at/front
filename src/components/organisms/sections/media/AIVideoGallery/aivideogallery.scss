@@ -1,17 +1,15 @@
-#media {
-  #videogallery {
-    .card {
-      .card-body {
-        padding: 0;
+#videogallery {
+  .card {
+    .card-body {
+      padding: 0;
 
-        .mask {
-          background: transparentize($color: white, $amount: 1);
-          transition: background 0.1s ease;
-          cursor: pointer;
+      .mask {
+        background: transparentize($color: white, $amount: 1);
+        transition: background 0.1s ease;
+        cursor: pointer;
 
-          &:hover {
-            background: transparentize($color: white, $amount: 0.9);
-          }
+        &:hover {
+          background: transparentize($color: white, $amount: 0.9);
         }
       }
     }
@@ -31,7 +29,6 @@
     width: 100%;
     position: absolute;
     color: white;
-    background: transparentize($color: black, $amount: 0.3);
   }
 }
 

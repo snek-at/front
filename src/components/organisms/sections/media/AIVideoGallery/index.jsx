@@ -30,20 +30,11 @@ import {
 
 //> Components
 import { VideoModal, AddVideoModal } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import { addMetaLink } from "../../../../../store/actions/personActions";
 //> Style
 import "./aivideogallery.scss";
-//#endregion
-
-//#region > Dummy data
-const DUMMY = [
-  {
-    id: "rX0kyTpTIw0",
-  },
-  {
-    id: "viek5d1_0VA",
-  },
-  { id: "pPw_izFr5PA" },
-];
 //#endregion
 
 //#region > Components
@@ -52,7 +43,7 @@ class AIVideoGallery extends React.Component {
 
   componentDidMount = () => {
     this.setState({
-      videos: DUMMY,
+      videos: this.props.videos,
     });
   };
 
@@ -65,30 +56,38 @@ class AIVideoGallery extends React.Component {
 
   addVideo = (state) => {
     const video = {
-      type: "YOUTUBE",
-      id: state.youtubeId,
+      linkType: "YOUTUBE",
+      URL: state.youtubeId,
     };
 
-    this.setState({
-      modalAddVideo: false,
-      videos: [...this.state.videos, video],
-    });
+    this.setState(
+      {
+        modalAddVideo: false,
+        videos: [...this.state.videos, video],
+      },
+      () =>
+        this.props.addMetaLink({
+          URL: video.URL,
+          linkType: video.linkType,
+        })
+    );
   };
 
   render() {
     const { loggedUser } = this.props;
 
     return (
-      <div className="py-5">
+      <div className="py-5" id="videogallery">
         <div className="mb-4 text-right">
           <MDBBtn
-            color="green"
+            social="yt"
             onClick={() => this.setState({ modalAddVideo: true })}
           >
+            <MDBIcon fab icon="youtube" />
             Add video
           </MDBBtn>
         </div>
-        <MDBRow id="videogallery">
+        <MDBRow>
           {this.state.videos &&
             this.state.videos.map((video, i) => {
               return (
@@ -98,12 +97,11 @@ class AIVideoGallery extends React.Component {
                       <MDBView>
                         <div className="position-relative">
                           <img
-                            src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${video.URL}/mqdefault.jpg`}
                             alt="Video thumbnail"
                             className="img-fluid"
                           />
-                          <div className="d-flex justify-content-between video-title p-2 align-items-center">
-                            <span>Titel ausständig</span>
+                          <div className="text-right video-title py-1 px-2">
                             <MDBIcon
                               fab
                               icon="youtube"
@@ -114,19 +112,19 @@ class AIVideoGallery extends React.Component {
                             <MDBRow>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/1.jpg`}
+                                  src={`https://img.youtube.com/vi/${video.URL}/1.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/2.jpg`}
+                                  src={`https://img.youtube.com/vi/${video.URL}/2.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/3.jpg`}
+                                  src={`https://img.youtube.com/vi/${video.URL}/3.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
@@ -137,7 +135,7 @@ class AIVideoGallery extends React.Component {
                           onClick={() =>
                             this.setState({
                               modalVideo: true,
-                              selectedVideoId: video.id,
+                              selectedVideoId: video.URL,
                             })
                           }
                         />
@@ -172,7 +170,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
 };
 //#endregion
 

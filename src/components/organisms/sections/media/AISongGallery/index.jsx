@@ -30,6 +30,9 @@ import {
 
 //> Components
 import { AddSongModal } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import { addMetaLink } from "../../../../../store/actions/personActions";
 //> Style
 import "./aisonggallery.scss";
 //#endregion
@@ -48,7 +51,7 @@ class AISongGallery extends React.Component {
 
   componentDidMount = () => {
     this.setState({
-      songs: DUMMY,
+      songs: this.props.songs,
     });
   };
 
@@ -61,14 +64,21 @@ class AISongGallery extends React.Component {
 
   addSong = (url) => {
     const song = {
-      type: "SOUNDCLOUD",
-      url,
+      linkType: "SOUNDCLOUD",
+      URL: url,
     };
 
-    this.setState({
-      modalAddSong: false,
-      songs: [...this.state.songs, song],
-    });
+    this.setState(
+      {
+        modalAddSong: false,
+        songs: [...this.state.songs, song],
+      },
+      () =>
+        this.props.addMetaLink({
+          URL: song.URL,
+          linkType: song.linkType,
+        })
+    );
   };
 
   render() {
@@ -98,7 +108,7 @@ class AISongGallery extends React.Component {
                         scrolling="no"
                         frameborder="no"
                         allow="autoplay"
-                        src={"https://w.soundcloud.com/player/?url=" + song.url}
+                        src={"https://w.soundcloud.com/player/?url=" + song.URL}
                       ></iframe>
                     </MDBCardBody>
                   </MDBCard>
@@ -124,7 +134,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
 };
 //#endregion
 

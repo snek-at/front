@@ -96,7 +96,7 @@ const updateSettings = (
 
 const addMetaLink = (
   linkOptions = {
-    url: undefined,
+    URL: undefined,
     linkType: undefined,
     location: undefined,
     imgurDeleteHash: undefined,
@@ -109,6 +109,8 @@ const addMetaLink = (
 
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
+
+      console.log(linkOptions);
 
       const link = await INTEL_SNEK.person.addMetaLink({
         personName,
@@ -283,7 +285,7 @@ const updateProfile = (
   };
 };
 
-const getInstagramPosts = (id) => {
+const getInstagramPosts = () => {
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_INSTAGRAM_POSTS_FETCH_REQUEST });
@@ -310,6 +312,8 @@ const getInstagramPosts = (id) => {
           error: ex,
         },
       });
+
+      return false;
     }
   };
 };

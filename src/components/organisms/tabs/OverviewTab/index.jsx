@@ -26,6 +26,11 @@ import {
   LatestActivity,
   ErrorBoundary,
 } from "../../../atoms";
+import {
+  AIGallery,
+  AISongGallery,
+  AIVideoGallery,
+} from "../../../organisms/sections/media";
 import { MovableBoundary } from "../../../molecules";
 import { updateSettings } from "../../../../store/actions/personActions";
 //#endregion
@@ -228,6 +233,25 @@ class OverviewTab extends React.Component {
                     currentStatistic={currentStatistic}
                     yearsStatistic={yearsStatistic}
                     year={this.state.selectedYearIndex}
+                  />
+                )}
+              </>,
+              <>{displayImageGallery && <AIGallery />}</>,
+              <>
+                {displayImageGallery && (
+                  <AIVideoGallery
+                    videos={fetchedPerson.metaLinks.filter(
+                      (link) => link.linkType === "YOUTUBE"
+                    )}
+                  />
+                )}
+              </>,
+              <>
+                {displayImageGallery && (
+                  <AISongGallery
+                    songs={fetchedPerson.metaLinks.filter(
+                      (link) => link.linkType === "SOUNDCLOUD"
+                    )}
                   />
                 )}
               </>,

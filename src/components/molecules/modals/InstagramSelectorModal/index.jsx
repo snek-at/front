@@ -24,6 +24,9 @@ import {
   MDBMask,
 } from "mdbreact";
 
+//> Actions
+// Functions to send data from the application to the store
+import { getInstagramPosts } from "../../../../store/actions/personActions";
 //> Style
 import "./instagramselector.scss";
 //#endregion
@@ -40,6 +43,12 @@ const DUMMY = [
 //#region > Components
 class InstagramSelectorModal extends React.Component {
   state = { selection: [] };
+
+  componentDidMount = async () => {
+    this.setState({
+      posts: await this.props.getInstagramPosts(),
+    });
+  };
 
   updateList = (picture) => {
     if (this.state.selection.includes(picture)) {
@@ -61,6 +70,7 @@ class InstagramSelectorModal extends React.Component {
   };
 
   render() {
+    console.log("REEEEEE", this.state);
     return (
       <>
         <MDBModal
@@ -83,27 +93,30 @@ class InstagramSelectorModal extends React.Component {
               </MDBBtn>
             </div>
             <MDBRow className="mt-3">
-              {DUMMY.map((picture, i) => {
-                const selected = this.state.selection.includes(picture);
+              {this.state.posts &&
+                this.state.posts.map((picture, i) => {
+                  const selected = this.state.selection.includes(picture);
 
-                return (
-                  <MDBCol
-                    lg="4"
-                    className={selected ? "mb-3 selected" : "mb-3"}
-                    key={"selector-" + i}
-                  >
-                    <MDBView>
-                      <img src={picture} className="img-fluid" />
-                      <MDBMask
-                        onClick={() => this.updateList(picture)}
-                        className="text-white d-flex justify-content-center align-items-center"
-                      >
-                        {selected && <MDBIcon icon="check-circle" size="3x" />}
-                      </MDBMask>
-                    </MDBView>
-                  </MDBCol>
-                );
-              })}
+                  return (
+                    <MDBCol
+                      lg="4"
+                      className={selected ? "mb-3 selected" : "mb-3"}
+                      key={"selector-" + i}
+                    >
+                      <MDBView>
+                        <img src={picture} className="img-fluid" />
+                        <MDBMask
+                          onClick={() => this.updateList(picture)}
+                          className="text-white d-flex justify-content-center align-items-center"
+                        >
+                          {selected && (
+                            <MDBIcon icon="check-circle" size="3x" />
+                          )}
+                        </MDBMask>
+                      </MDBView>
+                    </MDBCol>
+                  );
+                })}
             </MDBRow>
           </MDBModalBody>
         </MDBModal>
@@ -119,7 +132,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    getInstagramPosts: (id) => dispatch(getInstagramPosts(id)),
+  };
 };
 //#endregion
 
