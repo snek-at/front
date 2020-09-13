@@ -44,16 +44,40 @@ const DUMMY = [
 class InstagramSelectorModal extends React.Component {
   state = { selection: [] };
 
-  componentDidMount = async () => {
-    this.setState({
-      posts: await this.props.getInstagramPosts(),
-    });
+  componentDidMount = () => {
+    this.init();
+  };
+
+  init = async () => {
+    this.setState(
+      {
+        posts: localStorage.getItem("instagram_posts")
+          ? JSON.parse(localStorage.getItem("instagram_posts"))
+          : await this.props.getInstagramPosts(),
+        selection: this.props.selection ? this.props.selection : [],
+      },
+      () =>
+        localStorage.setItem(
+          "instagram_posts",
+          JSON.stringify(this.state.posts)
+        )
+    );
   };
 
   updateList = (picture) => {
-    if (this.state.selection.includes(picture)) {
+    console.log("ALTER PIC");
+    console.log(
+      this.state.selection.filter(
+        (item) => item.mediaLink === picture.mediaLink
+      ).length > 0
+    );
+    if (
+      this.state.selection.filter(
+        (item) => item.mediaLink === picture.mediaLink
+      ).length > 0
+    ) {
       const current = this.state.selection;
-      const index = current.indexOf(picture);
+      const index = current.findIndex((x) => x.mediaLink === picture.mediaLink);
 
       if (index > -1) {
         current.splice(index, 1);
@@ -84,38 +108,51 @@ class InstagramSelectorModal extends React.Component {
           <MDBModalBody className="p-2 text-center">
             <div className="d-flex justify-content-between align-items-center">
               <p className="lead mb-0">Select Instagram images</p>
-              <MDBBtn
-                color="green"
-                disabled={this.state.selection.length === 0}
-                onClick={() => this.props.save(this.state)}
-              >
-                Confirm selection
-              </MDBBtn>
+              <div>
+                <MDBBtn color="blue" onClick={() => this.init()}>
+                  Refresh
+                </MDBBtn>
+                <MDBBtn
+                  color="green"
+                  onClick={() => this.props.save(this.state.selection)}
+                >
+                  Confirm selection
+                </MDBBtn>
+              </div>
             </div>
             <MDBRow className="mt-3">
               {this.state.posts &&
-                this.state.posts.map((picture, i) => {
-                  const selected = this.state.selection.includes(picture);
+                this.state.posts.posts.map((picture, i) => {
+                  const selected =
+                    this.state.selection.filter(
+                      (item) => item.mediaLink === picture.mediaLink
+                    ).length > 0
+                      ? true
+                      : false;
 
-                  return (
-                    <MDBCol
-                      lg="4"
-                      className={selected ? "mb-3 selected" : "mb-3"}
-                      key={"selector-" + i}
-                    >
-                      <MDBView>
-                        <img src={picture} className="img-fluid" />
-                        <MDBMask
-                          onClick={() => this.updateList(picture)}
-                          className="text-white d-flex justify-content-center align-items-center"
-                        >
-                          {selected && (
-                            <MDBIcon icon="check-circle" size="3x" />
-                          )}
-                        </MDBMask>
-                      </MDBView>
-                    </MDBCol>
-                  );
+                  if (picture.mediaType === "IMAGE") {
+                    return (
+                      <MDBCol
+                        lg="4"
+                        className={selected ? "mb-3 selected" : "mb-3"}
+                        key={"selector-" + i}
+                      >
+                        <MDBView>
+                          <img src={picture.mediaLink} className="img-fluid" />
+                          <MDBMask
+                            onClick={() => this.updateList(picture)}
+                            className="text-white d-flex justify-content-center align-items-center"
+                          >
+                            {selected && (
+                              <MDBIcon icon="check-circle" size="3x" />
+                            )}
+                          </MDBMask>
+                        </MDBView>
+                      </MDBCol>
+                    );
+                  } else {
+                    return null;
+                  }
                 })}
             </MDBRow>
           </MDBModalBody>

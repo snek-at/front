@@ -37,36 +37,13 @@ import {
 import "./aigallery.scss";
 //#endregion
 
-//#region > Dummy data
-const DUMMY = [
-  {
-    img: {
-      url: "https://mdbootstrap.com/img/Photos/Others/images/43.jpg",
-      alt: "Dummy image",
-    },
-    data: {
-      title: "Dummy",
-    },
-  },
-  {
-    img: {
-      url: "https://mdbootstrap.com/img/Photos/Others/images/12.jpg",
-      alt: "Dummy image",
-    },
-    data: {
-      title: "Dummy 2",
-    },
-  },
-];
-//#endregion
-
 //#region > Components
 class AIGallery extends React.Component {
   state = { modalPicture: false };
 
   componentDidMount = () => {
     this.setState({
-      images: DUMMY,
+      images: this.props.images,
     });
   };
 
@@ -81,17 +58,9 @@ class AIGallery extends React.Component {
     });
   };
 
-  save = (urlList) => {
-    const res = urlList.selection.map((url) => {
-      return {
-        img: {
-          url,
-        },
-      };
-    });
-
+  save = (pictureList) => {
     this.setState({
-      images: [...this.state.images, ...res],
+      images: [...this.state.images, ...pictureList],
       modalSelectPictures: false,
     });
   };
@@ -122,11 +91,7 @@ class AIGallery extends React.Component {
                   <MDBCard>
                     <MDBCardBody>
                       <MDBView>
-                        <img
-                          src={picture.img.url}
-                          alt={picture.img.alt}
-                          className="img-fluid"
-                        />
+                        <img src={picture.mediaLink} className="img-fluid" />
                         <MDBMask
                           onClick={() =>
                             this.setState({
@@ -157,6 +122,7 @@ class AIGallery extends React.Component {
                 (profile) => profile.sourceType === "INSTAGRAM"
               )
             }
+            selection={this.state.images}
             save={this.save}
           />
         )}
