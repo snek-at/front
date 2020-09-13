@@ -236,7 +236,15 @@ class OverviewTab extends React.Component {
                   />
                 )}
               </>,
-              <>{displayImageGallery && <AIGallery />}</>,
+              <>
+                {displayImageGallery && (
+                  <AIGallery
+                    images={fetchedPerson.metaLinks.filter(
+                      (link) => link.linkType === "IMAGE"
+                    )}
+                  />
+                )}
+              </>,
               <>
                 {displayImageGallery && (
                   <AIVideoGallery

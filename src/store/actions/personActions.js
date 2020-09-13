@@ -96,7 +96,7 @@ const updateSettings = (
 
 const addMetaLink = (
   linkOptions = {
-    URL: undefined,
+    url: undefined,
     linkType: undefined,
     location: undefined,
     imgurDeleteHash: undefined,

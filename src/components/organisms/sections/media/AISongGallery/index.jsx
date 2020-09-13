@@ -65,7 +65,7 @@ class AISongGallery extends React.Component {
   addSong = (url) => {
     const song = {
       linkType: "SOUNDCLOUD",
-      URL: url,
+      url,
     };
 
     this.setState(
@@ -75,7 +75,7 @@ class AISongGallery extends React.Component {
       },
       () =>
         this.props.addMetaLink({
-          URL: song.URL,
+          url: song.url,
           linkType: song.linkType,
         })
     );
@@ -108,7 +108,7 @@ class AISongGallery extends React.Component {
                         scrolling="no"
                         frameborder="no"
                         allow="autoplay"
-                        src={"https://w.soundcloud.com/player/?url=" + song.URL}
+                        src={"https://w.soundcloud.com/player/?url=" + song.url}
                       ></iframe>
                     </MDBCardBody>
                   </MDBCard>
