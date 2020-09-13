@@ -138,7 +138,7 @@ class TalkUploadModal extends React.Component {
                       </ul>
                     </div>
                   ) : (
-                    <div className="border rounded px-4 pt-4 pb-3">
+                    <div className="border rounded px-4 pt-4 pb-3 clickable">
                       <MDBIcon
                         icon="file-upload"
                         className="green-text"
