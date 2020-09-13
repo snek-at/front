@@ -33,6 +33,9 @@ import {
   ImageModal,
   InstagramSelectorModal,
 } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import { addMetaLink } from "../../../../../store/actions/personActions";
 //> Style
 import "./aigallery.scss";
 //#endregion
@@ -59,10 +62,21 @@ class AIGallery extends React.Component {
   };
 
   save = (pictureList) => {
-    this.setState({
-      images: [...this.state.images, ...pictureList],
-      modalSelectPictures: false,
-    });
+    this.setState(
+      {
+        images: [...this.state.images, ...pictureList],
+        modalSelectPictures: false,
+      },
+      () => {
+        pictureList.forEach((picture) => {
+          console.log("PIC", picture);
+          this.props.addMetaLink({
+            url: picture.mediaLink,
+            linkType: "IMAGE",
+          });
+        });
+      }
+    );
   };
 
   removeImage = (url) => {
@@ -76,10 +90,15 @@ class AIGallery extends React.Component {
       <div className="py-5" id="gallery">
         {sameOrigin && (
           <div className="mb-4 text-right">
+            <MDBBtn color="elegant" onClick={() => {}}>
+              <MDBIcon icon="upload" />
+              Upload image
+            </MDBBtn>
             <MDBBtn
-              color="green"
+              social="ins"
               onClick={() => this.setState({ modalSelectPictures: true })}
             >
+              <MDBIcon fab icon="instagram" />
               Select images
             </MDBBtn>
           </div>
@@ -140,7 +159,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
 };
 //#endregion
 

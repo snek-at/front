@@ -43,34 +43,12 @@ class ImageModal extends React.Component {
             <MDBRow>
               <MDBCol lg="8">
                 <MDBView>
-                  <img
-                    src={selectedPicture.img.url}
-                    alt={selectedPicture.img.alt}
-                    className="img-fluid"
-                  />
+                  <img src={selectedPicture.mediaLink} className="img-fluid" />
                   <MDBMask />
                 </MDBView>
               </MDBCol>
               <MDBCol lg="4">
-                <div className="d-block d-sm-flex justify-content-between pr-3">
-                  {selectedPicture.data ? (
-                    <span className="text-muted small">
-                      by {selectedPicture.data.artist}
-                    </span>
-                  ) : (
-                    <div />
-                  )}
-                  <MDBIcon
-                    icon="times"
-                    className="text-muted clickable p-1"
-                    onClick={this.props.toggle}
-                  />
-                </div>
-                {selectedPicture.data && (
-                  <div className="text-left mt-3">
-                    <p className="lead">{selectedPicture.data.title}</p>
-                  </div>
-                )}
+                <div>Content</div>
               </MDBCol>
             </MDBRow>
           </MDBModalBody>

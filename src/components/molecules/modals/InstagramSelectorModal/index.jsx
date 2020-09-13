@@ -48,10 +48,12 @@ class InstagramSelectorModal extends React.Component {
     this.init();
   };
 
-  init = async () => {
+  init = async (refetch) => {
     this.setState(
       {
-        posts: localStorage.getItem("instagram_posts")
+        posts: refetch
+          ? await this.props.getInstagramPosts()
+          : localStorage.getItem("instagram_posts")
           ? JSON.parse(localStorage.getItem("instagram_posts"))
           : await this.props.getInstagramPosts(),
         selection: this.props.selection ? this.props.selection : [],
@@ -109,7 +111,7 @@ class InstagramSelectorModal extends React.Component {
             <div className="d-flex justify-content-between align-items-center">
               <p className="lead mb-0">Select Instagram images</p>
               <div>
-                <MDBBtn color="blue" onClick={() => this.init()}>
+                <MDBBtn color="blue" onClick={() => this.init(true)}>
                   Refresh
                 </MDBBtn>
                 <MDBBtn
@@ -155,6 +157,16 @@ class InstagramSelectorModal extends React.Component {
                   }
                 })}
             </MDBRow>
+            {this.state.posts && this.state.posts.next[0] && (
+              <div className="text-center">
+                <MDBBtn
+                  color="elegant"
+                  onClick={() => this.state.posts.next[0].next()}
+                >
+                  Load more
+                </MDBBtn>
+              </div>
+            )}
           </MDBModalBody>
         </MDBModal>
       </>
