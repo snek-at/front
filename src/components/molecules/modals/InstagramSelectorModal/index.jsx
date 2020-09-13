@@ -50,13 +50,23 @@ class InstagramSelectorModal extends React.Component {
   };
 
   init = async (refetch) => {
+    let next;
+    let posts;
+
+    if (localStorage.getItem("instagram_posts") && !refetch) {
+      posts = JSON.parse(localStorage.getItem("instagram_posts"));
+      next = undefined;
+    } else {
+      const res = await this.props.getInstagramPosts();
+
+      posts = res.posts;
+      next = res.next;
+    }
+
     this.setState(
       {
-        posts: refetch
-          ? await this.props.getInstagramPosts()
-          : localStorage.getItem("instagram_posts")
-          ? JSON.parse(localStorage.getItem("instagram_posts"))
-          : await this.props.getInstagramPosts(),
+        posts,
+        next,
         selection: this.props.selection ? this.props.selection : [],
       },
       () =>
@@ -96,6 +106,38 @@ class InstagramSelectorModal extends React.Component {
     }
   };
 
+  loadMore = async () => {
+    const isLocalStorage = localStorage.getItem("instagram_posts")
+      ? true
+      : false;
+
+    if (isLocalStorage) {
+      await this.init(true);
+    }
+
+    // const morePosts
+
+    const nextFns = this.state.next;
+    let nextPosts = [];
+    let nextNextFns = [];
+
+    for (const index in nextFns) {
+      const fn = nextFns[index];
+      const res = await fn();
+
+      nextPosts.concat(res.posts);
+
+      if (res.nex) {
+        nextNextFns.concat(res.nex);
+      }
+    }
+
+    this.setState({
+      posts,
+      next,
+    });
+  };
+
   render() {
     console.log("REEEEEE", this.state);
     return (
@@ -125,7 +167,7 @@ class InstagramSelectorModal extends React.Component {
             </div>
             <div className="mt-3 card-columns">
               {this.state.posts &&
-                this.state.posts.posts.map((picture, i) => {
+                this.state.posts.map((picture, i) => {
                   const selected =
                     this.state.selection.filter(
                       (item) => item.mediaLink === picture.mediaLink
@@ -157,11 +199,12 @@ class InstagramSelectorModal extends React.Component {
                   }
                 })}
             </div>
-            {this.state.posts && this.state.posts.next[0] && (
+            {this.state.posts && (
               <div className="text-center">
                 <MDBBtn
                   color="elegant"
-                  onClick={() => this.state.posts.next[0].next()}
+                  onClick={() => this.loadMore()}
+                  disabled
                 >
                   Load more
                 </MDBBtn>
