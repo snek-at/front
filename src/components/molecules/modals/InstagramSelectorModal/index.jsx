@@ -133,8 +133,8 @@ class InstagramSelectorModal extends React.Component {
     }
 
     this.setState({
-      posts,
-      next,
+      posts: nextPosts,
+      next: nextNextFns,
     });
   };
 
