@@ -11,28 +11,22 @@ import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBContainer,
   MDBRow,
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBCardFooter,
   MDBBtn,
-  MDBBadge,
-  MDBProgress,
-  MDBTooltip,
   MDBIcon,
-  MDBTimeline,
-  MDBTimelineStep,
-  MDBView,
-  MDBMask,
 } from "mdbreact";
 
 //> Components
 import { AddSongModal } from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
-import { addMetaLink } from "../../../../../store/actions/personActions";
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aisonggallery.scss";
 //#endregion
@@ -62,27 +56,32 @@ class AISongGallery extends React.Component {
     });
   };
 
-  addSong = (url) => {
-    const song = {
+  addSong = async (url) => {
+    let song = {
       linkType: "SOUNDCLOUD",
       url,
     };
 
-    this.setState(
-      {
-        modalAddSong: false,
-        songs: [...this.state.songs, song],
-      },
-      () =>
-        this.props.addMetaLink({
-          url: song.url,
-          linkType: song.linkType,
-        })
-    );
+    const rtn = await this.props.addMetaLink({
+      url: song.url,
+      linkType: song.linkType,
+    });
+
+    song = {
+      ...song,
+      id: rtn.id,
+    };
+
+    this.setState({
+      modalAddSong: false,
+      songs: [...this.state.songs, song],
+    });
   };
 
   render() {
     const { sameOrigin } = this.props;
+
+    console.log(this.state);
 
     return (
       <div className="py-5">
@@ -104,6 +103,26 @@ class AISongGallery extends React.Component {
                 <MDBCol lg="6" className="mb-3" key={"song-" + i}>
                   <MDBCard>
                     <MDBCardBody>
+                      {sameOrigin && song.id && (
+                        <div className="text-right video-preview py-1 px-2">
+                          <MDBBtn
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  songs: this.state.songs.filter(
+                                    (s) => s.id !== song.id
+                                  ),
+                                },
+                                () => this.props.deleteMetaLink(song.id)
+                              );
+                            }}
+                          >
+                            <MDBIcon icon="trash" className="m-0" />
+                          </MDBBtn>
+                        </div>
+                      )}
                       <iframe
                         width="100%"
                         height="166"
@@ -136,7 +155,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 
