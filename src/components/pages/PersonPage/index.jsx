@@ -100,12 +100,26 @@ class PersonPage extends React.Component {
           {fetchedPerson &&
             fetchedPerson.profiles.length === 0 &&
             this.state.showConnectModal &&
-            !localStorage.getItem("connect_modal") && (
+            (!localStorage.getItem("connect_modal") ||
+              (localStorage.getItem("connect_modal") &&
+                JSON.parse(localStorage.getItem("connect_modal")).includes(
+                  username
+                ))) && (
               <ConnectModal
                 isModal
+                refetch={this.props.toggle}
                 toggle={() =>
                   this.setState({ showConnectModal: false }, () =>
-                    localStorage.setItem("connect_modal", true)
+                    localStorage.setItem(
+                      "connect_modal",
+                      JSON.stringify(
+                        localStorage.setItem("connect_modal")
+                          ? JSON.parse(
+                              localStorage.setItem("connect_modal")
+                            ).push(username)
+                          : [username]
+                      )
+                    )
                   )
                 }
               />

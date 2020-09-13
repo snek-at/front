@@ -34,8 +34,6 @@ class PageImprint extends React.Component {
   render() {
     const { page } = this.props;
 
-    console.log(page);
-
     return (
       <div id="pageimprint">
         <div className="mt-3">

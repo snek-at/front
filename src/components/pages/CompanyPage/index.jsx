@@ -154,14 +154,6 @@ class Page extends React.Component {
   render() {
     const { error, general, users, projects } = this.props;
 
-    console.error(error);
-    console.log("GENERAL");
-    console.log(general);
-    console.log("USERS");
-    console.log(users);
-    console.log("PROJECTS");
-    console.log(projects);
-
     // console.log("PAGE", page);
 
     // Enterprise data

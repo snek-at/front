@@ -185,7 +185,6 @@ class InfoCard extends React.Component {
         let liker = likerList[count];
 
         if (liker.slug.substring(2) === loggedUser) {
-          console.log("1");
           return true;
         }
       }

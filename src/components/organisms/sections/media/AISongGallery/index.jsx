@@ -81,8 +81,6 @@ class AISongGallery extends React.Component {
   render() {
     const { sameOrigin } = this.props;
 
-    console.log(this.state);
-
     return (
       <div className="py-5">
         {sameOrigin && (

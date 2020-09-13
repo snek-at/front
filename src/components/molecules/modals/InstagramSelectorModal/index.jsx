@@ -53,7 +53,11 @@ class InstagramSelectorModal extends React.Component {
     let next;
     let posts;
 
-    if (localStorage.getItem("instagram_posts") && !refetch) {
+    if (
+      localStorage.getItem("instagram_posts") &&
+      localStorage.getItem("instagram_posts") !== "undefined" &&
+      !refetch
+    ) {
       posts = JSON.parse(localStorage.getItem("instagram_posts"));
       next = undefined;
     } else {
@@ -78,12 +82,6 @@ class InstagramSelectorModal extends React.Component {
   };
 
   updateList = (picture) => {
-    console.log("ALTER PIC");
-    console.log(
-      this.state.selection.filter(
-        (item) => item.mediaLink === picture.mediaLink
-      ).length > 0
-    );
     if (
       this.state.selection.filter(
         (item) => item.mediaLink === picture.mediaLink
@@ -139,7 +137,6 @@ class InstagramSelectorModal extends React.Component {
   };
 
   render() {
-    console.log("REEEEEE", this.state);
     return (
       <>
         <MDBModal

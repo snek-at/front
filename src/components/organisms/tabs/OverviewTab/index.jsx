@@ -115,8 +115,6 @@ class OverviewTab extends React.Component {
       displayMusicGallery,
     } = fetchedPerson;
 
-    console.log(display2dCalendar, display3dCalendar);
-
     let platformData = "";
 
     return (

@@ -45,7 +45,6 @@ class ConnectModal extends React.Component {
   };
 
   componentDidUpdate = () => {
-    console.log("SERVER", this.props.gitlabServer);
     if (!this.state.gitlab_servers && this.props.gitlabServer) {
       this.setState({
         gitlab_servers: this.props.gitlabServer,
@@ -88,7 +87,6 @@ class ConnectModal extends React.Component {
         loadingGitHub: true,
       },
       async () => {
-        console.log(response);
         this.props
           .addProfile({
             URL: "https://api.github.com/graphql",
@@ -112,7 +110,6 @@ class ConnectModal extends React.Component {
         loadingInstagram: true,
       },
       async () => {
-        console.log(response);
         this.props
           .addProfile({
             URL: "https://graph.instagram.com",
@@ -138,8 +135,6 @@ class ConnectModal extends React.Component {
 
   render() {
     const { selectedVideoId } = this.props;
-
-    console.log("RAAAAAAAAAAAAAAAAAAAAAAAAA");
 
     return (
       <>

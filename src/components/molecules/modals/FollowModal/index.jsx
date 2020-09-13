@@ -97,7 +97,7 @@ class FollowModal extends React.Component {
 
   render() {
     const { followType, fetchedPerson } = this.props;
-    console.log("XD");
+
     return (
       <MDBModal
         modalStyle="white"

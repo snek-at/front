@@ -131,11 +131,8 @@ class ContribRadar extends React.Component {
 
     // Check if the values are valid
     if (values.includes(undefined)) {
-      console.log("UNDEFINED");
       this.fillChart(null);
     } else {
-      console.log("NOT UNDEFINED");
-
       results.push({
         label: "GitHub",
         backgroundColor: "rgba(123, 201, 111,.4)",

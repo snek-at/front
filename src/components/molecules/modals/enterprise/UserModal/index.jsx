@@ -48,8 +48,6 @@ class UserModal extends React.Component {
   render() {
     const { user } = this.state;
 
-    console.log("USER", user);
-
     return (
       <MDBModal isOpen={true} toggle={this.props.toggle} size="lg">
         <MDBModalBody>

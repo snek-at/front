@@ -87,8 +87,6 @@ class SettingsPage extends React.Component {
   handleLoading = () => {
     const { loggedUser } = this.props;
 
-    console.log("HANDLE LOADING");
-
     if (loggedUser.anonymous) {
       this.props.history.push({
         pathname: "/",
@@ -220,6 +218,8 @@ class SettingsPage extends React.Component {
   };
 
   handleChange = (name, value) => {
+    console.log(name, value);
+
     if (name.target) {
       value =
         name?.target?.type === "checkbox"
@@ -228,16 +228,21 @@ class SettingsPage extends React.Component {
       name = name?.target?.name ? name?.target?.name : name;
     }
 
-    this.setState({
-      showSaveButton: true,
-      person: {
-        ...this.state.person,
-        [name]:
-          typeof this.state.person[name] === "object"
-            ? { ...this.state.person[name], ...value }
-            : value,
+    console.log(name, value);
+
+    this.setState(
+      {
+        showSaveButton: true,
+        person: {
+          ...this.state.person,
+          [name]:
+            typeof this.state.person[name] === "object"
+              ? { ...this.state.person[name], ...value }
+              : value,
+        },
       },
-    });
+      () => console.log(this.state)
+    );
   };
 
   setAvatarUrl = (imageSrc) => {
@@ -283,7 +288,7 @@ class SettingsPage extends React.Component {
     const { loggedUser } = this.props;
     const { person, activeItem } = this.state;
 
-    console.log("STATE", this.state);
+    console.log(person);
 
     if (person) {
       return (
@@ -515,7 +520,6 @@ class SettingsPage extends React.Component {
                     {this.state.loading && <MDBProgress material preloader />}
                     <MDBListGroup>
                       {person.profiles?.map((profile, p) => {
-                        console.log("PROFILE", profile);
                         return (
                           <MDBListGroupItem
                             className="d-flex justify-content-between align-items-center clickable py-0 pr-0 pl-2"
