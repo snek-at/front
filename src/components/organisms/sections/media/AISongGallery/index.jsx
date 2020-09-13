@@ -82,19 +82,21 @@ class AISongGallery extends React.Component {
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { sameOrigin } = this.props;
 
     return (
       <div className="py-5">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            color="orange"
-            onClick={() => this.setState({ modalAddSong: true })}
-          >
-            <MDBIcon fab icon="soundcloud" />
-            Add song
-          </MDBBtn>
-        </div>
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              color="orange"
+              onClick={() => this.setState({ modalAddSong: true })}
+            >
+              <MDBIcon fab icon="soundcloud" />
+              Add song
+            </MDBBtn>
+          </div>
+        )}
         <MDBRow id="videogallery">
           {this.state.songs &&
             this.state.songs.map((song, i) => {

@@ -70,18 +70,20 @@ class AIGallery extends React.Component {
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { loggedUser, sameOrigin } = this.props;
 
     return (
       <div className="py-5" id="gallery">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            color="green"
-            onClick={() => this.setState({ modalSelectPictures: true })}
-          >
-            Select images
-          </MDBBtn>
-        </div>
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              color="green"
+              onClick={() => this.setState({ modalSelectPictures: true })}
+            >
+              Select images
+            </MDBBtn>
+          </div>
+        )}
         <MDBRow>
           {this.state.images &&
             this.state.images.map((picture, i) => {

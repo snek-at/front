@@ -242,6 +242,7 @@ class OverviewTab extends React.Component {
                     images={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "IMAGE"
                     )}
+                    sameOrigin={sameOrigin}
                   />
                 )}
               </>,
@@ -251,6 +252,7 @@ class OverviewTab extends React.Component {
                     videos={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "YOUTUBE"
                     )}
+                    sameOrigin={sameOrigin}
                   />
                 )}
               </>,
@@ -260,6 +262,7 @@ class OverviewTab extends React.Component {
                     songs={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "SOUNDCLOUD"
                     )}
+                    sameOrigin={sameOrigin}
                   />
                 )}
               </>,

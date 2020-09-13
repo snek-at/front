@@ -74,19 +74,21 @@ class AIVideoGallery extends React.Component {
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { sameOrigin } = this.props;
 
     return (
       <div className="py-5" id="videogallery">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            social="yt"
-            onClick={() => this.setState({ modalAddVideo: true })}
-          >
-            <MDBIcon fab icon="youtube" />
-            Add video
-          </MDBBtn>
-        </div>
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              social="yt"
+              onClick={() => this.setState({ modalAddVideo: true })}
+            >
+              <MDBIcon fab icon="youtube" />
+              Add video
+            </MDBBtn>
+          </div>
+        )}
         <MDBRow>
           {this.state.videos &&
             this.state.videos.map((video, i) => {
