@@ -21,7 +21,9 @@
 
   .video-preview {
     bottom: 0;
-    background: transparentize($color: black, $amount: 0.4);
+    right: 0;
+    z-index: 3;
+    position: absolute;
   }
 
   .video-title {
