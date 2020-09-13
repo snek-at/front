@@ -78,14 +78,9 @@ class TalkUploadModal extends React.Component {
         backdrop={true}
         isOpen={true}
         toggle={this.props.closeModal}
+        centered
+        animation="left"
       >
-        <MDBModalHeader
-          className="text-center text-dark donate"
-          titleClass="w-100"
-          tag="p"
-        >
-          Upload
-        </MDBModalHeader>
         <MDBModalBody className="text-center">
           <div>
             <Dropzone onDrop={this.onDrop} accept="application/pdf">
@@ -102,12 +97,13 @@ class TalkUploadModal extends React.Component {
                               key={i}
                             >
                               <MDBIcon
-                                icon="file"
+                                icon="file-upload"
                                 className="green-text"
-                                size="6x"
+                                size="3x"
                               />
-                              <p />
-                              <h3>{acceptedFile.name}</h3>
+                              <p className="lead mt-3 mb-0">
+                                {acceptedFile.name}
+                              </p>
                             </li>
                           ))}
                       </ul>
@@ -118,6 +114,7 @@ class TalkUploadModal extends React.Component {
                           animated
                           height="25px"
                           color="success"
+                          className="mb-0 pb-0"
                         >
                           Uploading file
                         </MDBProgress>
@@ -141,14 +138,15 @@ class TalkUploadModal extends React.Component {
                       </ul>
                     </div>
                   ) : (
-                    <div>
+                    <div className="border rounded px-4 pt-4 pb-3">
                       <MDBIcon
                         icon="file-upload"
                         className="green-text"
-                        size="6x"
+                        size="3x"
                       />
-                      <p />
-                      <h3>Click here or drop a file to upload!</h3>
+                      <p className="lead mt-3 mb-0">
+                        Click here or drop a file to upload!
+                      </p>
                     </div>
                   )}
                 </div>
