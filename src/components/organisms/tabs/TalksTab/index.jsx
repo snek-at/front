@@ -33,9 +33,9 @@ import moment from "moment";
 import "./talkstab.scss";
 //> Actions
 // Functions to send data from the application to the store
-import { deleteTalk } from "../../../../store/actions/personActions";
+import { addTalk, deleteTalk } from "../../../../store/actions/personActions";
 //> Modules
-import { TalkUploadModal } from "../../../molecules/modals";
+import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
@@ -52,6 +52,17 @@ class TalkTab extends React.Component {
         showUpload: false,
       });
     }
+  };
+
+  handleSuccess = (event) => {
+    this.props.addTalk(
+      event.name,
+      "",
+      "https://docs.google.com/viewer?embedded=true&url=" + event.displayUrl,
+      event.downloadUrl,
+      event.path,
+      event.html_url
+    );
   };
 
   updateIframe = (talk) => {
@@ -208,8 +219,12 @@ class TalkTab extends React.Component {
             })}
         </MDBRow>
         {this.state.showUpload && (
-          <TalkUploadModal
+          <UploadModal
             {...this.props}
+            acceptTypes={"application/pdf"}
+            invalidTypeMessage={"Only PDF files can be uploaded!"}
+            storageEngine={"anonfiles"}
+            onSuccess={this.handleSuccess}
             closeModal={this.handleUploadClose}
           />
         )}
@@ -226,7 +241,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { deleteTalk: (id) => dispatch(deleteTalk(id)) };
+  return {
+    addTalk: (title, description, displayUrl, downloadUrl, path, url) =>
+      dispatch(
+        addTalk({ title, description, displayUrl, downloadUrl, path, url })
+      ),
+    deleteTalk: (id) => dispatch(deleteTalk(id)),
+  };
 };
 //#endregion
 

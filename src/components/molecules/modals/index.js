@@ -1,7 +1,7 @@
 //#region > Imports
 //> Components
 // Import all components to export them for easy access from parent components
-import TalkUploadModal from "./TalkUploadModal";
+import UploadModal from "./UploadModal";
 import ProfilePictureModal from "./ProfilePictureModal";
 import ImageModal from "./ImageModal";
 import VideoModal from "./VideoModal";
@@ -18,7 +18,7 @@ import LikesModal from "./LikesModal";
 //> Components
 // Export the components for easy access from parent components
 export {
-  TalkUploadModal,
+  UploadModal,
   ProfilePictureModal,
   ImageModal,
   VideoModal,

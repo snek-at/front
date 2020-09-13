@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Runtime type checking for React props and similar objects
+import PropTypes from "prop-types";
 // Contains the functionality for uploading a file
 import Dropzone from "react-dropzone";
 //> MDB
@@ -20,6 +22,7 @@ import { connect } from "react-redux";
 import { addTalk } from "../../../../store/actions/personActions";
 //> Intel
 import { anonfiles } from "snek-intel/lib/utils/upload";
+import IMGUR_PROVIDER from "snek-intel/lib/utils/imgur";
 
 //> Actions
 // Functions to send data from the application to the store
@@ -28,14 +31,14 @@ import { anonfiles } from "snek-intel/lib/utils/upload";
 
 //#region > Components
 /** @class A upload modal component for uploading files including a drop-zone */
-class TalkUploadModal extends React.Component {
+class UploadModal extends React.Component {
   state = {
     loading: false,
     error: [],
   };
 
   onDrop = async (files) => {
-    const { loggedUser, fetchedUser } = this.props;
+    const { storageEngine } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -43,30 +46,29 @@ class TalkUploadModal extends React.Component {
         loading: true,
       });
 
-      this.uploadToAnonfiles(files[0]).then(() => {
-        this.setState({
-          loading: false,
-        });
+      let res;
 
-        this.props.closeModal();
+      if (storageEngine === "anonfiles") {
+        res = await anonfiles.uploadFile(files[0]);
+      } else if (storageEngine === "imgur") {
+        res = await IMGUR_PROVIDER.upload(files[0]);
+      } else {
+        this.setState({ error: ["no valid storageEngine specified"] });
+      }
+
+      this.props.onSuccess(res);
+
+      this.setState({
+        loading: false,
       });
+
+      this.props.closeModal();
     } else {
-      this.setState({ error: ["Only PDF files can be uploaded!"] });
+      this.setState({ error: [this.props.invalidTypeMessage] });
     }
   };
 
-  uploadToAnonfiles = async (file) => {
-    const res = await anonfiles.uploadFile(file);
-
-    this.props.uploadTalk(
-      res.name,
-      "",
-      "https://docs.google.com/viewer?embedded=true&url=" + res.displayUrl,
-      res.downloadUrl,
-      res.path,
-      res.html_url
-    );
-  };
+  uploadToAnonfiles = async (file) => {};
 
   render() {
     return (
@@ -83,7 +85,7 @@ class TalkUploadModal extends React.Component {
       >
         <MDBModalBody className="text-center">
           <div>
-            <Dropzone onDrop={this.onDrop} accept="application/pdf">
+            <Dropzone onDrop={this.onDrop} accept={this.props.acceptTypes}>
               {({ getRootProps, getInputProps, acceptedFiles }) => (
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -160,6 +162,15 @@ class TalkUploadModal extends React.Component {
 }
 //#endregion
 
+//#region > PropTypes
+UploadModal.propTypes = {
+  acceptTypes: PropTypes.string.isRequired,
+  invalidTypeMessage: PropTypes.string.isRequired,
+  storageEngine: PropTypes.oneOf(["anonfiles", "imgur"]).isRequired,
+  onSuccess: PropTypes.func,
+};
+//#endregion
+
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.fetchedUser,
@@ -167,12 +178,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    uploadTalk: (title, description, displayUrl, downloadUrl, path, url) =>
-      dispatch(
-        addTalk({ title, description, displayUrl, downloadUrl, path, url })
-      ),
-  };
+  return {};
 };
 //#endregion
 
@@ -182,7 +188,7 @@ const mapDispatchToProps = (dispatch) => {
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.
  */
-export default connect(mapStateToProps, mapDispatchToProps)(TalkUploadModal);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadModal);
 //#endregion
 
 /**

@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
-import TalkUploadModal from "./modals/TalkUploadModal";
+import UploadModal from "./modals/UploadModal";
 import UserActionCard from "./UserActionCard";
 import MovableBoundary from "./MovableBoundary";
 //#endregion
@@ -17,7 +17,7 @@ export {
   Navbar,
   LoginForm,
   RegisterForm,
-  TalkUploadModal,
+  UploadModal,
   UserActionCard,
   MovableBoundary,
 };
