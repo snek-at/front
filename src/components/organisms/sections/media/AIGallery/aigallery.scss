@@ -3,6 +3,10 @@
     .card-body {
       padding: 0;
 
+      img {
+        width: 100%;
+      }
+
       .mask {
         background: transparentize($color: white, $amount: 1);
         transition: background 0.1s ease;

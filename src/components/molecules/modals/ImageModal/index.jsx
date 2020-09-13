@@ -23,6 +23,9 @@ import {
   MDBView,
   MDBMask,
 } from "mdbreact";
+
+//> Style
+import "./imagemodal.scss";
 //#endregion
 
 //#region > Components
@@ -38,12 +41,13 @@ class ImageModal extends React.Component {
           size="lg"
           centered
           animation="left"
+          id="imagemodal"
         >
           <MDBModalBody className="p-2 text-center">
             <MDBRow>
               <MDBCol lg="8">
                 <MDBView>
-                  <img src={selectedPicture.mediaLink} className="img-fluid" />
+                  <img src={selectedPicture.url} className="img-fluid" />
                   <MDBMask />
                 </MDBView>
               </MDBCol>

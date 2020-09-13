@@ -22,6 +22,7 @@ import {
   MDBAlert,
   MDBView,
   MDBMask,
+  MDBCard,
 } from "mdbreact";
 
 //> Actions
@@ -122,7 +123,7 @@ class InstagramSelectorModal extends React.Component {
                 </MDBBtn>
               </div>
             </div>
-            <MDBRow className="mt-3">
+            <div className="mt-3 card-columns">
               {this.state.posts &&
                 this.state.posts.posts.map((picture, i) => {
                   const selected =
@@ -134,8 +135,7 @@ class InstagramSelectorModal extends React.Component {
 
                   if (picture.mediaType === "IMAGE") {
                     return (
-                      <MDBCol
-                        lg="4"
+                      <MDBCard
                         className={selected ? "mb-3 selected" : "mb-3"}
                         key={"selector-" + i}
                       >
@@ -150,13 +150,13 @@ class InstagramSelectorModal extends React.Component {
                             )}
                           </MDBMask>
                         </MDBView>
-                      </MDBCol>
+                      </MDBCard>
                     );
                   } else {
                     return null;
                   }
                 })}
-            </MDBRow>
+            </div>
             {this.state.posts && this.state.posts.next[0] && (
               <div className="text-center">
                 <MDBBtn
