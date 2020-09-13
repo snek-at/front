@@ -110,7 +110,7 @@ const addMetaLink = (
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      console.log(linkOptions);
+      console.log("OPTIONS", linkOptions);
 
       const link = await INTEL_SNEK.person.addMetaLink({
         personName,

@@ -69,10 +69,9 @@ class AIGallery extends React.Component {
       },
       () => {
         pictureList.forEach((picture) => {
-          console.log("PIC", picture);
           this.props.addMetaLink({
             url: picture.mediaLink,
-            linkType: "IMAGE",
+            linkType: "INSTAGRAM",
           });
         });
       }
@@ -112,7 +111,7 @@ class AIGallery extends React.Component {
                   <MDBCard>
                     <MDBCardBody>
                       <MDBView>
-                        <img src={picture.mediaLink} className="img-fluid" />
+                        <img src={picture.url} className="img-fluid" />
                         <MDBMask
                           onClick={() =>
                             this.setState({
