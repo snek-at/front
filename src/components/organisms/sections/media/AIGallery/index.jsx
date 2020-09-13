@@ -32,6 +32,7 @@ import {
 import {
   ImageModal,
   InstagramSelectorModal,
+  UploadModal,
 } from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
@@ -42,7 +43,7 @@ import "./aigallery.scss";
 
 //#region > Components
 class AIGallery extends React.Component {
-  state = { modalPicture: false };
+  state = { modalPicture: false, showUpload: false };
 
   componentDidMount = () => {
     this.setState({
@@ -52,6 +53,18 @@ class AIGallery extends React.Component {
 
   componentDidUpdate = () => {
     console.log("AAAAAAAAAAAAAAA", this.props.loggedUser);
+  };
+
+  handleUploadClose = () => {
+    if (this.state.showUpload) {
+      this.setState({
+        showUpload: false,
+      });
+    }
+  };
+
+  handleSuccess = (event) => {
+    console.log("SUCCESS", event);
   };
 
   toggle = (modal) => {
@@ -89,7 +102,10 @@ class AIGallery extends React.Component {
       <div className="py-5" id="gallery">
         {sameOrigin && (
           <div className="mb-4 text-right">
-            <MDBBtn color="elegant" onClick={() => {}}>
+            <MDBBtn
+              color="elegant"
+              onClick={() => this.setState({ showUpload: true })}
+            >
               <MDBIcon icon="upload" />
               Upload image
             </MDBBtn>
@@ -144,6 +160,18 @@ class AIGallery extends React.Component {
             }
             selection={this.state.images}
             save={this.save}
+          />
+        )}
+        {this.state.showUpload && (
+          <UploadModal
+            {...this.props}
+            acceptTypes={"image/jpeg, image/png, image/gif"}
+            invalidTypeMessage={
+              "Only JPEG, PNG and GIF uploading is supported!"
+            }
+            storageEngine={"imgur"}
+            onSuccess={this.handleSuccess}
+            closeModal={this.handleUploadClose}
           />
         )}
       </div>
