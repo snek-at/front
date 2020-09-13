@@ -36,7 +36,10 @@ import {
 } from "../../../../molecules/modals";
 //> Actions
 // Functions to send data from the application to the store
-import { addMetaLink } from "../../../../../store/actions/personActions";
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aigallery.scss";
 //#endregion
@@ -138,11 +141,30 @@ class AIGallery extends React.Component {
         <div className="card-columns">
           {this.state.images &&
             this.state.images.map((picture, i) => {
-              console.log("YE", picture);
               return (
                 <MDBCard key={"picture-" + i} className="mb-3">
                   <MDBCardBody>
                     <MDBView>
+                      {sameOrigin && picture.id && (
+                        <div className="text-right video-preview py-1 px-2">
+                          <MDBBtn
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  images: this.state.images.filter(
+                                    (p) => p.id !== picture.id
+                                  ),
+                                },
+                                () => this.props.deleteMetaLink(picture.id)
+                              );
+                            }}
+                          >
+                            <MDBIcon icon="trash" className="m-0" />
+                          </MDBBtn>
+                        </div>
+                      )}
                       <img src={picture.url} className="img-fluid" />
                       <MDBMask
                         onClick={() =>
@@ -201,7 +223,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)) };
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 

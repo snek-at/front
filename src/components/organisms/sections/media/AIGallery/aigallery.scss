@@ -19,6 +19,13 @@
     }
   }
 
+  .video-preview {
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    position: absolute;
+  }
+
   .fa-times {
     &.text-muted {
       transition: color 0.1s ease;

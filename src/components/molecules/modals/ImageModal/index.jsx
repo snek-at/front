@@ -38,23 +38,16 @@ class ImageModal extends React.Component {
         <MDBModal
           isOpen={true}
           toggle={this.props.toggle}
-          size="lg"
+          size="md"
           centered
           animation="left"
           id="imagemodal"
         >
           <MDBModalBody className="p-2 text-center">
-            <MDBRow>
-              <MDBCol lg="8">
-                <MDBView>
-                  <img src={selectedPicture.url} className="img-fluid" />
-                  <MDBMask />
-                </MDBView>
-              </MDBCol>
-              <MDBCol lg="4">
-                <div>Content</div>
-              </MDBCol>
-            </MDBRow>
+            <MDBView>
+              <img src={selectedPicture.url} className="img-fluid" />
+              <MDBMask />
+            </MDBView>
           </MDBModalBody>
         </MDBModal>
       </>
