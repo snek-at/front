@@ -54,10 +54,24 @@ class AIVideoGallery extends React.Component {
     });
   };
 
+  /**
+   * Retrieving YouTube video ID from URL
+   *
+   * @param {string} url YouTube video URL
+   * @author SithCult <https://github.com/SithCult/Holobook>
+   * @license EUPL-1.2
+   */
+  getYouTubeVideoId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
   addVideo = (state) => {
     const video = {
       linkType: "YOUTUBE",
-      url: state.youtubeId,
+      url: state.youtubeLink,
     };
 
     this.setState(
@@ -92,6 +106,8 @@ class AIVideoGallery extends React.Component {
         <MDBRow>
           {this.state.videos &&
             this.state.videos.map((video, i) => {
+              const videoId = this.getYouTubeVideoId(video.url);
+
               return (
                 <MDBCol lg="4" className="mb-3" key={"video-" + i}>
                   <MDBCard>
@@ -99,7 +115,7 @@ class AIVideoGallery extends React.Component {
                       <MDBView>
                         <div className="position-relative">
                           <img
-                            src={`https://img.youtube.com/vi/${video.url}/mqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
                             alt="Video thumbnail"
                             className="img-fluid"
                           />
@@ -114,19 +130,19 @@ class AIVideoGallery extends React.Component {
                             <MDBRow>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.url}/1.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/1.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.url}/2.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/2.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.url}/3.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/3.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
@@ -137,7 +153,7 @@ class AIVideoGallery extends React.Component {
                           onClick={() =>
                             this.setState({
                               modalVideo: true,
-                              selectedVideoId: video.url,
+                              selectedVideoId: videoId,
                             })
                           }
                         />
