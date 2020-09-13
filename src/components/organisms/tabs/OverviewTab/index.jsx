@@ -69,6 +69,7 @@ class OverviewTab extends React.Component {
   state = {
     selectedYearIndex: undefined,
     edit: false,
+    toggleEdit: false,
   };
 
   selectDay = (day, wkey, dkey) => {
@@ -83,8 +84,6 @@ class OverviewTab extends React.Component {
 
   handleEditClick = (movablePool) => {
     if (this.state.edit) {
-      console.log(movablePool);
-
       this.props.saveSettings({ movablePool: JSON.stringify(movablePool) });
     }
 
@@ -126,19 +125,36 @@ class OverviewTab extends React.Component {
         <ErrorBoundary>
           {sameOrigin && (
             <div className="text-right">
+              {this.state.toggleEdit && (
+                <MDBBtn
+                  color={this.state.edit ? "success" : "green"}
+                  size="md"
+                  onClick={() =>
+                    this.handleEditClick(fetchedPerson.movablePool)
+                  }
+                >
+                  {this.state.edit ? (
+                    <span>
+                      <MDBIcon icon="check-circle" />
+                      Save
+                    </span>
+                  ) : (
+                    <span>
+                      <MDBIcon icon="arrows-alt" />
+                      Move items
+                    </span>
+                  )}
+                </MDBBtn>
+              )}
               <MDBBtn
-                color={this.state.edit ? "success" : "green"}
+                color={this.state.toggleEdit ? "elegant" : "elegant"}
                 size="md"
-                onClick={() => this.handleEditClick(fetchedPerson.movablePool)}
+                onClick={() =>
+                  this.setState({ toggleEdit: !this.state.toggleEdit })
+                }
+                disabled={this.state.edit}
               >
-                {this.state.edit ? (
-                  <span>
-                    <MDBIcon icon="check-circle" />
-                    Save items
-                  </span>
-                ) : (
-                  <span>Move items</span>
-                )}
+                {this.state.toggleEdit ? <span>Done</span> : <span>Edit</span>}
               </MDBBtn>
             </div>
           )}
@@ -242,7 +258,7 @@ class OverviewTab extends React.Component {
                     images={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "IMAGE"
                     )}
-                    sameOrigin={sameOrigin}
+                    sameOrigin={sameOrigin && this.state.toggleEdit}
                   />
                 )}
               </>,
@@ -252,7 +268,7 @@ class OverviewTab extends React.Component {
                     videos={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "YOUTUBE"
                     )}
-                    sameOrigin={sameOrigin}
+                    sameOrigin={sameOrigin && this.state.toggleEdit}
                   />
                 )}
               </>,
@@ -262,7 +278,7 @@ class OverviewTab extends React.Component {
                     songs={fetchedPerson.metaLinks.filter(
                       (link) => link.linkType === "SOUNDCLOUD"
                     )}
-                    sameOrigin={sameOrigin}
+                    sameOrigin={sameOrigin && this.state.toggleEdit}
                   />
                 )}
               </>,
