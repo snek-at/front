@@ -256,7 +256,9 @@ class OverviewTab extends React.Component {
                 {displayImageGallery && (
                   <AIGallery
                     images={fetchedPerson.metaLinks.filter(
-                      (link) => link.linkType === "IMAGE"
+                      (link) =>
+                        link.linkType === "PHOTO" ||
+                        link.linkType === "INSTAGRAM"
                     )}
                     sameOrigin={sameOrigin && this.state.toggleEdit}
                   />

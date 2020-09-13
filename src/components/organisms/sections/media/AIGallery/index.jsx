@@ -63,8 +63,25 @@ class AIGallery extends React.Component {
     }
   };
 
-  handleSuccess = (event) => {
-    console.log("SUCCESS", event);
+  handleSuccess = async (event) => {
+    let photo = {
+      url: event.link,
+      linkType: "PHOTO",
+    };
+
+    const res = await this.props.addMetaLink({
+      url: photo.url,
+      linkType: photo.linkType,
+    });
+
+    photo = {
+      ...photo,
+      id: res.id,
+    };
+
+    this.setState({
+      images: [...this.state.images, photo],
+    });
   };
 
   toggle = (modal) => {
@@ -118,31 +135,29 @@ class AIGallery extends React.Component {
             </MDBBtn>
           </div>
         )}
-        <MDBRow>
+        <div className="card-columns">
           {this.state.images &&
             this.state.images.map((picture, i) => {
               console.log("YE", picture);
               return (
-                <MDBCol lg="4" key={"picture-" + i}>
-                  <MDBCard>
-                    <MDBCardBody>
-                      <MDBView>
-                        <img src={picture.url} className="img-fluid" />
-                        <MDBMask
-                          onClick={() =>
-                            this.setState({
-                              modalPicture: true,
-                              selectedPicture: picture,
-                            })
-                          }
-                        />
-                      </MDBView>
-                    </MDBCardBody>
-                  </MDBCard>
-                </MDBCol>
+                <MDBCard key={"picture-" + i} className="mb-3">
+                  <MDBCardBody>
+                    <MDBView>
+                      <img src={picture.url} className="img-fluid" />
+                      <MDBMask
+                        onClick={() =>
+                          this.setState({
+                            modalPicture: true,
+                            selectedPicture: picture,
+                          })
+                        }
+                      />
+                    </MDBView>
+                  </MDBCardBody>
+                </MDBCard>
               );
             })}
-        </MDBRow>
+        </div>
         {this.state.modalPicture && this.state.selectedPicture && (
           <ImageModal
             toggle={() => this.toggle("modalPicture")}
