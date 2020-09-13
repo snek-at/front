@@ -42,6 +42,8 @@ import {
 } from "../../../../../store/actions/personActions";
 //> Style
 import "./aigallery.scss";
+//> Intel
+import INTEL_IMGUR from "snek-intel/lib/utils/imgur";
 //#endregion
 
 //#region > Components
@@ -70,16 +72,19 @@ class AIGallery extends React.Component {
     let photo = {
       url: event.link,
       linkType: "PHOTO",
+      deleteHash: event.deletehash,
     };
 
     const res = await this.props.addMetaLink({
       url: photo.url,
       linkType: photo.linkType,
+      imgurDeleteHash: photo.deleteHash,
     });
 
     photo = {
       ...photo,
       id: res.id,
+      imgurDeleteHash: res.imgurDeleteHash,
     };
 
     this.setState({
@@ -111,8 +116,11 @@ class AIGallery extends React.Component {
     );
   };
 
-  removeImage = (url) => {
-    // TODO
+  removeImage = async (id, deleteHash) => {
+    if (deleteHash !== undefined) {
+      await INTEL_IMGUR.delete(deleteHash);
+    }
+    this.props.deleteMetaLink(id);
   };
 
   render() {
@@ -157,7 +165,11 @@ class AIGallery extends React.Component {
                                     (p) => p.id !== picture.id
                                   ),
                                 },
-                                () => this.props.deleteMetaLink(picture.id)
+                                () =>
+                                  this.removeImage(
+                                    picture.id,
+                                    picture.imgurDeleteHash
+                                  )
                               );
                             }}
                           >
