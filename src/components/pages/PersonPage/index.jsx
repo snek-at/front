@@ -103,7 +103,11 @@ class PersonPage extends React.Component {
             !localStorage.getItem("connect_modal") && (
               <ConnectModal
                 isModal
-                toggle={() => this.setState({ showConnectModal: false })}
+                toggle={() =>
+                  this.setState({ showConnectModal: false }, () =>
+                    localStorage.setItem("connect_modal", true)
+                  )
+                }
               />
             )}
         </div>

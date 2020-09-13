@@ -155,13 +155,7 @@ class ConnectModal extends React.Component {
             <MDBModalBody>
               <div className="text-center" id="connectmodal">
                 <div className="text-right small text-muted">
-                  <span
-                    onClick={() => {
-                      localStorage.setItem("connect_modal", true);
-                      this.props.toggle();
-                    }}
-                    className="clickable"
-                  >
+                  <span onClick={this.props.toggle} className="clickable">
                     Later
                   </span>
                 </div>
