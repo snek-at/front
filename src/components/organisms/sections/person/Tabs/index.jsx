@@ -11,7 +11,12 @@ import { MDBBadge } from "mdbreact";
 import { connect } from "react-redux";
 
 //> Components
-import { ProjectTab, OverviewTab, TalksTab } from "../../../tabs";
+import {
+  ProjectTab,
+  OverviewTab,
+  TalksTab,
+  AchievementsTab,
+} from "../../../tabs";
 //> Style sheet
 import "./tabs.scss";
 //#endregion
@@ -65,9 +70,11 @@ class SoftwareTabs extends React.Component {
         notification: false,
       },
       {
-        title: "Papers",
+        title: "Achievements",
         visible: true,
-        pill: "0",
+        pill: fetchedPerson?.achievements
+          ? fetchedPerson?.achievements.length
+          : "0",
         notification: false,
       },
       {
@@ -107,10 +114,17 @@ class SoftwareTabs extends React.Component {
               }
             />
           )}
-          {activeTab > 1 && activeTab < 5 && (
+          {activeTab > 1 && activeTab < 4 && (
             <p className="text-muted">
               This feature is not available just yet.
             </p>
+          )}
+          {activeTab === 4 && (
+            <AchievementsTab
+              achievements={
+                fetchedPerson?.achievements ? fetchedPerson.achievements : []
+              }
+            />
           )}
           {activeTab === 5 && (
             <TalksTab
