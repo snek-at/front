@@ -99,6 +99,7 @@ class PersonPage extends React.Component {
           </MDBContainer>
           {fetchedPerson &&
             fetchedPerson.profiles.length === 0 &&
+            fetchedPerson.slug === loggedUser?.person?.slug &&
             this.state.showConnectModal &&
             (!localStorage.getItem("connect_modal") ||
               (localStorage.getItem("connect_modal") &&
@@ -113,9 +114,9 @@ class PersonPage extends React.Component {
                     localStorage.setItem(
                       "connect_modal",
                       JSON.stringify(
-                        localStorage.setItem("connect_modal")
+                        localStorage.setItem("connect_modal", true)
                           ? JSON.parse(
-                              localStorage.setItem("connect_modal")
+                              localStorage.setItem("connect_modal", true)
                             ).push(username)
                           : [username]
                       )
