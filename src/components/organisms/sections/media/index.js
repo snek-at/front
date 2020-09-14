@@ -4,11 +4,12 @@
 import AIGallery from "./AIGallery";
 import AIVideoGallery from "./AIVideoGallery";
 import AISongGallery from "./AISongGallery";
+import PhotoMap from "./PhotoMap";
 //#endregion
 
 //#region > Exports
 //> Organisms
-export { AIGallery, AIVideoGallery, AISongGallery };
+export { AIGallery, AIVideoGallery, AISongGallery, PhotoMap };
 //#endregion
 
 /**

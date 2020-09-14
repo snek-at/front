@@ -30,6 +30,7 @@ import {
   AIGallery,
   AISongGallery,
   AIVideoGallery,
+  PhotoMap,
 } from "../../../organisms/sections/media";
 import { MovableBoundary } from "../../../molecules";
 import { updateSettings } from "../../../../store/actions/personActions";
@@ -114,7 +115,7 @@ class OverviewTab extends React.Component {
       displayVideoGallery,
       displayMusicGallery,
     } = fetchedPerson;
-
+    const displayPhotoMap = true;
     let platformData = "";
 
     return (
@@ -282,6 +283,7 @@ class OverviewTab extends React.Component {
                   />
                 )}
               </>,
+              <>{displayPhotoMap && <PhotoMap />}</>,
               <>
                 {display2dCalendar && currentStatistic && yearsStatistic && (
                   <Calendar2D
