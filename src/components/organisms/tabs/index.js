@@ -4,12 +4,13 @@
 import ProjectTab from "./ProjectTab";
 import OverviewTab from "./OverviewTab";
 import TalksTab from "./TalksTab";
+import AchievementsTab from "./AchievementsTab";
 //#endregion
 
 //#region > Exports
 //> Components
 // Export the components for easy access from parent components
-export { ProjectTab, OverviewTab, TalksTab };
+export { ProjectTab, OverviewTab, TalksTab, AchievementsTab };
 //#endregion
 
 /**
