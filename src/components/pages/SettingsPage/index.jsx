@@ -115,6 +115,7 @@ class SettingsPage extends React.Component {
         displayImageGallery,
         displayVideoGallery,
         displayMusicGallery,
+        displayMap,
         displayEmail,
         displayProgrammingLanguages,
         displayRanking,
@@ -160,6 +161,7 @@ class SettingsPage extends React.Component {
           "displayMusicGallery",
           displayMusicGallery
         ),
+        displayMap: this.checkTypes("displayMap", displayMap),
         displayEmail: this.checkTypes("displayEmail", displayEmail),
         displayProgrammingLanguages: this.checkTypes(
           "displayProgrammingLanguages",
@@ -863,6 +865,18 @@ class SettingsPage extends React.Component {
                             name="displayVideoGallery"
                             onChange={this.handleChange}
                             checked={person.displayVideoGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show image map</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox11"
+                            name="displayMap"
+                            onChange={this.handleChange}
+                            checked={person.displayMap}
                             containerClass="mr-5"
                           />
                         </MDBCol>

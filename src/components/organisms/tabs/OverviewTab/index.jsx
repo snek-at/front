@@ -114,8 +114,8 @@ class OverviewTab extends React.Component {
       displayImageGallery,
       displayVideoGallery,
       displayMusicGallery,
+      displayMap,
     } = fetchedPerson;
-    const displayPhotoMap = true;
     let platformData = "";
 
     return (
@@ -283,7 +283,7 @@ class OverviewTab extends React.Component {
                   />
                 )}
               </>,
-              <>{displayPhotoMap && <PhotoMap />}</>,
+              <>{displayMap && <PhotoMap />}</>,
               <>
                 {display2dCalendar && currentStatistic && yearsStatistic && (
                   <Calendar2D
