@@ -501,6 +501,8 @@ const redeemAchievement = (sequence) => {
           },
         });
       }
+
+      return res;
     } catch (ex) {
       dispatch({
         type: Action.PERSON_ACHIEVEMENT_REDEEM_FAILURE,
