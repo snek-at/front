@@ -153,6 +153,14 @@ class AIGallery extends React.Component {
     this.props.deleteMetaLink(id);
   };
 
+  checkProfileTypeExists = (sourceType) => {
+    return this.props.loggedUser.person.profiles.some(
+      (e) => e.sourceType === sourceType && e.isActive
+    )
+      ? true
+      : false;
+  };
+
   render() {
     const { loggedUser, sameOrigin } = this.props;
 
@@ -167,13 +175,15 @@ class AIGallery extends React.Component {
               <MDBIcon icon="upload" />
               Upload image
             </MDBBtn>
-            <MDBBtn
-              social="ins"
-              onClick={() => this.setState({ modalSelectPictures: true })}
-            >
-              <MDBIcon fab icon="instagram" />
-              Select images
-            </MDBBtn>
+            {this.checkProfileTypeExists("INSTAGRAM") && (
+              <MDBBtn
+                social="ins"
+                onClick={() => this.setState({ modalSelectPictures: true })}
+              >
+                <MDBIcon fab icon="instagram" />
+                Select images
+              </MDBBtn>
+            )}
           </div>
         )}
         <div className="card-columns">
