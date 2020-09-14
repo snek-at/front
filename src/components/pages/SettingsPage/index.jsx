@@ -130,29 +130,50 @@ class SettingsPage extends React.Component {
       } = loggedUser?.person;
 
       const person = {
-        avatarImage,
-        bio,
+        avatarImage: this.checkTypes("avatarImage", avatarImage),
+        bio: this.checkTypes("bio", bio),
         display2dCalendar: this.checkTypes(
           "display2dCalendar",
           display2dCalendar
         ),
-        display3dCalendar,
-        displayContributionTypes,
-        displayWeekActivity,
-        displayImageGallery,
-        displayVideoGallery,
-        displayMusicGallery,
-        displayEmail,
-        displayProgrammingLanguages,
-        displayRanking,
-        displayWorkplace,
-        email,
-        firstName,
-        lastName,
-        location,
-        status,
-        websiteUrl,
-        workplace,
+        display3dCalendar: this.checkTypes(
+          "display3dCalendar",
+          display3dCalendar
+        ),
+        displayContributionTypes: this.checkTypes(
+          "displayContributionTypes",
+          displayContributionTypes
+        ),
+        displayWeekActivity: this.checkTypes(
+          "displayWeekActivity",
+          displayWeekActivity
+        ),
+        displayImageGallery: this.checkTypes(
+          "displayImageGallery",
+          displayImageGallery
+        ),
+        displayVideoGallery: this.checkTypes(
+          "displayVideoGallery",
+          displayVideoGallery
+        ),
+        displayMusicGallery: this.checkTypes(
+          "displayMusicGallery",
+          displayMusicGallery
+        ),
+        displayEmail: this.checkTypes("displayEmail", displayEmail),
+        displayProgrammingLanguages: this.checkTypes(
+          "displayProgrammingLanguages",
+          displayProgrammingLanguages
+        ),
+        displayRanking: this.checkTypes("displayRanking", displayRanking),
+        displayWorkplace: this.checkTypes("displayWorkplace", displayWorkplace),
+        email: this.checkTypes("email", email),
+        firstName: this.checkTypes("firstName", firstName),
+        lastName: this.checkTypes("lastName", lastName),
+        location: this.checkTypes("location", location),
+        status: this.checkTypes("status", status),
+        websiteUrl: this.checkTypes("websiteUrl", websiteUrl),
+        workplace: this.checkTypes("workplace", workplace),
         profiles,
       };
 
@@ -207,8 +228,6 @@ class SettingsPage extends React.Component {
   };
 
   handleChange = (name, value) => {
-    console.log(name, value);
-
     if (name.target) {
       value =
         name?.target?.type === "checkbox"

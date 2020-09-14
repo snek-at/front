@@ -125,7 +125,7 @@ class AISongGallery extends React.Component {
                         width="100%"
                         height="166"
                         scrolling="no"
-                        frameborder="no"
+                        frameBorder="no"
                         allow="autoplay"
                         src={"https://w.soundcloud.com/player/?url=" + song.url}
                       ></iframe>
