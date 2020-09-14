@@ -11,6 +11,7 @@ import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
 import LatestActivity from "./charts/LatestActivity";
 import LanguageChart from "./charts/LanguageBar";
+import Achievement from "./Achievement";
 //> Enterprise page
 import AIBarChart from "./charts/AIBarChart";
 import AILineChart from "./charts/AILineChart";
@@ -34,6 +35,7 @@ export {
   ContribRadar,
   LatestActivity,
   LanguageChart,
+  Achievement,
   /* Enterprise page */
   AIBarChart,
   AILineChart,
