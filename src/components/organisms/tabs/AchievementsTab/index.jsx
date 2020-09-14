@@ -54,30 +54,33 @@ class AchievementsTab extends React.Component {
     return (
       <>
         <h3 className="font-weight-bold">Achievements</h3>
-        <form className="text-left">
-          <span className="text-muted small">Flag</span>
-          <MDBRow>
-            <MDBCol size="9">
-              <input
-                type="text"
-                className="form-control"
-                name="sequence"
-                onChange={(e) => this.handleChange(e)}
-                value={this.state.sequence}
-              />
-            </MDBCol>
-            <MDBCol size="3">
-              <MDBBtn
-                color="green"
-                onClick={this.handleSubmit}
-                size="lg"
-                className="submit-sequence"
-              >
-                Redeem flag
-              </MDBBtn>
-            </MDBCol>
-          </MDBRow>
-        </form>
+        {this.props.loggedUser?.person?.slug ===
+          this.props.fetchedPerson?.slug && (
+          <form className="text-left">
+            <span className="text-muted small">Flag</span>
+            <MDBRow>
+              <MDBCol size="9">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="sequence"
+                  onChange={(e) => this.handleChange(e)}
+                  value={this.state.sequence}
+                />
+              </MDBCol>
+              <MDBCol size="3">
+                <MDBBtn
+                  color="green"
+                  onClick={this.handleSubmit}
+                  size="lg"
+                  className="submit-sequence"
+                >
+                  Redeem flag
+                </MDBBtn>
+              </MDBCol>
+            </MDBRow>
+          </form>
+        )}
         <MDBRow className="achievement-list">
           {achievements &&
             achievements.map((achievement, i) => {
@@ -93,6 +96,7 @@ class AchievementsTab extends React.Component {
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   fetchedPerson: state.person.fetchedPerson,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {
