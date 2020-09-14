@@ -24,9 +24,27 @@ class PhotoMap extends React.Component {
       geoUrl:
         "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json",
       markers: [
-        { cords: [-74.006, 40.7128], hover: false, click: false },
-        { cords: [74.006, -40.7128], hover: false, click: false },
-        { cords: [74.006, -38.7128], hover: false, click: false },
+        {
+          cords: [14.180588, 46.722203],
+          hover: false,
+          click: false,
+          img:
+            "https://scontent-frx5-1.cdninstagram.com/v/t51.2885-15/100073723_290663115667352_2200766204448190569_n.jpg?_nc_cat=110&_nc_sid=8ae9d6&_nc_ohc=lElXlAfEmOYAX96tO71&_nc_ht=scontent-frx5-1.cdninstagram.com&oh=8fa19466614fa0c8ed50703c5445081c&oe=5F8317DB",
+        },
+        {
+          cords: [18, 46.722203],
+          hover: false,
+          click: false,
+          img:
+            "https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/100811582_247790446433980_4259144092930484238_n.jpg?_nc_cat=108&_nc_sid=8ae9d6&_nc_ohc=owEiRBaPxJMAX-0OHyA&_nc_ht=scontent-frt3-1.cdninstagram.com&oh=ede6635099373fb510ff6f33c7854a01&oe=5F84435C",
+        },
+        {
+          cords: [14.180588, 50],
+          hover: false,
+          click: false,
+          img:
+            "https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/100089905_1550981121744980_7352234614965268133_n.jpg?_nc_cat=102&_nc_sid=8ae9d6&_nc_ohc=Oi7WmFJKmo4AX86q6iC&_nc_ht=scontent-frt3-1.cdninstagram.com&oh=bd2b3613661c89a70fb82f2c350d8b26&oe=5F854976",
+        },
       ],
       position: {
         zoom: 1,
@@ -67,47 +85,39 @@ class PhotoMap extends React.Component {
     return (
       <div id="photo-map">
         <ComposableMap>
-          <ZoomableGroup
-            zoom={this.state.position.zoom}
-            center={this.state.position.coordinates}
-          >
-            <Geographies geography={this.state.geoUrl}>
-              {({ geographies }) =>
-                geographies.map((geo) => (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill="#DDD"
-                    stroke="#FFF"
-                  />
-                ))
-              }
-            </Geographies>
-            {this.state.markers.map((marker) => (
-              <Marker
-                coordinates={marker.cords}
-                onMouseEnter={() => this.hoverMarker(marker)}
-                onMouseLeave={() => this.hoverMarker(marker)}
-                onClick={() => this.clickMarker(marker)}
-              >
-                <circle r={2} fill="#F53" />
-                {(marker.hover || marker.click) && (
-                  <image
-                    href="https://instagram.fvie1-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s750x750/118165085_114965910172930_2351104314231093064_n.jpg?_nc_ht=instagram.fvie1-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=3qTKCH0tXbEAX8JfXqn&oh=2ac53942deeac9c60263df9a01b66b27&oe=5F766056"
-                    height="100"
-                    width="100"
-                    x="-50"
-                    y="-105"
-                    onClick={() =>
-                      window.open(
-                        "https://instagram.fvie1-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s750x750/118165085_114965910172930_2351104314231093064_n.jpg?_nc_ht=instagram.fvie1-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=3qTKCH0tXbEAX8JfXqn&oh=2ac53942deeac9c60263df9a01b66b27&oe=5F766056"
-                      )
-                    }
-                  />
-                )}
-              </Marker>
-            ))}
-          </ZoomableGroup>
+          <Geographies geography={this.state.geoUrl}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill="#48484a"
+                  stroke="#FFF"
+                />
+              ))
+            }
+          </Geographies>
+          {this.state.markers.map((marker, i) => (
+            <Marker
+              key={2}
+              coordinates={marker.cords}
+              onMouseEnter={() => this.hoverMarker(marker)}
+              onMouseLeave={() => this.hoverMarker(marker)}
+              onClick={() => this.clickMarker(marker)}
+            >
+              <circle r={4} fill="#F53" />
+              {(marker.hover || marker.click) && (
+                <image
+                  href={marker.img}
+                  height="100"
+                  width="100"
+                  x="-50"
+                  y="-105"
+                  onClick={() => window.open(marker.img)}
+                />
+              )}
+            </Marker>
+          ))}
         </ComposableMap>
       </div>
     );
