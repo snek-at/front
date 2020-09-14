@@ -10,7 +10,7 @@ import {
   HomePage,
   PersonPage,
   CompanyPage,
-  //   TalkPage,
+  TalkPage,
   SettingsPage,
   TempPage,
 } from "./components/pages";
@@ -38,11 +38,11 @@ class Routes extends React.Component {
           path="/temp"
           component={(props) => <TempPage {...props} />}
         />
-        {/* <Route
+        <Route
           exact
-          path="/t/:username/:uid"
+          path="/t/:uid"
           component={(props) => <TalkPage {...props} />}
-        />*/}
+        />
         <Route
           exact
           path="/redirect"

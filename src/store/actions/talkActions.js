@@ -16,12 +16,12 @@ const extractNameFromPersonSlug = (personSlug) => personSlug.split("-")[1];
 const getTalk = (id) => {
   return async (dispatch, getState, {}) => {
     try {
-      dispatch({ type: Action.TALKS_FETCH_REQUEST });
+      dispatch({ type: Action.TALK_FETCH_REQUEST });
 
       const talk = await INTEL_SNEK.talk.getTalk({ id });
 
       dispatch({
-        type: Action.TALKS_FETCH_SUCCESS,
+        type: Action.TALK_FETCH_SUCCESS,
         payload: talk,
       });
     } catch (ex) {

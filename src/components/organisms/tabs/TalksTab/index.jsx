@@ -144,9 +144,7 @@ class TalkTab extends React.Component {
                       </MDBRow>
                     </MDBCardHeader>
                     <Link
-                      to={
-                        "/t/" + this.props.match.params.username + "/" + talk.id
-                      }
+                      to={`/t/${talk.id}`}
                       params={{}}
                       rel="noopener noreferrer"
                     >
