@@ -99,25 +99,55 @@ class AIGallery extends React.Component {
     });
   };
 
-  save = (pictureList) => {
+  save = async (pictureList) => {
+    let pics = [];
+
+    for (const index in pictureList) {
+      const picture = pictureList[index];
+      const samePic = this.props.images.filter(
+        (pic) => pic.url === picture.url
+      );
+
+      if (samePic.length === 0) {
+        let pic = {
+          url: picture.url,
+          linkType: "INSTAGRAM",
+        };
+
+        const res = await this.props.addMetaLink({
+          url: pic.url,
+          linkType: pic.linkType,
+        });
+
+        pic = {
+          ...pic,
+          id: res.id,
+        };
+
+        pics = [...pics, pic];
+      }
+    }
+
     this.setState(
       {
-        images: [...this.state.images, ...pictureList],
+        images: [...this.state.images, ...pics],
         modalSelectPictures: false,
       },
       () => {
-        pictureList.forEach((picture) => {
-          this.props.addMetaLink({
-            url: picture.mediaLink,
-            linkType: "INSTAGRAM",
-          });
+        const currentPics = this.props.images;
+        const newPics = this.state.images;
+
+        const intersection = currentPics.filter((x) => !newPics.includes(x));
+
+        intersection.forEach((curItem) => {
+          this.props.deleteMetaLink(curItem.id);
         });
       }
     );
   };
 
   removeImage = async (id, deleteHash) => {
-    if (deleteHash !== undefined) {
+    if (deleteHash !== undefined && deleteHash !== null) {
       await INTEL_IMGUR.delete(deleteHash);
     }
     this.props.deleteMetaLink(id);

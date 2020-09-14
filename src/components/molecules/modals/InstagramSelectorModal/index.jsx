@@ -82,13 +82,11 @@ class InstagramSelectorModal extends React.Component {
   };
 
   updateList = (picture) => {
-    if (
-      this.state.selection.filter(
-        (item) => item.mediaLink === picture.mediaLink
-      ).length > 0
-    ) {
-      const current = this.state.selection;
-      const index = current.findIndex((x) => x.mediaLink === picture.mediaLink);
+    console.log("ohnonono", picture);
+    const current = this.state.selection;
+
+    if (current.filter((item) => item.url === picture.mediaLink).length > 0) {
+      const index = current.findIndex((x) => x.url === picture.mediaLink);
 
       if (index > -1) {
         current.splice(index, 1);
@@ -98,8 +96,13 @@ class InstagramSelectorModal extends React.Component {
         selection: current,
       });
     } else {
+      const pic = {
+        url: picture.mediaLink,
+        linkType: "INSTAGRAM",
+      };
+
       this.setState({
-        selection: [...this.state.selection, picture],
+        selection: [...current, pic],
       });
     }
   };
@@ -137,6 +140,8 @@ class InstagramSelectorModal extends React.Component {
   };
 
   render() {
+    console.log(this.state);
+
     return (
       <>
         <MDBModal
@@ -167,7 +172,7 @@ class InstagramSelectorModal extends React.Component {
                 this.state.posts.map((picture, i) => {
                   const selected =
                     this.state.selection.filter(
-                      (item) => item.mediaLink === picture.mediaLink
+                      (item) => item.url === picture.mediaLink
                     ).length > 0
                       ? true
                       : false;
