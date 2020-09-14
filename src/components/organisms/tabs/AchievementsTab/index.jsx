@@ -27,6 +27,25 @@ class AchievementsTab extends React.Component {
   state = {
     sequence: "",
     loading: false,
+    achievements: [],
+  };
+
+  componentDidMount = () => {
+    const { achievements } = this.props;
+
+    this.setState({
+      achievements: achievements,
+    });
+  };
+
+  componentDidUpdate = () => {
+    const { achievements } = this.props;
+
+    if (achievements !== this.state.achievements) {
+      this.setState({
+        achievements: achievements,
+      });
+    }
   };
 
   handleChange = (e) => {
@@ -41,15 +60,25 @@ class AchievementsTab extends React.Component {
         loading: true,
       },
       async () => {
-        this.props
-          .redeemAchievement(this.state.sequence)
-          .then((res) => console.log(res));
+        this.props.redeemAchievement(this.state.sequence).then((res) => {
+          if (res.achievement !== null) {
+            let achievements = [];
+
+            for (let count in this.state.achievements) {
+              achievements.push(this.state.achievements[count]);
+            }
+
+            achievements.push(res.achievement);
+
+            this.setState({ achievements });
+          }
+        });
       }
     );
   };
 
   render() {
-    const { achievements } = this.props;
+    const { achievements } = this.state;
 
     return (
       <>
