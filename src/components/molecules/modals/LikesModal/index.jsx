@@ -85,7 +85,7 @@ class LikesModal extends React.Component {
 
   isFollowing = (liker) => {
     const { loggedUser } = this.state;
-    console.log("1");
+
     for (let count in loggedUser?.person?.follows) {
       if (loggedUser.person.follows[count].slug === liker.slug) {
         return true;
