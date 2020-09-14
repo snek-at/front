@@ -59,6 +59,18 @@ class Routes extends React.Component {
           component={(props) => <SettingsPage {...props} />}
         />
         <Route
+          exact
+          path="/path/explorer"
+          render={function () {
+            return (
+              <div>
+                Here is a flag for you {process.env.FLAG_PATH_EXPLORER}. Keep on
+                searching and find them all.
+              </div>
+            );
+          }}
+        />
+        <Route
           render={function () {
             return <h1>Not Found</h1>;
           }}
