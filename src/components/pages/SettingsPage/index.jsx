@@ -84,6 +84,14 @@ class SettingsPage extends React.Component {
     ],
   };
 
+  checkTypes = (item, value) => {
+    return this.state.person
+      ? this.state.person[item] !== value
+        ? this.state.person[item]
+        : value
+      : value;
+  };
+
   handleLoading = () => {
     const { loggedUser } = this.props;
 
@@ -124,7 +132,10 @@ class SettingsPage extends React.Component {
       const person = {
         avatarImage,
         bio,
-        display2dCalendar,
+        display2dCalendar: this.checkTypes(
+          "display2dCalendar",
+          display2dCalendar
+        ),
         display3dCalendar,
         displayContributionTypes,
         displayWeekActivity,
@@ -148,29 +159,7 @@ class SettingsPage extends React.Component {
       if (JSON.stringify(this.state.person) !== JSON.stringify(person)) {
         this.setState({
           loading: false,
-          person: {
-            avatarImage,
-            bio,
-            display2dCalendar,
-            display3dCalendar,
-            displayContributionTypes,
-            displayWeekActivity,
-            displayImageGallery,
-            displayVideoGallery,
-            displayMusicGallery,
-            displayEmail,
-            displayProgrammingLanguages,
-            displayRanking,
-            displayWorkplace,
-            email,
-            firstName,
-            lastName,
-            location,
-            status,
-            websiteUrl,
-            workplace,
-            profiles,
-          },
+          person,
         });
       }
     }
