@@ -45,7 +45,10 @@ import registerServiceWorker from "./registerServiceWorker";
 //#endregion
 
 //#region > Redux Store Initialization
-const CLIENT_SNEK = new SnekClient("http://localhost:8000/graphql");
+const CLIENT_SNEK = new SnekClient("https://engine.snek.at/graphql");
+
+// Pass over an individual client to intel
+INTEL_SNEK.client = CLIENT_SNEK;
 
 const composeEnhancers =
   typeof window === "object" &&
