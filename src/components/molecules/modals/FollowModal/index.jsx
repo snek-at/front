@@ -25,74 +25,77 @@ import "./follow.scss";
 class FollowModal extends React.Component {
   state = {
     loggedUser: null,
+    followers: [],
+    anonymous: undefined,
+    loading: false,
   };
 
   componentDidMount = () => {
     const { loggedUser } = this.props;
 
-    this.setState({
-      loggedUser: loggedUser,
-    });
+    this.setState({ loading: true });
+
+    // this.setState({
+    //   followers: loggedUser.person?.followers,
+    //   anonymous: loggedUser.anonymous,
+    // });
   };
 
-  componentDidUpdate = () => {
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   console.log(
+  //     "SHOUDL UPDATE?",
+  //     this.props.loggedUser.person !== prevProps.loggedUser.person
+  //   );
+  //   return this.props.loggedUser.person !== prevProps.loggedUser.person;
+  // }
+
+  componentDidUpdate = (prevProps, prevState) => {
     const { loggedUser } = this.props;
 
-    if (loggedUser !== this.state.loggedUser) {
+    if (
+      this.state.loading ||
+      this.props.loggedUser.person !== prevProps.loggedUser.person
+    ) {
       this.setState({
-        loggedUser: loggedUser,
+        followers: loggedUser.person.follows,
+        anonymous: loggedUser.anonymous,
+        loading: false,
       });
     }
   };
 
-  follow = (personToFollow) => {
-    if (!this.props.loggedUser?.anonymous) {
-      this.props.follow(personToFollow).then(() => {
-        let loggedUser = this.props.loggedUser;
-        let follows = [];
+  follow = async (personToFollow) => {
+    if (this.state.anonymous == false) {
+      await this.props.follow(personToFollow);
 
-        for (let count in loggedUser.person.follows) {
-          follows.push(loggedUser.person.follows[count]);
-        }
-
-        follows.push({ slug: "p-" + personToFollow });
-
-        loggedUser.person.follows = follows;
-
-        this.setState({ loggedUser });
+      const followers = this.state.followers.concat({
+        slug: `p-${personToFollow}`,
       });
+
+      this.setState({ followers });
     } else {
       this.props.toContinue();
     }
   };
 
-  unfollow = (personToUnfollow) => {
-    this.props.unfollow(personToUnfollow).then(() => {
-      let loggedUser = this.state.loggedUser;
-      let follows = [];
+  unfollow = async (personToUnfollow) => {
+    if (!this.state.anonymous) {
+      await this.props.unfollow(personToUnfollow);
 
-      for (let count in loggedUser?.person?.follows) {
-        if (loggedUser.person.follows[count].slug !== "p-" + personToUnfollow) {
-          follows.push(loggedUser.person.follows[count]);
-        }
-      }
+      let followers = [...this.state.followers];
 
-      loggedUser.person.follows = follows;
+      const idx = followers.findIndex(
+        (o) => o.slug === `p-${personToUnfollow}`
+      );
 
-      this.setState({ loggedUser });
-    });
+      followers.splice(idx, 1);
+
+      this.setState({ followers });
+    }
   };
 
   isFollowing = (follower) => {
-    const { loggedUser } = this.state;
-
-    for (let count in loggedUser?.person?.follows) {
-      if (loggedUser.person.follows[count].slug === follower.slug) {
-        return true;
-      }
-    }
-
-    return false;
+    return this.state.followers.find((e) => e.slug === follower.slug);
   };
 
   render() {
