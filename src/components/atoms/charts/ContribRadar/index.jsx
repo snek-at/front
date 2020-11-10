@@ -110,7 +110,6 @@ class ContribRadar extends React.Component {
     let totalIssues = 0;
     let totalRequests = 0;
     let totalCommits = 0;
-    let totalSources = 1;
     let contribData;
     let results = [];
 
@@ -139,14 +138,6 @@ class ContribRadar extends React.Component {
         borderColor: "rgba(123, 201, 111)",
         data: values,
       });
-
-      // Calculate averages
-      let avgReviews, avgIssues, avgRequests, avgCommits;
-
-      avgReviews = parseInt(totalReviews) / parseInt(totalSources);
-      avgIssues = parseInt(totalIssues) / parseInt(totalSources);
-      avgRequests = parseInt(totalRequests) / parseInt(totalSources);
-      avgCommits = parseInt(totalCommits) / parseInt(totalSources);
 
       this.fillChart(results);
     }
