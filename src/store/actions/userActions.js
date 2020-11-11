@@ -140,7 +140,6 @@ const register = (
           redemption_code: redemptionCode,
         },
       });
-      console.log(registration);
 
       if (registration.result === "OK") {
         dispatch({ type: Action.USER_PERSON_SIGNUP_SUCCESS });

@@ -116,7 +116,6 @@ const personReducer = (state = INIT_STATE, action) => {
     case Action.PERSON_TALK_DELETE_REQUEST:
       return state;
     case Action.PERSON_TALK_DELETE_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         fetchedPerson: {

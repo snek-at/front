@@ -110,8 +110,6 @@ const addMetaLink = (
       const state = getState();
       const personName = extractNameFromPersonSlug(state.user.user.person.slug);
 
-      console.log("OPTIONS", linkOptions);
-
       const link = await INTEL_SNEK.person.addMetaLink({
         personName,
         linkOptions: {
@@ -236,7 +234,6 @@ const deleteProfile = (id) => {
         payload: profiles,
       });
     } catch (ex) {
-      console.log("FAIL", Action.PERSON_META_LINK_DELETE_FAILURE);
       dispatch({
         type: Action.PERSON_META_LINK_DELETE_FAILURE,
         payload: {
@@ -262,8 +259,6 @@ const updateProfile = (
   return async (dispatch, getState, {}) => {
     try {
       dispatch({ type: Action.PERSON_PROFILE_UPDATE_REQUEST });
-
-      console.log(nextProfile, id);
 
       const profile = await INTEL_SNEK.person.updateProfile({
         profileId: id,

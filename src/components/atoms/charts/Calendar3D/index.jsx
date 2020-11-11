@@ -136,7 +136,6 @@ class Calendar3D extends React.Component {
       datesLongest = "-";
     }
 
-    console.log(contribData);
     if (
       contribData.currentStreak &&
       contribData.currentStreak.totalDays != null

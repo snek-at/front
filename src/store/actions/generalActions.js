@@ -43,8 +43,6 @@ const getPersonsBrief = () => {
 
       const persons = await INTEL_SNEK.person.allBrief();
 
-      console.log(persons);
-
       dispatch({
         type: Action.GENERAL_PERSONS_BRIEF_FETCH_SUCCESS,
         payload: persons,

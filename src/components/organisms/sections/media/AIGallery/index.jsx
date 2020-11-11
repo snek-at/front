@@ -56,9 +56,7 @@ class AIGallery extends React.Component {
     });
   };
 
-  componentDidUpdate = () => {
-    console.log("AAAAAAAAAAAAAAA", this.props.loggedUser);
-  };
+  componentDidUpdate = () => {};
 
   handleUploadClose = () => {
     if (this.state.showUpload) {

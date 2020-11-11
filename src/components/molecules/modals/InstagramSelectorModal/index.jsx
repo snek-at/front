@@ -82,7 +82,6 @@ class InstagramSelectorModal extends React.Component {
   };
 
   updateList = (picture) => {
-    console.log("ohnonono", picture);
     const current = this.state.selection;
 
     if (current.filter((item) => item.url === picture.mediaLink).length > 0) {
@@ -140,8 +139,6 @@ class InstagramSelectorModal extends React.Component {
   };
 
   render() {
-    console.log(this.state);
-
     return (
       <>
         <MDBModal
