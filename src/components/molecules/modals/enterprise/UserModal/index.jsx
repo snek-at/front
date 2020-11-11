@@ -20,7 +20,7 @@ import {
 import moment from "moment";
 
 //> Components
-import { AIContribCalendar, AILanguageChart } from "../../../../atoms";
+import { AIContribCalendar } from "../../../../atoms";
 //#endregion
 
 //#region > Components
@@ -48,8 +48,6 @@ class UserModal extends React.Component {
   render() {
     const { user } = this.state;
 
-    console.log("USER", user);
-
     return (
       <MDBModal isOpen={true} toggle={this.props.toggle} size="lg">
         <MDBModalBody>
@@ -62,63 +60,66 @@ class UserModal extends React.Component {
                     <MDBCardBody>
                       <p className="lead font-weight-bold mb-1">{user.name}</p>
                       <p className="text-muted small">
-                        <p>{user.username}</p>
+                        <span>{user.username}</span>
                       </p>
                     </MDBCardBody>
                   </MDBCard>
                   <p className="lead font-weight-bold mt-4">Code statistics</p>
                   <MDBCard className="border">
                     <MDBCardBody>
-                      <AILanguageChart
-                        languages={[
-                          {
-                            color: "rgb(241, 224, 90)",
-                            share: 40,
-                          },
-                          {
-                            color: "rgb(299, 150, 90)",
-                            share: 60,
-                          },
-                        ]}
-                      />
-                      <div className="px-1">
-                        <hr />
-                        {[
-                          {
-                            color: "rgb(241, 224, 90)",
-                            share: 40,
-                            name: "JavaScript",
-                          },
-                          {
-                            color: "rgb(299, 150, 90)",
-                            share: 60,
-                            name: "FooScript",
-                          },
-                        ].map((language, i) => {
-                          return (
-                            <small
-                              className="text-left text-muted d-block"
-                              key={i}
-                            >
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <MDBIcon
-                                    icon="square"
-                                    className="pr-1"
-                                    style={{
-                                      color: language.color,
-                                    }}
-                                  />
-                                  <span>{language.name}</span>
+                      {user.codelanguages && user.codelanguages.length > 0 ? (
+                        <div>
+                          {user.codelanguages.map((language, i) => {
+                            return (
+                              <small
+                                className={
+                                  user.codelanguages.length === i + 1
+                                    ? "text-left text-muted d-block py-1"
+                                    : "text-left text-muted d-block py-1 border-bottom"
+                                }
+                                key={i}
+                              >
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <div>
+                                    <MDBIcon
+                                      icon="square"
+                                      className="pr-1"
+                                      style={{
+                                        color: language.color,
+                                      }}
+                                    />
+                                    <span>{language.name}</span>
+                                  </div>
+                                  <span className="small text-right">
+                                    <span className="d-block">
+                                      {language.insertions}
+                                      <MDBIcon
+                                        icon="plus"
+                                        size="sm"
+                                        className="text-success pl-1"
+                                      />
+                                    </span>
+                                    <span className="d-block">
+                                      {language.deletions}
+                                      <MDBIcon
+                                        icon="minus"
+                                        size="sm"
+                                        className="text-danger pl-1"
+                                      />
+                                    </span>
+                                  </span>
                                 </div>
-                                <span className="text-muted small">
-                                  {language.share}%
-                                </span>
-                              </div>
-                            </small>
-                          );
-                        })}
-                      </div>
+                              </small>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="text-center p-3">
+                          <span className="d-block small text-muted">
+                            No information yet.
+                          </span>
+                        </div>
+                      )}
                     </MDBCardBody>
                   </MDBCard>
                 </MDBCol>
@@ -144,31 +145,44 @@ class UserModal extends React.Component {
                               </p>
                             );
                           })}
-                        <p
-                          className={
-                            this.state.selectedYearIndex === undefined
-                              ? "blue-text clickable mx-2 d-inline-block"
-                              : "text-muted clickable mx-2 d-inline-block"
-                          }
-                          onClick={() =>
-                            this.setState({ selectedYearIndex: undefined })
-                          }
-                        >
-                          Current
-                        </p>
+                        {user.mergedContributionFeed &&
+                          user.mergedContributionFeed.years.length > 0 && (
+                            <p
+                              className={
+                                this.state.selectedYearIndex === undefined
+                                  ? "blue-text clickable mx-2 d-inline-block"
+                                  : "text-muted clickable mx-2 d-inline-block"
+                              }
+                              onClick={() =>
+                                this.setState({ selectedYearIndex: undefined })
+                              }
+                            >
+                              Current
+                            </p>
+                          )}
                       </div>
-                      <AIContribCalendar
-                        platformData={user.mergedContributionFeed}
-                        year={this.state.selectedYearIndex}
-                      />
+                      {user.mergedContributionFeed &&
+                      user.mergedContributionFeed.years.length > 0 ? (
+                        <AIContribCalendar
+                          platformData={user.mergedContributionFeed}
+                          year={this.state.selectedYearIndex}
+                        />
+                      ) : (
+                        <div className="text-center p-3">
+                          <span className="d-block small text-muted">
+                            No statistics yet.
+                          </span>
+                        </div>
+                      )}
                     </MDBCardBody>
                   </MDBCard>
                   <div className="activity">
                     <p className="lead font-weight-bold">Activity</p>
                     <MDBCard className="border">
-                      <MDBListGroup>
-                        {user.contributionFeed &&
-                          user.contributionFeed.map((contrib, i) => {
+                      {user.contributionFeed &&
+                      user.contributionFeed.length > 0 ? (
+                        <MDBListGroup>
+                          {user.contributionFeed.map((contrib, i) => {
                             return (
                               <MDBListGroupItem>
                                 <p className="mb-0">{contrib.message}</p>
@@ -187,7 +201,14 @@ class UserModal extends React.Component {
                               </MDBListGroupItem>
                             );
                           })}
-                      </MDBListGroup>
+                        </MDBListGroup>
+                      ) : (
+                        <div className="text-center p-3">
+                          <span className="d-block small text-muted">
+                            No activities yet.
+                          </span>
+                        </div>
+                      )}
                     </MDBCard>
                   </div>
                 </MDBCol>

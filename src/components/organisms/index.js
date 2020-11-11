@@ -1,13 +1,14 @@
 //#region > Imports
 //> Organisms
 // Import all components to export them for easy access from parent components
-import SoftwareTabs from "./SoftwareTabs";
-import ProfileInfo from "./ProfileInfo";
+import SoftwareTabs from "./sections/person/Tabs";
+import PersonInfoCard from "./sections/person/InfoCard";
+import PersonTabs from "./sections/person/Tabs";
 //#endregion
 
 //#region > Exports
 //> Organisms
-export { SoftwareTabs, ProfileInfo };
+export { SoftwareTabs, PersonInfoCard, PersonTabs };
 //#endregion
 
 /**

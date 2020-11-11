@@ -79,8 +79,6 @@ class AILineChart extends React.Component {
   init = () => {
     const data = this.props.data;
 
-    console.log("DATAAAAA", data);
-
     if (data) {
       const year = this.props.year;
       const weeks =
@@ -101,24 +99,21 @@ class AILineChart extends React.Component {
           : val.total
       );
 
-      this.setState(
-        {
-          dataBar: {
-            ...this.state.dataBar,
-            labels: dates,
-            datasets: [
-              {
-                data: contribs,
-                borderColor: "#77bd43",
-                fill: false,
-                borderWidth: 1,
-                lineTension: 0.4,
-              },
-            ],
-          },
+      this.setState({
+        dataBar: {
+          ...this.state.dataBar,
+          labels: dates,
+          datasets: [
+            {
+              data: contribs,
+              borderColor: "#77bd43",
+              fill: false,
+              borderWidth: 1,
+              lineTension: 0.4,
+            },
+          ],
         },
-        () => console.log(this.state)
-      );
+      });
     }
   };
 

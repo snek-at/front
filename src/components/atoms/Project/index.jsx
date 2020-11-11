@@ -35,7 +35,7 @@ class Project extends React.Component {
               />
               <small>
                 @
-                {repo.owner.username ? (
+                {repo.owner ? (
                   repo.owner.username
                 ) : (
                   <span className="text-muted">unknown</span>
@@ -43,19 +43,17 @@ class Project extends React.Component {
               </small>
             </div>
             <div className="pt-3">
-              {repo.languages.length > 0 && (
-                <LanguageChart languages={repo.languages} />
-              )}
-              {repo.languages.length > 0 && (
-                <small className="text-left text-muted">
-                  <MDBIcon
-                    icon="square"
-                    className="pr-1"
-                    style={{ color: repo.languages[0].color }}
-                  />
-                  {repo.languages[0].name ? repo.languages[0].name : "Unknown"}
-                </small>
-              )}
+              <LanguageChart languages={repo.languages} />
+              <small className="text-left text-muted">
+                <MDBIcon
+                  icon="square"
+                  className="pr-1"
+                  style={{
+                    color: repo.languages ? repo.languages[0].color : "grey",
+                  }}
+                />
+                {repo.languages ? repo.languages[0].name : "Unknown"}
+              </small>
             </div>
           </li>
         </a>

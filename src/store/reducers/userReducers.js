@@ -2,151 +2,97 @@
 //> Error Serialization
 // Serialize/deserialize an error into a plain object
 import { serializeError } from "serialize-error";
+//> Action Types
+import * as Action from "../types";
 //#endregion
 
 //#region > Constant Variables
 const INIT_STATE = {
-  fetchedUser: null,
-  loggedUser: null,
-  registrationHistory: null,
-  selectedTalk: null,
-  newCachedUser: null,
-  cachingDone: false,
-  userError: null,
-  userErrorDetails: null,
+  user: { anonymous: undefined, username: undefined, person: undefined },
+  error: undefined,
+  errorDetails: undefined,
 };
 //#endregion
 
-//#region > User Reducers
+//#region > Reducers
 const userReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
-    //> registerAction
-    case "SIGNUP_SUCCESS":
+    //> Login
+    case Action.USER_LOGIN_REQUEST:
+      return state;
+    case Action.USER_LOGIN_SUCCESS:
+      return {
+        user: {
+          ...action.payload,
+          person: null,
+        },
+      };
+    case Action.USER_LOGIN_FAILURE:
+      return {
+        user: { anonymous: null, username: null, person: null },
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Logout
+    case Action.USER_LOGOUT_REQUEST:
+      return state;
+    case Action.USER_LOGOUT_SUCCESS:
+      return {
+        user: { anonymous: true, username: undefined, person: undefined },
+      };
+    case Action.USER_LOGOUT_FAILURE:
+      return {
+        user: INIT_STATE.user,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
+      };
+    //> Person
+    case Action.USER_PERSON_FETCH_REQUEST:
+      return state;
+    case Action.USER_PERSON_FETCH_SUCCESS:
       return {
         ...state,
-        registrationHistory: { ...action.payload },
+        user: {
+          ...state.user,
+          person: {
+            ...action.payload,
+          },
+        },
       };
-
-    case "SIGNUP_FAILED" || "SIGNUP_ERROR":
+    case Action.USER_PERSON_FETCH_FAILURE:
       return {
         ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
+        user: {
+          ...state.user,
+          person: {
+            ...INIT_STATE.user.person,
+          },
+        },
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
-
-    //> writeCacheAction
-    case "WRITE_CACHE_SUCCESS":
+    case Action.USER_PERSON_SIGNUP_REQUEST:
+      return state;
+    case Action.USER_PERSON_SIGNUP_SUCCESS:
+      return { ...state };
+    case Action.USER_PERSON_SIGNUP_FAILURE:
       return {
         ...state,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
-
-    case "WRITE_CACHE_ERROR":
+    //> User Exists Check
+    case Action.USER_EXISTS_CHECK_REQUEST:
+      return state;
+    case Action.USER_EXISTS_CHECK_SUCCESS:
+      return { ...state };
+    case Action.USER_EXISTS_CHECK_FAILURE:
       return {
         ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
 
-    //> readCacheAction
-    case "READ_CACHE_SUCCESS":
-      return {
-        ...state,
-        fetchedUser: { ...action.payload.fetchedUser },
-      };
-
-    case "READ_CACHE_FAILED" || "READ_CACHE_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> updateCacheAction
-    case "UPDATE_CACHE_SUCCESS":
-      return {
-        ...state,
-        newCachedUser: { ...action.payload.fetchedUser },
-        cachingDone: true,
-      };
-
-    case "UPDATE_CACHE_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> saveSettingsActions
-    case "SAVE_SETTING_SUCCESS":
-      return {
-        ...state,
-        fetchedUser: { ...action.payload.fetchedUser },
-      };
-
-    case "SAVE_SETTING_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> getTalkAction
-    case "GET_TALK_SUCCESS":
-      return {
-        ...state,
-        selectedTalk: { ...action.payload.talk },
-      };
-
-    case "GET_TALK_FAILED" || "GET_TALK_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> uploadTalkAction
-    case "UPLOAD_TALK_SUCCESS":
-      return {
-        ...state,
-        fetchedUser: { ...action.payload.fetchedUser },
-      };
-
-    case "UPLOAD_TALK_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> deleteTalkAction
-    case "DELETING_TALK_SUCCESS":
-      return {
-        ...state,
-        fetchedUser: { ...action.payload.fetchedUser },
-      };
-
-    case "DELETING_TALK_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    /** Temporary implementation */
-    //> loggedUser
-    case "SET_LOGGED_USER":
-      return {
-        ...state,
-        loggedUser: action.payload.fetchedUser,
-      };
-
-    case "REMOVE_LOGGED_USER":
-      return {
-        ...state,
-        loggedUser: null,
-      };
-
-    //> Default
     default:
       return state;
   }
@@ -154,11 +100,5 @@ const userReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
-//> Default Component
 export default userReducer;
 //#endregion
-
-/**
- * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019-2020 Simon Prast
- */

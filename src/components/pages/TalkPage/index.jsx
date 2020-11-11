@@ -19,6 +19,7 @@ import {
   MDBMedia,
   MDBPageNav,
   MDBPagination,
+  MDBNavLink,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
@@ -27,9 +28,10 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getTalkAction } from "../../../store/actions/userActions";
+import { getTalk, addTalkComment } from "../../../store/actions/talkActions";
 //> Style sheet
 import "./talk.scss";
+import { TalksTab } from "../../organisms/tabs";
 //#endregion
 
 //#region > Components
@@ -38,31 +40,13 @@ class TalkPage extends React.Component {
   state = {
     loading: true,
     talk: undefined,
+    commentTextArea: "",
   };
 
   componentDidMount = () => {
-    const { uid, username } = this.props.match?.params;
+    const { uid } = this.props.match?.params;
 
-    this.props.getTalk(uid, username).then(() => {
-      const { selectedTalk } = this.props;
-
-      if (uid && username) {
-        selectedTalk.social = {
-          likes: 17,
-          date: new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          }),
-        };
-
-        selectedTalk.interval = {
-          timeoutID: setInterval(() => this.updateIframe(selectedTalk), 4000),
-          loaded: false,
-        };
-      }
-      this.setState({ talk: selectedTalk, loading: false });
-    });
+    this.props.getTalk(uid);
   };
 
   updateIframe = (talk) => {
@@ -77,11 +61,22 @@ class TalkPage extends React.Component {
   };
 
   render() {
-    const talk = this.state.talk;
+    const { fetchedTalk, loggedUser } = this.props;
+
+    let talk;
+
+    if (fetchedTalk) {
+      talk = JSON.parse(JSON.stringify(fetchedTalk));
+
+      talk.interval = {
+        timeoutID: setInterval(() => this.updateIframe(talk), 4000),
+        loaded: false,
+      };
+    }
 
     return (
       <div id="talk">
-        {talk && (
+        {talk ? (
           <>
             <MDBContainer>
               <MDBRow>
@@ -110,7 +105,7 @@ class TalkPage extends React.Component {
                         height="620px"
                         onLoad={() => {
                           clearInterval(talk.interval.loaded);
-                          this.state.talk.interval.loaded = true;
+                          talk.interval.loaded = true;
                         }}
                         frameBorder="0"
                       />
@@ -123,7 +118,7 @@ class TalkPage extends React.Component {
                       <MDBRow className="d-flex align-items-center">
                         <MDBCol lg="2">
                           <img
-                            src={talk.repository?.avatarUrl}
+                            src={talk?.owner?.avatarImage?.src}
                             alt="logo"
                             className="img-fluid"
                           />
@@ -132,21 +127,13 @@ class TalkPage extends React.Component {
                           <div className="d-flex justify-content-space-between">
                             <div>
                               <p className="lead font-weight-bold mb-1">
-                                Owned by {talk.repository?.owner.username}
+                                Owned by {talk.owner.title}
                               </p>
-                              {talk.repository?.owner && (
-                                <div className="verified-badge mb-1">
-                                  <MDBBadge color="success">
-                                    <MDBIcon icon="check-circle" />
-                                    Verified
-                                  </MDBBadge>
-                                </div>
-                              )}
                               <p className="text-muted mb-1">
-                                {talk.repository?.description}
+                                {talk.description}
                               </p>
                             </div>
-                            <div className="d-flex">
+                            {/* <div className="d-flex">
                               <a>
                                 <MDBBtn color="indigo" size="md">
                                   <MDBIcon icon="thumbs-up"></MDBIcon>
@@ -159,9 +146,9 @@ class TalkPage extends React.Component {
                                   Follow
                                 </MDBBtn>
                               </a>
-                            </div>
+                            </div> */}
                           </div>
-                          <div>
+                          {/* <div>
                             {talk.location === "github" && (
                               <a
                                 href={talk.url}
@@ -186,7 +173,7 @@ class TalkPage extends React.Component {
                                 </MDBBadge>
                               </a>
                             )}
-                          </div>
+                          </div> */}
                         </MDBCol>
                       </MDBRow>
                     </MDBCardBody>
@@ -234,30 +221,14 @@ class TalkPage extends React.Component {
             </MDBContainer>
             <MDBContainer>
               <MDBCardHeader className="border-0 font-weight-bold">
-                <p className="mr-4 mb-0">4 comments</p>
+                <p className="mr-4 mb-0">{talk.talkComments.length} comments</p>
               </MDBCardHeader>
-              <MDBMedia className="d-block d-md-flex mt-4">
-                <img
-                  className="card-img-64 d-flex mx-auto mb-3"
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                  alt=""
-                />
-                <MDBMedia
-                  body
-                  className="text-center text-md-left ml-md-3 ml-0"
-                >
-                  <h5 className="font-weight-bold mt-0">
-                    Miley Steward
-                    <MDBIcon icon="reply" className="pull-right ml-2" />
-                  </h5>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum.
+              {talk.talkComments.map((comment) => {
+                return (
                   <MDBMedia className="d-block d-md-flex mt-4">
                     <img
                       className="card-img-64 d-flex mx-auto mb-3"
-                      src="https://mdbootstrap.com/img/Photos/Avatars/img (27).jpg"
+                      src={comment.author.avatarImage?.src}
                       alt=""
                     />
                     <MDBMedia
@@ -265,73 +236,51 @@ class TalkPage extends React.Component {
                       className="text-center text-md-left ml-md-3 ml-0"
                     >
                       <h5 className="font-weight-bold mt-0">
-                        Tommy Smith
-                        <MDBIcon icon="reply" className="pull-right ml-2" />
-                      </h5>
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
-                      <div className="form-group mt-4">
-                        <label htmlFor="quickReplyFormComment">
-                          Your comment
-                        </label>
-                        <textarea
-                          className="form-control"
-                          id="quickReplyFormComment"
-                          rows="5"
-                        ></textarea>
-                        <div className="text-center my-4">
-                          <MDBBtn size="sm" color="primary">
-                            Post
-                          </MDBBtn>
-                        </div>
-                      </div>
-                      <MDBMedia className="d-block d-md-flex mt-4">
-                        <img
-                          className="card-img-64 d-flex mx-auto mb-3"
-                          src="https://mdbootstrap.com/img/Photos/Avatars/img (21).jpg"
-                          alt=""
-                        />
-                        <MDBMedia
-                          body
-                          className="text-center text-md-left ml-md-3 ml-0"
+                        {/* <a href ></a> */}
+                        <MDBNavLink
+                          link
+                          to={`/u/${comment.author.slug.split("-")[1]}`}
                         >
-                          <h5 className="font-weight-bold mt-0">
-                            Sylvester the Cat
-                            <MDBIcon icon="reply" className="pull-right ml-2" />
-                          </h5>
-                          Duis aute irure dolor in reprehenderit in voluptate
-                          velit esse cillum dolore eu fugiat nulla pariatur.
-                          Excepteur sint occaecat cupidatat non proident, sunt
-                          in culpa qui officia deserunt mollit anim id est
-                          laborum.
-                        </MDBMedia>
-                      </MDBMedia>
+                          {comment.author.title}
+                          <MDBIcon icon="reply" className="pull-right ml-2" />
+                        </MDBNavLink>
+                      </h5>
+                      {comment.text}
                     </MDBMedia>
                   </MDBMedia>
-                </MDBMedia>
-              </MDBMedia>
-              <MDBMedia className="d-block d-md-flex mt-4">
-                <img
-                  className="card-img-64 d-flex mx-auto mb-3"
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
-                  alt=""
-                />
-                <MDBMedia
-                  body
-                  className="text-center text-md-left ml-md-3 ml-0"
-                >
-                  <h5 className="font-weight-bold mt-0">
-                    Caroline Horwitz
-                    <MDBIcon icon="reply" className="pull-right ml-2" />
-                  </h5>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum.
-                </MDBMedia>
-              </MDBMedia>
+                );
+              })}
+
+              {loggedUser.anonymous === false && (
+                <div className="form-group mt-4">
+                  <label htmlFor="quickReplyFormComment">Your comment</label>
+                  <textarea
+                    className="form-control"
+                    id="quickReplyFormComment"
+                    rows="5"
+                    value={this.state.commentTextArea}
+                    onChange={(e) =>
+                      this.setState({ commentTextArea: e.target.value })
+                    }
+                  ></textarea>
+                  <div className="text-center my-4">
+                    <MDBBtn
+                      size="sm"
+                      color="primary"
+                      onClick={() => {
+                        if (this.state.commentTextArea.length > 0) {
+                          this.props
+                            .addComment(talk.id, this.state.commentTextArea)
+                            .then(this.props.getTalk(talk.id));
+                        }
+                      }}
+                    >
+                      Post
+                    </MDBBtn>
+                  </div>
+                </div>
+              )}
+
               <MDBPagination className="d-flex justify-content-center mt-5">
                 <MDBPageItem disabled>
                   <MDBPageNav>
@@ -349,27 +298,15 @@ class TalkPage extends React.Component {
                     1 <span className="sr-only">(current)</span>
                   </MDBPageNav>
                 </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>2</MDBPageNav>
-                </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>3</MDBPageNav>
-                </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>4</MDBPageNav>
-                </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>5</MDBPageNav>
-                </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>&raquo;</MDBPageNav>
-                </MDBPageItem>
-                <MDBPageItem>
-                  <MDBPageNav>Last</MDBPageNav>
-                </MDBPageItem>
               </MDBPagination>
             </MDBContainer>
           </>
+        ) : (
+          <div className="text-center my-5 py-5">
+            <div className="spinner-grow text-success" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
         )}
       </div>
     );
@@ -379,11 +316,16 @@ class TalkPage extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  selectedTalk: state.user.selectedTalk,
+  loggedUser: state.user.user,
+  fetchedTalk: state.talk.fetchedTalk,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { getTalk: (uid, username) => dispatch(getTalkAction(uid, username)) };
+  return {
+    getTalk: (uid) => dispatch(getTalk(uid)),
+    addComment: (talkId, text, replyTo) =>
+      dispatch(addTalkComment({ talkId, text, replyTo })),
+  };
 };
 //#endregion
 

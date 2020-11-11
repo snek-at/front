@@ -27,6 +27,11 @@ import {
   MDBMask,
   MDBSelectInput,
   MDBBtn,
+  MDBListGroup,
+  MDBListGroupItem,
+  MDBBadge,
+  MDBAlert,
+  MDBProgress,
 } from "mdbreact";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
@@ -35,15 +40,26 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import {
-  readCacheAction,
-  saveSettingsActions,
-} from "../../../store/actions/userActions";
+// import {
+//   readCacheAction,
+//   saveSettingsActions,
+// } from "../../../store/actions/userActions";
 //> Components
 // Profile Picture Editor
-import { ProfilePictureModal } from "../../../components/molecules/modals";
+import {
+  ProfilePictureModal,
+  ConnectModal,
+} from "../../../components/molecules/modals";
 //> Style sheet
 import "./settings.scss";
+//> Actions
+// Functions to send data from the application to the store
+import {
+  updateSettings,
+  deleteProfile,
+  updateProfile,
+} from "../../../store/actions/personActions";
+import { getPerson as getUserPerson } from "../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -54,36 +70,31 @@ import "./settings.scss";
 class SettingsPage extends React.Component {
   state = {
     loading: true,
-    changeDetected: false,
+    person: null,
     showProfilePicture: false,
     showNotification: false,
-    file: undefined,
+    showSaveButton: false,
+    avatarFile: undefined,
     activeItem: 0,
     tabItems: [
       { name: "Profile", icon: "" },
+      { name: "Connections", icon: "" },
       { name: "Customization", icon: "" },
       { name: "Account", icon: "" },
-      { name: "Connections", icon: "" },
-      { name: "Blocked users", icon: "" },
-      { name: "Billing", icon: "" },
-      { name: "Security", icon: "" },
     ],
   };
 
-  // triggers every time the settings menu tab is pressed
-  componentDidMount = () => {
-    const { loggedUser } = this.props;
-
-    if (!loggedUser.anonymous) {
-      this.props.readCache(loggedUser.username);
-    }
+  checkTypes = (item, value) => {
+    return this.state.person
+      ? this.state.person[item] !== value
+        ? this.state.person[item]
+        : value
+      : value;
   };
 
-  // important for direct url access
-  componentDidUpdate = () => {
-    const { loggedUser, fetchedUser } = this.props;
+  handleLoading = () => {
+    const { loggedUser } = this.props;
 
-    // redirect to root if the loggedUser is anonymous
     if (loggedUser.anonymous) {
       this.props.history.push({
         pathname: "/",
@@ -93,123 +104,159 @@ class SettingsPage extends React.Component {
       });
     }
 
-    if (!fetchedUser && !loggedUser.anonymous) {
-      this.props.readCache(loggedUser.username);
-    }
+    if (loggedUser?.person) {
+      const {
+        avatarImage,
+        bio,
+        display2dCalendar,
+        display3dCalendar,
+        displayContributionTypes,
+        displayWeekActivity,
+        displayImageGallery,
+        displayVideoGallery,
+        displayMusicGallery,
+        displayMap,
+        displayEmail,
+        displayProgrammingLanguages,
+        displayRanking,
+        displayWorkplace,
+        email,
+        firstName,
+        lastName,
+        location,
+        status,
+        websiteUrl,
+        workplace,
+        profiles,
+      } = loggedUser?.person;
 
-    if (fetchedUser && this.state.loading) {
-      const platformData = this.props.fetchedUser?.platformData;
-      const data = platformData.user;
-      const enterData = {
-        avatar_url: data.avatarUrl ? data.avatarUrl : "",
-        first_name: data.firstName ? data.firstName : "",
-        last_name: data.lastName ? data.lastName : "",
-        email: data.email ? data.email : "",
-        showEmailPublic: data.settings.showEmailPublic,
-        company: data.company ? data.company : "",
-        showCompanyPublic: data.settings.showCompanyPublic,
-        website: data.websiteUrl ? data.websiteUrl : "",
-        location: data.location ? data.location : "",
-        showLocalRanking: data.settings.showLocalRanking,
-        showTopLanguages: data.settings.showTopLanguages,
-        show3DDiagram: data.settings.show3DDiagram,
-        show2DDiagram: data.settings.show2DDiagram,
-        activeTheme: data.settings.activeTheme
-          ? data.settings.activeTheme
-          : null,
+      const person = {
+        avatarImage: this.checkTypes("avatarImage", avatarImage),
+        bio: this.checkTypes("bio", bio),
+        display2dCalendar: this.checkTypes(
+          "display2dCalendar",
+          display2dCalendar
+        ),
+        display3dCalendar: this.checkTypes(
+          "display3dCalendar",
+          display3dCalendar
+        ),
+        displayContributionTypes: this.checkTypes(
+          "displayContributionTypes",
+          displayContributionTypes
+        ),
+        displayWeekActivity: this.checkTypes(
+          "displayWeekActivity",
+          displayWeekActivity
+        ),
+        displayImageGallery: this.checkTypes(
+          "displayImageGallery",
+          displayImageGallery
+        ),
+        displayVideoGallery: this.checkTypes(
+          "displayVideoGallery",
+          displayVideoGallery
+        ),
+        displayMusicGallery: this.checkTypes(
+          "displayMusicGallery",
+          displayMusicGallery
+        ),
+        displayMap: this.checkTypes("displayMap", displayMap),
+        displayEmail: this.checkTypes("displayEmail", displayEmail),
+        displayProgrammingLanguages: this.checkTypes(
+          "displayProgrammingLanguages",
+          displayProgrammingLanguages
+        ),
+        displayRanking: this.checkTypes("displayRanking", displayRanking),
+        displayWorkplace: this.checkTypes("displayWorkplace", displayWorkplace),
+        email: this.checkTypes("email", email),
+        firstName: this.checkTypes("firstName", firstName),
+        lastName: this.checkTypes("lastName", lastName),
+        location: this.checkTypes("location", location),
+        status: this.checkTypes("status", status),
+        websiteUrl: this.checkTypes("websiteUrl", websiteUrl),
+        workplace: this.checkTypes("workplace", workplace),
+        profiles,
       };
 
-      const dataString = this.stringToHash(JSON.stringify(enterData));
+      if (JSON.stringify(this.state.person) !== JSON.stringify(person)) {
+        this.setState({
+          loading: false,
+          person,
+        });
+      }
+    }
+  };
 
+  // triggers every time the settings menu tab is pressed
+  componentDidMount = () => {
+    this.handleLoading();
+  };
+
+  // important for direct url access
+  componentDidUpdate = () => {
+    this.handleLoading();
+  };
+
+  refetch = () => {
+    const { loggedUser } = this.props;
+
+    if (loggedUser.anonymous) {
+      this.props.history.push({
+        pathname: "/",
+        state: {
+          actionCard: 1,
+        },
+      });
+    }
+
+    if (loggedUser.person) {
+      this.setState(
+        {
+          loading: true,
+        },
+        () => this.props.getUserPerson(loggedUser.person.slug.split("-")[1])
+      );
+    }
+  };
+
+  onDrop = async (files) => {
+    if (files.length > 0) {
       this.setState({
-        ...enterData,
-        checksum: dataString,
-        loading: false,
+        avatarFile: files[0],
+        showProfilePicture: true,
       });
     }
   };
 
-  stringToHash = (string) => {
-    let hash = 0;
-
-    if (string.length == 0) return hash;
-
-    for (let i = 0; i < string.length; i++) {
-      let char = string.charCodeAt(i);
-
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash;
+  handleChange = (name, value) => {
+    if (name.target) {
+      value =
+        name?.target?.type === "checkbox"
+          ? name?.target?.checked
+          : name?.target?.value;
+      name = name?.target?.name ? name?.target?.name : name;
     }
 
-    return hash;
-  };
+    console.log(name, value);
 
-  handleSelectChange = (val) => {
     this.setState(
       {
-        activeTheme: val[0],
+        showSaveButton: true,
+        person: {
+          ...this.state.person,
+          [name]:
+            typeof this.state.person[name] === "object"
+              ? { ...this.state.person[name], ...value }
+              : value,
+        },
       },
-      () => this.getChange()
+      () => console.log(this.state)
     );
   };
 
-  handleCheckChange = (e) => {
-    this.setState(
-      {
-        [e.target.name]: e.target.checked,
-      },
-      () => this.getChange()
-    );
-  };
-
-  handleTextChange = (e) => {
-    this.setState(
-      {
-        [e.target.name]: e.target.value,
-      },
-      () => this.getChange()
-    );
-  };
-
-  getChange = () => {
-    let currentData = {
-      avatar_url: this.state.avatar_url,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      email: this.state.email,
-      showEmailPublic: this.state.showEmailPublic,
-      company: this.state.company,
-      showCompanyPublic: this.state.showCompanyPublic,
-      website: this.state.website,
-      location: this.state.location,
-      showLocalRanking: this.state.showLocalRanking,
-      showTopLanguages: this.state.showTopLanguages,
-      show3DDiagram: this.state.show3DDiagram,
-      show2DDiagram: this.state.show2DDiagram,
-      activeTheme: this.state.activeTheme ? this.state.activeTheme : null,
-    };
-
-    // Get hash of current data
-    let currentHash = this.stringToHash(JSON.stringify(currentData));
-
-    if (this.state.changeDetected) {
-      if (this.state.checksum === currentHash) {
-        this.setState({
-          changeDetected: false,
-        });
-      }
-    } else {
-      if (this.state.checksum !== currentHash) {
-        this.setState({
-          changeDetected: true,
-        });
-      }
-    }
-  };
-
-  save = () => {
-    this.props.saveSettings(this.state);
-    this.setState({ showNotification: true });
+  setAvatarUrl = (imageSrc) => {
+    this.handleChange("avatarImage", { src: imageSrc });
   };
 
   handleProfilePictureModal = () => {
@@ -220,31 +267,47 @@ class SettingsPage extends React.Component {
     }
   };
 
-  onDrop = async (files) => {
-    if (files.length > 0) {
-      this.setState({
-        file: files[0],
-        showProfilePicture: true,
-      });
+  renderProfileTypeSwitch(param) {
+    switch (param) {
+      case "GITHUB":
+        return "github";
+      case "GITLAB":
+        return "gitlab";
+      case "INSTAGRAM":
+        return "instagram";
+      default:
+        return "";
     }
+  }
+
+  checkProfileTypeExists = (sourceType) => {
+    return this.state.person.profiles.some(
+      (e) => e.sourceType === sourceType && e.isActive
+    )
+      ? true
+      : false;
   };
 
-  setAvatarUrl = (avatar_url) => {
-    this.setState({ avatar_url }, () => this.getChange());
+  toggle = (modal) => {
+    this.setState({
+      [modal]: !this.state[modal],
+    });
   };
 
   render() {
-    const { fetchedUser, loggedUser } = this.props;
-    const { activeItem } = this.state;
+    const { loggedUser } = this.props;
+    const { person, activeItem } = this.state;
 
-    if (fetchedUser && this.state.avatar_url) {
+    console.log(person);
+
+    if (person) {
       return (
         <>
           {this.state.showNotification && (
             <div id="notification">
               <MDBContainer>
                 <MDBRow className="message">
-                  Changes were saved successfully —{" "}
+                  Changes were saved successfully —{"  "}
                   <Link to={"/u/" + loggedUser.username}>
                     View your profile
                   </Link>
@@ -260,7 +323,7 @@ class SettingsPage extends React.Component {
                     <MDBRow className="profile">
                       <MDBCol md="3">
                         <img
-                          src={this.state.avatar_url}
+                          src={person.avatarImage?.src}
                           className="img-fluid"
                         />
                       </MDBCol>
@@ -274,7 +337,7 @@ class SettingsPage extends React.Component {
                   </MDBNavItem>
                   {this.state.tabItems.map((tab, i) => {
                     return (
-                      <MDBNavItem key={i}>
+                      <MDBNavItem key={i} className="clickable">
                         <span
                           className={
                             activeItem === i ? "nav-link active" : "nav-link"
@@ -300,17 +363,17 @@ class SettingsPage extends React.Component {
               <MDBCol md="8">
                 <MDBTabContent activeItem={activeItem}>
                   <MDBTabPane tabId={0}>
-                    <h2>Profile</h2>
+                    <h5>Profile</h5>
                     <Dropzone onDrop={this.onDrop} accept="image/*">
                       {({ getRootProps, getInputProps }) => (
                         <div {...getRootProps()} className="avatar">
                           <MDBView>
                             <input {...getInputProps()} />
                             <img
-                              src={this.state.avatar_url}
+                              src={person.avatarImage?.src}
                               className="img-fluid"
                             />
-                            <MDBMask className="flex-center">
+                            <MDBMask className="flex-center clickable">
                               <MDBIcon
                                 icon="camera"
                                 size="2x"
@@ -327,20 +390,20 @@ class SettingsPage extends React.Component {
                         <MDBCol md="6">
                           <input
                             type="text"
-                            name="first_name"
+                            name="firstName"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.first_name}
+                            onChange={this.handleChange}
+                            value={person.firstName}
                             placeholder="Firstname"
                           />
                         </MDBCol>
                         <MDBCol md="6">
                           <input
                             type="text"
-                            name="last_name"
+                            name="lastName"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.last_name}
+                            onChange={this.handleChange}
+                            value={person.lastName}
                             placeholder="Lastname"
                           />
                         </MDBCol>
@@ -352,8 +415,8 @@ class SettingsPage extends React.Component {
                             type="email"
                             name="email"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.email}
+                            onChange={this.handleChange}
+                            value={person.email}
                             placeholder="Email"
                             required
                           />
@@ -364,9 +427,9 @@ class SettingsPage extends React.Component {
                         filled
                         type="checkbox"
                         id="checkbox0"
-                        name="showEmailPublic"
-                        onChange={this.handleCheckChange}
-                        checked={this.state.showEmailPublic}
+                        name="displayEmail"
+                        onChange={this.handleChange}
+                        checked={person.displayEmail}
                         containerClass="mr-5"
                       />
                       <p className="font-weight-bold">Your workplace</p>
@@ -374,40 +437,66 @@ class SettingsPage extends React.Component {
                         <MDBCol md="12">
                           <input
                             type="text"
-                            name="company"
+                            name="workplace"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.company}
+                            onChange={this.handleChange}
+                            value={person.workplace}
                             placeholder="Company"
                           />
                         </MDBCol>
                       </MDBRow>
-                      <small className="d-block">
-                        You can @mention your company anywhere on SNEK
-                      </small>
                       <MDBInput
-                        label={<p>Display company on profile</p>}
+                        label={<p>Display workplace on profile</p>}
                         filled
                         type="checkbox"
                         id="checkbox1"
-                        name="showCompanyPublic"
-                        onChange={this.handleCheckChange}
-                        checked={this.state.showCompanyPublic}
+                        name="displayWorkplace"
+                        onChange={this.handleChange}
+                        checked={person.displayWorkplace}
                         containerClass="mr-5"
                       />
-                      <p className="font-weight-bold">Website</p>
+                      <p className="font-weight-bold">Status</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <input
+                            type="text"
+                            name="status"
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={person.status}
+                            placeholder="I'm on vacation!"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                      <p className="font-weight-bold">Bio</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <textarea
+                            type="text"
+                            name="bio"
+                            className="form-control"
+                            onChange={this.handleChange}
+                            value={person.bio}
+                            placeholder="Describe yourself"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                      {/* <small className="d-block">
+                        You can @mention your company anywhere on SNEK
+                      </small> */}
+                      {/* <p className="font-weight-bold">Website</p>
                       <MDBRow>
                         <MDBCol md="12">
                           <input
                             type="text"
                             name="website"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.website}
+                            onChange={this.handleChange}
+                            value={person.displayWebsite}
                             placeholder="Website URL"
                           />
                         </MDBCol>
-                      </MDBRow>
+                      </MDBRow> */}
                       <p className="font-weight-bold">Location</p>
                       <MDBRow>
                         <MDBCol md="12">
@@ -415,8 +504,8 @@ class SettingsPage extends React.Component {
                             type="text"
                             name="location"
                             className="form-control"
-                            onChange={this.handleTextChange}
-                            value={this.state.location}
+                            onChange={this.handleChange}
+                            value={person.location}
                             placeholder="City, Country"
                           />
                         </MDBCol>
@@ -427,61 +516,136 @@ class SettingsPage extends React.Component {
                       </small>
                     </div>
                     <hr />
-                    <MDBRow>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show local ranking</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox3"
-                          name="showLocalRanking"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.showLocalRanking}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show top programming languages</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox4"
-                          name="showTopLanguages"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.showTopLanguages}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <hr />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show 3D work activity diagram</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox5"
-                          name="show3DDiagram"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.show3DDiagram}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBInput
-                          label={<p>Show 2D work activity diagram</p>}
-                          filled
-                          type="checkbox"
-                          id="checkbox6"
-                          name="show2DDiagram"
-                          onChange={this.handleCheckChange}
-                          checked={this.state.show2DDiagram}
-                          containerClass="mr-5"
-                        />
-                      </MDBCol>
-                    </MDBRow>
                   </MDBTabPane>
                   <MDBTabPane tabId={1}>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <h5 className="mb-0">Connections</h5>
+                      <div>
+                        <ConnectModal
+                          refetch={this.refetch}
+                          disabled={this.state.loading}
+                        />
+                      </div>
+                    </div>
+                    {this.state.loading && <MDBProgress material preloader />}
+                    <MDBListGroup>
+                      {person.profiles?.map((profile, p) => {
+                        return (
+                          <MDBListGroupItem
+                            className="d-flex justify-content-between align-items-center clickable py-0 pr-0 pl-2"
+                            // onClick={
+                            //   // this.setState({
+                            //   //   modal: true,
+                            //   //   selectedGitLab: gitlab,
+                            //   //   authorizedUser: gitlab.username,
+                            //   // })
+                            // }
+                            key={p}
+                          >
+                            <div className="d-flex align-items-center">
+                              <a
+                                href={profile.sourceUrl}
+                                target="_blank"
+                                className="mr-2 text-dark"
+                              >
+                                <MDBIcon
+                                  fab
+                                  icon={this.renderProfileTypeSwitch(
+                                    profile.sourceType
+                                  )}
+                                  size="2x"
+                                />
+                              </a>
+                              <code>
+                                {profile.username ? profile.username : null}
+                              </code>
+                              {profile.isAccessTokenExpired && (
+                                <MDBBadge
+                                  pill
+                                  color="danger"
+                                  className="z-depth-0 ml-2"
+                                >
+                                  Expired
+                                </MDBBadge>
+                              )}
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center">
+                              <div className="small d-inline-block text-right px-2">
+                                <span className="text-muted">Type</span>
+                                <span className="d-block">
+                                  {profile.sourceType}
+                                </span>
+                              </div>
+                              <div className="small d-inline-block text-center ml-2">
+                                <span className="text-muted">Active</span>
+                                <span className="d-block">
+                                  <MDBIcon
+                                    icon="circle"
+                                    size="lg"
+                                    className={
+                                      profile.isActive &&
+                                      !profile.isAccessTokenExpired
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }
+                                  />
+                                </span>
+                              </div>
+                              {profile.isActive ? (
+                                <div className="bg-warning h-100 ml-3">
+                                  <MDBIcon
+                                    icon="pause"
+                                    className="text-white p-3"
+                                    onClick={() =>
+                                      this.props
+                                        .updateProfile(profile.id, {
+                                          URL: profile.sourceUrl,
+                                          type: profile.sourceType,
+                                          authorization: profile.accessToken,
+                                          username: profile.username,
+                                          isActive: false,
+                                        })
+                                        .then(() => this.refetch())
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div className="bg-success h-100 ml-3">
+                                  <MDBIcon
+                                    icon="play"
+                                    className="text-white p-3"
+                                    onClick={() =>
+                                      this.props
+                                        .updateProfile(profile.id, {
+                                          URL: profile.sourceUrl,
+                                          type: profile.sourceType,
+                                          authorization: profile.accessToken,
+                                          username: profile.username,
+                                          isActive: true,
+                                        })
+                                        .then(() => this.refetch())
+                                    }
+                                  />
+                                </div>
+                              )}
+                              <div className="bg-danger h-100">
+                                <MDBIcon
+                                  icon="trash"
+                                  className="text-white p-3"
+                                  onClick={() =>
+                                    this.props
+                                      .deleteProfile(profile.id)
+                                      .then(() => this.refetch())
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </MDBListGroupItem>
+                        );
+                      })}
+                    </MDBListGroup>
+                  </MDBTabPane>
+                  <MDBTabPane tabId={2}>
                     <h5>Customization</h5>
                     <div className="personal-data">
                       <p className="font-weight-bold">Choose your theme</p>
@@ -499,40 +663,266 @@ class SettingsPage extends React.Component {
                               <MDBSelectOption value="">
                                 Default
                               </MDBSelectOption>
-                              {fetchedUser?.accessories?.themes &&
-                                fetchedUser.accessories.themes.tids.map(
-                                  (tid, i) => {
-                                    let name = "Unnamed";
-                                    switch (tid) {
-                                      case "9d88bda4657dcf17581ee91dfe6ab2a3":
-                                        name = "Alpha";
-                                        break;
-                                      default:
-                                        name = "Unnamed";
-                                    }
-                                    name += " Theme";
-                                    return (
-                                      <MDBSelectOption key={i} value={tid}>
-                                        {tid}
-                                      </MDBSelectOption>
-                                    );
-                                  }
-                                )}
+                              {loggedUser?.person?.tids?.map((tid, i) => {
+                                let name = "Unnamed";
+                                switch (tid) {
+                                  case "9d88bda4657dcf17581ee91dfe6ab2a3":
+                                    name = "Alpha";
+                                    break;
+                                  default:
+                                    name = "Unnamed";
+                                }
+                                name += " Theme";
+                                return (
+                                  <MDBSelectOption key={i} value={tid}>
+                                    {tid}
+                                  </MDBSelectOption>
+                                );
+                              })}
                             </MDBSelectOptions>
                           </MDBSelect>
                         </MDBCol>
                       </MDBRow>
+                      <p className="font-weight-bold">Display settings</p>
+                      <MDBRow>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show local ranking</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox2"
+                            name="displayRanking"
+                            onChange={this.handleChange}
+                            checked={person.displayRanking}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show music gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox3"
+                            name="displayMusicGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayMusicGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <hr />
+                        </MDBCol>
+                        {!this.checkProfileTypeExists("GITHUB") &&
+                          !this.checkProfileTypeExists("GITLAB") && (
+                            <MDBAlert color="info">
+                              <MDBIcon icon="question-circle" /> Looks like no
+                              profiles are present. You can add one{" "}
+                              <span
+                                className="blue-text clickable"
+                                onClick={() => this.setState({ activeItem: 1 })}
+                              >
+                                here!
+                              </span>
+                            </MDBAlert>
+                          )}
+                        <span class="badge badge-info pill"></span>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show top programming languages</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox4"
+                            name="displayProgrammingLanguages"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayProgrammingLanguages
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show 3D work activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox5"
+                            name="display3dCalendar"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.display3dCalendar
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show 2D work activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox6"
+                            name="display2dCalendar"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.display2dCalendar
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show contribution type diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox7"
+                            name="displayContributionTypes"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayContributionTypes
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show week activity diagram</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox8"
+                            name="displayWeekActivity"
+                            onChange={this.handleChange}
+                            checked={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? person.displayWeekActivity
+                                : false
+                            }
+                            containerClass="mr-5"
+                            disabled={
+                              this.checkProfileTypeExists("GITHUB") ||
+                              this.checkProfileTypeExists("GITLAB")
+                                ? false
+                                : true
+                            }
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <hr />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show image gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox9"
+                            name="displayImageGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayImageGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show video gallery</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox10"
+                            name="displayVideoGallery"
+                            onChange={this.handleChange}
+                            checked={person.displayVideoGallery}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                        <MDBCol md="12">
+                          <MDBInput
+                            label={<p>Show image map</p>}
+                            filled
+                            type="checkbox"
+                            id="checkbox11"
+                            name="displayMap"
+                            onChange={this.handleChange}
+                            checked={person.displayMap}
+                            containerClass="mr-5"
+                          />
+                        </MDBCol>
+                      </MDBRow>
                     </div>
                   </MDBTabPane>
-                  <MDBTabPane tabId={2}>
-                    <h5>Panel 3</h5>
+                  <MDBTabPane tabId={3}>
+                    <h5>Account</h5>
+                    <div className="personal-data">
+                      <p className="font-weight-bold">Username</p>
+                      <MDBRow>
+                        <MDBCol md="6">
+                          <input
+                            type="text"
+                            name="firstName"
+                            className="form-control"
+                            // onChange={this.handleChange}
+                            value={loggedUser.username}
+                            // placeholder="Firstname"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+                    </div>
                   </MDBTabPane>
                 </MDBTabContent>
               </MDBCol>
             </MDBRow>
-            {this.state.changeDetected && this.state.email !== "" && (
+            {this.state.showSaveButton && this.state.person.email !== "" && (
               <MDBRow className="float-right">
-                <MDBBtn color="green" onClick={this.save}>
+                <MDBBtn
+                  color="green"
+                  onClick={() => {
+                    this.props
+                      .saveSettings({
+                        ...this.state.person,
+                        avatarImage: this.state.avatarFile,
+                      })
+                      .then(() => {
+                        this.setState({
+                          loading: true,
+                          showNotification: true,
+                          showSaveButton: false,
+                        });
+                      });
+                  }}
+                >
                   Save Changes
                 </MDBBtn>
               </MDBRow>
@@ -542,25 +932,20 @@ class SettingsPage extends React.Component {
             <ProfilePictureModal
               {...this.props}
               setAvatarUrl={this.setAvatarUrl}
-              file={this.state.file}
+              file={this.state.avatarFile}
               handleProfilePictureModal={this.handleProfilePictureModal}
             />
           )}
         </>
       );
     } else {
-      if (!loggedUser) {
-        //>TODO The active component has to be set to the login component
-        window.open("/", "_self");
-      } else {
-        return (
-          <div className="text-center my-5 py-5">
-            <div className="spinner-grow text-success" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
+      return (
+        <div className="text-center my-5 py-5">
+          <div className="spinner-grow text-success" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
-        );
-      }
+        </div>
+      );
     }
   }
 }
@@ -568,14 +953,17 @@ class SettingsPage extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
+  loggedUser: state.user.user,
+  person: state.person,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSettings: (nextSettings) => dispatch(saveSettingsActions(nextSettings)),
-    readCache: (username) => dispatch(readCacheAction(username)),
+    saveSettings: (nextSettings) => dispatch(updateSettings(nextSettings)),
+    deleteProfile: (id) => dispatch(deleteProfile(id)),
+    updateProfile: (id, nextProfile) =>
+      dispatch(updateProfile(id, nextProfile)),
+    getUserPerson: (user) => dispatch(getUserPerson(user)),
   };
 };
 //#endregion

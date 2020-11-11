@@ -36,7 +36,11 @@ import {
 
 //> Actions
 // Functions to send data from the application to the store
-import { getPageByHandle } from "../../../store/actions/pageActions";
+import {
+  getGeneral,
+  getProjects,
+  getUsers,
+} from "../../../store/actions/enterpriseActions";
 //> Components
 import {
   PageOverview,
@@ -46,6 +50,7 @@ import {
 } from "../../organisms/tabs/enterprise";
 //> CSS
 import "./company.scss";
+
 //> Images
 // Too be added
 //#endregion
@@ -79,23 +84,33 @@ class Page extends React.Component {
   };
 
   componentDidMount = () => {
-    // Retrieve Page
-    this.props.getPageByHandle(this.props.handle);
+    const enterpriseName = this.getUrl();
+
+    if (enterpriseName) {
+      this.setState(
+        {
+          enterpriseName,
+        },
+        () => this.props.getGeneral(enterpriseName)
+      );
+    }
   };
 
-  componentDidUpdate = () => {
-    // Check if there are no current pipelines set
-    if (this.props.page && !this.state.page) {
-      this.setState({
-        page: this.props.page.data,
-      });
-    }
+  componentDidUpdate = (prevProps) => {
+    const enterpriseName = this.getUrl();
 
-    /*if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
-      this.setState({
-        page: this.props.page.data,
-      });
-    }*/
+    if (prevProps.general !== this.props.general && !this.props.error) {
+      this.props.getProjects(enterpriseName);
+      this.props.getUsers(enterpriseName);
+    }
+  };
+
+  // Get enterprise name from URL
+  getUrl = () => {
+    const { match } = this.props;
+    const enterpriseName = match?.params?.name;
+
+    return enterpriseName ? enterpriseName : false;
   };
 
   // Toogle reauth
@@ -137,16 +152,16 @@ class Page extends React.Component {
   };
 
   render() {
-    const { page } = this.state;
+    const { error, general, users, projects } = this.props;
 
-    console.log("PAGE", page);
+    // console.log("PAGE", page);
 
     // Enterprise data
-    const enterprise = page && page.enterprise;
+    // const enterprise = page && page.enterprise;
 
     return (
       <MDBContainer id="company">
-        {page ? (
+        {general ? (
           <MDBRow>
             <MDBCol lg="12">
               <MDBCard>
@@ -154,8 +169,12 @@ class Page extends React.Component {
                   <MDBRow className="d-flex align-items-center">
                     <MDBCol lg="2">
                       <img
-                        src="https://www.htl-villach.at/typo3conf/ext/htl_villach/Resources/Public/Images/htl_logo_box.svg"
-                        alt="Company logo"
+                        src={
+                          general?.avatarImage?.src
+                            ? general.avatarImage.src
+                            : ""
+                        }
+                        alt="No logo"
                         className="img-fluid"
                       />
                     </MDBCol>
@@ -163,49 +182,46 @@ class Page extends React.Component {
                       <div className="d-flex justify-content-space-between">
                         <div>
                           <p className="lead font-weight-bold mb-1">
-                            {enterprise.company.name}
+                            {general.name}
                           </p>
                           <p className="text-muted mb-3">
-                            {enterprise.company.description}
+                            {general.description}
                           </p>
-                        </div>
-                        <div className="d-flex">
-                          <MDBBtn
-                            color="green"
-                            size="md"
-                            onClick={() => this.setState({ reAuth: true })}
-                          >
-                            Publish
-                          </MDBBtn>
                         </div>
                       </div>
                       <div>
-                        {enterprise.company.isRecruiting && (
-                          <MDBBadge color="indigo">
-                            <MDBIcon icon="users" />
-                            Recruiting
-                          </MDBBadge>
+                        {general.recruitingUrl && (
+                          <a
+                            href={general.recruitingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <MDBBadge color="indigo">
+                              <MDBIcon icon="users" />
+                              Recruiting
+                            </MDBBadge>
+                          </a>
                         )}
-                        {enterprise.company.employees >= 1 &&
-                          enterprise.company.employees < 5 && (
+                        {general.employeeCount >= 1 &&
+                          general.employeeCount < 5 && (
                             <MDBBadge color="primary">1-5 Employees</MDBBadge>
                           )}
-                        {enterprise.company.employees >= 5 &&
-                          enterprise.company.employees < 20 && (
+                        {general.employeeCount >= 5 &&
+                          general.employeeCount < 20 && (
                             <MDBBadge color="primary">5-20 Employees</MDBBadge>
                           )}
-                        {enterprise.company.employees >= 20 &&
-                          enterprise.company.employees < 100 && (
+                        {general.employeeCount >= 20 &&
+                          general.employeeCount < 100 && (
                             <MDBBadge color="primary">
                               20-100 Employees
                             </MDBBadge>
                           )}
-                        {enterprise.company.employees >= 100 && (
+                        {general.employeeCount >= 100 && (
                           <MDBBadge color="primary">100+ Employees</MDBBadge>
                         )}
-                        {enterprise.company.isOpenSource && (
+                        {general.opensourceUrl && (
                           <a
-                            href={enterprise.company.openSourceUrl}
+                            href={general.opensourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -264,82 +280,66 @@ class Page extends React.Component {
                   <MDBTabPane tabId={0} role="tabpanel">
                     <PageOverview
                       filter={this.state.globalFilter}
-                      feed={enterprise.company?.enterpriseContributionFeed}
                       mergedFeed={
-                        enterprise.company?.mergedEnterpriseContributionFeed
+                        general.mergedEnterpriseCodetransitionStatistic
                       }
+                      codestats={general.enterpriseCodelanguageStatistic}
                     />
                   </MDBTabPane>
                 )}
                 {this.state.activeItem === 1 && (
                   <MDBTabPane tabId={1} role="tabpanel">
-                    <PageProjects
-                      filter={this.state.globalFilter}
-                      navigateTo={this.props.navigateTo}
-                      projects={page.projects}
-                    />
+                    {projects ? (
+                      <PageProjects
+                        filter={this.state.globalFilter}
+                        navigateTo={this.props.navigateTo}
+                        projects={projects}
+                      />
+                    ) : (
+                      <h1>Loading</h1>
+                    )}
                   </MDBTabPane>
                 )}
                 {this.state.activeItem === 2 && (
                   <MDBTabPane tabId={2} role="tabpanel">
-                    <PageUsers
-                      filter={this.state.globalFilter}
-                      navigateTo={this.props.navigateTo}
-                      users={page.users}
-                    />
+                    {users ? (
+                      <PageUsers
+                        filter={this.state.globalFilter}
+                        navigateTo={this.props.navigateTo}
+                        users={users}
+                      />
+                    ) : (
+                      <h1>Loading</h1>
+                    )}
                   </MDBTabPane>
                 )}
                 {this.state.activeItem === 3 && (
                   <MDBTabPane tabId={3} role="tabpanel">
-                    <PageImprint />
+                    <PageImprint page={general} />
                   </MDBTabPane>
                 )}
               </MDBTabContent>
             </MDBCol>
           </MDBRow>
         ) : (
-          <div className="flex-center">
-            <MDBSpinner />
-          </div>
-        )}
-        {this.state.reAuth && (
-          <MDBModal isOpen={true} toggle={this.toggleModal} size="sm">
-            <MDBModalBody>
-              <p>To continue, type an administrator password.</p>
-              {this.state.reAuthError && (
-                <MDBAlert color="danger">
-                  The password you have entered is wrong.
-                </MDBAlert>
-              )}
-              <input
-                type="password"
-                className="form-control"
-                value={this.state.password}
-                onChange={(e) => this.setState({ password: e.target.value })}
-              />
-              <MDBBtn
-                color="elegant"
-                size="md"
-                onClick={async () => {
-                  const result = await this.props.authenticate(
-                    this.state.password
-                  );
-
-                  if (result) {
-                    this.setState({ reAuth: false }, () =>
-                      this.props.publishenterprise(
-                        enterprise.company.connectorHandle
-                      )
-                    );
-                  } else {
-                    this.setState({ reAuthError: true });
-                  }
-                }}
-              >
-                Authenticate
-              </MDBBtn>
-            </MDBModalBody>
-          </MDBModal>
+          <>
+            {error ? (
+              <div className="text-center">
+                <MDBIcon
+                  icon="times-circle"
+                  size="3x"
+                  className="text-danger"
+                />
+                <span className="d-block mt-3 lead">{error.message}</span>
+              </div>
+            ) : (
+              <div className="text-center my-5 py-5">
+                <div className="spinner-grow text-success" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </MDBContainer>
     );
@@ -349,12 +349,17 @@ class Page extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  page: state.pages.page,
+  general: state.enterprise.page.general,
+  projects: state.enterprise.page.projects,
+  users: state.enterprise.page.users,
+  error: state.enterprise.error,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPageByHandle: (handle) => dispatch(getPageByHandle(handle)),
+    getGeneral: (handle) => dispatch(getGeneral(handle)),
+    getProjects: (handle) => dispatch(getProjects(handle)),
+    getUsers: (handle) => dispatch(getUsers(handle)),
   };
 };
 //#endregion

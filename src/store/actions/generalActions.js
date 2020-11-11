@@ -1,27 +1,31 @@
-//#region > Registration Actions
-/**
- * Append Source Objects
- *
- * @param sourceList A source object
- * @description Hands source list over to intel
- */
-const appendSourceObjectsAction = (sourceList) => {
-  return async (dispatch, getState, { getIntel }) => {
-    try {
-      const intel = getIntel();
+//#region > Imports
+//> Action Types
+import * as Action from "../types";
+//> Intel
+import INTEL_SNEK from "snek-intel/lib/utils/snek";
+//#endregion
 
-      intel.appendList(sourceList);
+//#region > Actions
+/**
+ * Get all gitlab servers for registration
+ */
+const getGitlabServers = () => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.GENERAL_GITLAB_SERVER_FETCH_REQUEST });
+
+      const servers = await INTEL_SNEK.general.getGitlabServer();
 
       dispatch({
-        type: "APPEND_SOURCE_OBJECTS_SUCCESS",
-        payload: {},
+        type: Action.GENERAL_GITLAB_SERVER_FETCH_SUCCESS,
+        payload: servers,
       });
     } catch (ex) {
       dispatch({
-        type: "APPEND_SOURCE_OBJECTS_ERROR",
+        type: Action.GENERAL_GITLAB_SERVER_FETCH_FAILURE,
         payload: {
-          errorCode: 602,
-          message: "Appending source objects failed",
+          errorCode: 601,
+          message: `Getting gitlab server failed`,
           error: ex,
         },
       });
@@ -30,38 +34,52 @@ const appendSourceObjectsAction = (sourceList) => {
 };
 
 /**
- * Fetch GitLab Servers
- *
- * @description Retrieves a list of available GitLab servers
+ * Get all person in a brief form
  */
-const fetchGitLabServersAction = () => {
-  return async (dispatch, getState, { getIntel }) => {
+const getPersonsBrief = () => {
+  return async (dispatch, getState, {}) => {
     try {
-      const intel = getIntel();
-      const session = intel.snekclient.session;
+      dispatch({ type: Action.GENERAL_PERSONS_BRIEF_FETCH_REQUEST });
 
-      return session.tasks.general
-        .gitlabServer()
-        .then(({ data }) => {
-          const gitLabServers = data?.page?.supportedGitlabs;
+      const persons = await INTEL_SNEK.person.allBrief();
 
-          dispatch({
-            type: "FETCH_GITLAB_SERVER_SUCCESS",
-            payload: { gitLabServers },
-          });
-        })
-        .catch((ex) =>
-          dispatch({
-            type: "FETCH_GITLAB_SERVER_ERROR",
-            payload: { error: ex },
-          })
-        );
+      dispatch({
+        type: Action.GENERAL_PERSONS_BRIEF_FETCH_SUCCESS,
+        payload: persons,
+      });
     } catch (ex) {
       dispatch({
-        type: "FETCH_GITLAB_SERVER_ERROR",
+        type: Action.GENERAL_PERSONS_BRIEF_FETCH_FAILURE,
         payload: {
-          errorCode: 605,
-          message: "Fetching GitLab server failed",
+          errorCode: 601,
+          message: "Getting all person in a brief form failed",
+          error: ex,
+        },
+      });
+    }
+  };
+};
+
+/**
+ * Get all achievements with collectors
+ */
+const getAchievements = () => {
+  return async (dispatch, getState, {}) => {
+    try {
+      dispatch({ type: Action.GENERAL_ACHIEVEMENTS_FETCH_REQUEST });
+
+      const achievements = await INTEL_SNEK.achievement.all();
+
+      dispatch({
+        type: Action.GENERAL_ACHIEVEMENTS_FETCH_SUCCESS,
+        payload: achievements,
+      });
+    } catch (ex) {
+      dispatch({
+        type: Action.GENERAL_ACHIEVEMENTS_FETCH_FAILURE,
+        payload: {
+          errorCode: 601,
+          message: `Getting achievements failed`,
           error: ex,
         },
       });
@@ -70,81 +88,7 @@ const fetchGitLabServersAction = () => {
 };
 //#endregion
 
-//#region > Data Handling Actions
-/**
- * Get intel data
- *
- * @description Retrieves data from current applied source list
- */
-const getDataAction = () => {
-  return async (dispatch, getState, { getIntel }) => {
-    try {
-      const intel = getIntel();
-
-      intel
-        .get()
-        .then((res) => dispatch({ type: "GET_DATA_SUCCESS", payload: res }))
-        .catch((ex) =>
-          dispatch({ type: "GET_DATA_ERROR", payload: { error: ex } })
-        );
-    } catch (ex) {
-      dispatch({
-        type: "GET_DATA_ERROR",
-        payload: {
-          errorCode: 603,
-          message: "Getting intel data failed",
-          error: ex,
-        },
-      });
-    }
-  };
-};
-
-/**
- * Get all users
- *
- * @description Retrieves a list of all users
- */
-const getUserSearchItems = () => {
-  return async (dispatch, getState, { getIntel }) => {
-    try {
-      const intel = getIntel();
-      const session = intel.snekclient.session;
-
-      return await session.tasks.general
-        .allUserPageUrls()
-        .then((res) => {
-          dispatch({
-            type: "GET_APP_PAGE_URLS_SUCCESS",
-            payload: { items: res.data.page.children },
-          });
-        })
-        .catch((ex) =>
-          dispatch({ type: "GET_APP_PAGE_URLS_ERROR", payload: { error: ex } })
-        );
-    } catch (ex) {
-      dispatch({
-        type: "GET_APP_PAGE_URLS_ERROR",
-        payload: {
-          errorCode: 616,
-          message: "Getting all page urls failed",
-          error: ex,
-        },
-      });
-    }
-  };
-};
-//#endregion
-
-//#region > Exports
-//> Default Component
-export {
-  appendSourceObjectsAction,
-  getDataAction,
-  getUserSearchItems,
-  fetchGitLabServersAction,
-};
-//#endregion
+export { getGitlabServers, getPersonsBrief, getAchievements };
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

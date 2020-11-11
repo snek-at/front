@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Runtime type checking for React props and similar objects
+import PropTypes from "prop-types";
 //> React Router bindings to DOM
 import { withRouter, Link } from "react-router-dom";
 //> MDB
@@ -20,19 +22,21 @@ import {
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
+//> Additional
+// Used to display the time in a readable format
+import moment from "moment";
 
-//> Actions
-// Functions to send data from the application to the store
-import { deleteTalkAction } from "../../../../store/actions/userActions";
 //> Style sheet
 import "./talkstab.scss";
-//> Modules
-import { TalkUploadModal } from "../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import { addTalk, deleteTalk } from "../../../../store/actions/personActions";
+import { UploadModal } from "../../../molecules/modals";
 //#endregion
 
 //#region > Components
 /** @class A component which lists all talks */
-class Talks extends React.Component {
+class TalkTab extends React.Component {
   state = {
     showUpload: false,
     loading: true,
@@ -46,23 +50,35 @@ class Talks extends React.Component {
     }
   };
 
+  handleSuccess = (event) => {
+    this.props.addTalk(
+      event.name,
+      "",
+      "https://docs.google.com/viewer?embedded=true&url=" + event.displayUrl,
+      event.downloadUrl,
+      event.path,
+      event.html_url
+    );
+  };
+
   updateIframe = (talk) => {
     let iframe;
 
     if (talk.interval.loaded === false) {
-      if (document.getElementById(talk.uid)) {
-        iframe = document.getElementById(talk.uid);
+      if (document.getElementById(talk.id)) {
+        iframe = document.getElementById(talk.id);
         iframe.src = talk.displayUrl;
       }
     }
   };
 
   render() {
-    const { loggedUser, fetchedUser } = this.props;
-    const talkList = fetchedUser?.platformData?.talks;
+    const { loggedUser, fetchedPerson, talkList } = this.props;
 
-    if (talkList) {
-      talkList.map((talk) => {
+    const talks = JSON.parse(JSON.stringify(talkList));
+
+    if (talks) {
+      talks.map((talk) => {
         talk.social = {
           likes: 17,
           date: new Date().toLocaleDateString("en-US", {
@@ -87,7 +103,7 @@ class Talks extends React.Component {
           <MDBCol md="10">
             <h3 className="font-weight-bold">Talks</h3>
           </MDBCol>
-          {loggedUser.username === fetchedUser.username && (
+          {loggedUser?.person?.slug === fetchedPerson.slug && (
             <MDBCol md="2">
               <MDBBtn
                 color="green"
@@ -101,21 +117,23 @@ class Talks extends React.Component {
           )}
         </MDBRow>
         <MDBRow className="talks-list">
-          {talkList &&
-            talkList.map((talk, i) => {
+          {talks &&
+            talks.map((talk, i) => {
               return (
                 <MDBCol md="6" key={i} className="mt-3">
                   <MDBCard>
                     <MDBCardHeader className="lead mb-1">
                       <MDBRow>
                         <MDBCol md="11">
-                          {talk.name.length > 25
-                            ? talk.name.substring(0, 25) + "..."
-                            : talk.name}
+                          {talk.title?.length > 25
+                            ? talk.title?.substring(0, 25) + "..."
+                            : talk.title}
                         </MDBCol>
                         <MDBCol md="1">
-                          {loggedUser.username === fetchedUser.username && (
-                            <small onClick={() => this.props.deleteTalk(talk)}>
+                          {loggedUser?.person?.slug === fetchedPerson.slug && (
+                            <small
+                              onClick={() => this.props.deleteTalk(talk.id)}
+                            >
                               <MDBIcon
                                 icon="trash-alt"
                                 className="black-text font-weight-bold"
@@ -126,12 +144,7 @@ class Talks extends React.Component {
                       </MDBRow>
                     </MDBCardHeader>
                     <Link
-                      to={
-                        "/t/" +
-                        this.props.match.params.username +
-                        "/" +
-                        talk.uid
-                      }
+                      to={`/t/${talk.id}`}
                       params={{}}
                       rel="noopener noreferrer"
                     >
@@ -139,11 +152,11 @@ class Talks extends React.Component {
                         <div className="thumbnail-container">
                           <div className="thumbnail">
                             <iframe
-                              id={talk.uid}
+                              id={talk.id}
                               src={talk.displayUrl}
                               onLoad={() => {
                                 clearInterval(talk.interval.timeoutId);
-                                talkList[i].interval.loaded = true;
+                                talks[i].interval.loaded = true;
                               }}
                               frameBorder="0"
                             />
@@ -165,7 +178,8 @@ class Talks extends React.Component {
                           likes
                           <br />
                           <small className="text-muted">
-                            published on {talk.social.date}
+                            published on{" "}
+                            {moment(talk.createdAt).format("DD.MM.YYYY")}
                           </small>
                         </span>
                       )}
@@ -190,9 +204,6 @@ class Talks extends React.Component {
                             src={talk.repository?.avatarUrl}
                             alt={talk.repository?.name}
                           />
-                          <small>
-                            Owned by {talk.repository?.owner.username}
-                          </small>
                         </div>
                       </a>
                     </MDBCardFooter>
@@ -202,8 +213,12 @@ class Talks extends React.Component {
             })}
         </MDBRow>
         {this.state.showUpload && (
-          <TalkUploadModal
+          <UploadModal
             {...this.props}
+            acceptTypes={"application/pdf"}
+            invalidTypeMessage={"Only PDF files can be uploaded!"}
+            storageEngine={"anonfiles"}
+            onSuccess={this.handleSuccess}
             closeModal={this.handleUploadClose}
           />
         )}
@@ -215,12 +230,24 @@ class Talks extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
+  loggedUser: state.user.user,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { deleteTalk: (talk) => dispatch(deleteTalkAction(talk)) };
+  return {
+    addTalk: (title, description, displayUrl, downloadUrl, path, url) =>
+      dispatch(
+        addTalk({ title, description, displayUrl, downloadUrl, path, url })
+      ),
+    deleteTalk: (id) => dispatch(deleteTalk(id)),
+  };
+};
+//#endregion
+
+//#region > PropTypes
+TalkTab.propTypes = {
+  talkList: PropTypes.array.isRequired,
 };
 //#endregion
 
@@ -233,7 +260,9 @@ const mapDispatchToProps = (dispatch) => {
  * Got access to the history object’s properties and the closest
  * <Route>'s match.
  */
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Talks));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TalkTab)
+);
 //#endregion
 
 /**

@@ -1,20 +1,29 @@
-#media {
-  #gallery {
-    .card {
-      .card-body {
-        padding: 0;
+#gallery {
+  .card {
+    .card-body {
+      padding: 0;
 
-        .mask {
-          background: transparentize($color: white, $amount: 1);
-          transition: background 0.1s ease;
-          cursor: pointer;
+      img {
+        width: 100%;
+      }
 
-          &:hover {
-            background: transparentize($color: white, $amount: 0.9);
-          }
+      .mask {
+        background: transparentize($color: white, $amount: 1);
+        transition: background 0.1s ease;
+        cursor: pointer;
+
+        &:hover {
+          background: transparentize($color: white, $amount: 0.9);
         }
       }
     }
+  }
+
+  .video-preview {
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    position: absolute;
   }
 
   .fa-times {

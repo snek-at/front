@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Runtime type checking for React props and similar objects
+import PropTypes from "prop-types";
 //> Additional packages
 // Used to display the time in a readable format
 import moment from "moment";
@@ -31,7 +33,7 @@ class Calendar3D extends React.Component {
   }
 
   componentDidMount = () => {
-    if (this.props.platformData) {
+    if (this.props.currentStatistic && this.props.yearsStatistic) {
       // Add resize listener
       window.addEventListener("resize", this.updateDimensions);
 
@@ -79,22 +81,18 @@ class Calendar3D extends React.Component {
 
   renderTopStats() {
     let countTotal, averageCount, datesTotal, maxCount, dateBest, contribData;
-
-    if (this.props.year) {
-      contribData = this.props.platformData.statistic.years.find(
-        (element) => element.year === this.props.year
-      );
+    if (this.props.year !== undefined) {
+      contribData = this.props.yearsStatistic[this.props.year];
     } else {
-      contribData = this.props.platformData.statistic.current;
+      contribData = this.props.currentStatistic;
     }
 
-    let contributionCalendar = contribData.calendar;
+    let contributionCalendar = JSON.parse(contribData.calendarData);
+    let contributionDetails = JSON.parse(contribData.contributionTypeData);
+    let busiestDay = contribData.busiestDay;
 
-    countTotal = contribData.contributions.total;
-    averageCount =
-      Math.round(
-        (contribData.contributions.total / 365 + Number.EPSILON) * 100
-      ) / 100;
+    countTotal = contributionDetails.total;
+    averageCount = Math.round((countTotal / 365 + Number.EPSILON) * 100) / 100;
 
     datesTotal =
       moment(contributionCalendar.startDate).format("MMM D") +
@@ -102,7 +100,7 @@ class Calendar3D extends React.Component {
       moment(contributionCalendar.endDate).format("MMM D");
 
     /* Busiest day */
-    maxCount = contribData.busiestDay.total;
+    maxCount = busiestDay.total;
     dateBest = moment(contribData.busiestDay.date);
     dateBest = dateBest.isValid() ? dateBest.format("MMM DD") : "-";
 
@@ -118,31 +116,35 @@ class Calendar3D extends React.Component {
   renderBottomStats() {
     let streakLongest, datesLongest, streakCurrent, datesCurrent, contribData;
 
-    if (this.props.year) {
-      contribData = this.props.platformData.statistic.years.find(
-        (element) => element.year === this.props.year
-      );
+    if (this.props.year !== undefined) {
+      contribData = this.props.yearsStatistic[this.props.year];
     } else {
-      contribData = this.props.platformData.statistic.current;
+      contribData = this.props.currentStatistic;
     }
 
-    if (contribData.streak.longest) {
-      streakLongest = contribData.streak.longest.totalDays;
+    if (
+      contribData.longestStreak &&
+      contribData.longestStreak.totalDays !== null
+    ) {
+      streakLongest = contribData.longestStreak.totalDays;
       datesLongest =
-        moment(contribData.streak.longest.startDate).format("MMM D") +
+        moment(contribData.longestStreak.startDate).format("MMM D") +
         " → " +
-        moment(contribData.streak.longest.endDate).format("MMM D");
+        moment(contribData.longestStreak.endDate).format("MMM D");
     } else {
       streakLongest = "0";
       datesLongest = "-";
     }
 
-    if (contribData.streak.current.id !== -1) {
-      streakCurrent = contribData.streak.current.totalDays;
+    if (
+      contribData.currentStreak &&
+      contribData.currentStreak.totalDays != null
+    ) {
+      streakCurrent = contribData.currentStreak.totalDays;
       datesCurrent =
-        moment(contribData.streak.current.startDate).format("MMM D") +
+        moment(contribData.currentStreak.startDate).format("MMM D") +
         " → " +
-        moment(contribData.streak.current.endDate).format("MMM D");
+        moment(contribData.currentStreak.endDate).format("MMM D");
     } else {
       streakCurrent = "0";
       datesCurrent = "-";
@@ -169,15 +171,13 @@ class Calendar3D extends React.Component {
       // Get contributions of the selected year
       let contribData;
 
-      if (this.props.year) {
-        contribData = this.props.platformData.statistic.years.find(
-          (element) => element.year === this.props.year
-        );
+      if (this.props.year !== undefined) {
+        contribData = this.props.yearsStatistic[this.props.year];
       } else {
-        contribData = this.props.platformData.statistic.current;
+        contribData = this.props.currentStatistic;
       }
 
-      let contributions = contribData.calendar;
+      let contributions = JSON.parse(contribData.calendarData);
 
       // Define basic variables
       let size = 2 * Math.round(this.state.width / 80 / 2);
@@ -395,6 +395,13 @@ class Calendar3D extends React.Component {
     );
   }
 }
+//#endregion
+
+//#region > PropTypes
+Calendar3D.propTypes = {
+  currentStatistic: PropTypes.object,
+  yearsStatistic: PropTypes.array,
+};
 //#endregion
 
 //#region > Exports

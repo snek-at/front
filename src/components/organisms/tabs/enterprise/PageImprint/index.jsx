@@ -31,91 +31,51 @@ import moment from "moment";
 class PageImprint extends React.Component {
   state = { page: null };
 
-  componentDidMount = () => {
-    this.setState({
-      page: this.props.page,
-    });
-  };
-
-  handleSwitchChange = (nr) => {
-    this.setState({
-      page: {
-        ...this.state.page,
-        company: {
-          ...this.state.page.company,
-          [nr]: !this.state.page.company[nr],
-        },
-      },
-    });
-  };
-
-  handleChange = (name, value) => {
-    this.setState({
-      page: {
-        ...this.state.page,
-        company: {
-          ...this.state.page.company,
-          [name]:
-            typeof this.state.page.company[name] !== "object"
-              ? value
-              : { ...this.state.page.company[name], value },
-        },
-      },
-    });
-  };
-
-  checkIfChanged = () => {
-    if (JSON.stringify(this.props.page) !== JSON.stringify(this.state.page)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   render() {
-    const { page } = this.state;
-
-    console.log(page);
+    const { page } = this.props;
 
     return (
       <div id="pageimprint">
-        <div className="d-flex justify-content-between mt-3">
+        <div className="mt-3">
           <div>
             <p className="lead font-weight-bold mb-0">Imprint</p>
-            <p className="text-muted small">
-              <MDBIcon icon="question-circle" className="mr-2" />
-              Manage your enterprise imprint
-            </p>
-          </div>
-          <div>
-            {this.checkIfChanged() && (
-              <MDBBtn
-                color="success"
-                onClick={() => this.props.editImprint(this.state.page)}
-              >
-                <MDBIcon icon="check-circle" />
-                Save
-              </MDBBtn>
-            )}
           </div>
         </div>
-        {this.state.page ? (
+        {page ? (
           <MDBRow className="mt-3">
             <MDBCol lg="4">
               <MDBCard>
                 <MDBCardBody>
-                  <p className="lead">General</p>
-                  <p>{this.state.page.company.name}</p>
-                  <p>{this.state.page.company.description}</p>
-                  <p>{this.state.page.company.email}</p>
-                  <hr />
-                  <p>{this.state.page.company.vat.value}</p>
+                  <p className="lead mb-2">General</p>
+                  {page.name && (
+                    <p className="mb-0 font-weight-bold">{page.name}</p>
+                  )}
+                  {page.ownership && <p className="mb-2">{page.ownership}</p>}
+                  {page.address && <p className="mb-0">{page.address}</p>}
+                  {page.zipCode && page.city && (
+                    <p className="mb-0">
+                      {page.zipCode} {page.city}
+                    </p>
+                  )}
+                  {page.email && (
+                    <p className="mt-2 mb-0">
+                      <a href={`mailto:${page.email}`}>{page.email}</a>
+                    </p>
+                  )}
+                  {page.telephone && <p className="mb-0">{page.telephone}</p>}
+                  {page.vatNumber && (
+                    <>
+                      <hr />
+                      <p className="mb-1">VAT: {page.vatNumber}</p>
+                    </>
+                  )}
+                  {page.taxId && <p>Tax ID: {page.taxId}</p>}
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
           </MDBRow>
         ) : (
-          <span>No imprint</span>
+          <div></div>
         )}
       </div>
     );

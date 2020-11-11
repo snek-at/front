@@ -94,7 +94,7 @@ class AddVideoModal extends React.Component {
             <div className="d-flex justify-content-between align-items-center">
               <p className="lead mb-0">Add YouTube Video</p>
               <MDBBtn
-                color="green"
+                social="yt"
                 disabled={!this.state.youtubeId || this.state.youtubeLinkError}
                 onClick={() => this.props.save(this.state)}
               >
@@ -134,7 +134,7 @@ class AddVideoModal extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  //loggedUser: state.auth.loggedUser,
 });
 
 const mapDispatchToProps = (dispatch) => {

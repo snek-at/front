@@ -11,9 +11,14 @@ import { MDBBadge } from "mdbreact";
 import { connect } from "react-redux";
 
 //> Components
-import { ProjectTab, OverviewTab, TalksTab } from "../tabs";
+import {
+  ProjectTab,
+  OverviewTab,
+  TalksTab,
+  AchievementsTab,
+} from "../../../tabs";
 //> Style sheet
-import "./softwaretabs.scss";
+import "./tabs.scss";
 //#endregion
 
 //#region > Components
@@ -30,13 +35,13 @@ class SoftwareTabs extends React.Component {
   };
 
   isSameOrigin = () => {
-    const { fetchedUser, loggedUser } = this.props;
+    const { fetchedPerson, loggedUser } = this.props;
 
-    return fetchedUser.username === loggedUser.username;
+    return fetchedPerson.slug === loggedUser?.person?.slug;
   };
 
   render() {
-    const { fetchedUser } = this.props;
+    const { fetchedPerson } = this.props;
     const { activeTab } = this.state;
     const tabItems = [
       {
@@ -48,8 +53,8 @@ class SoftwareTabs extends React.Component {
       {
         title: "Projects",
         visible: true,
-        pill: this.props.fetchedUser?.platformData?.profile?.repositories
-          ? this.props.fetchedUser?.platformData?.profile?.repositories?.length
+        pill: fetchedPerson?.person?.projects
+          ? fetchedPerson?.person?.projects.length
           : "0",
         notification: false,
       },
@@ -65,18 +70,18 @@ class SoftwareTabs extends React.Component {
         notification: false,
       },
       {
-        title: "Papers",
+        title: "Achievements",
         visible: true,
-        pill: "0",
+        pill: fetchedPerson?.achievements
+          ? fetchedPerson?.achievements.length
+          : "0",
         notification: false,
       },
       {
         title: "Talks",
         visible: true,
         notification: false,
-        pill: this.props.fetchedUser?.platformData.talks
-          ? this.props.fetchedUser?.platformData.talks.length
-          : "0",
+        pill: fetchedPerson?.talks ? fetchedPerson?.talks.length : "0",
         notification: false,
       },
     ];
@@ -99,25 +104,33 @@ class SoftwareTabs extends React.Component {
           })}
         </ul>
         <div className="p-3 content">
-          {activeTab === 0 && (
-            <OverviewTab
-              platformData={fetchedUser && fetchedUser.platformData}
-              sameOrigin={this.isSameOrigin()}
-            />
-          )}
+          {activeTab === 0 && <OverviewTab sameOrigin={this.isSameOrigin()} />}
           {activeTab === 1 && (
             <ProjectTab
               repoList={
-                fetchedUser && fetchedUser.platformData.profile.repositories
+                fetchedPerson?.person.projects
+                  ? fetchedPerson.person.projects
+                  : []
               }
             />
           )}
-          {activeTab > 1 && activeTab < 5 && (
+          {activeTab > 1 && activeTab < 4 && (
             <p className="text-muted">
               This feature is not available just yet.
             </p>
           )}
-          {activeTab === 5 && <TalksTab {...this.props} />}
+          {activeTab === 4 && (
+            <AchievementsTab
+              achievements={
+                fetchedPerson?.achievements ? fetchedPerson.achievements : []
+              }
+            />
+          )}
+          {activeTab === 5 && (
+            <TalksTab
+              talkList={fetchedPerson?.talks ? fetchedPerson.talks : []}
+            />
+          )}
         </div>
       </div>
     );
@@ -127,8 +140,8 @@ class SoftwareTabs extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
-  fetchedUser: state.user.fetchedUser,
+  loggedUser: state.user.user,
+  fetchedPerson: state.person.fetchedPerson,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -16,7 +16,12 @@ import { loadingBarMiddleware } from "react-redux-loading-bar";
 // Thunk
 import thunk from "redux-thunk";
 //> Intel
-import { Intel } from "snek-intel";
+import INTEL_SNEK from "snek-intel/lib/utils/snek";
+import INTEL_INSTAGRAM from "snek-intel/lib/utils/instagram";
+import INTEL_IMGUR from "snek-intel/lib/utils/imgur";
+
+//> Client
+import { SnekClient } from "snek-client";
 
 //> Font Awesome
 // Font Awesome is an awesome icon library
@@ -40,13 +45,10 @@ import registerServiceWorker from "./registerServiceWorker";
 //#endregion
 
 //#region > Redux Store Initialization
-const INTEL = new Intel();
+const CLIENT_SNEK = new SnekClient("https://engine.snek.at/graphql");
 
-//#TODO
-// Must be moved to INTEL in future?
-const getIntel = () => {
-  return INTEL;
-};
+// Pass over an individual client to intel
+INTEL_SNEK.client = CLIENT_SNEK;
 
 const composeEnhancers =
   typeof window === "object" &&
@@ -61,8 +63,10 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     loadingBarMiddleware(),
     thunk.withExtraArgument({
-      // Intel
-      getIntel,
+      INTEL_SNEK,
+      INTEL_IMGUR,
+      INTEL_INSTAGRAM,
+      CLIENT_SNEK,
     })
   )
   // other store enhancers if any

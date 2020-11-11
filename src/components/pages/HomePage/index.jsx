@@ -106,7 +106,7 @@ class HomePage extends React.Component {
     const { loggedUser } = this.props;
     const activeActionCard = this.props.location?.state?.actionCard;
 
-    if (!loggedUser.anonymous) {
+    if (loggedUser.anonymous == false) {
       return <Redirect to={"/u/" + loggedUser.username} />;
     } else {
       return (
@@ -308,7 +308,7 @@ class HomePage extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {

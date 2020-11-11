@@ -2,74 +2,67 @@
 //> Error Serialization
 // Serialize/deserialize an error into a plain object
 import { serializeError } from "serialize-error";
+//> Action Types
+import * as Action from "../types";
 //#endregion
 
 //#region > Constant Variables
 const INIT_STATE = {
-  allUserSearchItems: null,
-  allGitlabServers: [],
-  generatedIntelData: null,
-  generalError: null,
-  generalErrorDetails: null,
+  allPersonBrief: undefined,
+  gitlabServer: undefined,
+  achievements: undefined,
+  error: undefined,
+  errorDetails: undefined,
 };
 //#endregion
 
 //#region > Reducers
 const generalReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
-    //> appendSourceObjectsAction
-    case "APPEND_SOURCE_OBJECTS_SUCCESS":
+    //> Get all gitlab server
+    case Action.GENERAL_GITLAB_SERVER_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_GITLAB_SERVER_FETCH_SUCCESS:
       return {
         ...state,
+        gitlabServer: action.payload,
       };
-
-    case "APPEND_SOURCE_OBJECTS_ERROR":
+    case Action.GENERAL_GITLAB_SERVER_FETCH_FAILURE:
       return {
         ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
+        gitlabServer: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
-
-    //> fetchGitLabServersAction
-    case "FETCH_GITLAB_SERVER_SUCCESS":
+    //> Get all persons brief
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_SUCCESS:
       return {
         ...state,
-        allGitlabServers: action.payload.gitLabServers,
+        allPersonBrief: action.payload,
       };
-
-    case "FETCH_GITLAB_SERVER_ERROR":
+    case Action.GENERAL_PERSONS_BRIEF_FETCH_FAILURE:
       return {
         ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
+        allPersonBrief: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
-
-    //> getDataAction
-    case "GET_DATA_SUCCESS":
+    //> Achievements
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_REQUEST:
+      return state;
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_SUCCESS:
       return {
         ...state,
-        generatedIntelData: action.payload,
+        achievements: action.payload,
       };
-
-    case "GET_DATA_ERROR":
+    case Action.GENERAL_ACHIEVEMENTS_FETCH_FAILURE:
       return {
         ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
-      };
-
-    //> getUserSearchItems
-    case "GET_APP_PAGE_URLS_SUCCESS":
-      return {
-        ...state,
-        allUserSearchItems: action.payload.items,
-      };
-
-    case "GET_APP_PAGE_URLS_ERROR":
-      return {
-        ...state,
-        authError: action.payload,
-        authErrorDetails: serializeError(action.payload.error),
+        achievements: undefined,
+        error: action.payload,
+        errorDetails: serializeError(action.payload.error),
       };
 
     default:
@@ -79,11 +72,5 @@ const generalReducer = (state = INIT_STATE, action) => {
 //#endregion
 
 //#region > Exports
-//> Default Component
 export default generalReducer;
 //#endregion
-
-/**
- * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019-2020 Simon Prast
- */

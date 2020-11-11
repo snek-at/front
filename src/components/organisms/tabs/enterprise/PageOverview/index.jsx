@@ -83,36 +83,69 @@ class PageOverview extends React.Component {
 
   render() {
     const { feed } = this.state;
-    const { mergedFeed } = this.props;
+    const { mergedFeed, codestats } = this.props;
 
     return (
       <MDBRow id="pageoverview">
         <MDBCol lg="3">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Contributions</p>
-            {feed && (
-              <MDBCard className="mt-4">
+            <p className="lead font-weight-bold mb-1">Contributions</p>
+            {codestats && (
+              <MDBCard className="border">
                 <MDBCardBody>
-                  <div className="d-flex justify-content-between">
+                  {codestats && codestats.length > 0 ? (
                     <div>
-                      <p className="text-muted small mb-0">Total</p>
-                      <p className="mb-0">
-                        <span className="lead font-weight-bold">
-                          {feed.length}
-                        </span>{" "}
-                        <span className="small">commits</span>
-                      </p>
+                      {codestats.map((language, i) => {
+                        return (
+                          <small
+                            className={
+                              codestats.length === i + 1
+                                ? "text-left text-muted d-block py-1"
+                                : "text-left text-muted d-block py-1 border-bottom"
+                            }
+                            key={i}
+                          >
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                <MDBIcon
+                                  icon="square"
+                                  className="pr-1"
+                                  style={{
+                                    color: language.color,
+                                  }}
+                                />
+                                <span>{language.name}</span>
+                              </div>
+                              <span className="small text-right">
+                                <span className="d-block">
+                                  {language.insertions}
+                                  <MDBIcon
+                                    icon="plus"
+                                    size="sm"
+                                    className="text-success pl-1"
+                                  />
+                                </span>
+                                <span className="d-block">
+                                  {language.deletions}
+                                  <MDBIcon
+                                    icon="minus"
+                                    size="sm"
+                                    className="text-danger pl-1"
+                                  />
+                                </span>
+                              </span>
+                            </div>
+                          </small>
+                        );
+                      })}
                     </div>
-                    <div>
-                      <p className="text-muted small mb-0">Average</p>
-                      <p className="mb-0">
-                        <span className="lead font-weight-bold">
-                          {(365 / feed.length).toFixed(2)}
-                        </span>{" "}
-                        <span className="small">/ day</span>
-                      </p>
+                  ) : (
+                    <div className="text-center p-3">
+                      <span className="d-block small text-muted">
+                        No information yet.
+                      </span>
                     </div>
-                  </div>
+                  )}
                 </MDBCardBody>
               </MDBCard>
             )}
@@ -120,7 +153,7 @@ class PageOverview extends React.Component {
         </MDBCol>
         <MDBCol lg="5">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Statistics</p>
+            <p className="lead font-weight-bold mb-1">Statistics</p>
             <div className="text-right">
               {mergedFeed &&
                 mergedFeed.years.map((year, y) => {
@@ -137,40 +170,44 @@ class PageOverview extends React.Component {
                     </p>
                   );
                 })}
-              <p
-                className={
-                  this.state.selectedYearIndex === undefined
-                    ? "blue-text clickable mx-2 d-inline-block"
-                    : "text-muted clickable mx-2 d-inline-block"
-                }
-                onClick={() => this.setState({ selectedYearIndex: undefined })}
-              >
-                Current
-              </p>
+              {mergedFeed && mergedFeed.years.length > 0 && (
+                <p
+                  className={
+                    this.state.selectedYearIndex === undefined
+                      ? "blue-text clickable mx-2 d-inline-block"
+                      : "text-muted clickable mx-2 d-inline-block"
+                  }
+                  onClick={() =>
+                    this.setState({ selectedYearIndex: undefined })
+                  }
+                >
+                  Current
+                </p>
+              )}
             </div>
-            <div className="canvas-container">
-              <AILineChart
-                data={mergedFeed}
-                year={this.state.selectedYearIndex}
-                size={50}
-                key="overview-chart"
-              />
-            </div>
+            {mergedFeed && mergedFeed.years.length > 0 ? (
+              <div className="canvas-container">
+                <AIBarChart
+                  data={mergedFeed}
+                  year={this.state.selectedYearIndex}
+                  size={50}
+                  key="overview-chart"
+                />
+              </div>
+            ) : (
+              <p className="text-muted small">No statistics available yet.</p>
+            )}
           </div>
         </MDBCol>
         <MDBCol lg="4">
           <div className="mt-3">
-            <p className="lead font-weight-bold mb-0">Activity</p>
-            <p className="text-muted small">
-              <MDBIcon icon="question-circle" className="mr-2" />
-              History of all projects in your page.
-            </p>
+            <p className="lead font-weight-bold mb-1">Activity</p>
           </div>
           {this.props.filter && (
             <p className="blue-text">{feed.length} matches found.</p>
           )}
           <MDBListGroup>
-            {feed ? (
+            {feed && feed.length > 0 ? (
               <>
                 {feed.reverse().map((activity, a) => {
                   return (
@@ -290,7 +327,7 @@ class PageOverview extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  activities: state.pages.activities,
+  activities: state.enterprise.page.general.activities,
 });
 //#endregion
 

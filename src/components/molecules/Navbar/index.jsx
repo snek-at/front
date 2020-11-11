@@ -30,7 +30,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { logoutAction } from "../../../store/actions/authActions";
+import { logoutAction } from "../../../store/actions/userActions";
 //> SearchBar
 import { SearchBar } from "../../atoms";
 //> Images
@@ -65,9 +65,7 @@ class Navbar extends React.Component {
 
   render() {
     const { location, loggedUser } = this.props;
-    const avatarUrl = loggedUser.platformData?.user?.avatarUrl
-      ? loggedUser.platformData.user.avatarUrl
-      : loggedUser.avatarUrl;
+    const avatarUrl = loggedUser?.person?.avatarImage?.src;
 
     return (
       <MDBNavbar color="light" light expand="md">
@@ -85,7 +83,7 @@ class Navbar extends React.Component {
             </MDBSmoothScroll>
           ) : (
             <>
-              {!loggedUser.anonymous ? (
+              {loggedUser.anonymous === false ? (
                 <Link to={"/u/" + loggedUser?.username}>
                   <MDBNavbarBrand className="flex-center">
                     <img
@@ -118,7 +116,7 @@ class Navbar extends React.Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {!loggedUser.anonymous ? (
+              {loggedUser.anonymous === false ? (
                 <>
                   <Link to={"/u/" + loggedUser.username}>
                     <MDBBtn color="white">
@@ -141,7 +139,7 @@ class Navbar extends React.Component {
                           Settings
                         </Link>
                         <Link
-                          to="/"
+                          to=""
                           onClick={this.props.logout}
                           className="dropdown-item"
                         >
@@ -186,7 +184,7 @@ Navbar.propTypes = {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: { ...state.auth.loggedUser, ...state.user.loggedUser },
+  loggedUser: { ...state.user.user },
 });
 
 const mapDispatchToProps = (dispatch) => {

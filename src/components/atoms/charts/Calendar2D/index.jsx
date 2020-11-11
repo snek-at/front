@@ -61,19 +61,18 @@ class Calender2D extends React.Component {
   };
 
   setCalendar = async (props) => {
-    if (props.platformData) {
+    const { currentStatistic, yearsStatistic, year } = props;
+    if (currentStatistic && yearsStatistic) {
       // Get contribution data
       let contribData;
 
-      if (props.year) {
-        contribData = props.platformData.statistic.years.find(
-          (element) => element.year === props.year
-        );
+      if (year !== undefined) {
+        contribData = yearsStatistic[year];
       } else {
-        contribData = props.platformData.statistic.current;
+        contribData = currentStatistic;
       }
 
-      let contributions = contribData.calendar;
+      let contributions = JSON.parse(contribData.calendarData);
 
       this.setState({
         width: this.myInput.current.offsetWidth,
@@ -96,7 +95,7 @@ class Calender2D extends React.Component {
     // Get current month
     let current;
 
-    if (this.props.year) {
+    if (this.props.year !== undefined) {
       current = 0;
     } else {
       current = new Date().getMonth();
@@ -156,7 +155,9 @@ class Calender2D extends React.Component {
   };
 
   render() {
-    if (this.props.platformData) {
+    const { currentStatistic, yearsStatistic, year } = this.props;
+
+    if (currentStatistic && yearsStatistic) {
       return (
         <div id="calendar2d">
           <div className="text-right">

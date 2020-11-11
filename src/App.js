@@ -13,7 +13,7 @@ import LoadingBarContainer from "react-redux-loading-bar";
 
 //> Actions
 // Functions to send data from the application to the store
-import { loginAction } from "./store/actions/authActions";
+import { loginAction } from "./store/actions/userActions";
 //> Components
 import { Footer, Navbar } from "./components/molecules";
 // Starts the page on top when reloaded or redirected

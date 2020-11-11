@@ -17,7 +17,7 @@ class LanguageBar extends React.Component {
   renderBars = (languages) => {
     let latest = 0;
 
-    if (languages[0].size !== 0) {
+    if (languages && languages[0].size !== 0) {
       return languages.map((language, i) => {
         const { color, share } = language;
         const value = latest + share;

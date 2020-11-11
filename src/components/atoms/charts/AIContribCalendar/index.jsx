@@ -80,7 +80,7 @@ class AIContribCalendar extends React.Component {
     // Get current month
     let current;
 
-    if (this.props.year) {
+    if (this.props.year !== undefined) {
       current = 0;
     } else {
       current = new Date().getMonth();

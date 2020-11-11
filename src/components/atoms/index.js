@@ -11,11 +11,11 @@ import Calendar3D from "./charts/Calendar3D";
 import ContribRadar from "./charts/ContribRadar";
 import LatestActivity from "./charts/LatestActivity";
 import LanguageChart from "./charts/LanguageBar";
+import Achievement from "./Achievement";
 //> Enterprise page
 import AIBarChart from "./charts/AIBarChart";
 import AILineChart from "./charts/AILineChart";
 import AIContribCalendar from "./charts/AIContribCalendar";
-import AILanguageChart from "./charts/AILanguageChart";
 //> General
 import SearchBar from "./SearchBar";
 import ErrorBoundary from "./ErrorBoundary";
@@ -34,11 +34,11 @@ export {
   ContribRadar,
   LatestActivity,
   LanguageChart,
+  Achievement,
   /* Enterprise page */
   AIBarChart,
   AILineChart,
   AIContribCalendar,
-  AILanguageChart,
   /* General */
   SearchBar,
   ErrorBoundary,

@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Runtime type checking for React props and similar objects
+import PropTypes from "prop-types";
 // Contains the functionality for uploading a file
 import Dropzone from "react-dropzone";
 //> MDB
@@ -17,22 +19,25 @@ import {
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
+//> Intel
+import { anonfiles } from "snek-intel/lib/utils/upload";
+import IMGUR_PROVIDER from "snek-intel/lib/utils/imgur";
 
 //> Actions
 // Functions to send data from the application to the store
-import { uploadTalkAction } from "../../../../store/actions/userActions";
+// import { uploadTalkAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
 /** @class A upload modal component for uploading files including a drop-zone */
-class TalkUploadModal extends React.Component {
+class UploadModal extends React.Component {
   state = {
     loading: false,
     error: [],
   };
 
   onDrop = async (files) => {
-    const { loggedUser, fetchedUser } = this.props;
+    const { storageEngine } = this.props;
 
     if (files.length > 0) {
       this.setState({
@@ -40,24 +45,29 @@ class TalkUploadModal extends React.Component {
         loading: true,
       });
 
-      this.props
-        .uploadTalk(files[0], {
-          avatarUrl: fetchedUser.platformData.user.avatarUrl,
-          owner: {
-            username: loggedUser.username,
-          },
-        })
-        .then(() => {
-          this.setState({
-            loading: false,
-          });
+      let res;
 
-          this.props.closeModal();
-        });
+      if (storageEngine === "anonfiles") {
+        res = await anonfiles.uploadFile(files[0]);
+      } else if (storageEngine === "imgur") {
+        res = await IMGUR_PROVIDER.upload(files[0]);
+      } else {
+        this.setState({ error: ["no valid storageEngine specified"] });
+      }
+
+      this.props.onSuccess(res);
+
+      this.setState({
+        loading: false,
+      });
+
+      this.props.closeModal();
     } else {
-      this.setState({ error: ["Only PDF files can be uploaded!"] });
+      this.setState({ error: [this.props.invalidTypeMessage] });
     }
   };
+
+  uploadToAnonfiles = async (file) => {};
 
   render() {
     return (
@@ -69,17 +79,12 @@ class TalkUploadModal extends React.Component {
         backdrop={true}
         isOpen={true}
         toggle={this.props.closeModal}
+        centered
+        animation="left"
       >
-        <MDBModalHeader
-          className="text-center text-dark donate"
-          titleClass="w-100"
-          tag="p"
-        >
-          Upload
-        </MDBModalHeader>
         <MDBModalBody className="text-center">
           <div>
-            <Dropzone onDrop={this.onDrop} accept="application/pdf">
+            <Dropzone onDrop={this.onDrop} accept={this.props.acceptTypes}>
               {({ getRootProps, getInputProps, acceptedFiles }) => (
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -93,12 +98,13 @@ class TalkUploadModal extends React.Component {
                               key={i}
                             >
                               <MDBIcon
-                                icon="file"
+                                icon="file-upload"
                                 className="green-text"
-                                size="6x"
+                                size="3x"
                               />
-                              <p />
-                              <h3>{acceptedFile.name}</h3>
+                              <p className="lead mt-3 mb-0">
+                                {acceptedFile.name}
+                              </p>
                             </li>
                           ))}
                       </ul>
@@ -109,6 +115,7 @@ class TalkUploadModal extends React.Component {
                           animated
                           height="25px"
                           color="success"
+                          className="mb-0 pb-0"
                         >
                           Uploading file
                         </MDBProgress>
@@ -132,14 +139,15 @@ class TalkUploadModal extends React.Component {
                       </ul>
                     </div>
                   ) : (
-                    <div>
+                    <div className="border rounded px-4 pt-4 pb-3 clickable">
                       <MDBIcon
                         icon="file-upload"
                         className="green-text"
-                        size="6x"
+                        size="3x"
                       />
-                      <p />
-                      <h3>Click here or drop a file to upload!</h3>
+                      <p className="lead mt-3 mb-0">
+                        Click here or drop a file to upload!
+                      </p>
                     </div>
                   )}
                 </div>
@@ -153,6 +161,15 @@ class TalkUploadModal extends React.Component {
 }
 //#endregion
 
+//#region > PropTypes
+UploadModal.propTypes = {
+  acceptTypes: PropTypes.string.isRequired,
+  invalidTypeMessage: PropTypes.string.isRequired,
+  storageEngine: PropTypes.oneOf(["anonfiles", "imgur"]).isRequired,
+  onSuccess: PropTypes.func,
+};
+//#endregion
+
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
   loggedUser: state.user.fetchedUser,
@@ -160,7 +177,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return { uploadTalk: (file) => dispatch(uploadTalkAction(file)) };
+  return {};
 };
 //#endregion
 
@@ -170,7 +187,7 @@ const mapDispatchToProps = (dispatch) => {
  * Provides its connected component with the pieces of the data it needs from
  * the store, and the functions it can use to dispatch actions to the store.
  */
-export default connect(mapStateToProps, mapDispatchToProps)(TalkUploadModal);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadModal);
 //#endregion
 
 /**

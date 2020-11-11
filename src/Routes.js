@@ -8,11 +8,10 @@ import { Route, Switch } from "react-router-dom";
 //> Components
 import {
   HomePage,
-  ProfilePage,
+  PersonPage,
   CompanyPage,
   TalkPage,
   SettingsPage,
-  TempPage,
 } from "./components/pages";
 //#endregion
 
@@ -26,7 +25,7 @@ class Routes extends React.Component {
         <Route
           exact
           path="/u/:username"
-          component={(props) => <ProfilePage {...props} />}
+          component={(props) => <PersonPage {...props} />}
         />
         <Route
           exact
@@ -35,13 +34,8 @@ class Routes extends React.Component {
         />
         <Route
           exact
-          path="/t/:username/:uid"
+          path="/t/:uid"
           component={(props) => <TalkPage {...props} />}
-        />
-        <Route
-          exact
-          path="/temp"
-          component={(props) => <TempPage {...props} />}
         />
         <Route
           exact
@@ -57,6 +51,18 @@ class Routes extends React.Component {
           exact
           path="/settings"
           component={(props) => <SettingsPage {...props} />}
+        />
+        <Route
+          exact
+          path="/path/explorer"
+          render={function () {
+            return (
+              <div>
+                Here is a flag for you {process.env.FLAG_PATH_EXPLORER}. Keep on
+                searching and find them all.
+              </div>
+            );
+          }}
         />
         <Route
           render={function () {

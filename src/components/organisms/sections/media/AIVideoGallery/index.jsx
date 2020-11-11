@@ -30,20 +30,14 @@ import {
 
 //> Components
 import { VideoModal, AddVideoModal } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aivideogallery.scss";
-//#endregion
-
-//#region > Dummy data
-const DUMMY = [
-  {
-    id: "rX0kyTpTIw0",
-  },
-  {
-    id: "viek5d1_0VA",
-  },
-  { id: "pPw_izFr5PA" },
-];
 //#endregion
 
 //#region > Components
@@ -52,7 +46,7 @@ class AIVideoGallery extends React.Component {
 
   componentDidMount = () => {
     this.setState({
-      videos: DUMMY,
+      videos: this.props.videos,
     });
   };
 
@@ -63,10 +57,34 @@ class AIVideoGallery extends React.Component {
     });
   };
 
-  addVideo = (state) => {
-    const video = {
-      type: "YOUTUBE",
-      id: state.youtubeId,
+  /**
+   * Retrieving YouTube video ID from URL
+   *
+   * @param {string} url YouTube video URL
+   * @author SithCult <https://github.com/SithCult/Holobook>
+   * @license EUPL-1.2
+   */
+  getYouTubeVideoId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  addVideo = async (state) => {
+    let video = {
+      linkType: "YOUTUBE",
+      url: state.youtubeLink,
+    };
+
+    const rtn = await this.props.addMetaLink({
+      url: video.url,
+      linkType: video.linkType,
+    });
+
+    video = {
+      ...video,
+      id: rtn.id,
     };
 
     this.setState({
@@ -76,21 +94,26 @@ class AIVideoGallery extends React.Component {
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { sameOrigin } = this.props;
 
     return (
-      <div className="py-5">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            color="green"
-            onClick={() => this.setState({ modalAddVideo: true })}
-          >
-            Add video
-          </MDBBtn>
-        </div>
-        <MDBRow id="videogallery">
+      <div className="py-5" id="videogallery">
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              social="yt"
+              onClick={() => this.setState({ modalAddVideo: true })}
+            >
+              <MDBIcon fab icon="youtube" />
+              Add video
+            </MDBBtn>
+          </div>
+        )}
+        <MDBRow>
           {this.state.videos &&
             this.state.videos.map((video, i) => {
+              const videoId = this.getYouTubeVideoId(video.url);
+
               return (
                 <MDBCol lg="4" className="mb-3" key={"video-" + i}>
                   <MDBCard>
@@ -98,35 +121,54 @@ class AIVideoGallery extends React.Component {
                       <MDBView>
                         <div className="position-relative">
                           <img
-                            src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
                             alt="Video thumbnail"
                             className="img-fluid"
                           />
-                          <div className="d-flex justify-content-between video-title p-2 align-items-center">
-                            <span>Titel ausständig</span>
+                          <div className="text-right video-title py-1 px-2">
                             <MDBIcon
                               fab
                               icon="youtube"
                               className="text-danger"
                             />
                           </div>
+                          {sameOrigin && video.id && (
+                            <div className="text-right video-preview py-1 px-2">
+                              <MDBBtn
+                                color="danger"
+                                size="sm"
+                                onClick={() => {
+                                  this.setState(
+                                    {
+                                      videos: this.state.videos.filter(
+                                        (video) => video.id !== video.id
+                                      ),
+                                    },
+                                    () => this.props.deleteMetaLink(video.id)
+                                  );
+                                }}
+                              >
+                                <MDBIcon icon="trash" className="m-0" />
+                              </MDBBtn>
+                            </div>
+                          )}
                           <div className="position-absolute w-100 video-preview d-none">
                             <MDBRow>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/1.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/1.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/2.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/2.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
                               <MDBCol lg="4">
                                 <img
-                                  src={`https://img.youtube.com/vi/${video.id}/3.jpg`}
+                                  src={`https://img.youtube.com/vi/${videoId}/3.jpg`}
                                   className="img-fluid"
                                 />
                               </MDBCol>
@@ -137,7 +179,7 @@ class AIVideoGallery extends React.Component {
                           onClick={() =>
                             this.setState({
                               modalVideo: true,
-                              selectedVideoId: video.id,
+                              selectedVideoId: videoId,
                             })
                           }
                         />
@@ -168,11 +210,14 @@ class AIVideoGallery extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  //loggedUser: state.auth.loggedUser,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 

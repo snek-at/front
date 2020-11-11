@@ -32,41 +32,61 @@ import {
 import {
   ImageModal,
   InstagramSelectorModal,
+  UploadModal,
 } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aigallery.scss";
-//#endregion
-
-//#region > Dummy data
-const DUMMY = [
-  {
-    img: {
-      url: "https://mdbootstrap.com/img/Photos/Others/images/43.jpg",
-      alt: "Dummy image",
-    },
-    data: {
-      title: "Dummy",
-    },
-  },
-  {
-    img: {
-      url: "https://mdbootstrap.com/img/Photos/Others/images/12.jpg",
-      alt: "Dummy image",
-    },
-    data: {
-      title: "Dummy 2",
-    },
-  },
-];
+//> Intel
+import INTEL_IMGUR from "snek-intel/lib/utils/imgur";
 //#endregion
 
 //#region > Components
 class AIGallery extends React.Component {
-  state = { modalPicture: false };
+  state = { modalPicture: false, showUpload: false };
 
   componentDidMount = () => {
     this.setState({
-      images: DUMMY,
+      images: this.props.images,
+    });
+  };
+
+  componentDidUpdate = () => {};
+
+  handleUploadClose = () => {
+    if (this.state.showUpload) {
+      this.setState({
+        showUpload: false,
+      });
+    }
+  };
+
+  handleSuccess = async (event) => {
+    let photo = {
+      url: event.link,
+      linkType: "PHOTO",
+      deleteHash: event.deletehash,
+    };
+
+    const res = await this.props.addMetaLink({
+      url: photo.url,
+      linkType: photo.linkType,
+      imgurDeleteHash: photo.deleteHash,
+    });
+
+    photo = {
+      ...photo,
+      id: res.id,
+      imgurDeleteHash: res.imgurDeleteHash,
+    };
+
+    this.setState({
+      images: [...this.state.images, photo],
     });
   };
 
@@ -77,67 +97,139 @@ class AIGallery extends React.Component {
     });
   };
 
-  save = (urlList) => {
-    const res = urlList.selection.map((url) => {
-      return {
-        img: {
-          url,
-        },
-      };
-    });
+  save = async (pictureList) => {
+    let pics = [];
 
-    this.setState({
-      images: [...this.state.images, ...res],
-      modalSelectPictures: false,
-    });
+    for (const index in pictureList) {
+      const picture = pictureList[index];
+      const samePic = this.props.images.filter(
+        (pic) => pic.url === picture.url
+      );
+
+      if (samePic.length === 0) {
+        let pic = {
+          url: picture.url,
+          linkType: "INSTAGRAM",
+        };
+
+        const res = await this.props.addMetaLink({
+          url: pic.url,
+          linkType: pic.linkType,
+        });
+
+        pic = {
+          ...pic,
+          id: res.id,
+        };
+
+        pics = [...pics, pic];
+      }
+    }
+
+    this.setState(
+      {
+        images: [...this.state.images, ...pics],
+        modalSelectPictures: false,
+      },
+      () => {
+        const currentPics = this.props.images;
+        const newPics = this.state.images;
+
+        const intersection = currentPics.filter((x) => !newPics.includes(x));
+
+        intersection.forEach((curItem) => {
+          this.props.deleteMetaLink(curItem.id);
+        });
+      }
+    );
   };
 
-  removeImage = (url) => {
-    // TODO
+  removeImage = async (id, deleteHash) => {
+    if (deleteHash !== undefined && deleteHash !== null) {
+      await INTEL_IMGUR.delete(deleteHash);
+    }
+    this.props.deleteMetaLink(id);
+  };
+
+  checkProfileTypeExists = (sourceType) => {
+    return this.props.loggedUser.person.profiles.some(
+      (e) => e.sourceType === sourceType && e.isActive
+    )
+      ? true
+      : false;
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { loggedUser, sameOrigin } = this.props;
 
     return (
-      <div className="py-5">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            color="green"
-            onClick={() => this.setState({ modalSelectPictures: true })}
-          >
-            Select images
-          </MDBBtn>
-        </div>
-        <MDBRow id="gallery">
+      <div className="py-5" id="gallery">
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              color="elegant"
+              onClick={() => this.setState({ showUpload: true })}
+            >
+              <MDBIcon icon="upload" />
+              Upload image
+            </MDBBtn>
+            {this.checkProfileTypeExists("INSTAGRAM") && (
+              <MDBBtn
+                social="ins"
+                onClick={() => this.setState({ modalSelectPictures: true })}
+              >
+                <MDBIcon fab icon="instagram" />
+                Select images
+              </MDBBtn>
+            )}
+          </div>
+        )}
+        <div className="card-columns">
           {this.state.images &&
             this.state.images.map((picture, i) => {
-              console.log("YE", picture);
               return (
-                <MDBCol lg="4" key={"picture-" + i}>
-                  <MDBCard>
-                    <MDBCardBody>
-                      <MDBView>
-                        <img
-                          src={picture.img.url}
-                          alt={picture.img.alt}
-                          className="img-fluid"
-                        />
-                        <MDBMask
-                          onClick={() =>
-                            this.setState({
-                              modalPicture: true,
-                              selectedPicture: picture,
-                            })
-                          }
-                        />
-                      </MDBView>
-                    </MDBCardBody>
-                  </MDBCard>
-                </MDBCol>
+                <MDBCard key={"picture-" + i} className="mb-3">
+                  <MDBCardBody>
+                    <MDBView>
+                      {sameOrigin && picture.id && (
+                        <div className="text-right video-preview py-1 px-2">
+                          <MDBBtn
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  images: this.state.images.filter(
+                                    (p) => p.id !== picture.id
+                                  ),
+                                },
+                                () =>
+                                  this.removeImage(
+                                    picture.id,
+                                    picture.imgurDeleteHash
+                                  )
+                              );
+                            }}
+                          >
+                            <MDBIcon icon="trash" className="m-0" />
+                          </MDBBtn>
+                        </div>
+                      )}
+                      <img src={picture.url} className="img-fluid" />
+                      <MDBMask
+                        onClick={() =>
+                          this.setState({
+                            modalPicture: true,
+                            selectedPicture: picture,
+                          })
+                        }
+                      />
+                    </MDBView>
+                  </MDBCardBody>
+                </MDBCard>
               );
             })}
-        </MDBRow>
+        </div>
         {this.state.modalPicture && this.state.selectedPicture && (
           <ImageModal
             toggle={() => this.toggle("modalPicture")}
@@ -147,7 +239,26 @@ class AIGallery extends React.Component {
         {this.state.modalSelectPictures && (
           <InstagramSelectorModal
             toggle={() => this.toggle("modalSelectPictures")}
+            profile={
+              loggedUser.person &&
+              loggedUser.person.profiles.filter(
+                (profile) => profile.sourceType === "INSTAGRAM"
+              )
+            }
+            selection={this.state.images}
             save={this.save}
+          />
+        )}
+        {this.state.showUpload && (
+          <UploadModal
+            {...this.props}
+            acceptTypes={"image/jpeg, image/png, image/gif"}
+            invalidTypeMessage={
+              "Only JPEG, PNG and GIF uploading is supported!"
+            }
+            storageEngine={"imgur"}
+            onSuccess={this.handleSuccess}
+            closeModal={this.handleUploadClose}
           />
         )}
       </div>
@@ -158,11 +269,14 @@ class AIGallery extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  loggedUser: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 

@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { getUserSearchItems } from "../../../store/actions/generalActions";
+import { getPersonsBrief } from "../../../store/actions/generalActions";
 //> Style sheet
 import "./search.scss";
 //#endregion
@@ -52,8 +52,6 @@ class SearchBar extends React.Component {
   handleSelection = (event, value) => {
     if (event === "user") {
       this.props.history.push("/u/" + value);
-    } else if (event === "search_page") {
-      this.props.history.push("/search?q=" + value);
     }
   };
 
@@ -84,24 +82,28 @@ class SearchBar extends React.Component {
         <MDBSelectInput selected="Find a user" />
         <MDBSelectOptions search searchLabel="">
           {!this.state.loading && this.state.searchItems ? (
-            this.state.searchItems.length > 0 && this.state.filter.length > 0 ? (
-
+            this.state.searchItems.length > 0 &&
+            this.state.filter.length > 0 ? (
               fuzzysort
                 .go(this.state.filter, this.state.searchItems, { key: "title" })
                 .map((element, i) => {
                   return (
                     <MDBSelectOption
                       key={i}
-                      icon={"https://octodex.github.com/images/nyantocat.gif"}
+                      icon={
+                        element.obj.avatarImage?.src
+                          ? element.obj.avatarImage?.src
+                          : "https://octodex.github.com/images/nyantocat.gif"
+                      }
                     >
-                      {element.target}
+                      {element.obj.slug.split("-")[1]}
                     </MDBSelectOption>
                   );
                 })
             ) : null
           ) : (
-              <span>Loading</span>
-            )}
+            <span>Loading</span>
+          )}
         </MDBSelectOptions>
       </MDBSelect>
     );
@@ -111,12 +113,12 @@ class SearchBar extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  allUserSearchItems: state.general.allUserSearchItems,
+  allUserSearchItems: state.general.allPersonBrief,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    allsearchItems: () => dispatch(getUserSearchItems()),
+    allsearchItems: () => dispatch(getPersonsBrief()),
   };
 };
 //#endregion

@@ -29,18 +29,17 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdbreact";
-//> OAuth
-import GitHubOAuth from "reactjs-oauth";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
 import { connect } from "react-redux";
-
 //> Actions
 // Functions to send data from the application to the store
-import { registerAction } from "../../../../store/actions/userActions";
-import { fetchGitLabServersAction } from "../../../../store/actions/generalActions";
-import { loginAction } from "../../../../store/actions/authActions";
+import {
+  register,
+  isValidUsername,
+  loginAction,
+} from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -51,178 +50,15 @@ import { loginAction } from "../../../../store/actions/authActions";
 class RegisterForm extends React.Component {
   state = {
     loading: false,
+    errors: [],
+    username: "",
     firstname: "",
     lastname: "",
     email: "",
     password1: "",
     password2: "",
-    username: "",
-    gitlab_username: "",
-    gitlab_servers: undefined,
-    gitlab_server: "Choose your organisation",
-    sourceList: [],
-    usernames: [],
-    promoCode: true,
-    code: "",
-  };
-
-  componentDidMount = () => {
-    this.getGitLabServers();
-  };
-
-  toggle = () => {
-    if (!this.state.modalGitLab) {
-      this.setState({
-        modalGitLab: true,
-      });
-    } else {
-      this.setState({
-        modalGitLab: false,
-      });
-    }
-  };
-
-  getGitLabServers = async () => {
-    // Check if GitLab Servers have already been set
-    if (this.state.gitlab_servers === undefined) {
-      // Retrieve GitLab servers
-      this.props.fetchGitLabServers().then(() => {
-        this.setState({
-          gitlab_servers: this.props.gitlabServers,
-        });
-      });
-    }
-  };
-
-  addGitLab = () => {
-    const username = this.state.gitlab_username;
-    const server = this.state.gitlab_server;
-
-    //#TSID7
-    //console.log("REGISTER FORM ADD GITLAB", username, server);
-
-    if (username.trim() && server.trim()) {
-      if (server !== "Choose your organisation") {
-        this.connectGitLab(username, "https://" + server);
-      }
-    }
-  };
-
-  connectGitLab = async (username, platformUrl) => {
-    this.setState(
-      {
-        modalGitLab: false,
-        gitlab_username: "",
-        gitlab_server: "Choose your organisation",
-      },
-      () => this.pushToSourceList("gitlab", username, platformUrl)
-    );
-  };
-
-  oauthGitHubSuccess = (response) => {
-    this.setState(
-      {
-        loadingGitHub: true,
-      },
-      async () => {
-        this.pushToSourceList(
-          "github",
-          response.username,
-          "https://api.github.com/graphql",
-          response.accessToken
-        );
-      }
-    );
-  };
-
-  oauthGitHubFailure = (response) => {
-    //#ERROR
-    console.error(response);
-  };
-
-  pushToSourceList = (platformName, username, platformUrl, token) => {
-    let sourceList = this.state.sourceList;
-
-    this.addToUsernames(username, platformName);
-
-    sourceList.push({
-      id: username.length + platformName.length + username + platformName,
-      user: username,
-      authorization: token ? "token " + token : null,
-      platform: {
-        name: platformName,
-        url: platformUrl,
-      },
-    });
-
-    if (platformName === "github") {
-      this.setState({
-        username,
-        hasGitHub: true,
-        sourceList,
-        loadingGitHub: false,
-      });
-    } else {
-      // Set the new list of user information
-      this.setState({
-        sourceList,
-      });
-    }
-  };
-
-  addToUsernames = (username, source) => {
-    let usernames = this.state.usernames;
-    let found = false;
-
-    for (let i = 0; i < usernames.length; i++) {
-      if (
-        usernames[i].username === username &&
-        usernames[i].source === source
-      ) {
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      // Make sure that only GitHub usernames are available for selection
-      // This aims to prevent name abuse in the first versions of this application
-      usernames.push({
-        id: username.length + source.length + username + source,
-        username,
-        source,
-        verified: source === "github" ? true : false,
-      });
-      this.setState({
-        usernames,
-      });
-    }
-  };
-
-  removeSource = (id) => {
-    let sourceList = this.state.sourceList.filter(function (obj) {
-      return obj.id !== id;
-    });
-    let usernames = this.state.usernames.filter(function (obj) {
-      return obj.id !== id;
-    });
-
-    this.setState({
-      sourceList,
-      usernames,
-    });
-  };
-
-  handleUserNamePick = (username) => {
-    this.setState({
-      username,
-    });
-  };
-
-  handleSelectChange = (e) => {
-    this.setState({
-      gitlab_server: e[0],
-    });
+    redemptionCodeValue: "",
+    redemptionCode: true,
   };
 
   testForError = (id) => {
@@ -278,6 +114,25 @@ class RegisterForm extends React.Component {
     );
   };
 
+  handleCodeChange = (e) => {
+    let code = e.target.value;
+
+    if (code.length <= 14) {
+      if (code.length === 4 || code.length === 9) {
+        code = code + "-";
+      }
+
+      this.setState(
+        {
+          redemptionCodeValue: code.toUpperCase(),
+        },
+        () => this.removeError(9)
+      );
+    } else {
+      return false;
+    }
+  };
+
   removeError = (id) => {
     // Preset errors to local variable
     let errors = this.state.errors;
@@ -301,25 +156,17 @@ class RegisterForm extends React.Component {
     }
   };
 
-  // Handle sumbit of register form
   handleSubmit = async () => {
-    //#TSID8
-    //console.log("REGISTER FORM HANDLE SUBMIT");
-
-    // CHANGE TO CONST
-    let {
-      password1,
-      password2,
+    const {
+      username,
       firstname,
       lastname,
       email,
-      sourceList,
-      username,
-      promoCode,
-      code,
+      password1,
+      password2,
+      redemptionCodeValue,
+      redemptionCode,
     } = this.state;
-
-    // Error
     let errors = [];
 
     // Check if passwords match
@@ -327,14 +174,6 @@ class RegisterForm extends React.Component {
       errors.push({
         code: 1,
         msg: "Your passwords do not match.",
-        weight: 10,
-      });
-    }
-
-    if (sourceList.length === 0) {
-      errors.push({
-        code: 2,
-        msg: "No platforms are connected.",
         weight: 10,
       });
     }
@@ -363,10 +202,12 @@ class RegisterForm extends React.Component {
       });
     }
 
-    if (username === "") {
+    const isUsernameTaken = !(await this.props.isValidUsername(username));
+
+    if (username === "" || (username && isUsernameTaken)) {
       errors.push({
         code: 6,
-        msg: "Please select a username from the list above.",
+        msg: "Please enter a valid username.",
         weight: 10,
       });
     }
@@ -387,7 +228,7 @@ class RegisterForm extends React.Component {
       });
     }
 
-    if (code === "") {
+    if (redemptionCodeValue === "" && redemptionCode) {
       errors.push({
         code: 9,
         msg: "Please enter your promo code or contact us to receive one.",
@@ -400,53 +241,21 @@ class RegisterForm extends React.Component {
         {
           loading: true,
         },
-        () => {
-          //#TSID9
-          //console.log("REGISTER FORM REGISTER", this.state);
-
-          let registrationData = {
-            sources: sourceList,
+        async () => {
+          await this.props.register(
             username,
+            firstname,
+            lastname,
             email,
-            first_name: firstname,
-            last_name: lastname,
-            gift_code: promoCode && code !== "" ? code : null,
-            password: password1,
-          };
+            password1,
+            redemptionCodeValue ? redemptionCodeValue : "none"
+          );
 
-          this.props.register(registrationData).then(() => {
-            const { username, password } = registrationData;
-
-            this.props.login({
-              username,
-              password,
-            });
-          });
+          await this.props.login(username, password1);
         }
       );
     } else {
-      this.setState({
-        errors,
-      });
-    }
-  };
-
-  handleCodeChange = (e) => {
-    let code = e.target.value;
-
-    if (code.length <= 14) {
-      if (code.length === 4 || code.length === 9) {
-        code = code + "-";
-      }
-
-      this.setState(
-        {
-          code: code.toUpperCase(),
-        },
-        () => this.removeError(9)
-      );
-    } else {
-      return false;
+      this.setState({ errors });
     }
   };
 
@@ -455,385 +264,128 @@ class RegisterForm extends React.Component {
 
     return (
       <>
-        {!this.state.loading ? (
-          <>
-            <div className="text-left">
-              <small
-                className="text-muted clickable"
-                onClick={() => this.setState({ errors: [] }, () => goTo(0))}
-              >
-                <MDBIcon icon="angle-left" className="mr-1" />
-                Back
-              </small>
-            </div>
-            <p className="lead">So you're a Software Engineer...</p>
-            <p className="text-muted mb-4">
-              We just need a bit more information to get you started.
-            </p>
-            <form>
-              <MDBRow>
-                <MDBCol md="6">
-                  <input
-                    type="text"
-                    className={
-                      this.testForError(3)
-                        ? "form-control error"
-                        : "form-control"
-                    }
-                    placeholder="Firstname"
-                    name="firstname"
-                    onChange={(e) => this.handleChange(e, 3)}
-                    value={this.state.firstname}
-                  />
-                </MDBCol>
-                <MDBCol md="6">
-                  <input
-                    type="text"
-                    className={
-                      this.testForError(4)
-                        ? "form-control error"
-                        : "form-control"
-                    }
-                    placeholder="Lastname"
-                    name="lastname"
-                    onChange={(e) => this.handleChange(e, 4)}
-                    value={this.state.lastname}
-                  />
-                </MDBCol>
-              </MDBRow>
+        <form className="text-left">
+          <span className="text-muted small">Username</span>
+          <input
+            type="text"
+            className={
+              this.testForError(6)
+                ? "form-control error mb-2"
+                : "form-control mb-2"
+            }
+            name="username"
+            onChange={(e) => this.handleChange(e, 6)}
+            value={this.state.username}
+          />
+          <MDBRow className="mb-2">
+            <MDBCol md="6">
+              <span className="text-muted small">Firstname</span>
               <input
-                type="email"
-                className={
-                  this.testForError(5)
-                    ? "form-control my-2 error"
-                    : "form-control my-2"
-                }
-                placeholder="E-Mail"
-                name="email"
-                onChange={(e) => this.handleChange(e, 5)}
-                value={this.state.email}
-              />
-              <MDBRow>
-                <MDBCol md="6">
-                  <input
-                    type="password"
-                    className={
-                      this.testForError([7, 1])
-                        ? "form-control error"
-                        : "form-control"
-                    }
-                    placeholder="Password"
-                    name="password1"
-                    onChange={(e) => this.handleChange(e, [7, 1])}
-                    value={this.state.password1}
-                  />
-                </MDBCol>
-                <MDBCol md="6">
-                  <input
-                    type="password"
-                    className={
-                      this.testForError([8, 1])
-                        ? "form-control error"
-                        : "form-control"
-                    }
-                    placeholder="Repeat password"
-                    name="password2"
-                    onChange={(e) => this.handleChange(e, [8, 1])}
-                    value={this.state.password2}
-                  />
-                </MDBCol>
-              </MDBRow>
-            </form>
-            <div className="text-left mt-2">
-              <small
-                className="blue-text clickable text-md"
-                onClick={() =>
-                  this.setState({ promoCode: !this.state.promoCode })
-                }
-              >
-                {!this.state.promoCode
-                  ? "I have a promo code"
-                  : "I don't have a promo code"}
-              </small>
-            </div>
-            {this.state.promoCode && (
-              <input
-                value={this.state.code}
-                className={
-                  this.testForError([9, 1])
-                    ? "form-control mb-3 error"
-                    : "form-control mb-3"
-                }
-                spellCheck="false"
-                autoComplete="autocomplete_off_874548537585743884357"
-                onChange={this.handleCodeChange}
                 type="text"
-                id="materialFormRegisterConfirmEx40"
-                name="code"
-                placeholder="Promo code"
-                label="Promotional code"
-              />
-            )}
-            <p className="text-muted mt-4">Connect your work</p>
-            <small className="text-muted">
-              You need to connect at least one account to continue.
-            </small>
-            <div>
-              <MDBPopover placement="top" popover clickable id="popper1">
-                <MDBBtn color="link" className="text-muted py-1">
-                  <MDBIcon far icon="question-circle" className="pr-1" />
-                  Why do I need to connect my accounts?
-                </MDBBtn>
-                <div>
-                  <MDBPopoverHeader>
-                    <MDBIcon far icon="question-circle" className="pr-2" />
-                    Connecting accounts
-                  </MDBPopoverHeader>
-                  <MDBPopoverBody>
-                    To generate your expressive and meaningful profile, we
-                    require data about your work, which we acquire by fetching
-                    it from platforms like GitHub, GitLab and BitBucket. It also
-                    helps us verify your data.
-                    <br />
-                    <a
-                      className="blue-text"
-                      href="https://github.com/snek-at"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Learn more
-                    </a>
-                  </MDBPopoverBody>
-                </div>
-              </MDBPopover>
-            </div>
-            <div className="connect mb-3">
-              <MDBBtn
-                color="orange"
-                onClick={() => this.setState({ modalGitLab: true })}
-                disabled={
-                  !this.state.gitlab_servers ||
-                  (this.state.gitlab_server &&
-                    this.state.gitlab_server.length < 1)
+                className={
+                  this.testForError(3) ? "form-control error" : "form-control"
                 }
-              >
-                <MDBIcon fab icon="gitlab" size="lg" />
-              </MDBBtn>
-              {!process.env.NODE_ENV ||
-              process.env.NODE_ENV === "development" ? (
-                <GitHubOAuth
-                  authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="1440dd4c1d1c4c0fa124"
-                  clientSecret="0723a2b5bfef27efc8b2d26d837ead239fa0b0e6"
-                  redirectUri="http://localhost:3000/redirect"
-                  onSuccess={this.oauthGitHubSuccess}
-                  onFailure={this.oauthGitHubFailure}
-                />
-              ) : (
-                <GitHubOAuth
-                  authorizationUrl="https://github.com/login/oauth/authorize"
-                  clientId="2148629809594d57c113"
-                  clientSecret="64a37e4846387cfcaea35d83afca3c9c8689628c"
-                  redirectUri="https://snek.at/redirect"
-                  onSuccess={this.oauthGitHubSuccess}
-                  onFailure={this.oauthGitHubFailure}
-                />
-              )}
-              <MDBBtn color="primary" disabled>
-                <MDBIcon fab icon="bitbucket" size="lg" />
-              </MDBBtn>
-            </div>
-            <div>
-              <MDBListGroup>
-                {this.state.loadingGitHub && <MDBProgress material preloader />}
-                {this.state.usernames.map((source, i) => {
-                  return (
-                    <MDBListGroupItem
-                      className={"list-item-" + source.source}
-                      key={i}
-                    >
-                      <div>
-                        <MDBIcon
-                          fab
-                          icon={source.source}
-                          className="company-icon"
-                        />
-                        {source.username}
-                        {source.verified ? (
-                          <MDBPopover
-                            placement="right"
-                            domElement
-                            clickable
-                            popover
-                            tag="span"
-                            id="popper1"
-                          >
-                            <span>
-                              <MDBIcon
-                                icon="award"
-                                className="green-text ml-2 clickable"
-                              />
-                            </span>
-                            <div>
-                              <MDBPopoverHeader>Verified</MDBPopoverHeader>
-                              <MDBPopoverBody>
-                                <MDBRow className="justify-content-center align-items-center m-0">
-                                  <MDBCol
-                                    size="auto"
-                                    className="p-0 green-text"
-                                  >
-                                    <MDBIcon icon="award" size="3x" />
-                                  </MDBCol>
-                                  <MDBCol className="p-0 pl-3">
-                                    This source has been{" "}
-                                    <strong className="green-text">
-                                      verified
-                                    </strong>{" "}
-                                    by logging into it.
-                                  </MDBCol>
-                                </MDBRow>
-                              </MDBPopoverBody>
-                            </div>
-                          </MDBPopover>
-                        ) : (
-                          <MDBPopover
-                            placement="right"
-                            domElement
-                            clickable
-                            popover
-                            tag="span"
-                            id="popper1"
-                          >
-                            <span>
-                              <MDBIcon
-                                icon="award"
-                                className="grey-text ml-2 clickable"
-                              />
-                            </span>
-                            <div>
-                              <MDBPopoverHeader>Not verified</MDBPopoverHeader>
-                              <MDBPopoverBody>
-                                <MDBRow className="justify-content-center align-items-center m-0">
-                                  <MDBCol size="auto" className="p-0 grey-text">
-                                    <MDBIcon icon="award" size="3x" />
-                                  </MDBCol>
-                                  <MDBCol className="p-0 pl-3">
-                                    We can not verify your identity with GitLab.
-                                    Your data is still being included.
-                                  </MDBCol>
-                                </MDBRow>
-                              </MDBPopoverBody>
-                            </div>
-                          </MDBPopover>
-                        )}
-                      </div>
-                      <MDBIcon
-                        icon="times"
-                        className="close-icon"
-                        onClick={() => this.removeSource(source.id)}
-                      />
-                    </MDBListGroupItem>
-                  );
-                })}
-              </MDBListGroup>
-            </div>
-            <MDBBtn
-              color="green"
-              outline
-              className="mb-0"
-              onClick={this.handleSubmit}
-              /*disabled={!this.state.hasGitHub}*/
-            >
-              Join now
-            </MDBBtn>
-            <p>
-              <small className="text-muted">
-                Don't worry, you can easily connect further accounts in the
-                future.
-              </small>
-            </p>
-          </>
-        ) : (
-          <div className="my-5 py-5">
-            <h2 className="font-weight-bolder mb-0">
-              Hey, {this.state.firstname}!
-            </h2>
-            <p className="lead mb-3">Your profile is being generated.</p>
-            <div className="progress md-progress primary-color mb-1">
-              <div className="indeterminate"></div>
-            </div>
-            <TextLoop
-              className="text-muted"
-              children={[
-                "Connecting profiles...",
-                "Fetching data...",
-                "Creating profile...",
-                "Analyzing profile...",
-                "Creating statistics...",
-                "Warming up the coffee...",
-                "Finishing your profile...",
-              ]}
-              springConfig={{ stiffness: 180, damping: 8 }}
-              interval={4000}
-            />
-          </div>
-        )}
-        {this.state.modalGitLab && (
-          <MDBModal
-            modalStyle="orange"
-            className="text-white"
-            size="sm"
-            backdrop={true}
-            isOpen={this.state.modalGitLab}
-            toggle={this.toggle}
+                name="firstname"
+                onChange={(e) => this.handleChange(e, 3)}
+                value={this.state.firstname}
+              />
+            </MDBCol>
+            <MDBCol md="6">
+              <span className="text-muted small">Lastname</span>
+              <input
+                type="text"
+                className={
+                  this.testForError(4) ? "form-control error" : "form-control"
+                }
+                name="lastname"
+                onChange={(e) => this.handleChange(e, 4)}
+                value={this.state.lastname}
+              />
+            </MDBCol>
+          </MDBRow>
+          <span className="text-muted small">E-Mail</span>
+          <input
+            type="email"
+            className={
+              this.testForError(5)
+                ? "form-control mb-2 error"
+                : "form-control mb-2"
+            }
+            name="email"
+            onChange={(e) => this.handleChange(e, 5)}
+            value={this.state.email}
+          />
+          <MDBRow>
+            <MDBCol md="6">
+              <span className="text-muted small">Password</span>
+              <input
+                type="password"
+                className={
+                  this.testForError([7, 1])
+                    ? "form-control error"
+                    : "form-control"
+                }
+                name="password1"
+                onChange={(e) => this.handleChange(e, [7, 1])}
+                value={this.state.password1}
+              />
+            </MDBCol>
+            <MDBCol md="6">
+              <span className="text-muted small">Confirm password</span>
+              <input
+                type="password"
+                className={
+                  this.testForError([8, 1])
+                    ? "form-control error"
+                    : "form-control"
+                }
+                name="password2"
+                onChange={(e) => this.handleChange(e, [8, 1])}
+                value={this.state.password2}
+              />
+            </MDBCol>
+          </MDBRow>
+        </form>
+        <div className="text-left mt-2">
+          <small
+            className="blue-text clickable text-md"
+            onClick={() =>
+              this.setState({ redemptionCode: !this.state.redemptionCode })
+            }
           >
-            <MDBModalHeader className="text-center" titleClass="w-100" tag="p">
-              <MDBIcon fab icon="gitlab" className="pr-2" />
-              Add GitLab profile
-            </MDBModalHeader>
-            <MDBModalBody className="text-center">
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="GitLab username"
-                name="gitlab_username"
-                onChange={(e) =>
-                  this.setState({ [e.target.name]: e.target.value })
-                }
-                value={this.state.gitlab_username}
-              />
-              <MDBSelect
-                outline
-                getValue={this.handleSelectChange}
-                className="mb-0"
-              >
-                <MDBSelectInput selected={this.state.gitlab_server} />
-                <MDBSelectOptions>
-                  <MDBSelectOption disabled>
-                    Choose your organisation
-                  </MDBSelectOption>
-                  {this.state.gitlab_servers &&
-                    this.state.gitlab_servers.map((source, i) => {
-                      return (
-                        <MDBSelectOption key={i} value={source.domain}>
-                          {source.organisation}
-                        </MDBSelectOption>
-                      );
-                    })}
-                </MDBSelectOptions>
-              </MDBSelect>
-            </MDBModalBody>
-            <MDBModalFooter className="justify-content-center">
-              <MDBBtn color="orange" onClick={this.addGitLab}>
-                <MDBIcon icon="plus-circle" className="mr-2" />
-                Add
-              </MDBBtn>
-              <MDBBtn color="elegant" outline onClick={this.toggle}>
-                Cancel
-              </MDBBtn>
-            </MDBModalFooter>
-          </MDBModal>
+            {!this.state.redemptionCode
+              ? "I have a promo code"
+              : "I don't have a promo code"}
+          </small>
+        </div>
+        {this.state.redemptionCode && (
+          <input
+            value={this.state.redemptionCodeValue}
+            className={
+              this.testForError(9)
+                ? "form-control mb-3 error"
+                : "form-control mb-3"
+            }
+            spellCheck="false"
+            autoComplete="autocomplete_off_874548537585743884357"
+            onChange={this.handleCodeChange}
+            type="text"
+            id="materialFormRegisterConfirmEx40"
+            name="code"
+            placeholder="XXXX-XXXX-XXXX"
+            label="Promotional code"
+          />
         )}
+        <MDBBtn
+          color="green"
+          className="mb-0"
+          onClick={this.handleSubmit}
+          size="lg"
+          /*disabled={!this.state.hasGitHub}*/
+        >
+          <MDBIcon icon="angle-right" />
+          Join now
+        </MDBBtn>
       </>
     );
   }
@@ -848,17 +400,28 @@ RegisterForm.propTypes = {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  registrationHistory: state.user.registrationHistory,
-  gitlabServers: state.general.allGitlabServers,
+  test: "",
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (registrationData) => dispatch(registerAction(registrationData)),
-    login: (user) => dispatch(loginAction(user)),
-    fetchGitLabServers: () => dispatch(fetchGitLabServersAction()),
+    register: (
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+      redemptionCode
+    ) =>
+      dispatch(
+        register(username, firstName, lastName, email, password, redemptionCode)
+      ),
+    login: (username, password) =>
+      dispatch(loginAction({ username, password })),
+    isValidUsername: (username) => dispatch(isValidUsername(username)),
   };
 };
+
 //#endregion
 
 //#region > Exports

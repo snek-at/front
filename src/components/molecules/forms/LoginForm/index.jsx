@@ -7,9 +7,6 @@ import PropTypes from "prop-types";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBAlert, MDBBtn, MDBIcon } from "mdbreact";
-//> Additional
-// SHA hashing algorithm
-import { sha256 } from "js-sha256";
 //> Redux
 // Allows to React components read data from a Redux store, and dispatch actions
 // to the store to update data.
@@ -17,7 +14,7 @@ import { connect } from "react-redux";
 
 //> Actions
 // Functions to send data from the application to the store
-import { loginAction } from "../../../../store/actions/authActions";
+import { loginAction } from "../../../../store/actions/userActions";
 //#endregion
 
 //#region > Components
@@ -130,7 +127,7 @@ class LoginForm extends React.Component {
       // Proceed to login
       const result = await this.props.login({
         username: this.state.login_username,
-        password: sha256(this.state.login_password), // Hash password
+        password: this.state.login_password, // Hash password
       });
 
       //#TSID6
@@ -190,7 +187,7 @@ class LoginForm extends React.Component {
             }
             value={this.state.login_password}
           />
-          <MDBBtn color="green" outline className="mb-0" type="submit">
+          <MDBBtn color="green" className="mb-0" type="submit">
             Login
             <MDBIcon icon="angle-right" className="pl-1" />
           </MDBBtn>

@@ -11,25 +11,22 @@ import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBContainer,
   MDBRow,
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBCardFooter,
   MDBBtn,
-  MDBBadge,
-  MDBProgress,
-  MDBTooltip,
   MDBIcon,
-  MDBTimeline,
-  MDBTimelineStep,
-  MDBView,
-  MDBMask,
 } from "mdbreact";
 
 //> Components
 import { AddSongModal } from "../../../../molecules/modals";
+//> Actions
+// Functions to send data from the application to the store
+import {
+  addMetaLink,
+  deleteMetaLink,
+} from "../../../../../store/actions/personActions";
 //> Style
 import "./aisonggallery.scss";
 //#endregion
@@ -48,7 +45,7 @@ class AISongGallery extends React.Component {
 
   componentDidMount = () => {
     this.setState({
-      songs: DUMMY,
+      songs: this.props.songs,
     });
   };
 
@@ -59,10 +56,20 @@ class AISongGallery extends React.Component {
     });
   };
 
-  addSong = (url) => {
-    const song = {
-      type: "SOUNDCLOUD",
+  addSong = async (url) => {
+    let song = {
+      linkType: "SOUNDCLOUD",
       url,
+    };
+
+    const rtn = await this.props.addMetaLink({
+      url: song.url,
+      linkType: song.linkType,
+    });
+
+    song = {
+      ...song,
+      id: rtn.id,
     };
 
     this.setState({
@@ -72,19 +79,21 @@ class AISongGallery extends React.Component {
   };
 
   render() {
-    const { loggedUser } = this.props;
+    const { sameOrigin } = this.props;
 
     return (
       <div className="py-5">
-        <div className="mb-4 text-right">
-          <MDBBtn
-            color="orange"
-            onClick={() => this.setState({ modalAddSong: true })}
-          >
-            <MDBIcon fab icon="soundcloud" />
-            Add song
-          </MDBBtn>
-        </div>
+        {sameOrigin && (
+          <div className="mb-4 text-right">
+            <MDBBtn
+              color="orange"
+              onClick={() => this.setState({ modalAddSong: true })}
+            >
+              <MDBIcon fab icon="soundcloud" />
+              Add song
+            </MDBBtn>
+          </div>
+        )}
         <MDBRow id="videogallery">
           {this.state.songs &&
             this.state.songs.map((song, i) => {
@@ -92,11 +101,31 @@ class AISongGallery extends React.Component {
                 <MDBCol lg="6" className="mb-3" key={"song-" + i}>
                   <MDBCard>
                     <MDBCardBody>
+                      {sameOrigin && song.id && (
+                        <div className="text-right video-preview py-1 px-2">
+                          <MDBBtn
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  songs: this.state.songs.filter(
+                                    (s) => s.id !== song.id
+                                  ),
+                                },
+                                () => this.props.deleteMetaLink(song.id)
+                              );
+                            }}
+                          >
+                            <MDBIcon icon="trash" className="m-0" />
+                          </MDBBtn>
+                        </div>
+                      )}
                       <iframe
                         width="100%"
                         height="166"
                         scrolling="no"
-                        frameborder="no"
+                        frameBorder="no"
                         allow="autoplay"
                         src={"https://w.soundcloud.com/player/?url=" + song.url}
                       ></iframe>
@@ -120,11 +149,14 @@ class AISongGallery extends React.Component {
 
 //#region > Redux Mapping
 const mapStateToProps = (state) => ({
-  loggedUser: state.auth.loggedUser,
+  //loggedUser: state.auth.loggedUser,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    addMetaLink: (linkOptions) => dispatch(addMetaLink(linkOptions)),
+    deleteMetaLink: (id) => dispatch(deleteMetaLink(id)),
+  };
 };
 //#endregion
 
