@@ -51,22 +51,33 @@ class PersonPage extends React.Component {
     }
   };
 
-  componentDidUpdate = async () => {
+  componentDidUpdate = async (prevProps, prevState) => {
     const { fetchedPerson, loggedUser, profilesProcessed } = this.props;
 
     if (
-      !this.state.cachingDone &&
-      fetchedPerson &&
-      loggedUser?.person &&
-      fetchedPerson.slug === loggedUser.person.slug &&
-      !profilesProcessed
+      this.state.cachingDone &&
+      prevProps.loggedUser.username !== loggedUser.username
     ) {
-      await this.props.processProfiles();
-
+      this.setState({ cachingDone: false });
+    }
+    if (prevProps.fetchedPerson && fetchedPerson) {
       if (this._isMounted) {
-        this.setState({ cachingDone: true }, () =>
-          this.props.getPerson(loggedUser.person.slug.split("-")[1])
-        );
+        if (
+          JSON.stringify(fetchedPerson) === JSON.stringify(loggedUser.person)
+        ) {
+          if (!this.state.cachingDone && !profilesProcessed) {
+            await this.props.processProfiles();
+
+            this.setState({ cachingDone: true });
+          }
+        }
+
+        if (
+          JSON.stringify(prevProps.fetchedPerson) !==
+          JSON.stringify(fetchedPerson)
+        ) {
+          this.props.getPerson(fetchedPerson.slug.split("-")[1]);
+        }
       }
     }
   };
