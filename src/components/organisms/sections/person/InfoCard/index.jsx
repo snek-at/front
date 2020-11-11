@@ -36,6 +36,7 @@ import {
   unfollow,
   like,
   unlike,
+  getPerson,
 } from "../../../../../store/actions/personActions";
 //> Style Sheet
 import "./infocard.scss";
@@ -194,6 +195,10 @@ class InfoCard extends React.Component {
   };
 
   handleModalClose = () => {
+    const username = this.props.loggedUser.username;
+
+    this.props.getPerson(username);
+
     if (this.state.showToContinue) {
       this.setState({
         showToContinue: false,
@@ -612,6 +617,7 @@ const mapDispatchToProps = (dispatch) => {
     unfollow: (personToUnfollow) => dispatch(unfollow(personToUnfollow)),
     like: (personToLike) => dispatch(like(personToLike)),
     unlike: (personToUnlike) => dispatch(unlike(personToUnlike)),
+    getPerson: (personName) => dispatch(getPerson(personName)),
   };
 };
 //#endregion

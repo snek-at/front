@@ -50,14 +50,14 @@ class FollowModal extends React.Component {
   // }
 
   componentDidUpdate = (prevProps, prevState) => {
-    const { loggedUser } = this.props;
+    const { loggedUser, fetchedPerson } = this.props;
 
     if (
       this.state.loading ||
       this.props.loggedUser.person !== prevProps.loggedUser.person
     ) {
       this.setState({
-        followers: loggedUser.person.follows,
+        followers: fetchedPerson.follows,
         anonymous: loggedUser.anonymous,
         loading: false,
       });
